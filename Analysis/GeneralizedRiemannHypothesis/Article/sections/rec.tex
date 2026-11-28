@@ -13,7 +13,7 @@
 \providecommand{\anaW}{\mathcal{W}}
 \providecommand{\anaZ}{\mathcal{Z}}
 \providecommand{\anaC}{\mathcal{C}}
-\section{Recovering zeros and characters from prime data}\label{sec:rec}
+\section{Recovering zeros from prime data and analytic samples}\label{sec:rec}
 \providecommand{\recsinc}{\operatorname{sinc}}
 \providecommand{\recgE}{\gamma_{\mathrm{E}}}
 \providecommand{\recGen}{\operatorname{Gen}}
@@ -21,11 +21,16 @@
 \providecommand{\recA}{\mathcal{A}}
 \providecommand{\recartanh}{\operatorname{artanh}}
 
-This section collects inverse theorems. An observation is made on the prime side, or on the
-completed $L$-function in a region where it is given by its Euler product, and the question
-is what it determines: the number of zeros below a height, the zero multiset with
-multiplicities, the character, the modulus, an auxiliary twist, or a set of omitted primes.
-\Cref{src:thm:dgrh} enters in two ways. It turns zero contributions into pure phases
+This section collects inverse theorems in one direction, from prime data to zeros. An
+observation is made on the prime side, or on the completed $L$-function in a region where it is
+given by its Euler product, or through its Taylor coefficients at one point, and the question is
+what it determines about the zeros: the number of zeros below a height or in a disk, the zero
+multiset with multiplicities, the order of a single zero such as the central one, or the edge
+of the zero set. The opposite direction, in which zeros are the data and the character, the
+modulus, a twist, omitted primes or the factors of a product are the unknowns, is
+\cref{sec:chz}; recovery from Li coefficients and from the Li heat kernel is in
+\cref{sec:li,sec:lih}, and the matching of Euler factors of products, in which no zero is
+located, is in \cref{sec:eul}. \Cref{src:thm:dgrh} enters in two ways. It turns zero contributions into pure phases
 $x^{i\gamma}$, so that Bohr means, recurrence and sharp upper limits read off individual
 spectral coefficients; and it makes certain spectral weights, such as $(1/4+\gamma^2)^{-1}$
 or $h/(h^2+(t-\gamma)^2)$, positive, so that coincident zeros of different functions cannot
@@ -54,7 +59,7 @@ The first tool turns a recovered zero multiset into a character, the second turn
 the completed function in the half-plane of absolute convergence into a positive spectral
 measure, and the third makes prime values of distinct characters almost orthogonal.
 
-\begin{lemma}[Zeros determine the character; \stU]\label{rec:lem:char}
+\begin{corollary}[Zeros determine the character; \stU]\label{rec:lem:char}
 Let $\mathcal C$ be a nonempty finite set of distinct primitive Dirichlet characters, let $m_\chi(\rho)$ be the
 multiplicity of $\rho$ as a nontrivial zero of $L(s,\chi)$, and let $b\in\C^{\mathcal C}$. If
 $\sum_{\chi\in\mathcal C}b_\chi m_\chi(\rho)=0$ at all but finitely many points $\rho$ of the union of the zero sets, then
@@ -62,24 +67,12 @@ $b=0$. In particular two primitive Dirichlet $L$-functions with the same nontriv
 multiplicities, outside a bounded set have equal characters, and two finite products of primitive
 Dirichlet $L$-functions whose nontrivial zero multisets differ, after cancellation, in finitely many
 occurrences have the same factors with multiplicity.
-\end{lemma}
+\end{corollary}
 
-\begin{proof}
-The zeros of $\Xi_\chi$ in \eqref{rec:eq:completion} are exactly the nontrivial zeros, and the genus-one
-Hadamard formula gives
-$\Xi_\chi'/\Xi_\chi(s)=B_\chi+\sum_\rho m_\chi(\rho)\bigl(\frac1{s-\rho}+\frac1\rho\bigr)$, the paired summands converging
-normally away from their poles. Hence $\sum_\chi b_\chi\Xi_\chi'/\Xi_\chi$ is a constant plus finitely many simple
-fractions. Put $V(s)=\sum_\chi b_\chi L'(s,\chi)/L(s,\chi)$. The gamma factor contributes $\frac12(\Gamma'/\Gamma)((s+\kappa_\chi)/2)$, whose
-increment under $s\mapsto s+2$ is $1/(s+\kappa_\chi)$ by the gamma recurrence; the conductor contributes a constant and
-the factor $s(s-1)$ a rational function. So $V(s+2)-V(s)$ is rational. On the positive real axis it is
-$O(2^{-s})$, by absolute convergence of the logarithmic Euler series, and a rational function with this decay
-vanishes identically. Iterating the period to the right gives $V=0$ on $\Re s>1$. Uniqueness of Dirichlet
-series gives $\sum_\chi b_\chi\chi(p)=0$ at every prime $p$ coprime to the least common multiple $q$ of the
-conductors. Every reduced class modulo $q$ contains a prime, and distinct primitive characters induce distinct
-characters of $(\Z/q\Z)^\times$, so orthogonality gives $b=0$. The two special cases take $b$ equal to the
-difference of the indicator vectors, respectively of the multiplicity vectors of the factors; a bounded set
-contains finitely many zeros.
-\end{proof}
+This is the case of constant polynomials $P_\chi=b_\chi$ of \cref{zer:thm:polyrigid}, whose multiplicities
+$m_j(\rho)$ are those of the nontrivial zeros. The two special cases take $b$ equal to the difference of the
+indicator vectors, respectively of the multiplicity vectors of the factors; a bounded set contains finitely
+many zeros.
 
 \begin{remark}[Reading the character directly]\label{rec:rem:readchar}
 When the whole multiset is known, the character can be computed from it. For real
@@ -183,25 +176,31 @@ $qf$ costs $O(\log(qf))$.
 \end{proof}
 
 \paragraph{Comparison.}
-Several observations of this section determine a character, or its zero multiset, under different
-data. \Cref{rec:thm:universal} uses one continuous autocorrelation of a real positive prime
-signal for all characters at once;
+Several observations of this section determine zero multisets with multiplicities, or counts of
+zeros, from different data. \Cref{rec:thm:universal} uses one continuous autocorrelation of a real
+positive prime signal for all characters at once;
 \cref{rec:thm:factorial} one twisted sum, sampled only at factorials; \cref{rec:thm:threescale} and
 \cref{rec:prop:oriented} sharp upper limits on the grid $6^n$; \cref{rec:thm:dyadic} one complex
-sequence at the powers of two; \cref{rec:thm:mellin} sparse samples of split primes, with no hypothesis
-on zeros; \cref{rec:thm:liseparation} filtered and subsampled Li coefficients with sparse corruption
-and no hypothesis on zeros; \cref{rec:thm:liblock} finite blocks of exponentiated Li coefficients on an
-arithmetic progression, uniformly for bounded weights on a fixed finite set of characters, and its
-\cref{rec:thm:liheat} one time slice at an unknown time; \cref{rec:thm:oneinterval} the positions of zeros of high derivatives on
-one interval; \cref{rec:thm:localrecovery} poles in one triple-logarithmic window;
-\cref{rec:thm:localcoeff,rec:thm:localid} one window of complex zeros at a large height, uniformly in the
-conductor; \cref{rec:thm:operatorinverse} one prime frequency of the zeros of a differentiated
-completion; and \cref{rec:thm:lowzero,rec:thm:familytriple,rec:thm:robust} the zeros below an explicit height
-$O(\log^2Q/\log\log Q)$, or in any window of that length plus $b\log\log\log$ of its centre, respectively below
-$O(\log^2Q\log\log Q)$ with explicit constants and a clipped error metric. None of these data determines another, and each statement is kept. By contrast, \cref{rec:thm:jumps} and
-\cref{rec:thm:recovery} recover the parameters of the source construction from signed data in which
-the names of the characters have disappeared, and \cref{rec:thm:localclass} shows that differences of
-pooled heights determine a packet only up to local rotations.
+sequence at the powers of two; \cref{ana:thm:simple} the sparse cutoffs $2^n3^{n^2}$;
+\cref{rec:thm:mellin} sparse samples of split primes, with no hypothesis on zeros;
+\cref{rec:thm:primepower} the extremal profile of the source remainder at three cutoffs;
+\cref{rec:thm:oneinterval} the positions of zeros of high derivatives on one interval;
+\cref{rec:thm:alternating,rec:thm:sharpendpoint} power sums of inverse squared distances;
+\cref{rec:thm:census} Hankel matrices of Taylor coefficients at one point, with no hypothesis on
+zeros; and \cref{rec:cor:countreal,rec:thm:phasecount,hec:thm:chowla} finitely many values to the right
+of the critical strip, which count zeros or bound the order of one zero. None of these data
+determines another, and each statement is kept. Recovery statements of other kinds are elsewhere:
+\cref{ana:thm:excursions} reads spectral coefficients from positive excursions of filtered prime
+errors (\cref{sec:ana}); Li coefficients and Li heat kernels determine characters and factor
+multiplicities in \cref{rec:thm:liseparation,rec:thm:liblock,rec:thm:liheat}, and \cref{li:thm:decoder}
+recovers Euler coefficients from jumps (\cref{sec:li,sec:lih}); windows of zeros at large or low height
+identify characters (\cref{rec:thm:localcoeff,rec:thm:localid,rec:thm:lowzero,rec:thm:familytriple,rec:thm:robust}),
+poles in one window determine the weights of a prime series (\cref{rec:thm:localrecovery}), one prime
+frequency of the zeros of a differentiated completion determines the character value and the
+operator (\cref{rec:thm:operatorinverse}), and
+signed spectra determine the parameters of the source construction (\cref{rec:thm:jumps,rec:thm:recovery}),
+all in \cref{sec:chz}; and the zeros of a graph-coupled function determine an unknown list of characters
+and the coupling (\cref{zer:thm:blindlabels,zer:thm:complexdivisor}, \cref{sec:cpl}).
 
 \subsection{Counting zeros from the half-plane of absolute convergence}\label{rec:sec:count}
 \sources{grh_zero_count_certificate; dirichlet_inverse_problems}
@@ -458,6 +457,14 @@ certificate of \cref{rec:thm:count} instead uses finitely many values of the Sti
 itself, with no derivative, and the two data sets do not determine each other.
 
 \paragraph{A finite test for central nonvanishing.}
+The same kind of samples bound the order of a single zero. \Cref{hec:thm:chowla} samples
+$\Re\Lambda_\chi'/\Lambda_\chi$ at $\tfrac12+\sqrt j+it$ and combines the samples binomially, like
+\cref{rec:thm:count}, and \cref{hec:thm:kernels} optimizes over positive certificates built from
+prescribed samples, like \cref{rec:thm:minimax}. Neither family implies the other: these results bound a
+multiplicity at one point, while the certificates above count zeros in a range. For four quadratic
+characters at once the central orders are also read from a mean of the source remainder
+(\cref{rec:cor:chowla}).
+
 Let $\chi$ be a primitive nonprincipal Dirichlet character of conductor $q$, put
 $\kappa=(1-\chi(-1))/2$ and
 \[
@@ -972,7 +979,10 @@ detects the double conjugate pair and the triple real zero on the unit circle
 (\artifact{grh_periods_sampling_and_zeros/checks/zero_census.txt}). Compared with
 \cref{li:thm:contour}, which bounds the imaginary parts of the zeros in a domain from moments of $F'/F$ integrated along its boundary, and
 with \cref{li:thm:ritzcert}, which needs a positive spectrum, the data here are Taylor coefficients at
-one point and nonreal zeros are allowed.
+one point and nonreal zeros are allowed. The moving-window inertia \cref{ana:thm:hankel} also uses Hankel
+matrices of derivatives of $\log F$ at a real centre, but with a stride and over all zeros: it counts the
+nonreal pairs among the values $(\gamma-c)^{-m}$ rather than the zeros in a disk, and neither statement
+implies the other.
 
 \subsection{Zero multisets from prime sums: Bohr means and sharp upper limits}\label{rec:sec:prime}
 \sources{prime_zero_reconstruction; dirichlet_inverse_problems; three_scale_reconstruction; grh_positive_spectral_extensions_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction}
@@ -1312,11 +1322,11 @@ frequency is nonzero and $C_{\chi,h}(N)$ cannot converge. The character follows 
 
 \begin{corollary}[Distances and joint laws; \stG]\label{rec:cor:factorialjoint}
 For every real $v$ and primitive $\chi,\psi$,
-\[
- \lim_{N\to\infty}\frac1N\sum_{n\le N}B_\chi(n!)(n!)^{-iv}=c_\chi(v),\qquad
+\begin{gather*}
+ \lim_{N\to\infty}\frac1N\sum_{n\le N}B_\chi(n!)(n!)^{-iv}=c_\chi(v),\\
  \lim_{N\to\infty}\frac1N\sum_{n\le N}\abs{B_\chi(n!)-B_\psi(n!)}^2
  =\sum_t\frac{\abs{m_\chi(t)-m_\psi(t)}^2}{(\tfrac14+t^2)(\tfrac94+t^2)},
-\]
+\end{gather*}
 and its square root is a metric on primitive characters. For primitive $\chi_1,\dots,\chi_r$, reals
 $b_j$, $V(y)=(B_{\chi_j}(e^{y+b_j}))_j$ and every continuous $H:\C^r\to\C$,
 $\lim_N\frac1N\sum_{n\le N}H(V(\log n!))=\lim_Y\frac1Y\int_0^YH(V(y))\dd y$, both limits existing.
@@ -1641,8 +1651,8 @@ and the average of the $o(1)$ term tends to zero.
 
 (ii) The prime sum is real, so its square is its squared absolute value. The double series
 obtained from \eqref{ana:eq:apseries} converges absolutely, and by the same averaging only
-pairs with equal ordinates survive. The Hadamard product of genus one and the symmetry
-$\xi_K(s)=\xi_K(1-s)$ give
+pairs with equal ordinates survive. By \cref{ana:lem:hadamardmass} for $\xi_K$, and by
+differentiating its genus-one Hadamard product at $1$,
 \[
  \sum_\rho\frac1{\rho(1-\rho)}=H_K(1)-H_K(0)=2H_K(1),\qquad
  \sum_\rho\frac1{(1-\rho)^2}=-H_K'(1).
@@ -1676,7 +1686,11 @@ The rational evaluation of the last bound is recorded in the file
 \end{center}
 \end{proof}
 
-The identity in (ii) has the same shape for the polynomial $n^d$ in place of $n^2$, for each
+Like \cref{rec:thm:dyadic}, part (i) reads multiplicities from one sparse sequence of cutoffs; the
+dyadic grid of \cref{rec:thm:dyadic} has exact frequency collisions, which its weighted coefficients
+resolve, and returns the labelled multiplicity of every character modulo $q$, whereas the sequence
+$x_n$ has no collisions, is much sparser, and returns the multiplicities of the zeros of the single
+function $\zeta_K$. The identity in (ii) has the same shape for the polynomial $n^d$ in place of $n^2$, for each
 fixed $d\ge2$. Continuous mean squares of prime errors also detect repeated zeros
 \cite{Caceres2026Constant}. Here the reciprocal weights make the series
 \eqref{ana:eq:apseries} absolutely convergent, and the polynomial choice of $\log x_n$ allows
@@ -1688,41 +1702,25 @@ off-diagonal terms when the prime side of the mean square is expanded at these c
 \sources{prime_power_rigidity}
 
 The weight $1/n-1/x$ of the source remainder (\cref{src:sec:mechanism}) is kept, but the residue
-class is allowed to vary and the auxiliary twist is dropped. Fix $q\ge1$, $G_q=(\Z/q\Z)^\times$,
-$d=\varphi(q)$, and for $a\in G_q$ put
+class is allowed to vary and the auxiliary twist is dropped. Fix $q\ge1$, $G_q=(\Z/q\Z)^\times$
+and $d=n_q=\varphi(q)$. We use the notation of \cref{zer:sec:cov,zer:sec:peaks}: the sums $S_a(x)$
+and constants $c_a$ of \cref{zer:sec:cov}, and
+$E_a(x)=\sqrt x\bigl(S_a(x)-\log x/n_q-c_a\bigr)$, so that $E_a(e^t)=Z_a(t)+\beta_a$ in the notation of
+\eqref{zer:eq:va}. For $t\ge\abs h$ put
 \[
- A_a(x)=\sum_{\substack{n\le x\\n\equiv a\ (q)}}\Lambda(n)\Bigl(\frac1n-\frac1x\Bigr),\qquad
- c_a=\lim_{x\to\infty}\Bigl(A_a(x)-\frac{\log x}d\Bigr),\qquad
- Y_a(t)=e^{t/2}\Bigl(A_a(e^t)-\frac td-c_a\Bigr),
-\]
-and, for $t\ge\abs h$,
-\[
- B_{a,h}(t)=2Y_1(t)-Y_a(t+h)-Y_{a^{-1}}(t-h),\qquad F_q(a,h)=\limsup_{t\to\infty}B_{a,h}(t).
+ B_{a,h}(t)=2E_1(e^t)-E_a(e^{t+h})-E_{a^{-1}}(e^{t-h}),\qquad F_q(a,h)=\limsup_{t\to\infty}B_{a,h}(t).
 \]
 For $n=p^k$ let $v=v_p(q)$, $m=q/p^v$ and $P_q(a;p^k)=\mathbf 1_{a\equiv p^k\ (m)}/\varphi(p^v)$, a
 probability distribution on $G_q$, concentrated at $p^k\bmod q$ when $p\nmid q$.
 
-\begin{lemma}[The weighted explicit formula; \stU]\label{rec:lem:ramp}
-Let $Z_\chi$ be the zero multiset of $L(s,\chi^*)$ in the open strip. As $t\to\infty$,
+Let $Z_\chi$ be the zero multiset of $L(s,\chi^*)$ in the open strip. \Cref{zer:lem:ramp} expands
+$E_a(e^t)$ over the $\rho\in Z_\chi$ with an error $O_q((1+t)e^{-t/2})$, without any hypothesis on the
+zeros; under \cref{src:thm:dgrh}, $E_a(x)=K_q(a,\log x)+O_q((1+\log x)/\sqrt x)$, where
 \[
- Y_a(t)=\frac1d\sum_{\chi\bmod q}\overline{\chi(a)}\sum_{\rho\in Z_\chi}\frac{e^{(\rho-1/2)t}}{\rho(1-\rho)}
- +O_q\bigl((1+t)e^{-t/2}\bigr).
+ K_q(a,u)=\frac1d\sum_{\chi\bmod q}\sum_{\rho\in Z_\chi}\overline{\chi(a)}\frac{e^{i\gamma u}}{1/4+\gamma^2}
 \]
-For a single primitive character the difference between its normalized sum and its zero series is
-real analytic in $t>0$.
-\end{lemma}
-
-\begin{proof}
-For primitive $\xi$, the sum $\sum_{n\le x}\Lambda(n)\xi(n)(1/n-1/x)$ is
-$\frac1{2\pi i}\int_{(2)}-\frac{L'}L(s,\xi)\frac{x^{s-1}}{s(s-1)}\dd s$. Shifting left to
-$\Re s=-J-1/2$ on heights avoiding the zeros, a zero of order $r$ gives
-$rx^{\rho-1}/(\rho(1-\rho))$, the pole at $1$ gives a constant (or $\log x-1-\recgE$ for $\zeta$), the
-point $0$ gives $x^{-1}$ times a polynomial of degree at most one in $\log x$, and a trivial zero
-$-j$ gives $-x^{-j-1}/(j(j+1))$; the last series extends holomorphically to $\Re t>0$. The left
-integrals tend to zero as $J\to\infty$, and $\sum_\rho\abs{\rho(1-\rho)}^{-1}<\infty$. Passing from
-$\chi^*$ to $\chi$ changes the sum by $O_q((1+\log x)/\sqrt x)$ after normalization, and
-orthogonality averages over characters.
-\end{proof}
+is the absolutely convergent series of \cref{zer:sec:peaks}, real valued with
+$K_q(a^{-1},-u)=K_q(a,u)$.
 
 \begin{theorem}[Prime-power recovery; \stG]\label{rec:thm:primepower}
 For $a\in G_q$, $F_q(a,h)$ is finite and nonnegative, continuous on $h>0$ and real analytic off the
@@ -1731,20 +1729,22 @@ logarithms of prime powers, and at every integer $n>1$
  F_q'(a,\log n+)-F_q'(a,\log n-)=
  \begin{cases}-\dfrac{2\log p}{\sqrt{p^k}}P_q(a;p^k),&n=p^k,\\[3pt]0,&\text{otherwise}.\end{cases}
 \]
-In fact $F_q(a,h)=2\bigl(K_q(1,0)-K_q(a,h)\bigr)$ with
-$K_q(a,u)=\frac1d\sum_\chi\sum_{\rho\in Z_\chi}\overline{\chi(a)}e^{i\gamma u}/(1/4+\gamma^2)$. The same
+In fact $F_q(a,h)=2\bigl(K_q(1,0)-K_q(a,h)\bigr)$. The same
 $F_q$ results with $e^t$ restricted to $b^j$, $j\in\N$, for any fixed $b>1$, and one sequence $j_\ell$
 realizes all these upper limits for all moduli and residues, uniformly on bounded sets of lags.
 \end{theorem}
 
 \begin{proof}
-The coefficient of $e^{i\gamma t}/(d(1/4+\gamma^2))$ in $B_{a,h}$ is
+Up to $o(1)$, $B_{a,h}(t)$ is $f(t)=2K_q(1,t)-K_q(a,t+h)-K_q(a^{-1},t-h)$, whose coefficient of
+$e^{i\gamma t}/(d(1/4+\gamma^2))$ is
 $2-\overline{\chi(a)}e^{i\gamma h}-\chi(a)e^{-i\gamma h}=\abs{1-\overline{\chi(a)}e^{i\gamma h}}^2\in[0,4]$.
-So the upper limit is at most the sum of these nonnegative coefficients. Enumerating all ordinates of
-all Dirichlet characters, the powers of $(e^{i\gamma_1\log b},\dots,e^{i\gamma_N\log b})$ return near
-the identity at arbitrarily large indices, and a diagonal sequence works for every ordinate; with
-absolute summability this gives equality, without any independence of ordinates. For the jumps use
-the exact primitive expansion of the proof of \cref{rec:lem:ramp}: a prime term
+So \cref{zer:lem:posspec}(ii) gives $F_q(a,h)=f(0)=2(K_q(1,0)-K_q(a,h))$, without any independence of
+ordinates. On the grid $t=j\log b$ the same holds: for finitely many ordinates the powers of
+$(e^{i\gamma_1\log b},\dots,e^{i\gamma_N\log b})$ return near the identity at arbitrarily large indices,
+and absolute summability controls the rest. Enumerating all ordinates of all Dirichlet characters, a
+diagonal choice of returns, as in the proof of \cref{zer:thm:univpeak}, gives one sequence $j_\ell$ for all
+moduli, residues and bounded sets of lags. For the jumps use
+the exact primitive expansion of the proof of \cref{zer:lem:ramp}: a prime term
 $\Lambda(n)\chi^*(n)(e^{h/2}/n-e^{-h/2})\mathbf 1_{h\ge\log n}$ is continuous with derivative jump
 $\Lambda(n)\chi^*(n)/\sqrt n$, and the rest is analytic near $h$. For $n=p^k$, only characters trivial
 on $G_{p^v}$ have $\chi^*(p)\ne0$, and orthogonality on $G_m$ gives
@@ -1753,8 +1753,8 @@ $\frac1d\sum_\chi\overline{\chi(a)}\chi^*(p^k)=P_q(a;p^k)$.
 
 For example, modulo $12$ the profiles at $a=5$ and $a=11$ both detect the prime $2$, which lies in
 no reduced class, with $P_{12}(5;2)=P_{12}(11;2)=1/2$. Summing the jumps over $a$ and multiplying by
-$-\sqrt n/2$ gives $\Lambda(n)$. Since a perturbation of the weights with running sum $E(u)=o(\sqrt u)$
-changes $Y_a(\log x)$, after recentering, by at most $2\sup_{u\ge x}\abs{E(u)}/\sqrt u$, the profile is
+$-\sqrt n/2$ gives $\Lambda(n)$. Since a perturbation of the weights with running sum $R(u)=o(\sqrt u)$
+changes $E_a(x)$, after recentering, by at most $2\sup_{u\ge x}\abs{R(u)}/\sqrt u$, the profile is
 unchanged by erasing any finite initial segment of the prime table.
 
 \begin{theorem}[Rigidity of the modulus; \stG]\label{rec:thm:rigid}
@@ -1809,8 +1809,8 @@ at modulus $q$.
 \end{theorem}
 
 \begin{proof}
-\Cref{rec:lem:ramp} gives the upper bound. Conversely, with $z=s-\tfrac12$, for $\Re z>1/2$,
-$\int_0^\infty Y_a(t)e^{-zt}\dd t=\frac{D_a(s)}{s(s-1)}-\frac{1/d}{(s-1)^2}-\frac{c_a}{s-1}$, where
+\Cref{zer:lem:ramp} gives the upper bound. Conversely, with $z=s-\tfrac12$, for $\Re z>1/2$,
+$\int_0^\infty E_a(e^t)e^{-zt}\dd t=\frac{D_a(s)}{s(s-1)}-\frac{1/d}{(s-1)^2}-\frac{c_a}{s-1}$, where
 $D_a=\sum_{n\equiv a}\Lambda(n)n^{-s}$. At a zero $\rho$ with $\eta=\Re\rho-\tfrac12>0$, multiplicities
 $m_\chi$, $M=\sum m_\chi>0$ and $C=\sum m_\chi\overline{\chi(a)}$, the transform of $B_{a,h}$ (on a common
 tail) has residue $H(h)/(d\rho(1-\rho))$ at $z_0=\rho-\tfrac12$, with
@@ -1821,19 +1821,16 @@ which is impossible if the growth exponent were below $\eta$. Reflection gives t
 \end{proof}
 
 The second lag is what protects against cancellation at a shared zero: one lag can hit a point
-where $H(h)=0$. For $q=1$, with $K(h)=K_1(1,h)$,
-\[
- K(h)=Y_1(h)-e^{-h/2}\Bigl(\log(2\pi)-\sum_{k\ge1}\frac{e^{-2kh}}{2k(2k+1)}\Bigr),\qquad
- K(0)=2+\recgE-\log(4\pi),
-\]
-and one-sided differences at $\log2,\log4,\log6$ computed from finitely many prime powers
+where $H(h)=0$. For $q=1$ the series $K_1(1,\cdot)$ is the function $K_\zeta$ of
+\eqref{zer:eq:zetaexact}, an exact finite expression in the prime sum $S(e^h)$ for $h\ge0$, with
+$K_\zeta(0)=2+\recgE-\log(4\pi)$ by \cref{zer:lem:mass}; one-sided differences at $\log2,\log4,\log6$ computed from finitely many prime powers
 reproduce the predicted jumps. For example, the two one-sided slopes at $\log2$ are
 approximately $0.450030537632177$ and $-0.530227605836371$, and their difference agrees with
 $-2\log2/\sqrt2$. The check is
 \artifact{prime_power_rigidity/check.py}, with output \artifact{prime_power_rigidity/checks.txt}.
 
 \subsection{Open questions}\label{rec:sec:open}
-\sources{dirichlet_inverse_problems; dirichlet_li_rigidity; dirichlet_zero_packet_homometry; dirichlet_zero_recovery; large_kernels_and_dirichlet_zeros; one_gap_dirichlet_zeros; prime_pole_windows; prime_power_rigidity; prime_zero_reconstruction; quadratic_spectra; three_scale_reconstruction; grh_zero_count_certificate; zeta_zero_moment_bounds; grh_periods_sampling_and_zeros; dirichlet-grh-research; grh-torsion-and-zero-data; dirichlet_low_zero_identification; dirichlet_zeros_and_abelian_fields; local_euler_recovery; robust_dirichlet_spectra_2026-11-26; dirichlet_packet_reconstruction; dirichlet_prime_frequency_inverse; prime_observations_and_progression_free_sets; translated_dirichlet_zero_divisors; dirichlet-character-zero-windows; dirichlet-zero-reconstruction; dirichlet_zero_windows; dirichlet-zero-windows; dirichlet_li_heat_kernel; grh_positive_spectral_extensions_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction; dirichlet-zero-recovery; euler-packet-rigidity; odd-order-euler-factor-matching; odd_prime_order_euler_packets; cubic_quintic_euler_agreement; odd_euler_agreement; odd_prime_euler_agreement; odd_prime_euler_agreement_2; odd_prime_euler_packets; prime_exponent_euler_agreement; prime_order_euler_agreement; grh_cubic_matching_and_precision_2026-11-27; dirichlet_li_recovery; euler_agreement_2026-11-27; gram-euler-and-zero-filters}
+\sources{dirichlet_inverse_problems; dirichlet_li_rigidity; one_gap_dirichlet_zeros; prime_power_rigidity; prime_zero_reconstruction; three_scale_reconstruction; grh_zero_count_certificate; zeta_zero_moment_bounds; grh_periods_sampling_and_zeros; robust_dirichlet_spectra_2026-11-26; dirichlet_prime_frequency_inverse; prime_observations_and_progression_free_sets; grh_positive_spectral_extensions_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction; mcnew-density-and-dirichlet-grh; grh-torsion-and-prime-sampling}
 
 \begin{enumerate}
 \item \emph{Effective versions.} The limits in \cref{rec:thm:universal,rec:thm:factorial,rec:thm:threescale,rec:thm:primepower,rec:thm:liseparation,rec:thm:dyadic,rec:thm:mellin,rec:thm:operatorinverse}
@@ -1847,70 +1844,6 @@ Galois field, and what finite heights are possible at a prescribed precision? Fo
 how accurately do finitely many noisy distances on a bounded range of lags distinguish two moduli?
 For \cref{rec:thm:census} applied to $\Xi$ or to a Dirichlet completion, can explicit derivative and
 zero-separation estimates bound the first working order for a disk with rational centre and radius?
-\item \emph{The height needed for recovery.} How low can the height needed to recover $(q,d)$ in the
-lattice class be? The bound $O(d^2\log^3(2d))$ of \cref{rec:thm:recovery} isolates one atom at a time;
-probes that distinguish whole arithmetic signatures could use more of the prime data. What is the
-optimal height in \cref{rec:thm:lowzero}? Its proof uses a positive proportion of distinguishing
-primes at the scale $\log^2Q$ and bounds the neighbouring Euler coefficients by absolute values; can
-cancellation among them give enough readings at a smaller bandwidth? How fast must the constants of
-\cref{rec:cor:products,rec:thm:familytriple} grow with the number of factors, and can this be quantified well
-enough to let the number of factors, or the degree in \cref{rec:cor:fieldsbounded}, grow with $Q$? Can one force, at height
-$O(L_Q^2/\log\log(3Q))$ uniformly in the conductor, an ordinate occupied by exactly one of two given
-functions, or bound each direction of multiplicity excess separately? Can the radius
-$O(d^2\log^2(2Q)\log(2d))$ of \cref{rec:thm:localid} be reduced using the integrality of the multiplicity
-differences? Can the field cutoff $\log^2(2D)$ of \cref{rec:thm:fields} be lowered by another $\log\log D$,
-and the term $J(D,\tau)$ reduced uniformly in the discriminant? Which absolute constants make these
-cutoffs practical, and how many \emph{distinct} ordinates, not merely multiplicity discrepancies, must
-separate two characters or two fields at a comparable height?
-\item \emph{Four central values.} Is $B_d>-2$ in \cref{rec:cor:chowla} for every prime
-$d\equiv7\pmod8$? This is a subfamily of Chowla's conjecture; the one-sided estimate of the source
-does not decide it.
-\item \emph{Which multiplicity vectors occur?} \Cref{rec:lem:blocks,rec:thm:precision,rec:thm:detecting}
-treat all abstract nonnegative integer vectors. Which vectors $(\ord_\rho L(s,\chi))_\chi$ actually occur
-at common zeros, and do the worst-case near-collisions of \cref{rec:thm:precision} occur?
-\item \emph{Windows and constants.} \Cref{rec:thm:localrank,rec:thm:localcoeff,rec:thm:bothsigns} reach the
-radius $\pi^{-1}\log\log\log T+O(1)$. Is the coefficient $1/\pi$ optimal, and does a window of fixed radius
-suffice at a fixed modulus, for two fixed characters, for two operators on the same completion
-(\cref{rec:cor:operatorlocal}, at present $C\log\log T$), or for the full range of steps in
-\cref{rec:thm:coalesce}? Is \cref{rec:thm:micro} sharp for the actual zeros? Can one force an ordinate at
-which exactly one of several given functions vanishes, at a comparable radius? How small can the
-constants be made in terms of $q$ and the family, and how much error in locations and residues is
-admissible? Does positive-fraction recovery (\cref{rec:thm:stable}) hold in every window of length
-$T^\theta$ for a fixed $\theta<1$, what is an explicit admissible corruption fraction already for $q=4$, and
-what precision in positions suffices when close ordinates may be merged? For a nonabelian class
-function, what replaces the power-image rank when Artin factors share constituents or have poles?
-\item \emph{Pooled zero statistics.} Can \cref{rec:thm:homuniform} be extended to frequencies with
-$e^{\abs t}\asymp T^2$? What is the smallest packet size giving a nontrivial ambiguity for each
-exponent? For a fixed small mass, what are the exact measurement counts of
-\cref{rec:thm:probecount} as functions of $(E,m)$, what is the least maximum order at the optimal
-adaptive count for general $E$, and how small can the height constant of \cref{rec:cor:probewindow} be
-made? Can one density measurement in \cref{rec:thm:qmatchfinite} be made at a smaller scale?
-For Euler packets of odd prime order the least disagreement density and all extremal pairs are known
-whenever the leading base-$\ell$ digit $b$ of the size divides $\ell\pm1$ or the size is saturated
-(\cref{rec:thm:odigit,rec:thm:oplanar}), and the two lowest normalized levels by \cref{rec:thm:olevel}; for the other
-digits \cref{rec:thm:odescent} reduces the minimum to sizes $k<\ell$ in rank at least two, \cref{rec:thm:oconic} settles
-them when $2k<3B_\ell(k)$, and every rank and size is settled for $\ell\le11$ (\cref{rec:cor:oseveneleven}). What is the
-minimum for $k<\ell$ when $2k\ge3B_\ell(k)$, where the support can reach the third configuration of Couvreur's
-hierarchy, and which complete intersections carry a balanced integral relation with unit coefficients and
-many matching directions? At an inadmissible digit, what are all minimizers, and when must a minimizer be a
-pullback? Which minimum-weight words of the projective Reed--Muller code, or which second-weight words, are
-reductions of integral spectra of a prescribed mass, and in rank two for which $(\ell,k)$ with $2k\ge3B_\ell(k)$ does the
-minimum exceed the gap value of \cref{rec:thm:osmall}(iv)? What is the next normalized level above $2(1-1/\ell)$, the next
-density at a fixed size $k=\ell^s$ (at least $T_\ell\beta_k$), and the whole spectrum, already the second-smallest density
-and the range below twice the minimum for $\ell=3,5$? Is there a sharp primitive bound at each packet size for
-$\ell\ge5$ refining \cref{rec:thm:oprim}? How large can the least distinguishing prime of an extremal pair be, can
-the extremality promise in \cref{rec:thm:ofinite}(v) be removed while keeping a rank-free scale polynomial in
-$k$, and is there an efficient decoder at the correction radius of \cref{rec:thm:ofinite} or
-\cref{rec:cor:ccorrect}? At composite exponent the divisor-indexed traces of \cref{rec:prop:cdivisor} decide the
-local polynomial, and the minimum is known for cyclic groups at every size (\cref{rec:thm:cyclic}) and for
-abelian $\ell$-groups at the sizes $\ell^u$ (\cref{rec:thm:psat}). What is $d_X(k)$ for an arbitrary finite abelian $X$ and every $k$,
-in particular when several primary components have rank above one? What is the spectrum of an abelian
-$\ell$-group at sizes that are not powers of $\ell$, where the mass and saturation bounds of
-\cref{rec:thm:pmass,rec:thm:psat} still hold? Is every cyclic extremizer a parity box?
-\item \emph{Omitted primes.} For primes bounded by $B$, distinct sets of at least three primes have
-distinct short-gap polynomials (\cref{rec:thm:gaps}); how does the minimal separation of their
-coefficient vectors depend on $B$, and what finite height and precision distinguish them? For two
-omitted primes, recovery would follow from the four exponentials conjecture.
 \item \emph{Local Taylor data.} For tied tail entries \cref{rec:thm:alternating} holds while the
 extremal statement of \cref{rec:thm:sharpendpoint} can fail: which multiplicity patterns determine the
 sharp endpoint? How fast may the degree grow with the stride while the root selection stays uniform,
@@ -1925,26 +1858,11 @@ near-linear), what observation horizon resolves its Fourier coefficients, and do
 positive real weight with quantitative finite-time reconstruction guarantees under explicit separation
 assumptions, or in a weaker metric that tolerates clusters? Does the finite-family converse
 \cref{rec:prop:finiteconverse} extend to the countable aggregate?
-\item \emph{Other $L$-functions.} For automorphic $L$-functions of unknown degree the leading term of
-the zero count measures degree times stride in \cref{rec:prop:lidecode}; what further spectral
-information separates the two? For higher-degree $L$-functions, which gamma parameters can be
-separated at a single prime frequency as in \cref{rec:thm:primefreq}, and which need accuracy finer
-than every inverse power of $\log T$? Do the universal encoding and the positive-residue
-reconstructions extend to families for which the corresponding Riemann hypothesis is known?
-\Cref{src:thm:dgrh} does not supply it.
-\item \emph{Li heat kernels.} \Cref{rec:thm:liblock} gives a finite block length $W$ and a Lipschitz constant $c$ for
-every fixed finite set of characters, stride, residue and calibration degree, but only qualitatively, and
-\cref{rec:thm:li255} makes them explicit for $\zeta$ and $\beta$ with $255$ modes. Can $W$ and $c$ be computed uniformly
-from the largest conductor, the stride and the calibration degree, so as to bound the number and precision of
-modes that suffice for all characters of conductor at most $Q$? Is $255$ optimal in \cref{rec:thm:li255}? After subtracting $L\log L/\log2$ in
-\cref{rec:thm:litypical}, what is the next term of the typical negative log-density? (The Hausdorff
-dimension of the set with a prescribed decay rate is given by \cref{li:thm:spectrum}.) Which equal products of Cayley
-factors $1-1/\rho$ from different tuples of zeros can be proved, beyond the extremal construction of
-\cref{rec:ex:liquartic}?
-\item \emph{Blurred zeros.} What is the optimal modulus of continuity for recovering the translating measures
-of \cref{rec:thm:blur} from finitely many noisy atoms or high windows? Can the unbounded excess in
-\cref{rec:prop:blurwin} be replaced by a fixed constant for continuous laws? Which critical weights, between the
-polynomial discounts of \cref{rec:cor:blurend} and arbitrary subcritical exponential moments, still force
-identification? For other families of $L$-functions, which gamma and pole profiles survive after a positive law
-removes the arithmetic atoms?
+\item \emph{Central nonvanishing.} For quadratic characters, can sampling sites depending on the
+conductor, with a number of samples $k=k(q)$ tending to infinity and uniform estimates for the logarithmic
+derivatives at these sites, force a central multiplicity bound below two? By \cref{hec:thm:kernels} no
+bounded number of samples can.
+\item\label{ana:q:simple} \emph{Simple zeros.} Prove that the sampled mean square in \cref{ana:thm:simple}(iii) is at most the displayed
+constant, that is, $D=0$. A multiple zero at very large height would contribute less than the
+bound $1.67\cdot10^{-34}$, so no finite computation of zeros decides this.
 \end{enumerate}

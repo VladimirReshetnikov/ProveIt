@@ -9,6 +9,18 @@
 \providecommand{\zerLog}{\operatorname{Log}}
 \section{Hermitian couplings of completed \texorpdfstring{$L$}{L}-functions: real zeros, inverse problems and transport}\label{sec:cpl}
 
+Completed Dirichlet $L$-functions coupled along a finite graph, or more generally by a Hermitian
+matrix, have only real zeros as soon as the inputs have. This section determines the electrical and
+edge laws of the displacement of zeros under such couplings and the couplings that minimize it for a
+given conductance budget, solves the inverse problem (the zeros of one coupled function determine an
+unknown list of characters, the labels and the coupling, by an exact decoder that is stable under
+perturbation), and describes how infinitely many zeros are transported as the coupling varies, with
+sharp-window estimates and local Cauchy laws for the logarithmic derivatives
+(\cref{zer:sec:graph,zer:sec:transport}). The finite constructions are linear algebra and are marked
+\stU; \cref{src:thm:dgrh} enters where the completed functions must be real canonical products, that is,
+where their zeros must lie on the critical line. Inverse problems for single $L$-functions and their
+products are in \cref{sec:chz}.
+
 \subsection{Graph-coupled real-rooted functions}\label{zer:sec:graph}
 \sources{graph_coupled_zeros_2026-11-26; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27; grh_inverse_spectral_2026-11-27; coupled-dirichlet-inverse-spectrum; dirichlet-coupled-zeros-and-prime-variances}
 
@@ -1319,31 +1331,6 @@ term is exponentially small, and $\psi(w)=\log w+O(\abs w^{-1})$. For $\zeta$ th
 $1/s+1/(s-1)=O_K(T^{-1})$.
 \end{proof}
 
-\begin{theorem}[Universal macroscopic transport; \stG]\label{zer:thm:transport}
-As $T\to\infty$, the measures $(\log T)\sigma_{A,B}(Tu)\,\dd u$ converge vaguely to
-$(2\tr B/\pi)\,\dd u$. Consequently, for fixed
-$a<b$,
-\[
- \int_{aT}^{bT}\sigma_{A,B}(x)\,\dd x\sim\frac{2\tr B}\pi(b-a)\frac T{\log T},\qquad
- \int_{-T}^T\sigma_{A,B}(x)\,\dd x\sim\frac{4\tr B}\pi\,\frac T{\log T}.
-\]
-For an edge of added conductance $h$, $B=h(e_a-e_b)(e_a-e_b)^*$ and the last coefficient is $8h/\pi$.
-The leading coefficient depends neither on $A$ nor on the characters, conductors or spacings, and
-the unregularized total displacement is infinite.
-\end{theorem}
-\begin{proof}
-By \cref{zer:lem:radial}, $M_A(Tz)=-\tfrac i2(\log T)I+O(1)$ and
-$M_A(Tz)^{-1}=\frac{2i}{\log T}I+O((\log T)^{-2})$ on compact sets, so
-$(\log T)\Im\mathcal L_{A,B}(Tz)\to2\tr B$. For $\dd\mu_T(u)=(\log T)\sigma_{A,B}(Tu)\,\dd u$ the Poisson
-formula gives $\int y((u-x)^2+y^2)^{-1}\,\dd\mu_T(u)\to2\tr B$ for all $x$ and $y>0$. The kernel
-$R/(u^2+R^2)\ge1/(2R)$ on $[-R,R]$ bounds the masses $\mu_T([-R,R])$, so every sequence has a vaguely
-convergent subsequence. For $R>2\abs x+2y$ and $\abs u\ge R$,
-$y/((u-x)^2+y^2)\le(8y/R)\,R/(u^2+R^2)$, so the tails contribute at most $16y\tr B/R$ in the limit.
-Every subsequential limit $\mu$ therefore has constant Poisson transform $2\tr B$, and integrating
-against a test function in $x$ and letting $y\downarrow0$ gives $\dd\mu=(2\tr B/\pi)\,\dd u$. The limit
-has no atoms, so interval masses converge.
-\end{proof}
-
 Let
 $\mathfrak D_{A,B}(y)=\int_\R y^2\sigma_{A,B}(t)(t^2+y^2)^{-1}\,\dd t=y\Im\mathcal L_{A,B}(iy)$ be the
 Poisson-smoothed displacement, $\ell_y=\tfrac12\log y$ and $\mathsf C=\zerdiag(\kappa_i)$.
@@ -1452,49 +1439,10 @@ $\mathrm{Kf}_0=4$, $\mathrm{Kf}_1=2$; with $\xi$ at every vertex, $U(X)\sim\sqrt
 $m=h_i(-R)$ the normalized ratio is exactly $(m+3)/(3(m+1))$. The ordinary and squared constructions
 define different entire functions: replacing $F_i'$ by $G_i'$ changes the coupling.
 
-\paragraph{A local Cauchy law.}
-
-\begin{theorem}[Local Cauchy law on shrinking windows; \stG]\label{zer:thm:localcauchy}
-Let $F$ be one of the functions \eqref{zer:eq:phasereal}, $g=F'/F$, $u<v$ fixed, and $U_T$ uniform on
-$[uT,vT]$; put $Z_T=2g(U_T)/\log T$. If $\alpha_T<\beta_T$ are real with $\alpha_T,\beta_T\to c\in\R$, with
-no lower bound on $\beta_T-\alpha_T$, then
-\[
- \Pr\set{\alpha_T<Z_T<\beta_T}\sim\frac{\beta_T-\alpha_T}{\pi(1+c^2)} .
-\]
-Equivalently, if $a_T<b_T$, $\delta_T=b_T-a_T$ and $a_T/\log T,b_T/\log T\to d\in\R$, then
-\[
- \abs{\set{t\in[uT,vT]:a_T<g(t)<b_T}}\sim\frac{2(v-u)}{\pi(1+4d^2)}\,\frac{\delta_TT}{\log T}.
-\]
-In particular, for every $\eps(T)>0$ with $\eps(T)=o(\log T)$,
-\[
- \abs{\set{t\in[T,2T]:\abs{F'(t)/F(t)}<\eps(T)}}\sim\frac{4\eps(T)T}{\pi\log T},
-\]
-for example with $\eps(T)=e^{-T}$ and $F(t)=\xi(\tfrac12+it)$.
-\end{theorem}
-\begin{proof}
-For each $T$ put $f_T(z)=\int_{a_T}^{b_T}\dd s/(g(z)-s)$ in the upper half-plane. Since $\Im g<0$ the
-integrand has positive imaginary part; $f_T$ is the branch of $\log[(g-a_T)/(g-b_T)]$ with imaginary
-part in $(0,\pi)$, and $\Im f_T(x+i0)=\pi\mathbf 1_{\set{a_T<g(x)<b_T}}$ almost everywhere, so the bounded
-Poisson formula applies exactly. By \cref{zer:lem:radial}, $g(Tz)/\log T\to-i/2$ uniformly on compact
-sets, and $s/\log T\to d$ uniformly for $s\in[a_T,b_T]$, so
-\[
- \frac{\log T}{\delta_T}f_T(Tz)=\frac1{\delta_T}\int_{a_T}^{b_T}\frac{\dd s}{g(Tz)/\log T-s/\log T}\longrightarrow\frac1{-d-i/2};
-\]
-the error is uniform inside the integral, so no restriction on the rate of $\delta_T\to0$ enters. The
-measures $(\log T/\delta_T)\mathbf 1_{\set{a_T<g(Tx)<b_T}}\,\dd x$ therefore have Poisson transforms tending to
-$\Im(-d-i/2)^{-1}=2/(1+4d^2)$, and the compactness, tail and uniqueness argument of
-\cref{zer:thm:transport}, which uses only positivity, gives vague convergence to
-$2(\pi(1+4d^2))^{-1}\,\dd x$. Take the mass of $[u,v]$; the first form follows with
-$a_T=\alpha_T\log T/2$, $b_T=\beta_T\log T/2$, and the last with $a_T=-\eps(T)$, $b_T=\eps(T)$.
-\end{proof}
-
-A weak Cauchy limit gives no relative error for intervals whose length tends to zero, in particular
-for a length $e^{-T}$; \cref{zer:thm:uniformcauchy} below gives one, also on short time intervals. The
-statements concern a continuous sampling variable and say nothing about what a discrete grid resolves.
-
 \paragraph{Sharp windows.}
-The macroscopic law and the local Cauchy law have a sharp-interval form with a dimension-free endpoint
-error. Keep the setting above with $B\succeq0$, now allowed to be zero, and put, for $t>2\pi/q$,
+The displacement has a sharp-interval form with a dimension-free endpoint error, from which the
+macroscopic transport law and a local Cauchy law for the logarithmic derivative follow as
+corollaries. Keep the setting above with $B\succeq0$, now allowed to be zero, and put, for $t>2\pi/q$,
 \[
  d_q(t)=\tfrac12\log\frac{qt}{2\pi},\qquad p_{q,t}(v)=\frac1\pi\frac{d_q(t)}{(v+\pi/4)^2+d_q(t)^2},\qquad
  p^*_{q,T}(v)=\frac1\pi\frac{d_q(T)}{v^2+d_q(T)^2},
@@ -1599,6 +1547,43 @@ integrated change is $O(\Omega\eta/d)$; the coefficients $2,-1$ sum to one, leav
 formula follows from \cref{zer:lem:resolvent}, since $\norm{D^{-1/2}(G_0(t)+iD)D^{-1/2}}\ll1/d$.
 \end{proof}
 
+\begin{corollary}[Universal macroscopic transport; \stG]\label{zer:thm:transport}
+As $T\to\infty$, the measures $(\log T)\sigma_{A,B}(Tu)\,\dd u$ converge vaguely to
+$(2\tr B/\pi)\,\dd u$. Consequently, for fixed
+$a<b$,
+\[
+ \int_{aT}^{bT}\sigma_{A,B}(x)\,\dd x\sim\frac{2\tr B}\pi(b-a)\frac T{\log T},\qquad
+ \int_{-T}^T\sigma_{A,B}(x)\,\dd x\sim\frac{4\tr B}\pi\,\frac T{\log T}.
+\]
+For an edge of added conductance $h$, $B=h(e_a-e_b)(e_a-e_b)^*$ and the last coefficient is $8h/\pi$.
+The leading coefficient depends neither on $A$ nor on the characters, conductors or spacings, and
+the unregularized total displacement is infinite.
+\end{corollary}
+\begin{proof}
+Fix the data; $B\ne0$ since $r\ge1$. In \eqref{zer:eq:Omega}, $A'$ and $B'$ are $O(1/\log T)$, so
+$\Omega=\tr B'(1+O((\log T)^{-2}))\sim2\tr B/\log T$, and the pointwise part of \cref{zer:thm:sharpinterval}
+gives $\rho(t)=(2\tr B/\pi)(1+o(1))/\log t$ as $t\to\infty$. Fix $t_0\ge T_0$ and cover $[t_0,X]$ by the
+intervals $[2^kt_0,2^{k+1}t_0]$, the last one truncated. On each, \cref{zer:thm:sharpinterval} replaces
+$\sigma_{A,B}$ by $\rho$ at a cost $O(\Omega/\log d)=O(1)$, and there are $O(\log X)$ of them, so
+\[
+ \int_{t_0}^X\sigma_{A,B}=\int_{t_0}^X\rho+O(\log X)=\frac{2\tr B}\pi\,\frac X{\log X}\bigl(1+o(1)\bigr)\qquad(X\to\infty).
+\]
+For negative heights use the conjugate list $\widetilde F_i(z)=F_i(-z)$, which consists of functions
+\eqref{zer:eq:phasereal} of the conjugate characters, with $F_\zeta$ unchanged, the same conductors and
+logarithmic derivatives $-g_i(-z)$. At a real $x$ avoiding the discrete exceptional set,
+$\widetilde M_{A'}(x)=-M_{-A'}(-x)$ is invertible for every Hermitian $A'$ in question, so
+$n_+(\widetilde M_{A'}(x))=n-n_+(M_{-A'}(-x))$, and with $A'=-A-B$ this gives
+$\sigma_{A,B}(-x)=\widetilde\sigma_{-A-B,B}(x)$, the displacement of the conjugate list for the Hermitian
+matrices $-A-B$ and $B\succeq0$. The previous step applies to these data, with the same $B$, so
+$\int_{-X}^{-t_0}\sigma_{A,B}$ has the same asymptotic. Since $0\le\sigma_{A,B}\le r$, the range $\abs x\le t_0$
+contributes $O(t_0)$. For fixed $a<b$ the integral over $[aT,bT]$ is a sum or difference of these
+one-sided integrals at $X=\abs aT$ and $X=\abs bT$, up to $O(t_0)$, which gives both displays. So the
+masses of $[a,b]$ under the measures $(\log T)\sigma_{A,B}(Tu)\,\dd u$ tend to $(2\tr B/\pi)(b-a)$; they are
+bounded on each compact set, and approximating continuous compactly supported functions uniformly by
+step functions gives the vague convergence. For an edge $\tr B=h\norm{e_a-e_b}^2=2h$. Nothing in the
+limit depends on $A$ or on the inputs, and $\int_\R\sigma_{A,B}=\infty$.
+\end{proof}
+
 \begin{theorem}[Uniform local Cauchy law; \stG]\label{zer:thm:uniformcauchy}
 Let $F$ be one of the functions \eqref{zer:eq:phasereal}, of conductor $q$, $g=F'/F$, and $d=d_q(T)$. For all
 sufficiently large $T$, every interval $I\subseteq[T,2T]$ of length $H$ and every Borel set $E\subseteq\R$,
@@ -1619,8 +1604,7 @@ unions of intervals and then by the monotone class theorem to Borel sets. The po
 
 For example, for $F_\zeta$, $I=[T,T+H]$ with $H=(\log\log T)^{-1/2}$ and $E=[e^T,e^T+e^{-T}]$, the set of
 $t\in I$ with $g(t)\in E$ has length asymptotic to $Hd_1(T)e^{-3T}/\pi$, although both the time interval and the
-proportion tend to zero. For $0<u<v$ the theorem implies \cref{zer:thm:localcauchy}, by splitting $[uT,vT]$ into boundedly many
-intervals $I\subseteq[T',2T']$, on each of which $p^*_{q,T'}(E)$ is asymptotic to the model density there.
+proportion tend to zero.
 On each pole-free component of $I$, $g'(x)=-\sum_\gamma m_\gamma/(x-\gamma)^2<0$, so the occupation measure has
 density $w_I(v)=\sum_{x\in I^\circ:g(x)=v}1/\abs{g'(x)}$, and the theorem is equivalent to
 $\abs{w_I(v)-\int_Ip_{q,t}(v)\,\dd t}\le Cp^*_{q,T}(v)/\log d$ for almost every $v$, and at every $v$ different
@@ -1632,6 +1616,49 @@ as $v\to\infty$, since $g(x)=m_\gamma/(x-\gamma)+O(1)$ at each pole, and multipl
 \]
 the order of the classical bound for the zero count under GRH, for which sharper constants are known
 \cite{CarneiroChandeeMilinovich2015Note}; here the whole value line is treated in one measure inequality.
+
+\begin{corollary}[Local Cauchy law on shrinking windows; \stG]\label{zer:thm:localcauchy}
+Let $F$ be one of the functions \eqref{zer:eq:phasereal}, $g=F'/F$, $u<v$ fixed, and $U_T$ uniform on
+$[uT,vT]$; put $Z_T=2g(U_T)/\log T$. If $\alpha_T<\beta_T$ are real with $\alpha_T,\beta_T\to c\in\R$, with
+no lower bound on $\beta_T-\alpha_T$, then
+\[
+ \Pr\set{\alpha_T<Z_T<\beta_T}\sim\frac{\beta_T-\alpha_T}{\pi(1+c^2)} .
+\]
+Equivalently, if $a_T<b_T$, $\delta_T=b_T-a_T$ and $a_T/\log T,b_T/\log T\to d\in\R$, then
+\[
+ \abs{\set{t\in[uT,vT]:a_T<g(t)<b_T}}\sim\frac{2(v-u)}{\pi(1+4d^2)}\,\frac{\delta_TT}{\log T}.
+\]
+In particular, for every $\eps(T)>0$ with $\eps(T)=o(\log T)$,
+\[
+ \abs{\set{t\in[T,2T]:\abs{F'(t)/F(t)}<\eps(T)}}\sim\frac{4\eps(T)T}{\pi\log T},
+\]
+for example with $\eps(T)=e^{-T}$ and $F(t)=\xi(\tfrac12+it)$.
+\end{corollary}
+\begin{proof}
+The first form follows from the second with $a_T=\alpha_T\log T/2$, $b_T=\beta_T\log T/2$, $d=c/2$, and the
+last with $a_T=-\eps(T)$, $b_T=\eps(T)$, $d=0$. Put $E_T=(a_T,b_T)$, let $q$ be the conductor of $F$, and
+let $N(J)$ be the measure of $\set{t\in J:g(t)\in E_T}$. Fix $t_0$ large. For $y\in E_T$ and $t\ge t_0$,
+$p_{q,t}(y)\le1/(\pi d_q(t))$, and for fixed $0<\eps<w$, uniformly for $t\in[\eps T,wT]$ and $y\in E_T$,
+$y/d_q(t)\to2d$, hence $p_{q,t}(y)=(1+o(1))\,2/(\pi(1+4d^2)\log T)$. Cover $[t_0,wT]$ by $O(\log T)$
+dyadic intervals $I\subseteq[T',2T']$. On each, \cref{zer:thm:uniformcauchy} gives
+$N(I)=\int_Ip_{q,t}(E_T)\,\dd t+O(\delta_T)$, since $p^*_{q,T'}(E_T)\le\delta_T/(\pi d_q(T'))$, and the model
+integral over $[t_0,\eps T]$ is $O(\eps\delta_TT/\log T)$. Letting $\eps\to0$, for $0\le u<v$,
+\[
+ N\bigl([\max(uT,t_0),vT]\bigr)=\frac{2(v-u)}{\pi(1+4d^2)}\,\frac{\delta_TT}{\log T}\bigl(1+o(1)\bigr).
+\]
+Every error is proportional to $\delta_T$, so the rate of $\delta_T\to0$ does not enter. Negative times
+reduce to positive ones: $F(-z)$ is the function \eqref{zer:eq:phasereal} of the conjugate character
+($F_\zeta$ itself), of the same conductor and with logarithmic derivative $-g(-z)$, so $N([-vT,-uT])$ for $F$
+is the corresponding measure for $F(-z)$ and the interval $(-b_T,-a_T)$, whose limit ratio $-d$ gives the
+same constant. Finally $g$ has finitely many poles in $[-t_0,t_0]$, and on each pole-free component
+$-g'(x)$, given by the sum after \eqref{zer:eq:logderim}, is at least $(t_0+\abs{\gamma_1})^{-2}$ for any fixed
+zero $\gamma_1$ of $F$; so $N([-t_0,t_0])=O_{t_0}(\delta_T)$. Adding the pieces gives the second form for all
+fixed $u<v$.
+\end{proof}
+
+A weak Cauchy limit gives no relative error for intervals whose length tends to zero, in particular
+for a length $e^{-T}$; \cref{zer:thm:uniformcauchy} gives one, also on short time intervals. The
+statements concern a continuous sampling variable and say nothing about what a discrete grid resolves.
 
 \begin{theorem}[Convergent displacement remainder; \stG]\label{zer:thm:finitepart}
 Fix the inputs and $A,B$ with $B\succeq0$, and $t_0$ so large that $D(t)\succ0$ for $t\ge t_0$. There is a real
@@ -1718,8 +1745,35 @@ The scale $1/\log d$ is the limit of arguments based only on the Cayley-transfor
 $g_k(z)=\cot(kz/2)$, which maps the upper half-plane into the lower one with $(g_k+i)/(g_k-i)=e^{ikz}$ and
 distance $O(e^{-k})$ from $-i$ at height one, the event $0<g_k<1$ fills an interval of length $\pi/(2k)$ in each
 period $2\pi/k$, its Cauchy probability is $\tfrac14$, and taking that interval as the window gives discrepancy
-$3\pi/(8k)$, of exact order $1/\log d$ with $d=e^k$. The optimal arithmetic scale is open (\cref{zer:sec:open}).
+$3\pi/(8k)$, of exact order $1/\log d$ with $d=e^k$. The optimal arithmetic scale is open (\cref{cpl:sec:open}).
 The quantitative sharp-interval remainder, uniform after weighting by the size of the matrix phase, and the
 finite part are new relative to the weak Cauchy limits and the Herglotz value-distribution theory
 \cite{Sodin2018Critical,NajnudelNikeghbali2026Cauchy,Pearson1994Value,AizenmanWarzel2015Cauchy}, whose relation to
 the matrix spectral shift is classical \cite{BehrndtMalamudNeidhardt2008Scattering}.
+
+\subsection{Open questions}\label{cpl:sec:open}
+{\raggedright\sources{graph_coupled_zeros_2026-11-26; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27; grh_inverse_spectral_2026-11-27; coupled-dirichlet-inverse-spectrum; dirichlet-coupled-zeros-and-prime-variances; dirichlet-sharp-window-transport}}
+
+\begin{enumerate}
+\item \emph{Couplings on a prescribed topology.} \Cref{zer:thm:minimax} determines the optimal graph
+for every $W_p$ when all edges are allowed. Which conductances are optimal when the support of the
+graph is prescribed, for instance a path or a tree, or with edge caps or integral conductances (the
+lower bounds of \cref{zer:thm:minimax} remain valid, but equality needs the displayed optimizer), and
+which graph is optimal for a particular
+arithmetic packet of zeros rather than for the worst case given the degrees?
+\item \emph{The inverse problem.} Mixed parities, unknown lists, decoding and robustness are settled by
+\cref{zer:thm:window,zer:cor:blindall,zer:thm:decode,zer:thm:stabledecoder}, and a sufficient window is
+computable (\cref{zer:rem:windowsearch}). Can the first sufficient window of \cref{zer:thm:window} be bounded
+explicitly by a useful function of the conductors, the matrix norm and the corruption budgets, together with
+the stability constant of \cref{zer:thm:stabledecoder}? What height and precision suffice when every reported
+ordinate is rounded? Can the edge weights alone be recovered in time polynomial in the number of vertices?
+What is the strongest discrepancy constant obtainable in \eqref{zer:eq:witness} from the Landau coefficients
+and the counts, over all primes and nonnegative trigonometric polynomials, and can it be determined uniformly
+for conductors up to a bound? Classify the Hermitian matrices with equal principal minors, which the zeros
+cannot separate.
+\item \emph{Sharp transport.} Can the finite part $C(t_0)$ of \cref{zer:thm:finitepart} be computed to
+certified accuracy for a concrete pair of couplings, with explicit constants in the tail? Does the endpoint
+estimate of \cref{zer:thm:sharpinterval} hold for windows at the mean-spacing scale outside a controlled
+exceptional set of heights, and what is the optimal arithmetic scale, given that arguments using only the
+Cayley-transform bound stop at $1/\log d$?
+\end{enumerate}

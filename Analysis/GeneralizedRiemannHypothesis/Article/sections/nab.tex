@@ -21,12 +21,17 @@ or an arbitrary number field, to a one-sided inequality for a sum over rational 
 weight is a class function of Frobenius. The reductions are equivalences. None of the
 target inequalities is proved, and no new case of the Riemann hypothesis follows. We also determine, by finite group theory, which Frobenius
 weights can and cannot serve in such a test, and how much of a nonabelian weight a fixed
-congruence condition can see. Detectors for particular groups and fields are in
-\cref{sec:grp}; the analytic engine is in \cref{sec:ana}.
+congruence condition can see. The analytic interface of \cref{nab:sec:interface} is the
+one used throughout Part~II. The worked symmetric-group instances (degree eight, and a
+three-subgroup identity in degree five) are placed with the general results they
+illustrate, in \cref{nab:sec:sn,nab:sec:reflection}. Detectors for particular groups and
+fields are in \cref{sec:grp}, including the $A_5$ support frontier
+(\cref{nab:prop:a5frontier}); the analytic engine is in \cref{sec:ana}, which also holds
+the sampling bounds for positive ramp measures (\cref{nab:sec:sampling}).
 
 \subsection{Setting and the analytic interface}\label{nab:sec:interface}
 \begingroup\raggedright
-\sources{grh_sylow_transfer_2026-11-25; grh_cyclic_generator_transfer_2026-11-25; grh_reflection_transfer_2026-11-25; grh_relative_prime_races_2026-11-25; grh_deficit_transfer_2026-11-25; grh_method_transfers_2026-11-25}
+\sources{grh_sylow_transfer_2026-11-25; grh_cyclic_generator_transfer_2026-11-25; grh_reflection_transfer_2026-11-25; grh_relative_prime_races_2026-11-25; grh_deficit_transfer_2026-11-25; grh_method_transfers_2026-11-25; grh_a6_transfer_2026-11-25; psl2_grh_transfer; grh-transfer}
 \endgroup
 
 Throughout, $E/\Q$ is a finite Galois extension with group $G$, all fields are fixed, and no
@@ -39,32 +44,157 @@ choice. For a subgroup $U\le G$ the permutation character of $G/U$ is
 \]
 and at $p\notin S$ its value at $g_p$ is the number $a_K(p)$ of primes of degree one above
 $p$ in $K=E^U$. If $K=\Q[T]/(f)$ with $f\in\Z[T]$ monic irreducible and $p\nmid\disc(f)$,
-then $a_K(p)$ is the number of roots of $f$ in $\F_p$. For a real class function $w$ put
-\[
- P_w(x)=\sum_{\substack{p\le x\\ p\notin S}}w(g_p)\log p\Bigl(\frac1p-\frac1x\Bigr),\qquad x\ge1 .
-\]
-The analytic engine is \cref{ana:thm:primeonly}, the prime-only form of the one-sided
-Mellin--Landau test. Its hypothesis is a representation of the prime-power series of $w$ by
-logarithmic derivatives of products of Hecke $L$-functions with positive weights; the
-verification of that hypothesis is the group-theoretic part. We recall the two instances
-used below, for an entire product of induced characters and for Dedekind zeta functions.
+then $a_K(p)$ is the number of roots of $f$ in $\F_p$. When a weight is given by the
+factorization pattern of a polynomial modulo $p$, the primes dividing its discriminant are
+placed in $S$.
 
-\begin{proposition}[Signed monomial weights]\label{nab:prop:signed}
-Let $W=\sum_i\Ind_{U_i}^G\lambda_i$ be a real-valued character of $G$, where each
-$\lambda_i$ is a nontrivial linear character of a subgroup $U_i\le G$. By Artin formalism
-$L(s,W)=\prod_iL(s,\lambda_i;E^{U_i})$ is a product of Hecke $L$-functions of nontrivial
-characters of finite order, hence entire, and $\langle W,\nabone\rangle=0$. Therefore
-\cref{ana:thm:primeonly} applies with the single function $F_1=L(s,W)$, and gives the
-following. The limit $c_W=\lim_{x\to\infty}P_W(x)$ exists; put $R_W(x)=P_W(x)-c_W$.
+\paragraph{Prime sums.}
+For a real class function $w$ on $G$ with mean $\delta_w=\langle w,\nabone\rangle$ put
+\begin{align*}
+ P_w(x)&=\sum_{\substack{p\le x\\ p\notin S}}w(g_p)\log p\Bigl(\frac1p-\frac1x\Bigr)\quad(x\ge1),
+ &
+ \theta_w(x)&=\sum_{\substack{p\le x\\ p\notin S}}w(g_p)\log p,\\
+ D^{\mathrm{pr}}_w(s)&=\sum_{p\notin S}\frac{w(g_p)\log p}{p^{s}}\quad(\Re s>1). &&
+\end{align*}
+In the notation of \cref{ana:sec:primeonly}, $P_w$ is the prime-only ramp, $\theta_w$ is
+$\Theta_w$ and $\delta_w$ is $a_w$; the Dirichlet series $D^{\mathrm{pr}}_w$ is the
+prime-only part of the series $D_w$ there. The analytic engine is \cref{ana:thm:primeonly},
+the prime-only form of the one-sided Mellin--Landau test. Its hypothesis is a
+representation of the prime-power series of $w$ by logarithmic derivatives of products of
+Hecke $L$-functions with positive weights; the verification of that hypothesis is the
+group-theoretic part. We recall, in the present notation, the part of it used in Part~II
+(\cref{sec:nab,sec:grp,sec:hec}), and then its two instances used below: an entire product
+of induced characters (\cref{grp:cor:detector}) and Dedekind zeta functions
+(\cref{nab:prop:dedekind}).
+
+\begin{proposition}[Analytic interface; \stU]\label[proposition]{grp:prop:interface}
+With the notation above, the following hold.
 \begin{enumerate}[label=\textup{(\alph*)}]
-\item If $R_W(x)\le Cx^{\beta-1}$ for some $1/2<\beta<1$ and all sufficiently large $x$,
-then $L(s,W)\neq0$ for $\Re s>\beta$.
-\item $L(s,W)\ne0$ for $\Re s>1/2$ if and only if, for every $\eps>0$,
-$R_W(x)\le C_\eps x^{-1/2+\eps}$ for all sufficiently large $x$, and then
-$R_W(x)=O_{\eps}(x^{-1/2+\eps})$.
-\item If the Riemann hypothesis holds for $\zeta_E$, then $R_W(x)=O_{E,W}(x^{-1/2}\log^2x)$.
+\item \textup{(\eqref{ana:eq:Rw} and \cref{ana:lem:mellin}.)} The limit
+$c_w=\lim_{x\to\infty}\bigl(P_w(x)-\delta_w\log x\bigr)$ exists. The centred
+remainder
+\[
+ R_w(x)=P_w(x)-\delta_w\log x-c_w
+\]
+is continuous and bounded on $[1,\infty)$ and tends to $0$, and for $\Re s>1$
+\begin{equation}\label{grp:eq:mellin}
+ \int_1^\infty R_w(x)x^{-s}\,\dd x
+ =\frac{D^{\mathrm{pr}}_w(s)}{s(s-1)}-\frac{\delta_w}{(s-1)^2}-\frac{c_w}{s-1}.
+\end{equation}
+\item \textup{(\cref{ana:thm:primeonly,ana:thm:zerotest}.)} Suppose that for
+$\Re s>1$
+\begin{equation}\label{grp:eq:decomp}
+ D^{\mathrm{pr}}_w(s)=-\sum_{j=1}^{r}a_j\frac{Q_j'(s)}{Q_j(s)}+H(s),
+\end{equation}
+where the $a_j$ are positive, every $Q_j$ is a finite product of integer powers
+of $L$-functions of finite-order Hecke characters of number fields, Dedekind
+zeta functions included, with no pole in $1/2<\Re s<1$, and $H$ is holomorphic
+on $\Re s>1/2$ and bounded on $\Re s\ge1/2+\eta$ for every $\eta>0$. Then the
+poles of \eqref{grp:eq:mellin} in $1/2<\Re s<1$ are simple and lie at the zeros
+$\rho$ of the $Q_j$, with residue
+\begin{equation}\label{grp:eq:residue}
+ \frac{\sum_j a_j\ord_\rho Q_j}{\rho(1-\rho)} ,
+\end{equation}
+which is positive when $\rho$ is real. If $1/2<\beta<1$ and
+$R_w(x)\le Cx^{\beta-1}$ for all sufficiently large $x$, then no $Q_j$ has a
+zero in $\Re s>\beta$; in particular an eventual bound $R_w(x)\le Cx^{-1/2}$
+excludes the zeros of every $Q_j$ in $\Re s>1/2$.
+\item \textup{(\cref{ana:thm:primeonly}\textup{(iv)} and \cref{ana:rem:finite}.)}
+In the situation of \textup{(b)}, suppose that for every $0<\eps<1/2$ there is
+$K_\eps$ with
+\begin{equation}\label{grp:eq:dyadic}
+ P_w(n)-P_w(2n)+\delta_w\log2\le K_\eps n^{-1/2+\eps}
+\end{equation}
+for all sufficiently large integers $n$. Then
+$R_w(x)\le K'_\eps x^{-1/2+\eps}$ for all large real $x$, and no $Q_j$ has a
+zero in $\Re s>1/2$. The left side of \eqref{grp:eq:dyadic} equals
+\[
+ R_w(n)-R_w(2n)=-\frac{\theta_w(n)}{2n}
+ -\sum_{n<p\le2n,\ p\notin S}w(g_p)\log p\Bigl(\frac1p-\frac1{2n}\Bigr)+\delta_w\log2,
+\]
+so no centring constant enters.
+\item \textup{(\cref{ana:thm:primeonly}\textup{(iii)} and its last assertion.)}
+In the situation of \textup{(b)}, if no $Q_j$ has a zero in $\Re s>1/2$, then
+$R_w(x)=O_\eps(x^{-1/2+\eps})$ for every $\eps>0$; if $\zeta_E$ satisfies the
+Riemann hypothesis, then $R_w(x)=O_{E,w}(x^{-1/2}\log^2(2x))$.
 \end{enumerate}
 \end{proposition}
+
+The prime-only series $D^{\mathrm{pr}}_w$ differs from $D_w$ by a series that converges
+normally on $\Re s\ge1/2+\eta$ for every $\eta>0$ (\cref{ana:lem:powers}), so
+\eqref{grp:eq:decomp} is the hypothesis of \cref{ana:thm:primeonly}, and the
+residue \eqref{grp:eq:residue} is \eqref{ana:eq:residue}, through
+\cref{ana:lem:mellin}\textup{(iv)}. The kernel identity behind
+\eqref{grp:eq:mellin} is \eqref{ana:eq:mellin} for the prime-only coefficients.
+
+\begin{remark}[Variants]\label[remark]{grp:rem:variants}
+Three variants of \cref{grp:prop:interface} are used below, all owned by
+\cref{sec:ana}.
+First, one may sum over all prime powers and all primes, with the coefficient
+$a_J(p^k)=\log p\,\tr\bigl(g_p^k\mid V_J^{I_p}\bigr)
+=\log p\,\abs{I_p}^{-1}\sum_{h\in I_p}J(g_p^kh)$ of
+$-L'(s,J)/L(s,J)$ for a representation $V_J$ with character $J$, inertia group
+$I_p$ and Frobenius lift $g_p$, and with the constant
+$c_J=b_J-\delta_J$ read from
+$-L'/L(s,J)=\delta_J/(s-1)+b_J+O(s-1)$ (\cref{ana:def:ramp}). By
+\cref{ana:lem:powers} and \eqref{ana:eq:RwR} the two remainders differ by
+$O(x^{-1/2})$, the constants being related by $c_{J,S}=c_J-\sum a_J(n)/n$, the
+sum over all omitted prime powers; the criterion at the scale
+$x^{-1/2+\eps}$ is unchanged.
+Second, for the full prime-power remainder $R$ the pointwise bound may be
+replaced by the mean bound $\int_X^{2X}\grppos{R(x)}\,\dd x=O_\eps(X^{\beta+\eps})$
+for the positive part (\cref{ana:thm:zerotest,ana:cor:forms}).
+Third, the difference $P_w(n)-P_w(n^2)+\delta_w\log n$ at the integer scales
+$n,n^2$ may replace the dyadic difference in \textup{(c)}
+(\cref{ana:thm:primeonly}\textup{(v)}).
+\end{remark}
+
+\begin{corollary}[Monomially certified detectors; \stU]\label[corollary]{grp:cor:detector}\label{nab:prop:signed}
+Let $J=a\,\nabone+\sum_i\Ind_{H_i}^G\lambda_i$ with an integer $a\ge0$ and
+nontrivial linear characters $\lambda_i$ of subgroups $H_i\le G$, and assume
+that $J$ is real-valued. Then $L(s,J)$ is holomorphic on $\C\setminus\set1$,
+has a pole of order $a=\delta_J$ at $1$, and does not vanish on $\Re s\ge1$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $1/2\le\beta<1$ and $R_J(x)\le Cx^{\beta-1}$ for all large $x$, then
+$L(s,J)\ne0$ for $\Re s>\beta$.
+\item Suppose in addition that there is a constant $k$ with
+$\ord_\rho\zeta_E\le k\,\ord_\rho L(s,J)$ for all $\rho$ with $1/2<\Re\rho<1$.
+Then the following are equivalent: the Riemann hypothesis for $\zeta_E$; for
+every $\eps>0$, $R_J(x)\le K_\eps x^{-1/2+\eps}$ for all large $x$; for every
+$\eps>0$, $R_J(x)=O_\eps(x^{-1/2+\eps})$; the dyadic condition
+\eqref{grp:eq:dyadic} for $w=J$. If they hold, every Artin $L$-function of
+$E/\Q$ is holomorphic and nonzero in $1/2<\Re s<1$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+The first assertion is Hecke's theorem for the factors $L(s,\lambda_i,E/E^{H_i})$.
+For unramified $p$ the coefficient of $p^{-ks}\log p$ in $-L'/L(s,J)$ is
+$J(g_p^k)$, of modulus at most $J(1)$; the terms with $k\ge2$ converge
+normally on $\Re s\ge1/2+\eta$ for every $\eta>0$ and the finitely many local
+series at $p\in S$ converge normally on $\Re s>0$ (\cref{ana:lem:powers}).
+Hence $D^{\mathrm{pr}}_J=-L'/L(s,J)-H_J$ with $H_J$ holomorphic on $\Re s>1/2$ and
+bounded on each half-plane $\Re s\ge1/2+\eta$, which is \eqref{grp:eq:decomp} with
+$Q_1=L(s,J)$, a finite product of Hecke $L$-functions. Now (i) is
+\cref{grp:prop:interface}(b). In (ii), zero-freeness of $L(s,J)$ on
+$\Re s>1/2$ gives that of $\zeta_E$; the functional equation and the classical
+nonvanishing on $\Re s=1$ give the Riemann hypothesis. The converse and the
+two-sided bound are \cref{grp:prop:interface}(d), the dyadic form is
+\cref{grp:prop:interface}(c), and the last assertion is
+Lemma~\ref{nab:lem:heilbronn}(c).
+\end{proof}
+
+The case $a=0$ is the one used in \cref{nab:sec:sylow}. Then
+$J=\sum_i\Ind_{H_i}^G\lambda_i$ with every $\lambda_i$ nontrivial, $L(s,J)$ is entire,
+$\delta_J=\langle J,\nabone\rangle=0$, and $R_J=P_J-c_J$ with $c_J=\lim_{x\to\infty}P_J(x)$.
+Part (i) and \cref{grp:prop:interface}(d), with $Q_1=L(s,J)$, give: $L(s,J)\ne0$ for
+$\Re s>1/2$ if and only if, for every $\eps>0$, $R_J(x)\le C_\eps x^{-1/2+\eps}$ for all
+sufficiently large $x$, and then $R_J(x)=O_\eps(x^{-1/2+\eps})$; under the Riemann
+hypothesis for $\zeta_E$, $R_J(x)=O_{E,J}(x^{-1/2}\log^2(2x))$.
+
+Replacing an inequality of \cref{grp:cor:detector} by its negative does not
+give the same conclusion, because the sign of the residue
+\eqref{grp:eq:residue} at a real pole is reversed.
 
 \begin{proposition}[Positive weights and Dedekind zeta functions]\label{nab:prop:dedekind}
 Let $K\subseteq E$ be a subfield. There is a unique constant $c_K=c_{K,S}$ for which
@@ -93,10 +223,15 @@ for the primes of $S$. Hence $A(x)=\int_1^x(\theta_K(t)-t)\,\dd t=O_K(x^{3/2})$,
 integration by parts gives $R_K(x)=A(x)x^{-2}-2\int_x^\infty A(t)t^{-3}\,\dd t=O_K(x^{-1/2})$.
 \end{proof}
 
+\begin{remark}\label{grp:prop:split}
 In (a) with $q=1$ and the exact exponent, an eventual bound $R_K(x)\le Cx^{-1/2}$ implies
 the bound for every $\beta>1/2$, hence the Riemann hypothesis for $\zeta_K$ by the
 functional equation. Thus $\mathrm{RH}(\zeta_K)$ is equivalent to $R_K(x)\le Cx^{-1/2}$
-for large $x$, and also to $R_K(x)\le C_\eps x^{-1/2+\eps}$ for every $\eps>0$.
+for large $x$, and also to $R_K(x)\le C_\eps x^{-1/2+\eps}$ for every $\eps>0$. For
+Galois $K=M$ of degree $n$ the centred ramp over completely split primes used in
+\cref{grp:sec:kummer} is $R_M/n$; the exact value of $\limsup\sqrt x\,R_M(x)/n$ under
+$\mathrm{RH}(\zeta_M)$ is \cref{zer:thm:endpoint}.
+\end{remark}
 
 Two further forms of the test are used. For a class function $w$ of mean zero whose
 prime-power series is a positive combination of logarithmic derivatives of entire quotients
@@ -114,146 +249,6 @@ axis, whereas the kernel $1/(s(s-1))$ of the ramp $1/n-1/x$ is negative on $(0,1
 (\cref{ana:lem:fd}). This is why a nonnegative weight is tested by an upper bound for a
 finite difference in \cref{nab:thm:deficit} and by a lower bound for the ramp in
 \cref{nab:thm:nonsplit}.
-
-\paragraph{Prime sums.}
-Let $S$ be a finite set of rational primes containing all primes ramified in
-$L$, and let $w$ be a real class function on $G$ with mean
-$\delta_w=\langle w,\triv\rangle$. Put
-\begin{align*}
- \theta_w(x)&=\sum_{p\le x,\ p\notin S}w(\Frob_p)\log p, &
- S_w(x)&=\sum_{p\le x,\ p\notin S}w(\Frob_p)\log p\Bigl(\frac1p-\frac1x\Bigr),\\
- P_w(s)&=\sum_{p\notin S}\frac{w(\Frob_p)\log p}{p^{s}}\quad(\Re s>1). &&
-\end{align*}
-When $w$ is given by the factorization pattern of a polynomial modulo $p$, the
-primes dividing its discriminant are placed in $S$. In the notation of
-\cref{ana:sec:primeonly}, $S_w$ is the prime-only ramp $P_w$, $\theta_w$ is
-$\Theta_w$ and $\delta_w$ is $a_w$; the Dirichlet series $P_w(s)$ above is the
-prime-only part of the series $D_w$ there.
-
-The analytic engine is owned by \cref{sec:ana}. We recall, in the present
-notation, the part of it used in this section; nothing is added to the
-statements cited.
-
-\begin{proposition}[Analytic interface; \stU]\label[proposition]{grp:prop:interface}
-With the notation above, the following hold.
-\begin{enumerate}[label=\textup{(\alph*)}]
-\item \textup{(\eqref{ana:eq:Rw} and \cref{ana:lem:mellin}.)} The limit
-$c_w=\lim_{x\to\infty}\bigl(S_w(x)-\delta_w\log x\bigr)$ exists. The centred
-remainder
-\[
- R_w(x)=S_w(x)-\delta_w\log x-c_w
-\]
-is continuous and bounded on $[1,\infty)$ and tends to $0$, and for $\Re s>1$
-\begin{equation}\label{grp:eq:mellin}
- \int_1^\infty R_w(x)x^{-s}\,\dd x
- =\frac{P_w(s)}{s(s-1)}-\frac{\delta_w}{(s-1)^2}-\frac{c_w}{s-1}.
-\end{equation}
-\item \textup{(\cref{ana:thm:primeonly,ana:thm:zerotest}.)} Suppose that for
-$\Re s>1$
-\begin{equation}\label{grp:eq:decomp}
- P_w(s)=-\sum_{j=1}^{r}a_j\frac{Q_j'(s)}{Q_j(s)}+H(s),
-\end{equation}
-where the $a_j$ are positive, every $Q_j$ is a finite product of integer powers
-of $L$-functions of finite-order Hecke characters of number fields, Dedekind
-zeta functions included, with no pole in $1/2<\Re s<1$, and $H$ is holomorphic
-on $\Re s>1/2$ and bounded on $\Re s\ge1/2+\eta$ for every $\eta>0$. Then the
-poles of \eqref{grp:eq:mellin} in $1/2<\Re s<1$ are simple and lie at the zeros
-$\rho$ of the $Q_j$, with residue
-\begin{equation}\label{grp:eq:residue}
- \frac{\sum_j a_j\ord_\rho Q_j}{\rho(1-\rho)} ,
-\end{equation}
-which is positive when $\rho$ is real. If $1/2<\beta<1$ and
-$R_w(x)\le Cx^{\beta-1}$ for all sufficiently large $x$, then no $Q_j$ has a
-zero in $\Re s>\beta$; in particular an eventual bound $R_w(x)\le Cx^{-1/2}$
-excludes the zeros of every $Q_j$ in $\Re s>1/2$.
-\item \textup{(\cref{ana:thm:primeonly}\textup{(iv)} and \cref{ana:rem:finite}.)}
-In the situation of \textup{(b)}, suppose that for every $0<\eps<1/2$ there is
-$K_\eps$ with
-\begin{equation}\label{grp:eq:dyadic}
- S_w(n)-S_w(2n)+\delta_w\log2\le K_\eps n^{-1/2+\eps}
-\end{equation}
-for all sufficiently large integers $n$. Then
-$R_w(x)\le K'_\eps x^{-1/2+\eps}$ for all large real $x$, and no $Q_j$ has a
-zero in $\Re s>1/2$. The left side of \eqref{grp:eq:dyadic} equals
-\[
- R_w(n)-R_w(2n)=-\frac{\theta_w(n)}{2n}
- -\sum_{n<p\le2n,\ p\notin S}w(\Frob_p)\log p\Bigl(\frac1p-\frac1{2n}\Bigr)+\delta_w\log2,
-\]
-so no centring constant enters.
-\item \textup{(\cref{ana:thm:primeonly}\textup{(iii)} and its last assertion.)}
-In the situation of \textup{(b)}, if no $Q_j$ has a zero in $\Re s>1/2$, then
-$R_w(x)=O_\eps(x^{-1/2+\eps})$ for every $\eps>0$; if $\zeta_L$ satisfies the
-Riemann hypothesis, then $R_w(x)=O_{L,w}(x^{-1/2}\log^2(2x))$.
-\end{enumerate}
-\end{proposition}
-
-The prime-only series $P_w$ differs from $D_w$ by a series that converges
-normally on $\Re s\ge1/2+\eta$ for every $\eta>0$ (\cref{ana:lem:powers}), so
-\eqref{grp:eq:decomp} is the hypothesis of \cref{ana:thm:primeonly}, and the
-residue \eqref{grp:eq:residue} is \eqref{ana:eq:residue}, through
-\cref{ana:lem:mellin}\textup{(iv)}. The kernel identity behind
-\eqref{grp:eq:mellin} is \eqref{ana:eq:mellin} for the prime-only coefficients.
-
-\begin{remark}[Variants]\label[remark]{grp:rem:variants}
-Three variants of \cref{grp:prop:interface} are used below, all owned by
-\cref{sec:ana}.
-First, one may sum over all prime powers and all primes, with the coefficient
-$a_J(p^k)=\log p\,\tr\bigl(g_p^k\mid V_J^{I_p}\bigr)
-=\log p\,\abs{I_p}^{-1}\sum_{h\in I_p}J(g_p^kh)$ of
-$-L'(s,J)/L(s,J)$ for a representation $V_J$ with character $J$, inertia group
-$I_p$ and Frobenius lift $g_p$, and with the constant
-$c_J=b_J-\delta_J$ read from
-$-L'/L(s,J)=\delta_J/(s-1)+b_J+O(s-1)$ (\cref{ana:def:ramp}). By
-\cref{ana:lem:powers} and \eqref{ana:eq:RwR} the two remainders differ by
-$O(x^{-1/2})$, the constants being related by $c_{J,S}=c_J-\sum a_J(n)/n$, the
-sum over all omitted prime powers; the criterion at the scale
-$x^{-1/2+\eps}$ is unchanged.
-Second, for the full prime-power remainder $R$ the pointwise bound may be
-replaced by the mean bound $\int_X^{2X}\grppos{R(x)}\,\dd x=O_\eps(X^{\beta+\eps})$
-for the positive part (\cref{ana:thm:zerotest,ana:cor:forms}).
-Third, the difference $S_w(n)-S_w(n^2)+\delta_w\log n$ at the integer scales
-$n,n^2$ may replace the dyadic difference in \textup{(c)}
-(\cref{ana:thm:primeonly}\textup{(v)}).
-\end{remark}
-
-\begin{corollary}[Monomially certified detectors; \stU]\label[corollary]{grp:cor:detector}
-Let $J=a\,\triv+\sum_i\Ind_{H_i}^G\lambda_i$ with an integer $a\ge0$ and
-nontrivial linear characters $\lambda_i$ of subgroups $H_i\le G$, and assume
-that $J$ is real-valued. Then $L(s,J)$ is holomorphic on $\C\setminus\set1$,
-has a pole of order $a=\delta_J$ at $1$, and does not vanish on $\Re s\ge1$.
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item If $1/2\le\beta<1$ and $R_J(x)\le Cx^{\beta-1}$ for all large $x$, then
-$L(s,J)\ne0$ for $\Re s>\beta$.
-\item Suppose in addition that there is a constant $k$ with
-$\ord_\rho\zeta_L\le k\,\ord_\rho L(s,J)$ for all $\rho$ with $1/2<\Re\rho<1$.
-Then the following are equivalent: the Riemann hypothesis for $\zeta_L$; for
-every $\eps>0$, $R_J(x)\le K_\eps x^{-1/2+\eps}$ for all large $x$; for every
-$\eps>0$, $R_J(x)=O_\eps(x^{-1/2+\eps})$; the dyadic condition
-\eqref{grp:eq:dyadic} for $w=J$. If they hold, every Artin $L$-function of
-$L/\Q$ is holomorphic and nonzero in $1/2<\Re s<1$.
-\end{enumerate}
-\end{corollary}
-
-\begin{proof}
-The first assertion is Hecke's theorem for the factors $L(s,\lambda_i,L/L^{H_i})$.
-For unramified $p$ the coefficient of $p^{-ks}\log p$ in $-L'/L(s,J)$ is
-$J(\Frob_p^k)$, of modulus at most $J(1)$; the terms with $k\ge2$ converge
-normally on $\Re s\ge1/2+\eta$ for every $\eta>0$ and the finitely many local
-series at $p\in S$ converge normally on $\Re s>0$ (\cref{ana:lem:powers}).
-Hence $P_J=-L'/L(s,J)-H_J$ with $H_J$ holomorphic on $\Re s>1/2$ and bounded
-on each half-plane $\Re s\ge1/2+\eta$, which is \eqref{grp:eq:decomp} with
-$Q_1=L(s,J)$, a finite product of Hecke $L$-functions. Now (i) is
-\cref{grp:prop:interface}(b). In (ii), zero-freeness of $L(s,J)$ on
-$\Re s>1/2$ gives that of $\zeta_L$; the functional equation and the classical
-nonvanishing on $\Re s=1$ give the Riemann hypothesis. The converse and the
-two-sided bound are \cref{grp:prop:interface}(d), the dyadic form is
-\cref{grp:prop:interface}(c), and the last assertion follows from
-\eqref{grp:eq:heil}.
-\end{proof}
-
-Replacing an inequality of \cref{grp:cor:detector} by its negative does not
-give the same conclusion, because the sign of the residue
-\eqref{grp:eq:residue} at a real pole is reversed.
 
 \subsection{Heilbronn characters and multiplicity domination}\label{nab:sec:heilbronn}
 \begingroup\raggedright
@@ -327,7 +322,7 @@ Each summand is induced from the augmentation character $\Reg_P-\nabone$ of a gr
 prime-power order or of a cyclic group. Since $P$ is monomial and an irreducible
 constituent of $\Reg_P-\nabone$ cannot be induced from a trivial character, both
 $W^{\mathrm{Syl}}$ and $W^{\mathrm{cyc}}$ are sums of characters induced from nontrivial
-linear characters, as required in Proposition~\ref{nab:prop:signed}. Their $L$-functions are
+linear characters, as required in the case $a=0$ of \cref{grp:cor:detector}. Their $L$-functions are
 \[
  L(s,W^{\mathrm{Syl}})=\prod_{\ell\mid\abs H}\frac{\zeta_E(s)}{\zeta_{E^{P_\ell}}(s)},
  \qquad
@@ -411,7 +406,7 @@ Let $E/\Q$ be a finite Galois extension with nonabelian group $G$, let $H=[G,G]$
 $B=E^H$ be the maximal abelian subfield of $E$; by \cref{src:thm:dgrh}, $\zeta_B$ satisfies
 the Riemann hypothesis. Let $W^{\mathrm{Syl}}$ and $W^{\mathrm{cyc}}$ be the characters of
 \eqref{nab:eq:weights-def} for this $H$, and for $W$ either of them let $R_W=P_W-c_W$ be as
-in Proposition~\ref{nab:prop:signed}. For either choice of $W$ the following are
+in \cref{grp:prop:interface}(a), with $\delta_W=0$. For either choice of $W$ the following are
 equivalent:
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item the Riemann hypothesis for $\zeta_E$;
@@ -441,16 +436,17 @@ hence lies between $0$ and $d$. So a zero of $L(s,W)$ at $\rho$ is a zero of $\z
 $L(s,W)$ and $\zeta_E$ have the same zeros in $1/2<\Re s<1$. Both are nonzero on $\Re s\ge1$
 apart from the pole of $\zeta_E$, and the functional equation of $\zeta_E$ gives the left
 half of the strip. This proves (i)$\Leftrightarrow$(ii). The equivalence with (iii) is
-Proposition~\ref{nab:prop:signed}(b). For $W^{\mathrm{cyc}}$ and a single $\eps$,
-Proposition~\ref{nab:prop:signed}(a) with $\beta=1/2+\eps$ excludes the zeros of
+\cref{grp:cor:detector}(i) and \cref{grp:prop:interface}(d), with $Q_1=L(s,W)$. For
+$W^{\mathrm{cyc}}$ and a single $\eps$, \cref{grp:cor:detector}(i) with $\beta=1/2+\eps$
+excludes the zeros of
 $L(s,W^{\mathrm{cyc}})$ in $\Re s>1/2+\eps$, and \eqref{nab:eq:mult} those of $\zeta_E$. The
 assertions on Artin $L$-functions in the strip are Lemma~\ref{nab:lem:heilbronn}(c); on
 $\Re s\ge1$ they are classical.
 \end{proof}
 
-Under (i), Proposition~\ref{nab:prop:signed}(c), which rests on the effective Chebotarev
-theorem under the Riemann hypothesis for $\zeta_E$, gives the sharper bound
-$R_W(x)=O(x^{-1/2}\log^2x)$. For $W^{\mathrm{Syl}}$ the restriction to $H=[G,G]$ only
+Under (i), the last assertion of \cref{grp:prop:interface}(d), which rests on the
+effective Chebotarev theorem under the Riemann hypothesis for $\zeta_E$, gives the sharper
+bound $R_W(x)=O(x^{-1/2}\log^2(2x))$. For $W^{\mathrm{Syl}}$ the restriction to $H=[G,G]$ only
 serves to make the hypothesis on $\zeta_B$ known: for every nontrivial subgroup $H\le G$,
 with $W^{\mathrm{Syl}}$ built from Sylow subgroups of $H$ and the Riemann hypothesis for
 $\zeta_{E^H}$ assumed, (i)--(iii) are equivalent, by the same proof, which uses only
@@ -509,7 +505,7 @@ Hecke characters of infinite order or on general automorphic $L$-functions.
 The reductions are stated over $\Q$, where \cref{src:thm:dgrh} supplies the abelian input.
 The same theorem gives the Riemann hypothesis for $\zeta_k$ for every finite abelian
 extension $k/\Q$, and Lemma~\ref{nab:lem:heilbronn} holds over any base field. For the
-detectors of $G=\PSL_2(\F_q)$, $q=2^r\ge4$, of \cref{sec:grp} this gives a transfer over
+detectors of $G=\PSL_2(\F_q)$, $q=2^r\ge4$, of \cref{grp:sec:psl-even} this gives a transfer over
 abelian base fields. Let $M/\Q$ be Galois with group $G$ and $k/\Q$ finite abelian. Then
 $M\cap k=\Q$, because its Galois group is an abelian quotient of the simple nonabelian
 group $G$, so $\Gal(Mk/k)\simeq G$. The character identities and the nonnegativity of the
@@ -519,7 +515,7 @@ with coefficient $\log\Nm\mathfrak p$ times the trace, its principal part is sti
 $1/(s-1)$, and the Mellin calculation depends only on the norms. Since there are at most
 $[k:\Q]$ prime ideals above each rational prime, the estimate
 $O(\sqrt t\log^2(2t))$ for the omitted prime powers persists. Hence all the equivalences
-of \cref{sec:grp} for $M/\Q$ hold for $Mk/k$, and the one-sided criterion holds with
+of \cref{grp:sec:psl-even} for $M/\Q$ hold for $Mk/k$, and the one-sided criterion holds with
 rational primes replaced by prime ideals of $k$, their norms replacing $p$, and root
 counts of a defining polynomial of the relevant subfield $(Mk)^{U}=M^{U}k$ over $k$ taken
 in the residue fields.
@@ -628,10 +624,10 @@ estimate \textup{(iii)} of \cref{nab:thm:sylow} is
 \]
 with the indicators referring to the factor degrees of the polynomial modulo $p$ and $c$
 the centering constant. A worked instance of the cyclic-generator form in degree eight,
-with six patterns, is in \cref{sec:grp}.
+with six patterns, is \cref{grp:ex:s8} below.
 \end{example}
 
-\subsubsection{A degree-eight target}
+\paragraph{A degree-eight target.}
 
 \begin{example}[The splitting field of $T^8-T-1$; \stR]\label[example]{grp:ex:s8}
 Let $f(T)=T^8-T-1$ with splitting field $E$. Modulo $7$, $19$ and $61$ the
@@ -646,11 +642,9 @@ forming a block system, hence is connected, and the transpositions along the
 edges of a connected graph generate $S_8$. Therefore $\Gal(E/\Q)=S_8$.
 
 The cyclic-generator form of \cref{nab:thm:sylow} uses the character
-$W=\sum_C(\Reg_G-\Ind_C^G\triv)$, the sum over one cyclic subgroup $C$ of each
-of the prime-order types $2^2\,1^4$, $2^4$, $3\,1^5$, $5\,1^3$, $7\,1$. With
-$W_C(1)=\abs G(1-\abs C^{-1})$ and
-$W_C(u)=-\abs{C_G(u)}\,\abs{C\cap u^G}/\abs C$ for $u\ne1$, the weight
-$w=W/6$, as a function of the factorization pattern of $f$ modulo a prime
+$W=\sum_CW_C$, the sum over one cyclic subgroup $C$ of each of the prime-order types
+$2^2\,1^4$, $2^4$, $3\,1^5$, $5\,1^3$, $7\,1$ selected by \cref{nab:thm:patterns}. By
+\eqref{nab:eq:weights}, with $W_C(1)=\abs G(1-\abs C^{-1})$, the weight $w=W/6$, as a function of the factorization pattern of $f$ modulo a prime
 $\ell$ not dividing its discriminant, is
 \begin{center}
 \begin{tabular}{lrrrrrrr}\toprule
@@ -673,7 +667,7 @@ $3^2\,1^2$.
 
 \subsection{Reflection detectors}\label{nab:sec:reflection}
 \begingroup\raggedright
-\sources{grh_reflection_transfer_2026-11-25; grh_method_transfers_2026-11-26}
+\sources{grh_reflection_transfer_2026-11-25; grh_method_transfers_2026-11-26; grh_spanning_and_s5_2026-11-26}
 \endgroup
 
 For groups generated by reflections one subfield of index two in $E$ detects every zero.
@@ -940,7 +934,7 @@ $\ceil{30m/163}$. For $S_6$ the two constants are $5$ and $71/10$.
 \end{example}
 
 
-\subsubsection{A three-subgroup identity in \texorpdfstring{$S_5$}{S5}}
+\subsubsection{A three-subgroup identity in \texorpdfstring{$S_5$}{S5}}\label{grp:sec:s5}
 Let $G=S_5$, $t=(12)$, let $\sigma$ be the nontrivial character of
 $\langle t\rangle$, and $\grpstd$ the standard character,
 $\grpstd(g)=\#\grpFix(g)-1$. Consider
@@ -1050,15 +1044,15 @@ groups and normal subgroups occur in \cite{GunHazraSahu2025Holomorphy}; here
 the subgroups are not normal.
 
 \begin{remark}[The step in a general induction]\label[remark]{grp:rem:s5-induction}
-For $n\ge4$ put
+For $n\ge4$ let $U_n$ be the character of \cref{nab:rem:un}, with $C_2=\langle t\rangle$,
+and put
 \[
- U_n=(n-1)\Ind_{C_2}^{S_n}\sigma-\Reg_{S_n}+\triv,\qquad
  V_n=\Ind_{C_2}^{S_n}\sigma-\grpstd_n .
 \]
-Induction in stages gives $U_n=\Ind_{S_{n-1}}^{S_n}U_{n-1}+V_n$. The
-reflection detector of \cref{sec:nab} rests on a positive rational
-decomposition of $U_n$ into characters induced from linear characters, which
-is certified there for $3\le n\le12$; a positive monomial decomposition of
+Induction in stages gives $U_n=\Ind_{S_{n-1}}^{S_n}U_{n-1}+V_n$. The bound
+$\ord_\rho\zeta_E\le(n-1)\ord_\rho\zeta_K$ of \cref{nab:thm:snsharp} rests on a positive
+rational decomposition of $U_n$ into characters induced from linear characters, which
+\eqref{nab:eq:R} certifies for $3\le n\le12$; a positive monomial decomposition of
 every $V_n$ would extend it to all degrees. Equation
 \eqref{grp:eq:s5-identity} is such a decomposition of $V_5$, with integral
 coefficients.
@@ -1134,7 +1128,7 @@ identity. Among strictly positive combinations of the $w_i$, the first stratum a
 identity must remain, and the cancellation of every other stratum determines the ratios
 $c_i/c_1$. This is an optimality statement inside that cone only. For $S_4$ with the tower
 $\Q(\sqrt{\disc})\subset E^{V_4}\subset E$ the compressed weight is
-$8\cdot\nabone_{1^4}-\nabone_{1\,3}$; see \cref{sec:grp}.
+$8\cdot\nabone_{1^4}-\nabone_{1\,3}$; see \cref{grp:thm:s4-race}.
 \end{remark}
 
 \begin{proposition}[Mixed factors of composita; \stR]\label{nab:prop:composita}
@@ -1232,11 +1226,11 @@ classical bound $O_\eps(\log^2(3+\abs t))$ for the logarithmic derivatives, give
 Artin holomorphy is used.
 \end{proof}
 
-Taking the regular action normalized by $\abs G$, that is $\phi=\nabone_{\set1}$, gives
-$w=\nabone_{H\setminus\set1}$ and $\delta=1/[B:\Q]-1/[E:\Q]$: a single unweighted test on
-the primes that split completely in $B$ but not in $E$. Completely split primes do not
-occur in it. The same event can be tested with other smoothings, and for any normal
-subgroup in place of $[G,G]$; the following theorem collects the forms.
+The regular action normalized by $\abs G$, that is $\phi=\nabone_{\set1}$, gives
+$w=\nabone_{H\setminus\set1}$: a single unweighted test on the primes that split completely
+in $B$ but not in $E$, in which completely split primes do not occur. This is form (v) of
+the following theorem, which collects the tests of this event, with other smoothings and
+for any normal subgroup in place of $[G,G]$.
 
 \begin{theorem}[The nonsplit-prime test; \stR]\label{nab:thm:nonsplit}
 Let $N\ne1$ be a normal subgroup of $G$, $F=E^N$, $a=[F:\Q]$ and $g=\abs G$. Assume that
@@ -1332,11 +1326,9 @@ the Riemann hypothesis for $\zeta_M$; the primes with factor degrees $(3,1)$ or 
 density $11/24$, test it for $\zeta_E$. The first prime distinguishing the two events is
 $71$, of type $(2,2)$; among the $167$ unramified primes up to $1000$ the first event
 selects $59$ and the second $82$. The counts are reproduced by
-\artifact{grh_sharp_torsion_and_symplectic_blocks/checks/check_quartic.py}.
-
-(c) For an $S_3$ cubic the event is ``the cubic is irreducible modulo $p$'', of density
-$1/3$; the corresponding tests are discussed with the cubic field of discriminant $-23$ in
-\cref{sec:hec}.
+\artifact{grh_sharp_torsion_and_symplectic_blocks/checks/check_quartic.py}. The second
+event, unweighted and tested by a finite difference, is the unweighted case of
+\cref{grp:thm:s4}, for the same field.
 \end{example}
 
 \subsection{The zeros missing from the abelian part of a number field}\label{nab:sec:missing}
@@ -1397,9 +1389,9 @@ the trace $\chi_\tau=(2,0,-1)$ of the standard representation $\tau$. In this ca
 criterion can be rewritten with the least nonnegative weight
 $w_*=\nabone_{A_3\setminus\set1}$ of Proposition~\ref{nab:prop:least}, for which
 $3w_*=1+\nabsgn-\chi_\tau$: it becomes an upper bound for the Riesz mean of the primes
-modulo which a defining cubic is irreducible, the Riesz-mean form of the nonsplit-prime
-test of Example~\ref{nab:ex:nonsplit}(c). That criterion is stated and proved in
-\cref{sec:hec}.
+modulo which a defining cubic is irreducible, the Riesz-mean form of
+\cref{nab:thm:nonsplit} for $N=A_3$. That criterion, for a cubic polynomial $P$ as in
+\cref{hec:thm:irred}, is \cref{hec:prop:irredriesz}.
 
 
 \subsection{Which Frobenius weights can work: support, sparsity and signs}\label{nab:sec:extremal}
@@ -1600,6 +1592,10 @@ with complex conjugates included as needed, are disjoint because their normalize
 traces differ at $h$; hence $P_+/P_-=\kappa(G)$. Scale $f$ to have maximum one.
 \end{proof}
 
+For $G=A_5$ the class-by-class ratios behind $\kappa(G)$ and the complete rational frontier of
+$P_+/P_-$ under a support budget are computed in \cref{nab:prop:a5frontier}
+(\cref{grp:sec:a5}).
+
 \paragraph{Binary tests.}
 At an unramified prime one often records a yes/no event, such as whether a polynomial
 stays irreducible. Let $N\ne1$ be normal in $G$, $\pi:G\to Q=G/N$, $q=[G:N]$, $n=\abs N$.
@@ -1748,7 +1744,7 @@ order three; for a selective test in \cref{nab:thm:binary}, $K=1$ and $J\ne1$; s
 centralizes $N$ and meets it trivially, $J=1\times C_2$; to select $\rho\eta$ the sign must
 be $\eta$; the two active cosets then have two selected elements and one selected element,
 and choosing zero on the two remaining cosets is the unique minimum. The one-sided
-criterion for $L(s,\rho\eta)$ attached to this event is in \cref{sec:hec}.
+criterion for $L(s,\rho\eta)$ attached to this event is \cref{hec:thm:twistedcubic}.
 \end{example}
 
 \paragraph{Rotation classes and integrality.}
@@ -1940,9 +1936,8 @@ Dirichlet-character weights: this applies to $W^{\mathrm{Syl}}$ and $W^{\mathrm{
 \cref{nab:thm:sylow}, whose values at the identity and at a nonidentity element of a Sylow
 subgroup of $[G,G]$ differ although both elements have the same image in every abelian
 quotient, to the compressed weights of \cref{nab:thm:tower}, to
-$\nabone_{[G,G]\setminus\set1}$, and to the detectors of \cref{sec:grp}; for instance, for
-the detector of $\PSL_2(\F_q)$, $q$ even, the minimal error is exactly $q$ and the optimal
-periodic prediction is the constant $1$. An extension of the source proof to these weights
+$\nabone_{[G,G]\setminus\set1}$, and to the detectors of \cref{sec:grp}, whose minimal
+errors are collected in the table after \cref{nab:cor:doublecoset}. An extension of the source proof to these weights
 must therefore use arithmetic information beyond fixed congruences; substituting a
 character-table entry for a Dirichlet symbol in the final inequality is not enough.
 
@@ -1981,6 +1976,29 @@ For $K=\Q(\sqrt[3]2)$ the best approximation is the constant $1$: the values $3,
 $a_K$ occur with densities $1/6,1/2,1/3$ and the squared error is $4/6+1/3=1$; knowing
 the sign of Frobenius does not improve it
 (\artifact{grh-arithmetic-transfers/checks/rigidity.py}).
+
+The explicit constants obtained in Part~II by reading off \eqref{nab:eq:energy},
+\cref{nab:cor:nonlinear} or \cref{nab:prop:error} for particular groups are collected
+below; the statements stay with the detectors they concern. The second column is the
+weight, the third the least limiting error over all functions of $p$ modulo a fixed
+modulus (mean square, except in the row marked ``binary'', where it is the density of
+wrong decisions).
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}\toprule
+group or field & weight & least error & statement\\\midrule
+$A_5$ & $W_{21}$; $W_{16}$ & $7$; $4$ & \cref{grp:cor:a5-variance}\\
+$\PSL_2(\F_q)$, $q$ even & root-count weight $W$ & $q$ & after \cref{grp:cor:psl-root}\\
+$\F_5^2\rtimes\F_5^\times$, six quintics & $W$ of \cref{grp:thm:six} & $6$ &
+ \cref{grp:cor:six-variance}\\
+Kummer block $S$ & $\sum_\ell b_\ell V_\ell$ & $\sum_\ell b_\ell^2$ & \cref{grp:cor:periodic}\\
+$\Q(\sqrt[3]2)$ & $a_K$ & $1$ & above\\
+cubic of disc.\ $-23$ & trace $\chi_\rho$ & $1$ & \cref{hec:prop:meansq}(i)\\
+cubic of disc.\ $-23$ & irreducible primes & $2/9$, or $1/9$ if $23\mid m$ &
+ \cref{hec:prop:meansq}(ii)\\
+cubic of disc.\ $-23$ & irreducible primes, binary & $1/6$ & \cref{hec:prop:meansq}(ii)\\
+$D_{10}$, conductor $47$ & one rotation class & $3/25$ & \eqref{hec:eq:325}\\\bottomrule
+\end{tabular}
+\end{center}
 
 The mean-square measure can be replaced by the frequency of wrong decisions.
 
@@ -2033,7 +2051,7 @@ the two-class weight of Example~\ref{nab:ex:quintic}; the lower bound of
 nonresidue event of Example~\ref{nab:ex:nonsplit}\textup{(a)}, or for the two events of
 Example~\ref{nab:ex:nonsplit}\textup{(b)}; the lower bound for $U_K$ in
 \cref{nab:thm:missing} for a primitive sextic field with group $A_5$; and the bound on
-$B_f$ in Corollary~\ref{nab:cor:rootcount}. By \cref{nab:sec:periodic} no fixed combination
+$B_f$ in \cref{nab:cor:rootcount}. By \cref{nab:sec:periodic} no fixed combination
 of congruence weights reproduces these weights. What is missing is an arithmetic object,
 in the role of the lattice of integral forms of \cref{src:sec:mechanism}, whose local
 divisibility at $p$ is governed by a nonabelian Frobenius weight, such as
@@ -2044,11 +2062,17 @@ cancel the same main term.
 \end{question}
 
 \begin{question}\label{nab:q:un}
-For $n\ge13$, does the character $U_n$ of Remark~\ref{nab:rem:un} lie in the positive rational
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item For $n\ge13$, does the character $U_n$ of Remark~\ref{nab:rem:un} lie in the positive rational
 cone spanned by the characters of $S_n$ induced from linear characters of subgroups? A
 family of identities \eqref{nab:eq:R} uniform in $n$ would give
 $\ord_\rho\zeta_E\le(n-1)\ord_\rho\zeta_K$ in all degrees, where at present only
 $2(n-H_n)$ is known.
+\item\label{grp:q:vn} Is $V_n=\Ind_{C_2}^{S_n}\sigma-\grpstd_n$ a nonnegative rational combination
+of characters induced from linear characters of subgroups, for every $n\ge4$?
+By \cref{grp:rem:s5-induction} this would give the corresponding statement for
+$U_n$ in every degree; \cref{grp:thm:s5-identity} settles $n=5$.
+\end{enumerate}
 \end{question}
 
 \begin{question}\label{nab:q:lowdegree}

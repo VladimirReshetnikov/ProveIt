@@ -32,19 +32,15 @@ zeros \cite{Li1997Positivity,BombieriLagariasComplements,Lagarias2007Li}. This s
 what sparse or finite portions of such sequences, and of the closely related power sums of
 transformed zeros, decide. \Cref{li:sec:sampling,li:sec:curv} determine the index sets on
 which an off-line zero must produce negative Li coefficients, and the sign patterns that the
-actual coefficients of $\zeta$ repeat. \Cref{li:sec:ritz,li:sec:match} recover individual
+actual coefficients of $\zeta$ repeat; \cref{li:thm:rigidity} and \cref{rec:sec:li} show that
+Li coefficients on sparse windows determine a Dedekind zeta function, and filtered Li
+coefficients a Dirichlet character. \Cref{li:sec:ritz,li:sec:match} recover individual
 zeros from Li moments: a moment pencil converges to each zero at a sharp rate, finite
 inequalities certify simplicity, and mixed moments of two functions certify the separation
-of their ordinates. \Cref{li:sec:hermite,li:sec:cluster} turn near-positivity of power-sum
-matrices into quantitative zero location and complete zero counts, and show what finite data
-cannot decide. \Cref{li:sec:univ} shows that the Cayley angles of the zeros generate a L\'evy
-process with a universal small-time law; \cref{li:sec:path} shows that one path of it nevertheless
-determines the character up to conjugation, \cref{li:sec:offorigin} gives the spectrum of decay
-rates of the oriented kernel, and \cref{li:sec:slice} determines exactly what one time slice of it
-remembers about an arbitrary circle jump measure: the times at which it is injective, the full
-lattice of invisible changes, the least number of altered atoms, and the finite fibres. The
-recovery of a Dirichlet character from filtered Li coefficients and from one Li heat-kernel slice is
-in \cref{sec:rec}.
+of their ordinates. \Cref{li:sec:hermite,ana:sec:hankel,li:sec:cluster} turn near-positivity of
+power-sum and Hankel matrices into quantitative zero location and complete zero counts, and show
+what finite data cannot decide. The L\'evy process and the heat semigroup that the Cayley angles
+of the zeros generate, and the random sums over zeros, are in \cref{sec:lih}.
 
 Most results below are statements about an abstract spectrum and are unconditional. They
 become statements about $\zeta$ and Dirichlet $L$-functions through \cref{src:thm:dgrh},
@@ -195,14 +191,13 @@ The construction uses the functional equation and the zeros only; an Euler produ
 an additional arithmetic constraint (\cref{li:q:euler}). \Cref{li:thm:surgery} gives a
 related obstruction for the multiplicity of zeros.
 
-\paragraph{A prescribed sparse index set.} Put
+\paragraph{A prescribed sparse index set.} Let $\liE$ be the index set $\anaE$ of
+\cref{ana:thm:blocks},
 \begin{equation}\label{li:eq:E}
- M_j=2^{2^{j^2}},\qquad\liE=\bigcup_{j\ge1}\{M_j,2M_j,\dots,jM_j\}.
+ M_j=2^{2^{j^2}},\qquad\liE=\bigcup_{j\ge1}\{M_j,2M_j,\dots,jM_j\},
 \end{equation}
-The set $\liE$ contains $O(1+\log\log N)$ indices up to $N$: $M_j\le N$ implies
-$j^2\le\log_2\log_2N$, and the first $j$ blocks contain $j(j+1)/2$ indices. It is the index set
-of \cref{ana:thm:blocks}, whose extremal values of the prime remainder detect an off-line zero
-only when the largest real part of a zero is attained. Li coefficients on the same set detect
+with $O(1+\log\log N)$ indices up to $N$. The extremal values of the prime remainder on it
+detect an off-line zero only when the largest real part of a zero is attained. Li coefficients on the same set detect
 every failure, and do so on a positive proportion of each late block.
 
 \begin{theorem}[Sparse Li criterion; \stU]\label{li:thm:sparse}
@@ -224,11 +219,8 @@ of zeros attaining it, with multiplicity. Then
 By \cref{li:lem:dom}, (i) implies (ii) and (iii). Suppose (i) fails. By \cref{li:lem:dom},
 $\varrho^{-n}\lambda_n(K)=-\sum_{i=1}^m\cos(2\pi n\alpha_i)+o(1)$, which is at least $-m-o(1)$.
 Let $\theta_1,\dots,\theta_t$ be the distinct values among the $\alpha_i$ and take an integer
-$q\ge5$. The fractional parts of $0,M_j\theta,2M_j\theta,\dots,jM_j\theta$ are $N=j+1$ points in
-$q^t$ half-open boxes of side $1/q$ in $[0,1)^t$. By the Cauchy--Schwarz inequality the number
-of pairs in a common box is at least $(N^2/q^t-N)/2$. Each positive difference of the
-multipliers occurs in at most $N$ pairs, so at least $(N/q^t-1)/2$ values $1\le k\le j$ satisfy
-$\lidist{kM_j\theta_i}\le1/q$ for all $i$. For these $k$ the normalized coefficient is at most
+$q\ge5$. By \cref{ana:lem:boxcount}, at least $(N/q^t-1)/2$ values $1\le k\le j$, $N=j+1$,
+satisfy $\lidist{kM_j\theta_i}\le1/q$ for all $i$. For these $k$ the normalized coefficient is at most
 $-m\cos(2\pi/q)+o(1)<0$. Letting $q\to\infty$ gives the limit $-m$, and the positive proportion
 $(2q^t)^{-1}$ of negative coefficients in every late block contradicts (ii) and (iii).
 \end{proof}
@@ -366,15 +358,11 @@ $[A,A+H-1]$ with $H\to\infty$ on which the mean of $\abs{D_n}$ is at most $C$. T
 $\abs{D_n}\le CH$ on each window.
 
 \emph{Points off the unit circle.} Suppose some $u$ with $m_u\ne0$ has modulus above $1$, and
-let $\varrho$ be the largest such modulus. It is attained at finitely many distinct points
-$u_1,\dots,u_t$, and the other moduli with $m_u\ne0$ are at most some $r<\varrho$. Put
-$z_i=u_i/\varrho$. For $N=A+H-t-2$ and $0\le h<t$,
-\[
- \varrho^{-N-h}a_{N+h}=\sum_{i=1}^tz_i^h\,c_{u_i}z_i^N+O\bigl((r/\varrho)^{N+h}\bigr).
-\]
-The left sides tend to zero, since $N\ge H-t-1$ and $\abs{a_{N+h}}\le4CH$. The Vandermonde matrix
-$(z_i^h)_{h,i}$ is invertible, so $c_{u_i}z_i^N\to0$, which contradicts $\abs{c_{u_i}}>0$. Hence
-$m_u=0$ for $\abs u>1$. The reflection $\rho\mapsto1-\rho$ induces $u\mapsto1/u$ and preserves
+let $\varrho$ be the largest such modulus. The nodes $u$ are distinct, bounded and accumulate
+only at $1$, so \cref{rec:lem:lishell} applies to $s(n)=a_n$: on every sufficiently long
+interval a fixed positive proportion $\eta$ of the indices satisfy $\abs{a_n}\ge c\varrho^n$ for
+some $c>0$. On the window $[A,A+H-3]$ one of them has $n\ge A+\eta H-3$, so
+$c\varrho^{\eta H-2}\le\abs{a_n}\le4CH$, which fails for large $H$. Hence $m_u=0$ for $\abs u>1$. The reflection $\rho\mapsto1-\rho$ induces $u\mapsto1/u$ and preserves
 multiplicity, so $m_u=0$ for $\abs u<1$ as well.
 
 \emph{Points on the unit circle.} Let $\Gamma$ be the countable subgroup of the circle generated
@@ -429,6 +417,12 @@ window length for a given pair of fields (\cref{li:q:rigidity}).
 \subsection{The character from filtered Li coefficients}\label{rec:sec:li}
 \sources{dirichlet_li_rigidity}
 
+This subsection is the Dirichlet counterpart of \cref{li:thm:rigidity}, and rests on the same
+dominant-node step (\cref{rec:lem:lishell}). Neither result implies the other:
+\cref{li:thm:rigidity} concerns Dedekind zeta functions and concludes that the window mean of
+$\abs{D_n}$ tends to infinity, while \cref{rec:thm:liseparation} concerns filtered Dirichlet Li
+sequences and gives a positive proportion of separations on every long interval.
+
 For a primitive $\chi$ of conductor $f$ with zero multiset $Z_\chi$ use the complex Li coefficients
 of Lagarias \cite{Lagarias2007Li}, $u_\rho=1-1/\rho$ and
 $\lambda_\chi(k)=\lim_{T\to\infty}\sum_{\rho\in Z_\chi,\abs\rho\le T}(1-u_\rho^k)$. For an integer
@@ -470,7 +464,9 @@ $\rho\mapsto1-\bar\rho$ preserves $Z_\chi$ with multiplicities, and that
  N_\chi(T)=\#\set{\rho\in Z_\chi:\abs{\Im\rho}\le T}=\frac T\pi\log\frac{fT}{2\pi e}+O_\chi(\log(2+T))
 \end{equation}
 \cite{BennettMartinOBryantRechnitzer2021Counting}, so that $\sum\abs\rho^{-2}<\infty$ and a zero at
-height $T$ has multiplicity $O_\chi(\log(2+T))$. Let $\Delta x(n)=x(n+1)-x(n)$ and $d=\max(2,D+1)$.
+height $T$ has multiplicity $O_\chi(\log(2+T))$. This is the zero count used throughout
+\cref{sec:li,sec:lih}; $f=1$ gives $\zeta$. Each of the one-sided counts $N^\pm_\chi(T)$ of
+zeros with $0<\pm\Im\rho\le T$ is $\frac T{2\pi}\log\frac{fT}{2\pi e}+O_\chi(\log(2+T))$. Let $\Delta x(n)=x(n+1)-x(n)$ and $d=\max(2,D+1)$.
 Applying $\Delta^d$ to the common truncation and removing the cutoff,
 \begin{equation}\label{rec:eq:liexp}
  \Delta^dX_{\chi,h,A}(n)=\sum_wb_{\chi,h,A}(w)w^n,\qquad
@@ -972,36 +968,6 @@ Each node has mass at least $\min_iy_i$. Hence $\log h_n=-4n\log n+4n\log\log n+
 $n<N$.
 \end{proof}
 
-\begin{corollary}[A local version for Dirichlet zeros; \stG]\label{li:cor:ritzdir}
-Fix a primitive nonprincipal character $\chi$ of conductor $q$, a height $t_0\in\R$ and $a>1/2$.
-Let $\gamma$ run over the ordinates of the completed function $\Lambda_\chi$, with multiplicity, and
-assign to each distinct value $x=(a^2+(\gamma-t_0)^2)^{-1}$ the total multiplicity of its distance
-$\abs{\gamma-t_0}$. The moments of this local distance spectrum are determined by Taylor data in
-$\Re s>1$, and the $j$th Ritz value recovers the $j$th largest atom with
-\[
- \lim_{N\to\infty}\frac{\log(x_j-r_{j,N})}{N\log N}=-4 .
-\]
-\Cref{li:thm:ritzcert} applies, with simplicity meaning total multiplicity one at a distance. All
-assertions fix $q,t_0,a,j$ before the limit.
-\end{corollary}
-
-\begin{proof}
-Put $G(w)=\Lambda_\chi(\frac12+it_0+w)\Lambda_{\bar\chi}(\frac12-it_0+w)$. The functional equation,
-with the two root numbers multiplying to one, makes $G$ even. Then $E(z)=G(\sqrt{a^2-z})/G(a)$ is
-entire of order at most $1/2$ with zeros $z=a^2+(\gamma-t_0)^2$; the two factors supply the two
-symmetric $w$-roots of each zero, and a root at $w=0$ has twice the original multiplicity in $G$
-and the original multiplicity in $E$. The genus-zero product and $E(0)=1$ give
-$p_k=-k[z^k]\log E(z)$, computed from the completed functions at $\frac12+a\pm it_0$, where the
-series converge absolutely. For the rate, the count of distances up to $T$ has main term
-$(T/\pi)\log(qT/(2\pi e))$ with error $O_{q,t_0}(\log T)$, by sandwiching between centered counts
-at $T\pm\abs{t_0}$ \cite{BennettMartinOBryantRechnitzer2021Counting}. This gives the upper bound
-of \eqref{li:eq:ritzB}, and a distance in every interval of a fixed large length $L$ above a
-threshold. Taking every other interval in a block of $2N$ such intervals starting at $N$ gives $N$
-distinct distances of size $\asymp N$ separated by at least $L$, whose images have mass at least
-$c/N^2$ and separation at least $c/N^3$. Interpolation gives $\log A_{j,N}\le2N\log N+O_j(N)$ and
-the lower bound $-4N\log N-O_j(N)$.
-\end{proof}
-
 \begin{proposition}[A certificate from seventeen moments; \stG]\label{li:prop:ritz17}
 The first four distinct positive ordinates of $\zeta$ are simple and satisfy
 \begin{center}\small
@@ -1069,7 +1035,8 @@ with eigenvalues $x_i$ and normalized eigenvectors $w_i^{-1/2}\liind_{\{x_i\}}$.
 \begin{lemma}[Spectral facts; \stU]\label{li:lem:ritzabs}
 Under \eqref{li:eq:abstract} the forms $\liHk_N,\liKk_N$ are positive definite, the $r_{j,N}$ are the
 simple roots of $Q_N$, and $0<r_{j,N}<x_j$ with $r_{j,N}\uparrow x_j$ for each fixed $j$. Moreover
-$\nu_N\to\delta_0$ weakly on $[0,x_1]$, and $0<h_{N+1}/h_N\le\tau_{2,N}\to0$.
+$\nu_N\to\delta_0$ weakly on $[0,x_1]$, $0<h_{N+1}/h_N\le\tau_{2,N}\to0$, and
+$v_{j,N}\le h_N/h_{N-1}\to0$ for each fixed $j$.
 \end{lemma}
 
 \begin{proof}
@@ -1082,7 +1049,11 @@ continuous functions on $[0,x_1]$ and apply Weierstrass), so approximating the f
 in $V_N$ and applying min--max gives $r_{j,N}\to x_j$. For fixed $i$, Bessel's inequality for the
 orthonormal sequence $(q_N)$ gives $w_iq_N(x_i)^2\to0$; only finitely many atoms lie above any
 $\epsilon>0$, so $\nu_N([\epsilon,x_1])\to0$. Finally $tQ_N$ is monic of degree $N+1$, so the minimality
-of $Q_{N+1}$ gives $h_{N+1}/h_N\le\int t^2\dd\nu_N=\tau_{2,N}\to0$.
+of $Q_{N+1}$ gives $h_{N+1}/h_N\le\int t^2\dd\nu_N=\tau_{2,N}\to0$. For the last assertion, the
+normalized Ritz vector $u=S_{j,N}/\lVert S_{j,N}\rVert$ has degree at most $N-1$, and
+$(T-r_{j,N})u$ is a multiple of $q_N$ of squared norm $v_{j,N}$. Orthogonality by degree gives
+$v_{j,N}=\abs{\langle q_N,Tu\rangle}^2=(h_N/h_{N-1})\abs{\langle q_{N-1},u\rangle}^2\le h_N/h_{N-1}$,
+since $\langle q_N,Tq_{N-1}\rangle=\sqrt{h_N/h_{N-1}}$ by leading coefficients.
 \end{proof}
 
 Fix $j$ and abbreviate $r=r_{j,N}$, $x=x_j$, $\delta=x-r>0$, $S=S_{j,N}$, $v=v_{j,N}$ and
@@ -1121,25 +1092,6 @@ using its bounds gives \eqref{li:eq:ritzinterval}. For $j=1$ the support lies in
 $\int t(x_1-t)S^2\dd\mu\ge0$, that is $x_1r\ge r^2+v$.
 \end{proof}
 
-\begin{theorem}[Asymptotically sharp computable residual; \stU]\label{li:thm:ritzsharp}
-For each fixed $j$, $x_j-r_{j,N}\sim v_{j,N}/r_{j,N}$, and the relative discrepancy is summable:
-\[
- \sum_{N\ge j}\Bigl\lvert\frac{r_{j,N}(x_j-r_{j,N})}{v_{j,N}}-1\Bigr\rvert<\infty .
-\]
-\end{theorem}
-
-\begin{proof}
-The normalized Ritz vector $u=S/\lVert S\rVert$ has degree at most $N-1$, and $(T-r)u$ is a multiple of
-$q_N$ of squared norm $v$. Orthogonality by degree gives
-$v=\abs{\langle q_N,Tu\rangle}^2=(h_N/h_{N-1})\abs{\langle q_{N-1},u\rangle}^2\le h_N/h_{N-1}\to0$,
-since $\langle q_N,Tq_{N-1}\rangle=\sqrt{h_N/h_{N-1}}$ by leading coefficients. Also $\tau_{1,N}\to0$ by
-\cref{li:lem:ritzabs}. For large $N$ take a fixed $g$ in \cref{li:thm:ritzid}; since $r\to x_j>0$,
-\eqref{li:eq:ritzinterval} gives $\abs{r\delta/v-1}=O_j(\tau_{1,N}+v_{j,N})$. By Tonelli and the
-completeness of the polynomials, $\sum_N\tau_{1,N}=\sum_N\langle q_N,Tq_N\rangle=\sum_ix_i<\infty$, and
-$\sum_Nv_{j,N}\le\sum_N\abs{\langle q_N,Tq_{N-1}\rangle}^2\le\sum_ix_i^2$ by the Hilbert--Schmidt norm
-of $T$.
-\end{proof}
-
 \begin{theorem}[Higher residual-moment corrections; \stU]\label{li:thm:ritzhigh}
 For fixed integers $k\ge0$ and $j\ge1$,
 \begin{equation}\label{li:eq:ritzexpansion}
@@ -1163,12 +1115,28 @@ $r/(r-t)=\sum_{\ell=0}^k(t/r)^\ell+t^{k+1}/(r^k(r-t))$, also for $t>r$. Summing 
 atoms except $x$, the last term is at most $\tau_{k+1}/(r^kg)$ in absolute value, and the omitted atom
 in the finite sum is bounded by the other term of $E_k$. Hence $\abs{rI-P_k}\le E_k$, and dividing by
 $A\in[1-\eta,1]$ gives \eqref{li:eq:ritzhighint}. For large $N$, $g$ and $r$ stay away from zero, so
-$E_k=O_{j,k}(\tau_{k+1}+v)$; with $A=1+O_j(v)$ this gives \eqref{li:eq:ritzexpansion}.
+$E_k=O_{j,k}(\tau_{k+1}+v)$, and $\eta<1$ because $v\to0$ (\cref{li:lem:ritzabs}); with
+$A=1+O_j(v)$ this gives \eqref{li:eq:ritzexpansion}.
 \end{proof}
 
 For example the first corrected approximation $r+(v/r)(1+\tau_1/r)$ has error $O_j(v\tau_2+v^2)$,
 without any zero-spacing estimate. When isolation is certified, \eqref{li:eq:ritzhighint} is a
 two-sided interval of width $O_{j,k}(v(\tau_{k+1}+v))$.
+
+\begin{corollary}[Asymptotically sharp computable residual: $k=0$; \stU]\label{li:thm:ritzsharp}
+For each fixed $j$, $x_j-r_{j,N}\sim v_{j,N}/r_{j,N}$, and the relative discrepancy is summable:
+\[
+ \sum_{N\ge j}\Bigl\lvert\frac{r_{j,N}(x_j-r_{j,N})}{v_{j,N}}-1\Bigr\rvert<\infty .
+\]
+\end{corollary}
+
+\begin{proof}
+The case $k=0$ of \eqref{li:eq:ritzexpansion} is $\abs{r\delta/v-1}=O_j(\tau_{1,N}+v_{j,N})$, and
+$\tau_{1,N},v_{j,N}\to0$ by \cref{li:lem:ritzabs}; this gives the asymptotic. By Tonelli and the
+completeness of the polynomials, $\sum_N\tau_{1,N}=\sum_N\langle q_N,Tq_N\rangle=\sum_ix_i<\infty$,
+and $\sum_Nv_{j,N}\le\sum_N\abs{\langle q_N,Tq_{N-1}\rangle}^2\le\sum_ix_i^2$ by the
+Hilbert--Schmidt norm of $T$.
+\end{proof}
 
 \begin{lemma}[Strict hierarchy of residual moments; \stU]\label{li:lem:ritzhier}
 For every fixed $k\ge0$, $\tau_{k+1,N}=o(\tau_{k,N})$ as $N\to\infty$.
@@ -1301,23 +1269,50 @@ fixed $j$ and equals $L_k+2\log(x_k/x_j)$, and \cref{li:cor:ritzzeta} gives an $
 difference. The existence of any $L_k$ is open (\cref{li:q:ritz}).
 
 \begin{corollary}[Dirichlet distance spectra; \stG]\label{li:cor:ritzdirexact}
-In the setting of \cref{li:cor:ritzdir}, let $d_j$ be the $j$th distinct distance and $m_j$ its total
-multiplicity, so $x_j=(a^2+d_j^2)^{-1}$ (a central distance $d_1=0$ is allowed). Then
-\cref{li:lem:ritzabs,li:thm:ritzid,li:thm:ritzsharp,li:thm:ritzhigh,li:thm:ritzexact,li:cor:ritzstep,li:prop:ritzprod}
-hold with $w_j=m_jx_j$, \eqref{li:eq:ritzzeta} holds, and so does \cref{li:thm:ritznext} with $c=4$. For
-$d_j>0$ the distance error of $\sqrt{1/r_{j,N}-a^2}$ is asymptotic to
-$h_N/(2d_jm_jx_j^{2N+2}C_j^2)$; for $d_j=0$,
-\[
- \sqrt{1/r_{j,N}-a^2}=\sqrt{\frac{x_j-r_{j,N}}{x_jr_{j,N}}}\sim\frac{\sqrt{h_N}}{\sqrt{m_j}\,x_j^{N+1}\abs{C_j}} .
-\]
+Fix a primitive nonprincipal character $\chi$ of conductor $q$, a height $t_0\in\R$ and $a>1/2$.
+Let $\gamma$ run over the ordinates of the completed function $\Lambda_\chi$, with multiplicity, and
+assign to each distinct value $x=(a^2+(\gamma-t_0)^2)^{-1}$ the total multiplicity of its distance
+$\abs{\gamma-t_0}$. Let $d_j$ be the $j$th distinct distance and $m_j$ its total multiplicity, so
+$x_j=(a^2+d_j^2)^{-1}$ (a central distance $d_1=0$ is allowed).
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item\label{li:cor:ritzdir} The moments of this local distance spectrum are determined by Taylor
+ data in $\Re s>1$, and the $j$th Ritz value recovers the $j$th largest atom with
+ \[
+  \lim_{N\to\infty}\frac{\log(x_j-r_{j,N})}{N\log N}=-4 .
+ \]
+ \Cref{li:thm:ritzcert} applies, with simplicity meaning total multiplicity one at a distance.
+\item
+ \Cref{li:lem:ritzabs,li:thm:ritzid,li:thm:ritzsharp,li:thm:ritzhigh,li:thm:ritzexact,li:cor:ritzstep,li:prop:ritzprod}
+ hold with $w_j=m_jx_j$, \eqref{li:eq:ritzzeta} holds, and so does \cref{li:thm:ritznext} with
+ $c=4$. For $d_j>0$ the distance error of $\sqrt{1/r_{j,N}-a^2}$ is asymptotic to
+ $h_N/(2d_jm_jx_j^{2N+2}C_j^2)$; for $d_j=0$,
+ \[
+  \sqrt{1/r_{j,N}-a^2}=\sqrt{\frac{x_j-r_{j,N}}{x_jr_{j,N}}}\sim\frac{\sqrt{h_N}}{\sqrt{m_j}\,x_j^{N+1}\abs{C_j}} .
+ \]
+\end{enumerate}
 The same abstract results hold for finite products of such normalized even completions, with masses
 added at coincident distances; the norm law needed for \cref{li:thm:ritznext} must then be checked
 separately. All statements fix $q,t_0,a,j$ before the limit.
 \end{corollary}
 
 \begin{proof}
-The proof of \cref{li:cor:ritzdir} gives the product $\prod_j(1-x_jz)^{m_j}$ and $\sum_jm_jx_j<\infty$, so
-\eqref{li:eq:abstract} holds. The rate $\log(x_j-r_{j,N})/(N\log N)\to-4$ of \cref{li:cor:ritzdir} and
+(i) Put $G(w)=\Lambda_\chi(\frac12+it_0+w)\Lambda_{\bar\chi}(\frac12-it_0+w)$. The functional equation,
+with the two root numbers multiplying to one, makes $G$ even. Then $E(z)=G(\sqrt{a^2-z})/G(a)$ is
+entire of order at most $1/2$ with zeros $z=a^2+(\gamma-t_0)^2$; the two factors supply the two
+symmetric $w$-roots of each zero, and a root at $w=0$ has twice the original multiplicity in $G$
+and the original multiplicity in $E$. The genus-zero product and $E(0)=1$ give
+$p_k=-k[z^k]\log E(z)$, computed from the completed functions at $\frac12+a\pm it_0$, where the
+series converge absolutely. For the rate, sandwiching between the centered counts
+\eqref{rec:eq:licount} at $T\pm\abs{t_0}$ shows that the count of distances up to $T$ has main
+term $(T/\pi)\log(qT/(2\pi e))$ with error $O_{q,t_0}(\log T)$. This gives the upper bound
+of \eqref{li:eq:ritzB}, and a distance in every interval of a fixed large length $L$ above a
+threshold. Taking every other interval in a block of $2N$ such intervals starting at $N$ gives $N$
+distinct distances of size $\asymp N$ separated by at least $L$, whose images have mass at least
+$c/N^2$ and separation at least $c/N^3$. Interpolation gives $\log A_{j,N}\le2N\log N+O_j(N)$ and
+the lower bound $-4N\log N-O_j(N)$.
+
+(ii) The proof of (i) gives the product $\prod_j(1-x_jz)^{m_j}$ and $\sum_jm_jx_j<\infty$, so
+\eqref{li:eq:abstract} holds. The rate in (i) and
 \eqref{li:eq:ritzexact} give $\log h_N=-4N\log N+o(N\log N)$. The distance laws follow from the
 derivative of $\sqrt{1/t-a^2}$ at $x_j$ when $d_j>0$, and from the displayed identity and
 \eqref{li:eq:ritzzeta} when $d_j=0$. A finite union of such spectra still satisfies
@@ -1562,7 +1557,10 @@ cannot be increased. The constants are not asserted optimal.
 
 In particular $\liD=0$ if and only if all roots are real; this is the classical Hermite--Sylvester
 theorem, with Nathanson's interpolation proof \cite{Nathanson2021Hermite}. For $n=3$ the theorem
-reads $b^4/128\le\liD\le30b^2$.
+reads $b^4/128\le\liD\le30b^2$. The theorem gives quantitative bounds for a finite multiset;
+the Hankel tests of \cref{ana:thm:hankel} (global power sums with a shifting index) and
+\cref{rec:thm:census} (zeros in a disk, from Taylor coefficients at its centre) are different
+statements, and none of the three implies another.
 
 For a real polynomial $p(x)=\sum_{r<n}c_rx^r$,
 \begin{equation}\label{li:eq:hquad}
@@ -1805,6 +1803,10 @@ contribute at most $-2r^K\norm t^2$ and the others at most
 $B^2\norm t^2q^{K-2}\sum_ua_u\abs u^2$, so the form is negative definite on an $s$-dimensional
 space once $K$ is large and $b\ge n$.
 \end{proof}
+
+The theorem concerns the infinitely many power sums $P_k(c)$ and an index window moving to
+infinity. It neither implies nor follows from the quantitative bounds of \cref{li:thm:hermite}
+for a finite multiset, or the census of zeros in a disk of \cref{rec:thm:census}.
 
 A nonreal zero can still be invisible when its image is real. For $w=x+iy$ with $y>0$ call
 $c\in\R$ \emph{blind for $w$ at stride $m$} if $(w-c)^{-m}\in\R$. With
@@ -2130,7 +2132,7 @@ does not decide the multiplicities of $\Xi$. Finite-jet nonrigidity by Hermite i
 recorded by Eberwein \cite{Eberwein2026Truncated}.
 
 \subsection{Open questions}\label{li:sec:open}
-\sources{li_sampling_and_curvature; grh_method_transfers_research; li_ritz_zero_recovery; grh_ritz_relative_asymptotics; li_zero_separation; dirichlet-li-kernels; grh_path_rigidity_2026-11-27; dirichlet_li_recovery}
+\sources{li_sampling_and_curvature; grh_method_transfers_research; li_ritz_zero_recovery; grh_ritz_relative_asymptotics; li_zero_separation; sparse_dirichlet_zero_tests}
 
 \begin{question}[Euler products and weaker recurrence]\label{li:q:euler}
 Can a universal Li sampling test requiring less than simultaneous Bohr recurrence be proved for a
@@ -2169,23 +2171,11 @@ optimizing the nonnegative trigonometric kernel in place of $K_N^r$. The simplic
 $\zeta$ and the global disjointness of the ordinates of $\zeta$ and $\beta$ remain open.
 \end{question}
 
-\begin{question}[Joint decay rates]\label{li:q:decay}
-What are the Hausdorff dimensions of the joint level sets of the lower and upper normalized decay rates
-$\liminf R_t$ and $\limsup R_t$ in \cref{li:thm:spectrum}, whose marginal for the lower rate is
-\cref{li:thm:spectrum}(ii)? Conductor-uniform separation estimates for sums of few Cayley angles, even
-for a restricted set of ordinates, would turn the finite-mode reading after \cref{rec:thm:liecho} into a
-certified stopping rule; the next term of the typical log-density is asked in \cref{rec:sec:open}.
+\begin{question}[Hankel tests]\label{ana:q:hankel}
+At a prescribed odd stride, when can the bounds of \cref{ana:thm:hankelloss} for disappearances
+and for collisions be attained together? Under explicit separation of a bounded set of zeros,
+how much absolute precision in each $P_k(c)$ certifies a negative eigenvalue of
+$H(c,m;K,b)$? How does the classification of \cref{ana:thm:centres} change for centres in a
+fixed real quadratic field?
 \end{question}
 
-\begin{question}[Paths at finite resolution]\label{li:q:paths}
-\Cref{li:thm:path} uses infinitely many exact jump sizes, and \cref{li:thm:information} is a lower bound
-not claimed to be optimal. What is the exact information in one band, and can the orbit $[\chi]$ be
-recovered efficiently from noisy, discretely sampled positions, with constants uniform in the
-conductor, the duration and the probe primes?
-\end{question}
-
-\begin{question}[Finitely many modes of one time slice]\label{li:q:modes}
-\Cref{li:thm:times,li:thm:probe,li:thm:fiber} use all Fourier modes of a time slice. For competitors supported on
-prescribed primitive shells with bounded total mass, how many modes $H_{E,t}(n)$ suffice to distinguish different
-observations at a prescribed error level?
-\end{question}

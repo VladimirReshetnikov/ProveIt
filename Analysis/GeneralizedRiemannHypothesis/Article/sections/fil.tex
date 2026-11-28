@@ -30,10 +30,12 @@ short such a positive average can be if it must annihilate prescribed zero contr
 in turn: exact optima for finite sets of complex exponents and their analytic dependence on the
 exponents; the mean-frequency lower bound for arbitrary real spectra and the exact quadratic cost of
 splitting a multiple frequency asymmetrically; two frequencies in arbitrary ratio; the optimal logarithmic support of a filter that
-cancels every zero up to a height $B$; one filter cancelling every noncentral zero; and the resulting
-averages of prime sums. All extremal statements are unconditional; \cref{src:thm:dgrh} enters only
-to put the zeros of Dirichlet $L$-functions on one vertical line, where they become real Fourier
-frequencies of normalized prime errors.
+cancels every zero up to a height $B$; one filter cancelling every noncentral zero; the resulting
+averages of prime sums, among them an explicit compact kernel for all residue classes; and finite
+positive grids of prime sums that read off the central multiplicity (\cref{fil:sec:grids}). All
+extremal statements are unconditional; \cref{src:thm:dgrh} enters only to put the zeros of Dirichlet
+$L$-functions on one vertical line, where they become real Fourier frequencies of normalized prime
+errors. Balancing and oscillation of prime errors at a single centre are in \cref{sec:flu}.
 
 \subsection{Exact optima for reflection-paired spectra}\label{fil:sec:reflect}
 \sources{quadratic_spectra; sharp_positive_zero_filters; optimal_zero_filters; optimal_dirichlet_zero_filters; grh_cayley_and_filters}
@@ -111,25 +113,22 @@ the product is strictly positive.
 
 The nonnegativity criterion can hold beyond the open band; at its boundary some coefficients
 vanish and the theorem still applies, but the perturbation theory below needs strictly positive
-masses. The following special cases were proved earlier by the same residue certificate.
+masses. The following special cases were proved earlier by the same residue certificate. In each
+of them one checks the reflection invariance and $p_k\ge0$ and applies \cref{fil:thm:reflect}; for a
+common real part, \cref{fil:cor:pair,fil:cor:triple,fil:cor:cluster} are also equality cases of
+\cref{fil:thm:meanbound} below.
 
-\begin{corollary}[One frequency, several real parts; \stU]\label{rec:thm:fwidth}
+\begin{example}[One frequency, several real parts; \stU]\label{rec:thm:fwidth}
 Fix $\tau>0$, distinct reals $\beta_1,\dots,\beta_r$, positive integers $m_j$, $s_j=\beta_j+i\tau$,
-$m=\sum m_j$ and $h=\pi/\tau$. Every solution of \eqref{rec:eq:fjets} has support diameter at least
+$m=\sum m_j$ and $h=\pi/\tau$. Each target is fixed by $s\mapsto\bar s+2\pi i/h$, and
+$e^{hs_j}=-e^{h\beta_j}$. So every solution of \eqref{rec:eq:fjets} has support diameter at least
 $m\pi/\tau$, and up to translation exactly one has that diameter:
 $\mu_*=\sum_{\ell=0}^mw_\ell\delta_{\ell h}$ with
-$\sum_\ell w_\ell z^\ell=\prod_j\bigl((z+e^{h\beta_j})/(1+e^{h\beta_j})\bigr)^{m_j}$.
-\end{corollary}
+$\sum_\ell w_\ell z^\ell=\prod_j\bigl((z+e^{h\beta_j})/(1+e^{h\beta_j})\bigr)^{m_j}$. The width bound alone
+also follows from Obrechkoff's sector inequality \cite{EremenkoFryntov2016Remarks}.
+\end{example}
 
-\begin{proof}
-Each target is fixed by $s\mapsto\bar s+2\pi i/h$, and $e^{hs_j}=-e^{h\beta_j}$; apply
-\cref{fil:thm:reflect}.
-\end{proof}
-
-The width bound alone also follows from Obrechkoff's sector inequality
-\cite{EremenkoFryntov2016Remarks}.
-
-\begin{corollary}[A block of consecutive harmonics; \stU]\label{rec:thm:hblock}
+\begin{example}[A block of consecutive harmonics; \stU]\label{rec:thm:hblock}
 Fix integers $p,H\ge1$, $\tau>0$, distinct $\beta_j$ and $m_j\ge1$, and put $B=2p+H-1$,
 $h=2\pi/(B\tau)$, $n=H\sum m_j$, $a_j=e^{h\beta_j}$, $\omega=e^{2\pi i/B}$. If a compactly supported
 probability measure satisfies $F_\mu^{(k)}(\beta_j+i\ell\tau)=0$ for $p\le\ell\le p+H-1$, $k<m_j$ and all
@@ -138,15 +137,11 @@ $w_t$ at $th$, $0\le t\le n$, with
 \[
  \sum_tw_tz^t=\frac{P(z)}{P(1)},\qquad P(z)=\prod_j\Bigl[\prod_{\ell=p}^{p+H-1}(z-a_j\omega^\ell)\Bigr]^{m_j}.
 \]
-\end{corollary}
-
-\begin{proof}
-The reflection $s\mapsto\bar s+2\pi i/h$ maps $\beta_j+i\ell\tau$ to $\beta_j+i(B-\ell)\tau$ and the block
-$p\le\ell\le p+H-1$ to itself, and $0<\ell\tau<B\tau=2\pi/h$. It remains to see that the coefficients
-are positive. With $\theta_s=(2s-H+1)\pi/B$, each inner factor is $a_j^HR(z/a_j)$ for
+Indeed, the reflection $s\mapsto\bar s+2\pi i/h$ maps $\beta_j+i\ell\tau$ to $\beta_j+i(B-\ell)\tau$ and the
+block $p\le\ell\le p+H-1$ to itself, and $0<\ell\tau<B\tau=2\pi/h$. The coefficients are positive:
+with $\theta_s=(2s-H+1)\pi/B$, each inner factor is $a_j^HR(z/a_j)$ for
 $R(y)=\prod_s(1+ye^{i\theta_s})=\sum c_ty^t$, and $(1+\alpha y)R(\omega y)=(1+\alpha\omega^Hy)R(y)$ gives
-$c_t/c_{t-1}=\sin((H-t+1)\pi/B)/\sin(t\pi/B)>0$. Apply \cref{fil:thm:reflect}.
-\end{proof}
+$c_t/c_{t-1}=\sin((H-t+1)\pi/B)/\sin(t\pi/B)>0$.
 
 For $p=1$, $H=2$, $h=1$, $e^{\beta_1}=1/2$, $e^{\beta_2}=2$ with multiplicities $1,2$ the optimal width
 is $6$, and the masses are
@@ -155,8 +150,9 @@ is $6$, and the masses are
 \]
 the coefficients of $(4z^2+2z+1)(z^2+2z+4)^2/343$; the exact check is recorded in
 \begin{center}\artifact{quadratic_spectra/filters_example.txt}.\end{center}
+\end{example}
 
-\begin{corollary}[Two frequencies with equal vanishing orders; \stU]\label{fil:cor:pair}
+\begin{example}[Two frequencies with equal vanishing orders; \stU]\label{fil:cor:pair}
 Let $0<\alpha<\gamma\le3\alpha$, $\beta\in\R$ and $m\ge1$. The least diameter of a probability measure
 with $F_\mu^{(k)}(\beta+i\alpha)=F_\mu^{(k)}(\beta+i\gamma)=0$ for $k<m$ is
 \[
@@ -167,19 +163,15 @@ $0,h,\dots,2mh$ given by the coefficients of
 \[
  \frac{(z^2-2a\cos(h\alpha)z+a^2)^m}{(1-2a\cos(h\alpha)+a^2)^m}.
 \]
-Its width is the fraction $4\alpha\gamma/(\alpha+\gamma)^2$ of the width $m\pi(1/\alpha+1/\gamma)$ of
-two separately designed filters. For $\gamma<3\alpha$ all $2m+1$ masses are positive; at $\gamma=3\alpha$
-the odd coefficients vanish.
-\end{corollary}
+Indeed, the two targets are reflected partners for this $h$, and $h\alpha+h\gamma=2\pi$, so
+$P(z)=(z^2-2a\cos(h\alpha)z+a^2)^m$; since $\gamma\le3\alpha$ gives $h\alpha\in[\pi/2,\pi)$, we have
+$\cos(h\alpha)\le0$, and every coefficient is nonnegative. The width is the fraction
+$4\alpha\gamma/(\alpha+\gamma)^2$ of the width $m\pi(1/\alpha+1/\gamma)$ of two separately designed filters.
+For $\gamma<3\alpha$ all $2m+1$ masses are positive; at $\gamma=3\alpha$ the odd coefficients vanish.
+\end{example}
 
-\begin{proof}
-The two targets are reflected partners for this $h$, and $h\alpha+h\gamma=2\pi$, so
-$P(z)=(z^2-2a\cos(h\alpha)z+a^2)^m$. Since $\gamma\le3\alpha$ gives $h\alpha\in[\pi/2,\pi)$, we have
-$\cos(h\alpha)\le0$, and every coefficient is nonnegative. Apply \cref{fil:thm:reflect}.
-\end{proof}
-
-The formula is the $m$-fold convolution of the simple optimum, but the theorem shows that no other
-positive measure, continuous or not, is shorter. For $m=2$ and $c=\cos(h\alpha)$, $\beta=0$, the weights
+The formula is the $m$-fold convolution of the simple optimum, but \cref{fil:thm:reflect} shows that no
+other positive measure, continuous or not, is shorter. For $m=2$ and $c=\cos(h\alpha)$, $\beta=0$, the weights
 on $0,h,\dots,4h$ are $(1,-4c,2+4c^2,-4c,1)/(4(1-c)^2)$; for $\alpha=1$, $\gamma=2$ the width is $8\pi/3$
 and the weights are $(1,2,3,2,1)/9$. Two-mode positive input shaping contains the low-order cases
 \cite{CrainSinghoseSeering1996Derivation,SinghoseCrainSeering1997Convolved,LauPao2003Input,PaoSinghose1998Robust,Singhose1997Command}.
@@ -192,32 +184,29 @@ filters; see
 \artifact{optimal_dirichlet_zero_filters/checks.json}
 \end{center}
 
-\begin{corollary}[A three-frequency band; \stU]\label{fil:cor:triple}
+\begin{example}[A three-frequency band; \stU]\label{fil:cor:triple}
 Let $0<\alpha<\gamma\le5\alpha$, $b=(\alpha+\gamma)/2$ and $\beta\in\R$. For simple vanishing at
 $\beta+i\alpha$, $\beta+ib$, $\beta+i\gamma$ the least diameter is $6\pi/(\alpha+\gamma)$. With $h$, $a$ as in
 \cref{fil:cor:pair} and $\theta=\pi-h\alpha$, the minimizer has the coefficients of
 \[
  P(z)=(z+a)(z^2+2a\cos\theta\,z+a^2)=z^3+a(1+2\cos\theta)z^2+a^2(1+2\cos\theta)z+a^3 .
 \]
-For $\gamma<5\alpha$ every coefficient is positive, at $\gamma=5\alpha$ only the endpoints remain, and
-for $\gamma>5\alpha$ this width is not attained. The $m$th power of $P$ gives the least diameter
-$6\pi m/(\alpha+\gamma)$ for equal order $m$ at all three, in the same band.
-\end{corollary}
-
-\begin{proof}
-The middle target is fixed by the reflection and the outer two are partners; $1+2\cos\theta\ge0$ is
-equivalent to $\gamma\le5\alpha$. For $\gamma>5\alpha$ the coefficient of degree $3m-1$ of $P^m$ is
-negative.
-\end{proof}
-
+Here the middle target is fixed by the reflection and the outer two are partners, and
+$1+2\cos\theta\ge0$ is equivalent to $\gamma\le5\alpha$. For $\gamma<5\alpha$ every coefficient is
+positive, at $\gamma=5\alpha$ only the endpoints remain, and for $\gamma>5\alpha$ this width is not
+attained. The $m$th power of $P$ gives the least diameter $6\pi m/(\alpha+\gamma)$ for equal order $m$ at
+all three, in the same band; for $\gamma>5\alpha$ the coefficient of degree $3m-1$ of $P^m$ is negative.
 For $\cos\theta=-1/3$, $\beta=0$, the weights are $(3,1,1,3)/8$; here $\gamma/\alpha>3$, so
 \cref{fil:cor:pair} alone does not give the result, and the angles need not be commensurate.
+\end{example}
 
-\begin{corollary}[Symmetric clusters; \stU]\label{fil:cor:cluster}
+\begin{example}[Symmetric clusters; \stU]\label{fil:cor:cluster}
 Let $\kappa>0$, and let the frequencies be $\kappa$ (order $m_0\ge0$) and $\kappa\pm\delta_j$ (order
 $m_j\ge1$ each), $0<\delta_1<\dots<\delta_s\le\kappa/2$, with $N=m_0+2\sum_jm_j\ge1$ and $T=\pi/\kappa$.
-The least diameter of a probability measure whose Fourier transform vanishes at each frequency to the
-given order is $NT=N\pi/\kappa$, and the unique minimizer with left endpoint $0$ is
+With $h=T$ the reflection is $\lambda\mapsto2\kappa-\lambda$ on the frequencies, all of which lie in
+$(0,2\kappa)$, and $\cos(\delta_jT)\ge0$, so \cref{fil:thm:reflect} applies to $s=i\lambda$: the least
+diameter of a probability measure whose Fourier transform vanishes at each frequency to the given
+order is $NT=N\pi/\kappa$, and the unique minimizer with left endpoint $0$ is
 $\sum_{j=0}^Nw_j\delta_{jT}$ with
 \[
  \sum_jw_jz^j=\frac{(1+z)^{m_0}}{2^{m_0}}\prod_{j=1}^s\Bigl(\frac{z^2+2\cos(\delta_jT)z+1}{2+2\cos(\delta_jT)}\Bigr)^{m_j},
@@ -226,18 +215,12 @@ whose centred transform is
 \[
  \Phi(\omega)=\cos(T\omega/2)^{m_0}\prod_{j=1}^s\Bigl(\frac{\cos(T\omega)+\cos(\delta_jT)}{1+\cos(\delta_jT)}\Bigr)^{m_j}.
 \]
-All weights are positive if $\delta_s<\kappa/2$, in particular if $N\delta_s<\kappa$.
-\end{corollary}
-
-\begin{proof}
-With $h=T$ the reflection is $\lambda\mapsto2\kappa-\lambda$ on the frequencies, all of which lie in
-$(0,2\kappa)$, and $\cos(\delta_jT)\ge0$; apply \cref{fil:thm:reflect} to $s=i\lambda$.
-\end{proof}
-
-Cancelling the $N$ frequencies separately by two-point filters needs diameter
-$\pi\sum_\lambda1/\lambda$, strictly more as soon as a noncentral pair occurs, by strict convexity of
-$1/x$. For the frequencies $10,12,14$ with orders $1,2,1$ the width is $\pi/3$ and the weights are
+All weights are positive if $\delta_s<\kappa/2$, in particular if $N\delta_s<\kappa$. Cancelling the $N$
+frequencies separately by two-point filters needs diameter $\pi\sum_\lambda1/\lambda$, strictly more as
+soon as a noncentral pair occurs, by strict convexity of $1/x$. For the frequencies $10,12,14$ with
+orders $1,2,1$ the width is $\pi/3$ and the weights are
 $(\tfrac12-\tfrac{\sqrt3}4,\tfrac14,-\tfrac12+\tfrac{\sqrt3}2,\tfrac14,\tfrac12-\tfrac{\sqrt3}4)$.
+\end{example}
 
 \paragraph{The mean-frequency bound without symmetry.}
 For real frequencies the lower bound of \cref{fil:cor:cluster} needs no reflection symmetry: the mean
@@ -826,7 +809,7 @@ For the single-frequency problem the symmetric shortening also has an exact rate
 \cref{rec:thm:fwidth}, the real coordinates $Y(u)=(\Re,\Im)(u^ke^{s_ju})_{j,k}$ and
 $\eps(\mu)=\norm{\int Y\dd\mu}$, let $g=v\cdot Y$ be the certificate.
 
-\begin{theorem}[First-order cost of shortening; \stU]\label{rec:thm:fleak}
+\begin{theorem}[First-order cost of shortening at one frequency; \stU]\label{rec:thm:fleak}
 For $0<d<b$ let $D(d)=\min\set{\eps(\mu):\supp\mu\subset[d/2,b-d/2]}$. Then
 \[
  \lim_{d\downarrow0}\frac{D(d)}d=\frac{w_0g'(0)-w_mg'(b)}{2\norm v_*}>0 .
@@ -923,7 +906,8 @@ There is a unique $T\in(\pi/2,(n+2)\pi/(2r))$ with $s\cos(rT)/\cos T=M$. Then $\
 \]
 the unique minimizer up to translation is $\mu_r=\tfrac P2(\delta_{-t}+\delta_t)+\tfrac Q2(\delta_{-T}+\delta_T)$, the inner
 atoms combined when $t=0$.
-\item For $1<r<3$: $T=2\pi/(1+r)$, $\mathcal B(r)=4\pi/(1+r)$, $P=-c/(1-c)$, $Q=1/(1-c)$, $c=\cos(2\pi/(1+r))$.
+\item For $1<r<3$ this is \cref{fil:cor:pair} with $\alpha=1$, $\gamma=r$, $m=1$: $T=2\pi/(1+r)$,
+$\mathcal B(r)=4\pi/(1+r)$, $P=-c/(1-c)$, $Q=1/(1-c)$, $c=\cos(2\pi/(1+r))$.
 \end{enumerate}
 \end{theorem}
 
@@ -951,11 +935,10 @@ already balances the endpoints. Total mass and the first cosine moment then fix 
 both endpoints carry mass, so no admissible measure is shorter. At an odd resonance $\cos u\ge0$ on
 $[-\pi/2,\pi/2]$ forces the endpoints, the sine moment equal masses, and this measure annihilates the
 odd frequency $n$; any shorter interval has positive cosine after centring. For $1<r<3$,
-$\cos u-\cos(ru)=2\sin\frac{(1+r)u}2\sin\frac{(r-1)u}2$ gives (iii).
+$\cos u-\cos(ru)=2\sin\frac{(1+r)u}2\sin\frac{(r-1)u}2$ gives (iii), which is also \cref{fil:cor:pair}.
 \end{proof}
 
-For $r=(p+1)/p$ this is the case $H=2$, one real part, of \cref{rec:thm:hblock}, and (iii) is the case
-$m=1$ of \cref{fil:cor:pair}. The first-band formula and numerical two-mode solutions are known in the
+For $r=(p+1)/p$ this is the case $H=2$, one real part, of \cref{rec:thm:hblock}. The first-band formula and numerical two-mode solutions are known in the
 input-shaping literature
 \cite{CrainSinghoseSeering1996Derivation,SinghoseCrainSeering1997Convolved,Convolve1995Minimizing}, and the
 setting belongs to the extremal theory of positive-definite bandlimited functions \cite{Logan1983Extremal}.
@@ -970,7 +953,8 @@ $\widehat\mu(1)=\widehat\mu'(1)=0$, by \cref{rec:thm:fwidth}.
 \end{corollary}
 
 \begin{proof}
-Let $r\downarrow1$ in \cref{rec:thm:twofreq}(iii): $T\to\pi$, $c\to-1$, $P\to\tfrac12$, $Q\to\tfrac12$.
+Let $r\downarrow1$ in \cref{fil:cor:pair} with $\alpha=1$, $\gamma=r$, $m=1$, that is, in
+\cref{rec:thm:twofreq}(iii): $T\to\pi$, $c\to-1$, $P\to\tfrac12$, $Q\to\tfrac12$.
 \end{proof}
 
 \begin{theorem}[Asymmetric resonance law; \stU]\label{rec:thm:cusp}
@@ -1013,7 +997,7 @@ A perturbation $\eps$ of the higher frequency just above an odd multiple of the 
 costs a window increase of order $\eps^{1/3}$, and just below it only of order $\eps$. For
 $\eps(\nu)=\max\set{\abs{\widehat\nu(1)},\abs{\widehat\nu(r)}}$ and nonresonant $r$, with $t,T,M,P,Q,g$ as above:
 
-\begin{proposition}[Sharp stability; \stU]\label{rec:prop:twostable}
+\begin{proposition}[Sharp stability for two frequencies; \stU]\label{rec:prop:twostable}
 Every probability measure $\nu$ on $[-T,T]$ has $W_1(\nu,\mu_r)\le C_r\sqrt{\eps(\nu)}$, and the exponent $\tfrac12$
 cannot be increased. At an odd resonance, on $[-\pi/2,\pi/2]$, the optimal exponent is $1$.
 \end{proposition}
@@ -1027,7 +1011,10 @@ cost $\asymp a$. At a resonance $\cos u$ grows linearly from the endpoints, and 
 sharpness.
 \end{proof}
 
-\begin{theorem}[First-order cost of shortening; \stU]\label{rec:thm:twoshort}
+For $1<r<3$ the first assertion is a case of \cref{fil:thm:stable}, at the strictly positive pair base
+of \cref{fil:cor:pair} with $\gamma<3\alpha$.
+
+\begin{theorem}[First-order cost of shortening at two frequencies; \stU]\label{rec:thm:twoshort}
 For nonresonant $r$ and small $d>0$ let $D_r(d)=\inf\set{\eps(\nu):\supp\nu\subset[-T+d/2,T-d/2]}$ over
 probability measures. Then $D_r(d)=L_rd+O_r(d^2)$ with $L_r=Q(-g'(T))/(2(M+1))>0$, and for odd $n\ge3$,
 $L_{n+\eps}=\frac{3A_nC_n^2}{2(n+1)}\eps^{2/3}+O_n(\eps)$. At an odd resonance $r=n\ge3$, with $T=\pi/2$,
@@ -1537,10 +1524,10 @@ This is a positive continuous analogue of the equiripple Chebyshev window \cite{
 
 \begin{theorem}[Optimal support with attenuation; \stU]\label{fil:thm:optsupport}
 Under \eqref{fil:eq:count}, uniformly for $L\ge0$ as $B\to\infty$,
-\[
- \frac LB+\pi a\log B+\pi(b-a\log2)-O_\Lambda\Bigl(\frac{\log^2B}B\Bigr)\le H_\Lambda(B,L)
+\begin{multline*}
+ \frac LB+\pi a\log B+\pi(b-a\log2)-O_\Lambda\Bigl(\frac{\log^2B}B\Bigr)\le H_\Lambda(B,L)\\
  \le\frac{\operatorname{arcosh}(e^L)}B+\pi a\log B+O_\Lambda(1+\log\log B).
-\]
+\end{multline*}
 Thus $H_\Lambda(B,L)=L/B+\pi a\log B+O_\Lambda(1+\log\log B)$. The upper bound is attained by an even
 probability measure with $\int e^{ru}\dd\mu(u)\le\exp\bigl(\frac{r^2}2(C_\Lambda+\operatorname{arcosh}(e^L)/B^2)\bigr)$, and by an
 absolutely continuous one at an extra half-width $B^{-1}$.
@@ -1777,6 +1764,10 @@ The tail bound follows from $\abs{t-v}\ge\abs t-R$. The Laplace transform of a c
 that of a nonzero nonnegative function is positive wherever finite.
 \end{proof}
 
+\Cref{rec:lem:blurpos} in \cref{sec:chz} is the companion statement for a Laplace transform bounded below by a
+positive constant only on an interval $\abs y<A_0$: the kernel is then positive everywhere instead of compactly supported, and $h*k$ is
+bounded below by a multiple of $k$. Neither lemma implies the other.
+
 \begin{lemma}[Theta kernels and their convolution; \stU]\label{fil:lem:tails}
 For $\chi\ne\triv$ let $K_\chi(t)=2e^{(1/2+a_\chi)t}\sum_{n\ge1}\chi(n)n^{a_\chi}\exp(-\pi n^2e^{2t}/q_\chi)$, and let
 $K_\triv=\Phi$ of \cref{fil:lem:kernels}. Then $\int K_\chi(t)e^{wt}\dd t=\Lambda_\chi(\tfrac12+w)$ for all $w$, and
@@ -1843,7 +1834,7 @@ This is a necessary bound only; its sharpness is not known. For $\zeta$ alone, $
 such a density with exponent $2$ (a classical positive kernel \cite{Titchmarsh1986Theory}); for $L(s,\chi_{-4})$ the
 kernel $K_\beta$ is positive (\cref{fil:lem:kernels}), and the convolution of the two normalized kernels is a
 $d=2$ example (exponent $1$) without central division or smoothing. All primitive inducers modulo $q$ give
-exponent $2/\varphi(q)$. The checks in \artifact{grh_global_positive_filters_2026-11-27/examples_output.txt}
+exponent $2/\varphi(q)$. The checks in \artifact{grh_global_positive_filters_2026-11-27/}\allowbreak\artifact{examples_output.txt}
 are floating-point illustrations. The exponent is sharp for multiplicity-preserving cancellation; one vanishing
 per distinct ordinate might allow faster decay.
 
@@ -1949,10 +1940,14 @@ need not cancel the spectrum at other centres.
 The coefficient $\varphi(q)/2$ is sharp within this frequency-filtering model: for $L=T/2$ and any cutoff $B$,
 \cref{fil:cor:free} gives at least $(\varphi(q)/2)\log T-O_q(1)$. This is no lower bound for every method of
 balancing prime errors; a measure chosen at each $X$ for the actual finite vector of errors need not satisfy the
-stopband and multiplicity constraints. The result improves the common compact kernel of \cref{zer:thm:kernel},
-whose support is $O_q(\log^2B)$, with scales $X\exp(\pm O_q((\log\log X)^2))$ and remainder $O(X^{-1+\eps})$; it
-is a translation-independent rule and does not compete with centre-dependent exact balancing in bounded
-windows. For two classes modulo $4$ the compression filters of \cref{fil:cor:zetabeta} with $\alpha=1$ attenuation
+stopband and multiplicity constraints. It is a translation-independent rule and does not compete with
+centre-dependent exact balancing in bounded windows (\cref{zer:sec:balancing}). With $B=\log X$ it supersedes
+the consequence of the explicit sinc-product kernel of \cref{zer:thm:kernel} below, which has remainder
+$O_{q,\eps}(X^{-1+\eps})$ on the scales $X\exp(\pm O_q((\log\log X)^2))$. For general $B$,
+\cref{rec:thm:uniformavg} with \cref{rec:thm:logfilter} gives one rule of half-width
+$(\frac d2+c_0)\log B+O(\log\log B)$ and high-frequency tail $e^{-c_0B\log B}$ for a family of $d$ characters,
+against the support $O_q(\log^2B)$ and tail $K\pi^{-N_B}$ of that kernel; since $N_B\gg B\log B$, the tails
+are not directly comparable. For two classes modulo $4$ the compression filters of \cref{fil:cor:zetabeta} with $\alpha=1$ attenuation
 give the window $\log T+\log\log T+O(1)$ with remainder $O(T^{3/2}(\log T)^{1/2}/X)$, which this theorem
 supersedes. An exact rational certificate for the clustered multiset $\set{3/2,3/2,7/4,11/4,17/5,19/5,47/10}$ and
 numerical zeta filters for $B\le200$ are
@@ -1963,67 +1958,23 @@ numerical zeta filters for $B\le200$ are
 At these small cutoffs the colouring construction is not shorter than one uniform factor per ordinate, and its
 improvement is in asymptotic order.
 
-For $\zeta$ alone, the compressed theta density of \cref{fil:thm:zetaexplicit} also matches the secondary term of
-the ramp formula and gives a sharper remainder.
-
-\begin{lemma}[Ramp formula with secondary term; \stG]\label{fil:lem:zetaramp}
-Let
-\[
- R(x)=\sum_{n\le x}\Lambda(n)\Bigl(\frac1n-\frac1x\Bigr)-\log x+1+\gamma_E .
-\]
-For $x\ge2$,
-\[
- R(x)=x^{-1/2}\sum_\gamma\frac{m_\gamma e^{i\gamma\log x}}{1/4+\gamma^2}+\frac{\log(2\pi)}x+O(x^{-3/2}),
-\]
-the sum over the distinct signed zeta ordinates with multiplicities $m_\gamma$, absolutely and uniformly
-convergent.
-\end{lemma}
-
-\begin{proof}
-Shift the Mellin integral of $-\zeta'/\zeta(s)\,x^{s-1}/(s(s-1))$ from $\Re s>1$ to $\Re s=-\tfrac12$, where the
-functional equation gives $-\zeta'/\zeta=O(\log(2+\abs t))$ and the integral is $O(x^{-3/2})$; horizontal segments
-at heights avoiding ordinates vanish in the limit. The residues are $\log x-1-\gamma_E$ at $s=1$, $\log(2\pi)/x$ at
-$s=0$ (as $\zeta'/\zeta(0)=\log2\pi$), and $m_\rho x^{\rho-1}/(\rho(1-\rho))$ at the zeros, which RH turns into the
-displayed series.
-\end{proof}
-
-\begin{theorem}[A short exact zero-cancelling prime average; \stG]\label{fil:thm:zetaprime}
-For large $X$ put $B=4\log X$ and let $\mu_B$ be the density of \cref{fil:thm:zetaexplicit}. Then
-\[
- \int e^{u/2}R(Xe^u)\dd\mu_B(u)=\frac{\log(2\pi)}{2\xi(\tfrac12)\,X}+O(X^{-3/2}),
-\]
-with all scales in $[X/L_X,XL_X]$, $L_X=O(\sqrt{\log X\log\log X})$. The measure is independent of the centre once
-$B$ is fixed and cancels each zero contribution up to $B$.
-\end{theorem}
-
-\begin{proof}
-For $\abs y\ge2$, Stirling and a polynomial bound for $\zeta$ give $\abs{\Xi(y)/\Xi(0)}\ll e^{-\abs y/2}$, so with
-the total-variation bound of \cref{fil:thm:zetaexplicit}, $\sup_{\abs y\ge B}\abs{F_{\mu_B}(y)}\ll e^{-B/2}$. Insert
-\cref{fil:lem:zetaramp}: the zeros up to $B$ vanish, the others give $O(X^{-1/2}e^{-B/2})=O(X^{-5/2})$, the secondary
-term gives $\log(2\pi)X^{-1}F_{\mu_B}(i/2)$, and the contour error integrates to
-$O(X^{-3/2}\int e^{-u}\dd\mu_B)=O(X^{-3/2})$ by the domination $\dd\mu_B\le2\Phi\,\dd u/\Xi(0)$; the crude bound $e^{H_B}$ is
-not needed. Finally $e^{H_B}=16\sqrt{M(4\log X)+3}$.
-\end{proof}
-
-Matching finitely many further moments $e^{ct}$ in \cref{fil:thm:compress} (with $H=\tfrac12\log n+C_a$) and shifting
-the contour farther left gives variants with any fixed number of lower-order residue terms.
-
-A different averaging rule is independent of the centre and of the target.
-
-\begin{theorem}[Common compact kernel; \stG]\label{zer:thm:kernel}
+\begin{remark}[An explicit sinc-product kernel; \stG]\label{zer:thm:kernel}
+In the notation of \cref{rec:thm:polylogavg} put $F(v)=(e^{v/2}R_a(e^v))_{a}$, $\beta=(\beta_a)_a$, and let
+$K=\sum_\gamma\norm{c(\gamma)}$ with $c(\gamma)=(v_a(\gamma)/(\tfrac14+\gamma^2))_a$, as in \cref{zer:cor:smoothbalance}.
 For $B\ge2$ let $\mathcal Z_B$ be the multiset of the absolute values $0<\abs\gamma\le B$ of the
 ordinates of all $L(s,\chi^*)$, $\chi\bmod q$, with multiplicity and both signs, $N_B=\abs{\mathcal Z_B}$,
 \[
  H_B=\pi\sum_{g\in\mathcal Z_B}\frac1g,\qquad
  \mu_B=\mathop{\ast}_{g\in\mathcal Z_B}\operatorname{Unif}[-\pi/g,\pi/g].
 \]
-Then $\mu_B$ is a probability measure on $[-H_B,H_B]$, and for $T\ge H_B$ and fixed
-$0<\delta<\tfrac12$,
+Then $\mu_B$ is a probability measure on $[-H_B,H_B]$, independent of the centre and of the class, and
+for $T\ge H_B$ and fixed $0<\delta<\tfrac12$,
 \[
  \Bigl\|\int F(T+w)\,\dd\mu_B(w)-\beta\Bigr\|_2\le K\pi^{-N_B}+C_{q,\delta}e^{-(1/2-\delta)(T-H_B)}.
 \]
-Moreover $H_B=O_q(1+\log^2B)$ and $N_B\gg B\log B$.
-\end{theorem}
+Moreover $H_B=O_q(1+\log^2B)$ and $N_B\gg B\log B$. The support is not optimal, but the kernel and its
+high-frequency bound are explicit.
+\end{remark}
 \begin{proof}
 Convolution adds support radii and preserves mass, and
 \[
@@ -2038,21 +1989,45 @@ positive minimum among the finitely many small ordinates; the zeta factor and th
 Riemann--von Mangoldt formula give $N_B\gg B\log B$.
 \end{proof}
 
-The kernel is an explicit product of sinc factors, with the explicit high-frequency bound
-$K\pi^{-N_B}$; its support $O_q(\log^2B)$ is not optimal. For a family of $d$ characters the filters of
-\cref{rec:thm:logfilter} cancel all ordinates up to $B$ with half-width $\frac d2\log B+O(\log\log B)$,
-which is sharp to leading order, and $(\frac d2+c_0)\log B+O(\log\log B)$ with high-frequency tail
-$e^{-c_0B\log B}$. With $B=\log X$ and attenuation $e^{-(\log X)/2}$ they give \cref{rec:thm:polylogavg},
-one probability measure for all classes, supported in
-\[
- \Bigl[-H_X,H_X\Bigr],\qquad H_X\le\frac{\varphi(q)}2\log\log X+O_q(1+\log\log\log X),
-\]
-with remainder $O_q((1+\log X)/X)$ after the weight $e^{u/2}$. This supersedes the consequence of
-\cref{zer:thm:kernel} with $B=\log X$, which has remainder $O_{q,\eps}(X^{-1+\eps})$ on the scales
-$X\exp(\pm O_q((\log\log X)^2))$.
+For $\zeta$ alone, the compressed theta density of \cref{fil:thm:zetaexplicit} also matches the secondary term of
+the ramp formula and gives a sharper remainder.
 
-\paragraph{Finite positive grids and central zeros.}
-For a family $\anaC$ as above let $S$ be the ramp of $\Lambda a_\anaC$ and $R$ its centred
+\begin{remark}[Ramp formula with secondary term; \stG]\label{fil:lem:zetaramp}
+Let $R(x)=S(x)-\log x+1+\zergE$, with $S$ the ramp sum of \cref{zer:lem:mass}. Under \cref{src:thm:dgrh},
+\eqref{zer:eq:zetaexact} gives, for $x\ge1$,
+\[
+ R(x)=x^{-1/2}\sum_\gamma\frac{m_\gamma e^{i\gamma\log x}}{1/4+\gamma^2}+\frac{\log(2\pi)}x-\mathcal T(1/x),\qquad
+ 0\le\mathcal T(1/x)\le x^{-3},
+\]
+the sum over the distinct signed zeta ordinates with multiplicities $m_\gamma$, absolutely and uniformly
+convergent; the bound on $\mathcal T$ follows from its power series and $\mathcal T(1)=1-\log2$.
+\end{remark}
+
+\begin{theorem}[A short exact zero-cancelling prime average; \stG]\label{fil:thm:zetaprime}
+For large $X$ put $B=4\log X$ and let $\mu_B$ be the density of \cref{fil:thm:zetaexplicit}. Then
+\[
+ \int e^{u/2}R(Xe^u)\dd\mu_B(u)=\frac{\log(2\pi)}{2\xi(\tfrac12)\,X}+O(X^{-3/2}),
+\]
+with all scales in $[X/L_X,XL_X]$, $L_X=O(\sqrt{\log X\log\log X})$. The measure is independent of the centre once
+$B$ is fixed and cancels each zero contribution up to $B$.
+\end{theorem}
+
+\begin{proof}
+For $\abs y\ge2$, Stirling and a polynomial bound for $\zeta$ give $\abs{\Xi(y)/\Xi(0)}\ll e^{-\abs y/2}$, so with
+the total-variation bound of \cref{fil:thm:zetaexplicit}, $\sup_{\abs y\ge B}\abs{F_{\mu_B}(y)}\ll e^{-B/2}$. Insert
+\cref{fil:lem:zetaramp}: the zeros up to $B$ vanish, the others give $O(X^{-1/2}e^{-B/2})=O(X^{-5/2})$, the secondary
+term gives $\log(2\pi)X^{-1}F_{\mu_B}(i/2)$, and the remainder $\mathcal T(1/x)\le x^{-3}\le x^{-3/2}$ integrates to
+$O(X^{-3/2}\int e^{-u}\dd\mu_B)=O(X^{-3/2})$ by the domination $\dd\mu_B\le2\Phi\,\dd u/\Xi(0)$; the crude bound $e^{H_B}$ is
+not needed. Finally $e^{H_B}=16\sqrt{M(4\log X)+3}$.
+\end{proof}
+
+Matching finitely many further moments $e^{ct}$ in \cref{fil:thm:compress} (with $H=\tfrac12\log n+C_a$) and shifting
+the contour farther left gives variants with any fixed number of lower-order residue terms.
+
+\subsection{Finite positive grids and the central multiplicity}\label{fil:sec:grids}
+{\raggedright\sources{grh_local_spectral_detection; grh_multiscale_prime_fluctuations; finite_scale_prime_products_research; grh_binomial_filter; grh_sharp_extensions_2026-11-27}}
+
+For a family $\anaC$ of \cref{ana:sec:family}, with weights $b_\chi$, let $S$ be the ramp of $\Lambda a_\anaC$ and $R$ its centred
 remainder (\cref{ana:def:ramp}), let $\delta=\sum_{\chi\ \mathrm{principal}}b_\chi$, and put
 \[
  d(t)=\frac{e^{(t+1)/2}}{e^{1/2}-1}\bigl\{\delta+S(e^t)-S(e^{t+1})\bigr\}
@@ -2174,6 +2149,10 @@ The same proof gives $O(e^{-\kappa m}+\log k/k^r)$ when
 $\abs{c_\gamma}\le B\nu_\gamma(1+\abs\gamma)^{-r}$ with $r>1$, the alias constant now involving
 $\zeta(r)$ and $-\zeta'(r)$. With $m\ge(r/\kappa)\log k$ and $m\asymp\log k$, the error in
 $N\asymp k\log k$ taps is $O((\log N)^{r+1}/N^r)$.
+
+\Cref{rec:thm:uniformavg} is the continuous analogue of \cref{ana:thm:alias}, and \cref{fil:thm:globalprime} and
+\cref{rec:thm:polylogavg} read off the same central term with other positive rules; none of these statements
+implies another.
 
 \begin{proposition}[The alias term is necessary; \stU]\label{ana:prop:alias}
 For every integer $k\ge2$, every probability measure supported on $k^{-1}\Z$ has Fourier
@@ -2300,6 +2279,7 @@ and $A_h=(I+T_h)/2$, put
 with $(m+1)^2$ shifts and positive weights of sum one, and write $M_X=M_\anaC$.
 
 \begin{theorem}[Binomial filter; \stU\ and \stG]\label{ana:thm:binomial}
+\leavevmode
 \begin{enumerate}[label=\textup{(\roman*)}]
 \item \textup{(\stU)} For every fixed $m\ge0$, GRH for the characters in $X$ is equivalent to
  an upper bound for $B_md(t)$ for large $t$, and to a two-sided bound. If some $L(s,\chi)$,
@@ -2341,7 +2321,7 @@ $4M_X+O(\log(2U)/U)+O(e^{-t/4})$ with total shift $O(\log^2(2U))$, and the conve
 for any fixed finite product of such operators.
 
 \subsection{Open questions}\label{fil:sec:open}
-\sources{quadratic_spectra; dirichlet_zero_filters; grh_positive_spectral_extensions_2026-11-27; logarithmic_dirichlet_zero_filters_2026-11-26; grh_global_positive_filters_2026-11-27; grh_optimal_positive_filters; optimal_dirichlet_zero_filters; optimal_zero_filters; sharp_positive_zero_filters; sharp_zero_filters; sharp_zeta_filters; grh_extensions_2026-11-27_2; grh_zero_filter_tradeoff; gram-euler-and-zero-filters; grh_cayley_and_filters; grh_hidden_forms_and_filters_2026-11-27}
+\sources{quadratic_spectra; dirichlet_zero_filters; grh_positive_spectral_extensions_2026-11-27; logarithmic_dirichlet_zero_filters_2026-11-26; grh_global_positive_filters_2026-11-27; grh_optimal_positive_filters; optimal_dirichlet_zero_filters; optimal_zero_filters; sharp_positive_zero_filters; sharp_zero_filters; sharp_zeta_filters; grh_extensions_2026-11-27_2; grh_zero_filter_tradeoff; gram-euler-and-zero-filters; grh_cayley_and_filters; grh_hidden_forms_and_filters_2026-11-27; grh_binomial_filter}
 
 \begin{enumerate}
 \item \emph{Global phase diagrams.} \Cref{rec:thm:twofreq,rec:thm:cusp} settle two arbitrary frequencies with
@@ -2381,4 +2361,13 @@ maximum of its phase profile?
 \item \emph{Sharper prime remainders.} Can explicit finite Euler-factor terms and the residue at $0$ be removed
 from \cref{rec:thm:polylogavg}, as \cref{fil:thm:zetaprime} does for $\zeta$, and does approximate cancellation alone
 have a universal leading support coefficient under a natural robustness requirement?
+\item \emph{Uniform versions of the family statistics.} The constants in \cref{ana:thm:grid} are for a fixed
+family. Can they be made effective and uniform in the conductor, with explicit values of the
+local-count, remainder and gap constants $A$, $E$ and $\eta$ of \cref{ana:thm:alias} for a
+chosen modulus, and hence an explicit rounding threshold in \cref{ana:thm:grid}?
+\Cref{ana:prop:alias} shows that the alias term $\log k/k^2$ cannot be
+removed on the lattice $k^{-1}\Z$ within the abstract spectral class; is the rate of
+\cref{ana:thm:grid} optimal among irregular sampling schedules, or for actual Dirichlet zero
+spectra? Do the converses of \cref{ana:thm:gridconverse,ana:thm:binomial}(i) hold for a depth
+that grows slowly with $t$?
 \end{enumerate}

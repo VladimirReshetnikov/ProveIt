@@ -11,7 +11,9 @@ This section fixes the statement that is used as input in the rest of the articl
 how its proof is organised, and isolates those parts of the mechanism that can be stated and
 proved without reference to the source. Assertions about the source development describe its
 content at the pinned commit; they are quoted, not re-proved. Everything stated as a lemma or
-proposition in this section is proved here and does not depend on the input theorem.
+proposition in this section is proved here and does not depend on the input theorem. The
+spanning and completion step of the mechanism, with its integral refinements, is treated in
+\cref{sec:spn}.
 
 \subsection{The input theorem}\label{src:sec:input}
 \begingroup\raggedright
@@ -152,7 +154,10 @@ on the untwisted map; \cref{src:sec:quantifiers} records the compatibility condi
 imposes. The existence of the required twists is where the congruence and Selmer machinery
 of the source enters: an anticyclotomic twisting theorem
 (\code{New.Selmer.exists_anticyclotomic_twist}) built on a selection lemma for $p$-power
-roots of unity (\code{RootsOfUnity.lean}), developed in \cref{sec:tors,sec:cost,sec:sel}.
+roots of unity (\code{RootsOfUnity.lean}). The selection lemma and its sharp forms are in
+\cref{sec:tors} (from \cref{tors:sec:setup} on), its use for packets of characters and the
+resulting global twists in \cref{tors:sec:characters,spn:sec:characters}, and the twisting
+theorem in \cref{sel:sec:interface}.
 
 \paragraph{Cancellation of the main term.}
 Combining (A)--(C) and using $M\ge0$ and $n\le D$ gives $nm\,\srcrem\le D(4L+2I)$; since
@@ -260,10 +265,13 @@ Criterion & \code{LFunction_ne_zero_of_primeRemainder_le} & \code{entireL_ne_zer
 \paragraph{Ingredients used on their own.}
 Several internal results of the source do not depend on its final theorem and are developed
 separately in this article: the selection of $p$-power roots of unity for finitely many
-integral polynomials (\code{RootsOfUnity.lean}; \cref{sec:tors,sec:cost}); the anticyclotomic
-twisting theorem and the bound \code{New.exists_length_shaOdd_le} for odd cocycle modules
-(\cref{sec:sel}); the second-moment spanning lemmas and the positive-type matrix lemma
-\code{New.card_mul_sum_det_eq_zero_le} (\cref{sec:spn}); the weighted Behrend-type lemma
+integral polynomials (\code{RootsOfUnity.lean}; \cref{sec:tors}, with fixed coefficient
+fields, powers, matrices and characters in \cref{sec:cost}); the anticyclotomic twisting
+theorem and the bound \code{New.exists_length_shaOdd_le} for odd cocycle modules
+(\cref{sec:sel}, with the exact annihilator in \cref{spn:sec:annihilator}); the second-moment
+spanning lemmas (\cref{spn:sec:spanning,spn:sec:source-improvement}); the positive-type matrix
+lemma \code{New.card_mul_sum_det_eq_zero_le} (\cref{spn:sec:positive-type}, the start of the
+section on random symplectic and orthogonal compressions, \cref{sec:cmp}); the weighted Behrend-type lemma
 \code{exists_three_term_free} (\cref{sec:gpp,sec:gpi}); the sharpness lemma for one curve,
 \code{New.exists_monomial_max_norm_coeff} (\cref{sec:lub}); and the estimates for principal
 submatrices and Schur complements in the file \code{HermitianMatrices.lean}
@@ -339,26 +347,8 @@ $\srcB=fa\log^3b$, so that
 mR\le4L+4x^{99}+10\log(1+b^2)\srcB\le(\log b)^2\srcB=fa(\log b)^5 .
 \]
 
-\begin{corollary}[Completion cost; \stU]\label{src:cor:completion}
-In \cref{src:prop:amplification} assume $M\ge0$ and replace the first inequality of
-\eqref{src:eq:sandwich} by
-\[
-D(M-L_0)-(D-n)K\le V+2\delta
-\]
-with $L_0,K\ge0$, and assume $n\ge(1-\eta)D$ with $0\le\eta<1$. Then
-\[
-R\le\frac{U+(L_0+2I+\eta K)/(1-\eta)}{m} .
-\]
-\end{corollary}
-
-\begin{proof}
-Since $D-n\le\eta D$, the hypotheses of \cref{src:prop:amplification} hold with
-$L=L_0+\eta K$ and $\theta=1-\eta$. Apply (i).
-\end{proof}
-
-A spanning fraction is therefore useful only together with an affordable cost $K$ for each
-missing dimension. The next statement tracks this cost in the form in which it arises from
-\eqref{src:eq:twisted}, with $r=n'$, $K=b_{\mathrm{short}}+b_{\mathrm{denom}}$ and
+Completing vectors are not free. The next statement tracks their cost in the form in which it
+arises from \eqref{src:eq:twisted}, with $r=n'$, $K=b_{\mathrm{short}}+b_{\mathrm{denom}}$ and
 $b_{\mathrm{volume}}\le-DA+B$.
 
 \begin{proposition}[Rank deficit versus completion cost; \stU]\label{src:prop:rank}
@@ -372,9 +362,9 @@ Then
 nmR\le nU+2\delta+B+r(K-A) .
 \end{equation}
 If $A\ge0$, then
-\[
+\begin{equation}\label{src:cor:completion}
 R\le\frac{U+(2\delta+B)/n+(r/n)K}{m} .
-\]
+\end{equation}
 \end{proposition}
 
 \begin{proof}
@@ -383,10 +373,19 @@ is \eqref{src:eq:rank}, and no sign assumption has been used. If $A\ge0$, discar
 divide by $nm$.
 \end{proof}
 
+In the setting of \cref{src:prop:amplification}, suppose that $M\ge0$, that the first
+inequality of \eqref{src:eq:sandwich} is weakened to $D(M-L_0)-(D-n)K\le V+2\delta$ with
+$L_0,K\ge0$, and that $n\ge(1-\eta)D$ with $0\le\eta<1$. Taking $c=V$, $A=M$, $B=DL_0$ and
+$r=D-n$, and using $\delta\le DI$, $D/n\le1/(1-\eta)$ and $r/n\le\eta/(1-\eta)$,
+\eqref{src:cor:completion} becomes
+$R\le\bigl[U+(L_0+2I+\eta K)/(1-\eta)\bigr]/m$. A spanning fraction is therefore useful only
+together with an affordable cost $K$ for each missing dimension.
+
 In \eqref{src:eq:rank} the deficit $r$ is charged by $K-A$, the excess of the completion cost
 over the main amount, not by $K$ alone. An extension of the method must therefore achieve a
 small rank deficit, or cheaper completing vectors, or a compensating estimate for the term
-$-rA$; \cref{sec:spn} makes the corresponding weakening of the source hypothesis explicit.
+$-rA$; \cref{spn:sec:missing} makes the corresponding weakening of the source hypothesis
+explicit.
 
 \begin{remark}[Rates]\label{src:rem:rates}
 Suppose a construction provides, at scale $x$, an amplification $m\ge x^{\alpha}$, a spanning
@@ -405,6 +404,11 @@ constructions, separate bounds for the average of $\alpha$ and for the average o
 not control the average of $(L+2I)/\alpha$; an averaged version must retain the combined loss.
 The averaged analytic criteria of \cref{sec:ana} are formulated accordingly.
 \end{remark}
+
+Why almost all of the target must be spanned, and the cost of completing a smaller family, are
+treated in \cref{src:sec:span}; how small the Gram determinant of an integral family with many
+nonzero maximal minors can be is the subject of \cref{src:sec:gram}. Both are in
+\cref{sec:spn}, with the sharp spanning lemma and the integral frames.
 
 \subsection{Quantifiers in the twisting step}\label{src:sec:quantifiers}
 \begingroup\raggedright
@@ -432,8 +436,8 @@ suffices.
 \paragraph{Products and individual valuations.}
 A bound for a product of determinants bounds the sum of their valuations, not each valuation:
 an unexpectedly small valuation of one factor can offset an inadmissibly large one of another.
-The selection results of \cref{sec:tors} therefore keep the individual inequalities and
-bound the bad choices by a union bound. The same care is needed when finite certificates are
+The selection results with individual bounds (\cref{cost:sec:packet,tors:sec:tolerance})
+therefore keep the individual inequalities and bound the bad choices by a union bound. The same care is needed when finite certificates are
 aggregated over several probes, since a witness may change from probe to probe.
 
 \begin{lemma}[Products before gcds; \stU]\label{src:lem:gcd}
@@ -464,41 +468,25 @@ For a fixed coefficient prime $\ell$, finitely many Selmer data and a power rang
 $1\le e\le m$, the theorem \code{exists_anticyclotomic_twist} produces a finite set of
 auxiliary primes and one finite-order anticyclotomic character $\psi$ whose first $m$ powers
 simultaneously have bounded normalised Selmer lengths, controlled valuations of the attached
-value systems and small auxiliary ramification cost. In the readable edition the predicate
-\code{TwistedLengthLe} bounds the length of the Selmer module with divisible coefficients
-$\operatorname{Frac}(O')/O'$, for all sufficiently large coefficient rings $O'$. The
-intermediate torsion precision is chosen with a strict margin above the error bound, and a
-torsion module whose $\pi^N$-torsion has length less than $N$ is equal to that torsion
-(\code{length_selmerModule_divisibleQuot_le}); so the conclusion is not restricted to a finite
-level and no interchange of ``for every precision there is a twist'' with ``there is a twist
-for every precision'' occurs. The details, and the comparison with the finite-precision
-statement displayed in the compact edition, are in \cref{sec:sel}. The remaining
-qualifications are arithmetic.
-\begin{itemize}
-\item A \code{SelmerDatum} requires residual absolute irreducibility, a local rank budget,
-finite conjugate-dual and local defects, and an inertial element acting by a scalar $\zeta$
-with $\zeta^2-1$ a unit; a nonzero pure Tate twist, being unramified away from $\ell$, cannot
-satisfy the last condition directly (\cref{sec:sel}). The local conditions of a datum are
-those of the source and must be compared with the conditions of any arithmetic group one has
-in mind.
-\item The order of $\psi$, the coefficient extension and the auxiliary primes may vary with
-the requested tolerance. The theorem bounds an order exponent and normalised losses. It does
-not bound the norms of the auxiliary primes or the conductor of $\psi$, and it does not
-prescribe a fixed order or give one character good at every coefficient prime.
-\item The auxiliary characters are of the form $\psi=\xi/\xi^c$ with $c$ complex conjugation,
-where the precursor $\xi$ is ramified on only one side of each conjugate pair and is trivial
-on the whole decomposition groups, not only the inertia groups, at the prescribed places
-(\code{IsFromU1}). Triviality of $\psi$ alone at those places is a weaker condition. The
-effect on which local torsion data extend to global twists, and on their conductors, is worked
-out in \cref{sec:spn}.
-\item The value systems enter through a seed whose valuation is assumed finite; the theorem
-preserves nonvanishing of an existing seed and does not create it.
-\item Lengths are normalised by the absolute ramification index of the coefficient ring. For
-$O_N=\Z_\ell[\zeta_{\ell^N}]$ with uniformiser $\varpi_N=\zeta_{\ell^N}-1$, the nonzero module
-$O_N/(\varpi_N)$ has normalised length $1/(\ell^{N-1}(\ell-1))$, which tends to $0$. A
-normalised bound that shrinks over increasingly ramified coefficient rings therefore does
-not give vanishing; over a fixed coefficient ring a length less than $1$ does.
-\end{itemize}
+value systems and small auxiliary ramification cost. Its interface is described in
+\cref{sel:sec:interface}: the requirements of a \code{SelmerDatum}, among them an inertial
+element acting by a scalar $\zeta$ with $\zeta^2-1$ a unit, which a nonzero pure Tate twist
+cannot supply, and the fact that the value systems enter through a seed whose nonvanishing is
+preserved, not created. Four qualifications matter for any transfer. The length bound concerns
+Selmer modules with divisible coefficients over all sufficiently large coefficient rings; it is
+obtained from one finite torsion precision chosen with a strict margin, so no interchange of
+``for every precision there is a twist'' with ``there is a twist for every precision'' occurs
+(\cref{sel:sec:quantifiers,sel:prop:saturation}). Lengths are normalised by the absolute
+ramification index, so a normalised bound that shrinks over increasingly ramified coefficient
+rings does not give vanishing, while over a fixed coefficient ring a small enough length does
+(\cref{sel:prop:threshold,sel:sec:ramification}). The order of $\psi$, the coefficient extension
+and the auxiliary primes may vary with the requested tolerance: the theorem bounds an order
+exponent and normalised losses, but not the norms of the auxiliary primes or the conductor of
+$\psi$, and it gives no character good at every coefficient prime; for the simpler unrestricted
+realization problem over an abelian CM base, Dirichlet GRH gives an explicit conductor bound
+(\cref{spn:thm:bounded-conductor}). Finally, the auxiliary characters are $\psi=\xi/\xi^c$ for a
+precursor $\xi$ that is trivial on whole decomposition groups at the prescribed places
+(\code{IsFromU1}), which is stronger than triviality of $\psi$ there (\cref{spn:sec:benchmark}).
 
 \subsection{What a transfer must supply, and what does not transfer}\label{src:sec:limits}
 \begingroup\raggedright
@@ -506,9 +494,10 @@ not give vanishing; over a fixed coefficient ring a length less than $1$ does.
 \endgroup
 
 Three kinds of reuse occur in this article. A \emph{consequence} uses \cref{src:thm:dgrh} as a
-black box (\cref{sec:zer,sec:dir,sec:cls,sec:smd}). A \emph{transfer of an ingredient}
-develops one component of the proof for another problem and usually does not depend on
-\cref{src:thm:dgrh} at all (\cref{sec:tors,sec:cost,sec:lub,sec:gra,sec:gpp,sec:gpi,sec:spn}).
+black box (\cref{sec:zer,sec:dir,sec:prd,sec:cls,sec:cmf,sec:smd}). A \emph{transfer of an
+ingredient} develops one component of the proof for another problem and usually does not depend
+on \cref{src:thm:dgrh} at all
+(\cref{sec:tors,sec:cost,sec:lub,sec:gra,sec:gpp,sec:gpi,sec:spn,sec:cmp}).
 A \emph{transfer of the mechanism} would re-create the comparison of
 \cref{src:sec:mechanism} for a new prime statistic, and is the route to zero-free half-planes
 for $L$-functions outside \cref{src:thm:dgrh}. For the last kind the analytic step is the
@@ -631,17 +620,16 @@ Ramanujan-type bounds would need an isolation step that the source does not cont
 
 \paragraph{Internal notions are specialised.}
 Several background theories inside the source are developed only in the strength its proof
-needs: the attachment of Galois representations is a statement about $p$-adic limits along a
-special filter of Frobenius data, compatibility at a split place says that a Hecke polynomial
-annihilates Frobenius and does not by itself identify the characteristic polynomial, and no
-general Weil--Deligne construction is supplied. A result about these internal objects is a
-statement about a standard arithmetic object only after a comparison has been proved;
-\cref{sec:sel} gives such comparisons for the odd cocycle module and records what remains
-for Selmer groups, the Birch--Swinnerton-Dyer conjecture, Vandiver's conjecture and algebraic
-$K$-groups. In particular, the shortened source bounds the lengths of odd cocycle modules for
-a fixed cyclotomic CM field by the valuations of one integer, and its denominator estimate is
-arranged so that the even classes do not enter; avoiding those classes is not a proof that
-they vanish. The remark of the original announcement on $K$-groups and a weakening of
+needs; in particular the attached Galois representations and the compatibility at split places
+do not identify characteristic polynomials (\cref{sel:sec:euler}, which also gives the upgrade
+in rank two), and no general Weil--Deligne construction is supplied. A result about these
+internal objects is a statement about a standard arithmetic object only after a comparison has
+been proved; \cref{sec:sel} gives such comparisons for the odd cocycle module
+(\cref{sel:sec:oddsha}) and records what remains for Selmer groups, the Birch--Swinnerton-Dyer
+conjecture, Vandiver's conjecture and algebraic $K$-groups (\cref{sel:sec:ktheory}). In
+particular, the shortened source bounds the lengths of odd cocycle modules for a fixed
+cyclotomic CM field by the valuations of one integer, and its denominator estimate is arranged
+so that the even classes do not enter; avoiding those classes is not a proof that they vanish. The remark of the original announcement on $K$-groups and a weakening of
 Vandiver's conjecture \cite[Step~17]{Alpoge2026Remark} refers to an interface of the original,
 larger development that is absent from the shortened source tree.
 
@@ -676,15 +664,4 @@ statistic at two nearby scales, so that neither the centring constant nor a seco
 cutoff is needed?
 \end{question}
 
-\begin{question}\label{src:q:gram}
-For fixed $(r,n,z)$, what is the least value of $\det(AA^{\srctr})/D^2$ in
-\cref{src:thm:gram}? The three affine bounds are each attained for $r=2$, $n=5$, but their
-maximum is not claimed to be optimal for every triple. For $r=2$ and $z=0$,
-\cref{src:thm:gramasym} gives $E(n)=\kappa(n-1)^4+O(n^2)$: what are the limit points of
-$(E(n)-\kappa(n-1)^4)/n^2$, at which the row endpoints and the basis shear enter, and from which $n$
-on are all minimizers confined to six rows? For $r=2$ and a fixed number of vanishing minors, where
-the multiplicities of repeated directions must also be optimized, what is the asymptotic minimum? For
-fixed $r\ge3$, what is the sharp constant, or even the order of growth, of $E_r(n)/\binom nr$, which
-\cref{src:cor:gramrank} bounds below by $(2\kappa+o(1))n^2$?
-\end{question}
 \endgroup

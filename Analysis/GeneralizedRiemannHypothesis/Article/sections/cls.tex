@@ -3,14 +3,23 @@
 \providecommand{\dirP}{\mathbb{P}}
 \providecommand{\dirE}{\mathbb{E}}
 \providecommand{\dirU}{\mathrm{U}}
-\section{Imaginary quadratic fields of class-group exponent six and seven}\label{sec:cls}
+\section{Class groups of imaginary quadratic fields and orders}\label{sec:cls}
 
 \providecommand{\clsp}{\mathfrak p}
 \providecommand{\clsq}{\mathfrak q}
 \providecommand{\clsXz}{X_0}
 
 The \emph{exponent} of a finite abelian group is the least positive integer that
-annihilates every element. Throughout this section $D<0$ is a fundamental discriminant,
+annihilates every element. This section collects every class-group exponent census of
+the article. \Cref{cls:sec:inputs} records the published inputs, the exponents one to five
+and eight (\cref{cls:prop:small}), and the exponent five with rank two
+(\cref{cls:rem:five}); \cref{dir:sec:idoneal} completes Euler's list of idoneal numbers,
+which is the census of exponent at most two for orders (\cref{dir:thm:idoneal}), and
+\cref{dir:sec:xyz} applies it to the representations $n=xy+yz+zx$; the remaining
+subsections close the exponents six and seven and give two restrictions valid for every
+even exponent. The CM coefficient fields and reflected
+fields built from these lists are in \cref{sec:cmf}. Except in
+\cref{dir:sec:idoneal,dir:sec:xyz}, $D<0$ is a fundamental discriminant,
 $x=\abs{D}$, $K=\Q(\sqrt D)$, and $\chi=\chi_D=(D/\cdot)$ is the primitive odd quadratic
 character of conductor $x$. We put
 \[
@@ -53,14 +62,36 @@ $9,56,17,203,27,432,33,778$ fields of exact exponent $1,2,\dots,8$ respectively.
 \item\label{cls:it:bound} (Theorem~3 and Table~2.) If $\zeta_K$ satisfies the Riemann
 hypothesis and $\Cl(K)$ has exponent $e$, then $x\le2.3\cdot10^{20}$ for $e=5$,
 $x\le X_1:=2.5\cdot10^{25}$ for $e=6$, and $x\le3.9\cdot10^{30}$ for $e=7$. The analytic
-input is the bound of Bach and Sorenson \cite{Bach1996Explicit} for the least rational prime
-that splits in $K$, combined with the norm inequality of \cref{cls:lem:norm}.
+input is the bound for the least rational prime that splits in $K$,
+\cref{cls:lem:splitprime}(a), combined with the norm inequality of \cref{cls:lem:norm}.
 \item\label{cls:it:complete} (Theorem~2.) Under the same hypothesis the lists in
 \ref{cls:it:census} are complete for the exponents $1,2,3,4,5$ and $8$. The exponents six
 and seven are excluded from this assertion.
 \end{enumerate}
 Since $\zeta_K(s)=\zeta(s)L(s,\chi_D)$, the hypothesis of \ref{cls:it:bound} and
 \ref{cls:it:complete} holds for every $K$ by \cref{src:thm:dgrh}.
+
+The two published bounds for least split primes used in this section and in
+\cref{sec:cmf} are the following.
+
+\begin{lemma}[Least split primes; \stG]\label{cls:lem:splitprime}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \textup{(\cite[Theorem~3]{Elsenhans2020Imaginary}.)} If $D<0$ is a fundamental
+discriminant with $\log\abs D>25$, then some rational prime
+$p\le(1.881\log\abs D+6.18)^2$ splits in $\Q(\sqrt D)$.
+\item \textup{(\cite[Theorem~5.1]{Bach1996Explicit}.)} If $F/\Q$ is an abelian field of
+degree $n$ and discriminant $\Delta_F$, then some rational prime
+$p\le(4\log\abs{\Delta_F}+\tfrac52n+5)^2$ is unramified in $F$ and has trivial Frobenius
+in $\Gal(F/\Q)$. For a quadratic field the bound is $(4\log\abs{\Delta_F}+10)^2$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Both statements are proved under the Riemann hypothesis for the Dedekind zeta function
+of the field; the first rests on the second. For $\Q(\sqrt D)$ that zeta function is
+$\zeta(s)L(s,\chi_D)$, and for an abelian field it is a product of Dirichlet $L$-functions
+by \cref{dir:prop:abelian}. In both cases \cref{src:thm:dgrh} supplies the hypothesis.
+\end{proof}
 
 \begin{proposition}[Exponents one to five and eight; \stG]\label{cls:prop:small}
 The numbers of imaginary quadratic fields whose class group has exact exponent
@@ -78,7 +109,10 @@ remains. Of the 27 fields, 25 have class group $\Z/5\Z$, and the class group is
 $(\Z/5\Z)^2$ for $D=-12451$ and $D=-37363$. An independent enumeration of the $75{,}988$
 negative fundamental discriminants with $x\le250{,}000$, through their $11{,}689{,}615$
 reduced forms, finds 196 fields whose class number is a nontrivial power of five, of which
-exactly these 27 have exponent five; see \ref{cls:it:c-five} in \cref{cls:sec:six}.
+exactly these 27 have exponent five; see \ref{cls:it:c-five} in \cref{cls:sec:six}. The
+reflected quintic fields of these 27 fields are determined in \cref{dir:sec:reflected}: the
+twelve over the two bases of rank two are those of \cref{dir:prop:ranktwo} and
+\cref{dir:tab:ranktwo}, and the count of all $37$ is \cref{dir:cor:reflected37}.
 \end{remark}
 
 For orders we use \cite[Theorem~1.3(5),(6) and Section~6]{Aiken2026Boundary}: under ERH,
@@ -231,36 +265,15 @@ product identity gives $x^2\equiv-n\pmod p$ with $0<x<p/2$; hence $p\nmid 2n$ an
 $\chi(p)=1$.
 \end{proof}
 
-\begin{lemma}[A uniform smoothed prime sum; \stG]\label{dir:lem:smooth}
-Fix a nonnegative smooth function $w$ supported in $(1,2)$ with $\int w=1$. For a
-Dirichlet character $\eta$ modulo $q$ and $X\ge2$ put
-$S(\eta)=\sum_k\Lambda(k)\eta(k)w(k/X)$. If $\eta$ is principal or real, then
-\[
- S(\eta)=\mathbf 1_{\eta=\chi_0}\,X+O_w\bigl(\sqrt X\log(2q)\bigr),
-\]
-where $\chi_0$ is the principal character modulo $q$.
-\end{lemma}
-
-\begin{proof}
-First use the primitive character $\eta^*$ of conductor $f\mid q$ inducing $\eta$,
-treating $f=1$ as the zeta function. Its Mellin integral has integrand
-$-(L'/L)(s,\eta^*)X^s\widehat w(s)$ with
-$\widehat w(s)=\int_0^\infty w(u)u^{s-1}\,\dd u$. Shift the contour from $\Re s=2$ to
-$\Re s=-1/2$. The pole of zeta gives $X\widehat w(1)=X$. The possible trivial zero at
-$0$ costs $O_w(1)$. At each nontrivial zero $\rho$ the residue is
-$-X^{\rho}\widehat w(\rho)$, counted with multiplicity. Mellin integration by parts
-gives $\abs{\widehat w(\sigma+it)}\ll_w(1+\abs t)^{-3}$ uniformly for
-$-1/2\le\sigma\le2$. The number of zeros with $j\le\abs{\Im\rho}<j+1$ is
-$O(\log(2f(j+2)))$ by the zero-counting formula for Dirichlet $L$-functions
-\cite{BennettMartinOBryantRechnitzer2021Counting} and the classical estimate for zeta.
-By \cref{src:thm:dgrh} every $\rho$ has real part $1/2$, so the absolutely convergent
-zero sum is $O_w(\sqrt X\log(2f))$. The functional equation and the Euler product at
-$\Re(1-s)=3/2$ give $L'/L\ll\log(2f(\abs t+2))$ on the new line, which contributes
-$O_w(X^{-1/2}\log(2f))$. The contour shift is taken along heights avoiding zero
-ordinates, using the local partial fraction formula for $L'/L$ and the same zero count.
-Returning to modulus $q$ changes the sum by $O_w(\log q)$, since for each $p\mid q$ at
-most one power of $p$ lies in $(X,2X)$.
-\end{proof}
+\begin{remark}[A uniform smoothed prime sum; \stG]\label{dir:lem:smooth}
+Fix a nonnegative smooth function $w$ supported in $(1,2)$ with $\int w=1$; for a real or
+principal Dirichlet character $\eta$ modulo $q$ and $X\ge2$ the sum
+$S(\eta)=\sum_k\Lambda(k)\eta(k)w(k/X)$ equals $\mathbf 1_{\eta=\chi_0}X+O_w(\sqrt
+X\log(2q))$, where $\chi_0$ is the principal character modulo $q$. This is
+\cref{rec:lem:gram} with $\xi=1$ and $\chi$ the primitive character inducing $\eta$: prime
+powers cost $O_w(\sqrt X)$, passing to the imprimitive $\eta$ costs $O(\log q)$, since for
+each $p\mid q$ at most one power of $p$ lies in $(X,2X)$, and the range $X<X_w$ is trivial.
+\end{remark}
 
 \begin{theorem}[Many representations with a small prime pair sum; \stG]
 \label{dir:thm:xyz}
@@ -276,7 +289,7 @@ $x,y\ll\log^2n$, and $\gg\sqrt n/\log n$ solutions altogether.
 \begin{proof}
 Put $q=4n$ and let $\chi$ be as in Lemma~\ref{dir:lem:split}. On integers coprime to $q$ the
 function $(\chi_0+\chi)/2$ is the indicator of $\chi=1$, and it vanishes on the other
-integers. By Lemma~\ref{dir:lem:smooth}, after deleting higher prime powers,
+integers. By \cref{dir:lem:smooth}, after deleting higher prime powers,
 \[
  \sum_{\substack{p\ \mathrm{prime}\\ \chi(p)=1}}(\log p)\,w(p/X)
  =\frac X2+O_w\bigl(\sqrt X\log(2q)+\sqrt X\log^2(2X)\bigr).
@@ -300,7 +313,7 @@ such that every $n_i$ has a solution of \eqref{dir:eq:xyz} with $x_i+y_i=p$.
 Inflate the $k$ quadratic characters $\legendre{-4n_i}{\cdot}$ to the modulus
 $Q=4\prod_in_i$ and let $H$ be the group they generate. The function
 $\abs H^{-1}\sum_{\eta\in H}\eta$ is the indicator of simultaneous splitting among
-integers coprime to $Q$. Each member of $H$ is real, so by Lemma~\ref{dir:lem:smooth} the
+integers coprime to $Q$. Each member of $H$ is real, so by \cref{dir:lem:smooth} the
 smoothed prime-power sum of this function has main term $X/\abs H$ and error
 $O_w(\sqrt X\log(2Q))$. Since $\abs H\le2^k$ and $\log Q=O_k(\log N)$, the choice
 $X=C_k\log^2N$ with $C_k$ large absorbs the error. Removing prime powers as before and
@@ -339,7 +352,7 @@ local quadratic characters inflated to modulus $M$. Extend the indicator by zero
 the units, so that the constant term of its expansion is the principal character
 divided by $2^r$. Independence makes every other character in the expansion
 nonprincipal, and the absolute values of all coefficients sum to one. By
-Lemma~\ref{dir:lem:smooth} and the removal of prime powers, for $X\ge2$ the smoothed sum of
+\cref{dir:lem:smooth} and the removal of prime powers, for $X\ge2$ the smoothed sum of
 the indicator over primes $p$ with weight $(\log p)w(p/X)$ is
 \[
  \frac X{2^r}+O_w\bigl(\sqrt X\,[\log(2M)+\log^2(2X)]\bigr).
@@ -1021,10 +1034,8 @@ norms give
 which proves \eqref{cls:eq:genusnorm}. The cost in the norm is $R$, not $R^m$, because the
 ramified ideal is inserted after the $m$th power is taken.
 
-The Dedekind zeta function of the abelian field $F$ is a product of Dirichlet
-$L$-functions, so \cref{src:thm:dgrh} gives its Riemann hypothesis. Theorem~5.1 of
-\cite{Bach1996Explicit} then provides an unramified prime with trivial Frobenius in
-$\Gal(F/\Q)$ and
+Since $F$ is abelian, \cref{cls:lem:splitprime}(b) provides an unramified prime with
+trivial Frobenius in $\Gal(F/\Q)$ and
 \[
  p\le\bigl(4\log\abs{\Delta_F}+\tfrac52n+5\bigr)^2 .
 \]
@@ -1065,7 +1076,7 @@ representative formed from a subset of the first $k$ prime ideals, of norm at mo
 \end{proof}
 
 \subsection{Open questions}\label{cls:sec:open}
-\sources{exponent_seven_and_grh_transfers; grh-exponent-six-and-transfers}
+\sources{exponent_seven_and_grh_transfers; grh-exponent-six-and-transfers; grh-transfer}
 
 \begin{enumerate}
 \item In the proof of \cref{cls:thm:seven} the reduced multipliers are limited to $12$.
@@ -1079,4 +1090,10 @@ the finite computations cited above.
 census range, new prime weights and a new compatibility proof for pairs of equations would
 be needed. For which further exponents can the interval between an enumerated range and
 the bound of type \ref{cls:it:bound} be closed in this way?
+\item \emph{The least pair sum.} For $n$ outside Euler's list let $b(n)$ be the
+ smallest $x+y$ among the solutions of \eqref{dir:eq:xyz}. Can the uniform upper bound
+ $O((\log n)^2)$ of Theorem~\ref{dir:thm:xyz} be lowered while retaining an explicit
+ algorithm? Proposition~\ref{dir:prop:xyzprime} forces order at least $\log n\log\log n$ on a
+ sequence, and by Proposition~\ref{dir:prop:xyzmin} the question for squarefree $n\equiv1,2\pmod4$
+ is that of the least odd prime splitting in $\Q(\sqrt{-n})$.
 \end{enumerate}

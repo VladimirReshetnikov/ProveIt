@@ -11,11 +11,12 @@ deepest contact, up to a bounded, eventually periodic defect that vanishes exact
 base-$p$ carry condition. The defect has an eventual period that depends only on $p$, $e$ and
 the multiplicity of the deepest contact, and for contacts of depth at most one its least period
 is an explicit power of $p$. The optimal choice of directions is the same at every precision.
-Over a field, observations of more branches than the jet requires, each at its own precision,
-tolerate erased and corrupted branch records; the exact tolerance is a block distance computed by a
-recursion on the contact tree, every extremal ambiguity is a product of branch equations, and the
-cheapest precision vectors are determined componentwise. Specialized to the multiplicative group, the pole computation becomes a simultaneous
-congruence for weighted Fleck sums. The last subsection treats a related invariant of
+Specialized to the multiplicative group, the pole computation becomes a simultaneous
+congruence for weighted Fleck sums. Over a field, observations of more branches than the jet
+requires, each at its own precision, tolerate erased and corrupted branch records; the exact
+tolerance is a block distance computed by a recursion on the contact tree, every extremal
+ambiguity is a product of branch equations, and the cheapest precision vectors are determined
+componentwise. The last subsection treats a related invariant of
 \cite[Definition~5.1]{BergerSprang2025Integer}, the coefficient depth $s_0(n)$, through an
 exact valuation formula for powers of the Lubin--Tate logarithm.
 
@@ -55,9 +56,8 @@ the reductions of the two branches over $k$ meet to order $q^{v(b-c)}$, and $u_b
 unit of $A_r((X))$ for every $r$.
 \end{lemma}
 \begin{proof}
-For the formal group law $\mathcal F$, the series $\mathcal F(S,T)-S$ equals $T$ times a
-power series with constant term $1$. Substituting $S=[c](X)$ and $T=[b-c](X)$ shows that
-$[b]-[c]$ is a unit multiple of $[b-c]$. If $b-c=\pi^hw$ with $w\in\OO^\times$, then
+By \cref{cost:lem:metric}(ii), $[b]-[c]$ is a unit multiple of $[b-c]$ in $\OO[[X]]$. If
+$b-c=\pi^hw$ with $w\in\OO^\times$, then
 $[b-c]=[w]\circ[\pi^h]$, and $[w](Z)$ is $Z$ times a unit because its linear coefficient is
 $w$. The reduction of $[\pi]$ has order $q$, and orders multiply under composition.
 Finally a series $X^sV+\pi V'$ with $V\in\OO[[X]]^\times$ is invertible in $A_r((X))$:
@@ -311,12 +311,9 @@ in \eqref{lub:eq:carry} equals $1$.
 \end{proof}
 
 \begin{remark}[The weaker slope $q^{h_*}-1$]\label{lub:rem:older}
-Allowing each power of $\pi$ in the geometric expansion of Lemma~\ref{lub:lem:contact} to add at
-most $q^{h_*}-1$ to the pole order gives the cruder estimate
-$t_b(r)\le\omega+(r-1)(q^{h_*}-1)$. Since $D\le q^{h_*}-1$ with equality exactly for
-$h_*=1$, Theorem~\ref{lub:thm:pole} shows that this estimate is attained in precisely the
-following cases: always for $r=1$; always for $h_*=0$; for $r>1$ and $h_*=1$ exactly when
-$(m-1)+(r-1)$ has no carry in base $p$; and never for $r>1$ and $h_*\ge2$.
+The earlier estimate $t_b(r)\le\omega+(r-1)(q^{h_*}-1)$ follows from \eqref{lub:eq:polebound},
+since $D\le q^{h_*}-1$, and by \eqref{lub:eq:carry} it is attained exactly when $r=1$, when
+$h_*=0$, or when $h_*=1$ and $(m-1)+(r-1)$ has no carry in base $p$.
 \end{remark}
 
 \begin{remark}[Frequency of equality]\label{lub:rem:frequency}
@@ -774,6 +771,15 @@ bound at every $r$. The second description holds because the number of
 $i\in\set{1,\dots,d-1}$ with $H_i\ge j$ is $u_j$.
 \end{proof}
 
+\begin{remark}
+The same tree of residue balls is optimized in the opposite direction in
+\cref{cost:lem:shell}, which follows a least-occupied child and bounds the marks at depth
+$j$ by $\floor{m/e_j}$, whereas \cref{lub:thm:directions} follows a most populous child
+and bounds the occupancy by $\ceil{d/q^h}$, with a matching digit construction. Both
+belong to the circle of ideas of Bhargava's $P$-orderings, discussed at the end of
+\cref{lub:ssec:redundant} and in \cref{tors:sec:limits}.
+\end{remark}
+
 \begin{corollary}[Closed forms for the optimum; \stU]\label{lub:cor:optimum}
 \begin{enumerate}[label=\textup{(\alph*)}]
 \item Over the residue field, that is for $r=1$, the least common precision for $d$
@@ -806,8 +812,7 @@ deepest level has multiplicity one. The optimal common precision is $2r+11$ in t
 case and $4r+21$ in the second. At $r=1$ these are $13$ and $25$: inside $\pi\OO$, all
 bivariate coefficients of total degree at most seven are recovered from branch
 coefficients through degree $24$. For $q=2$, five directions constrained to one coset of
-$\pi\OO$ need $17+4(r-1)$ coefficients per branch. These residue-class optimizations are
-related to Bhargava's $P$-orderings \cite{Bhargava1997Porderings}.
+$\pi\OO$ need $17+4(r-1)$ coefficients per branch.
 \end{example}
 
 Berger and Sprang use the case $r=1$ to multiply coefficient polynomials
@@ -1377,17 +1382,20 @@ $X^a\prod_c(Y-u_c)^{m_c}$ with $\sum_cm_c=k$, so
 \]
 and the tree recursion starts with $k$ marks and inherited value $a$. If $k<N$ the maximal distance is
 $N-k$, attained exactly when $n_b\ge a+1+{}$the sum of the $k$ largest contacts of $b$, for every $b$; if
-$k\ge N$ the distance is zero.
+$k\ge N$ the distance is zero. For $\kappa=1$, where $k=d-1$ and $a=0$, the statement on the maximal
+distance is \cref{lub:thm:compsat}.
 \end{corollary}
 
 \begin{proof}
 In the proof of \cref{lub:lem:domination} use $\ord_\kappa P=v(a_P)+\sum_\alpha\min(\kappa,v(\alpha))$: roots
 of valuation below $\kappa$ contribute equally at every branch, and the others may be replaced by their
 closest branches. Multiply by $X^{d-1-r}$ and replace each group of $\kappa$ factors $X$ by a branch
-factor, which cannot decrease an evaluation valuation since $v(u_b-u_c)\ge\kappa$. For the maximal
-distance, $k$ distinct branch factors give the bound $N-k$, the $k$ closest neighbours of $b$ and $X^a$
-give necessity, and interpolation on any $k+1$ branches gives sufficiency: the full branch product has
-weighted order $\kappa(k+1)\ge d$ and every Lagrange term has weighted order at least $(a+1)+\kappa k=d$.
+factor, which cannot decrease an evaluation valuation since $v(u_b-u_c)\ge\kappa$. The maximal distance
+is obtained as in the proof of \cref{lub:thm:compsat}, with $X^a$ times $k$ branch factors in place of
+$d-1$ branch factors; for sufficiency, interpolation on any $k+1$ branches works, since the full branch
+product has weighted order $\kappa(k+1)\ge d$ and every Lagrange term has weighted order at least
+$(a+1)+\kappa k=d$.
+
 \end{proof}
 
 \begin{theorem}[A decoder from two linear systems; \stU]\label{lub:thm:decode}

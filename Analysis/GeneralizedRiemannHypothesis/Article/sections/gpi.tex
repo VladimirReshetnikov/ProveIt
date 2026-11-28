@@ -3,18 +3,16 @@
 \providecommand{\gpifile}[2][]{\begin{center}\footnotesize\artifact{#2}#1\end{center}}
 
 
-The sparse-place construction in the source proof (\cref{src:sec:mechanism}) converts
-multiplicative patterns into additive relations between exponents and then chooses the
-exponents in a set without three-term arithmetic progressions (the lemma
-\code{exists_three_term_free} of \repo). The same conversion governs sets of integers, or of
-ideals, without three-term geometric progressions: $ac=b^2$ holds exactly when
-$v_p(a)+v_p(c)=2v_p(b)$ at every prime $p$. This section applies it to the density questions
-of McNew \cite{McNew2015Sets} over the integers and of Best, Huan, McNew, Miller, Powell, Tor
-and Weinstein \cite{Best2017Geometric} over number fields, and to the corresponding question of
-Brown and Gordon \cite{BrownGordon1996Sequences} for geometric progressions of any length. Every
-result of this section is unconditional; none uses \cref{src:thm:dgrh} or any other statement about zeros. Finite
-computations enter only through certificates in exact integer or rational arithmetic, which
-are cited with the result they support.
+This section applies the exponent principle of the source construction, described at the
+start of \cref{sec:gpp}, to sets of integers and of ideals without three-term geometric
+progressions: $ac=b^2$ holds exactly when $v_p(a)+v_p(c)=2v_p(b)$ at every prime $p$. It
+answers density questions of McNew \cite{McNew2015Sets} over the integers and of Best, Huan,
+McNew, Miller, Powell, Tor and Weinstein \cite{Best2017Geometric} over number fields, and the
+corresponding question of Brown and Gordon \cite{BrownGordon1996Sequences} for geometric
+progressions of any length. Every result of this section is unconditional; none uses
+\cref{src:thm:dgrh} or any other statement about zeros. Finite computations enter only
+through certificates in exact integer or rational arithmetic, which are cited with the result
+they support.
 
 \subsection{Conventions and the questions}\label{gpi:sec:setting}
 {\raggedright\sources{grh_transfers_density_gaps_and_zero_tests; mcnew_density_and_grh_transfers; grh_ideal_densities_and_transfer_conditions_2026-11-26; grh_prime_patterns_and_branch_precision; prime_observations_and_progression_free_sets}}
@@ -67,15 +65,9 @@ densities is not an upper bound for upper densities, and a set that avoids integ
 need not avoid rational ones.
 
 \paragraph{The greedy set.}
-Let
-\[
- \mathcal A=\Bigl\{\sum_{j\ge0}\epsilon_j3^j:\epsilon_j\in\set{0,1},\ \epsilon_j=0
- \text{ eventually}\Bigr\}
-\]
-be the set of nonnegative integers whose ternary digits are all $0$ or $1$. If $a+c=2b$ with
-$a,b,c\in\mathcal A$, neither side has carries in base three and each digit of $2b$ is $0$ or
-$2$; hence the corresponding digits of $a,b,c$ agree and $a=b=c$. So $\mathcal A$ contains no
-nonconstant three-term arithmetic progression. Note also that
+Let $\mathcal A$ be the set of nonnegative integers whose ternary digits are all $0$ or $1$;
+it contains no nonconstant three-term arithmetic progression, by the carry-free argument
+of \cref{gpp:sec:conventions}. Note also that
 $\mathcal A=\set{0,1}+3\mathcal A=\set{0,1,3,4}+9\mathcal A$ with unique representations. The
 \emph{greedy set} is
 \[
@@ -119,8 +111,30 @@ with integral ratios (their Question~5.1) and with fractional ratios (their Ques
 \item For the upper density with rational ratios, $0.7365954<\overline\alpha<0.7716011$
  (\cref{gpi:thm:upper-alpha}).
 \end{itemize}
-The statements for $\F_q[x]$ that are proved by the same arguments are collected in
-\cref{gpi:sec:poly}; the other results on polynomial rings are in \cref{sec:gpp}.
+The same questions over $\F_q[x]$, with the same arguments, are in \cref{gpi:sec:poly}, a
+subsection of \cref{sec:gpp}. The following table lists the results by question and ring.
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright}p{2.9cm}>{\raggedright}p{3.6cm}>{\raggedright}p{2.9cm}>{\raggedright\arraybackslash}p{4.4cm}@{}}
+\toprule
+Question & Integers & Number fields & $\F_q[x]$ and finite rings\\
+\midrule
+Natural against upper density & \cref{gpi:thm:integer-gap} &
+ \cref{gpi:thm:ideal-separation} &
+ \cref{gpi:thm:poly-gap,gpi:rem:poly-ratio}; finite rings: \cref{gpp:thm:gaprings}\\
+Computability and attainment & \cref{gpi:thm:attain}; every length:
+ \cref{gpi:thm:blocksk} & computability: \cref{gpi:thm:ideal-separation}; attainment: -- &
+ \cref{gpp:thm:supremum,gpi:thm:poly-natural}\\
+The greedy set is not optimal &
+ \cref{gpi:thm:onedigit,gpi:thm:explicit,gpi:thm:klength} &
+ \cref{gpi:thm:onedigit,gpi:prop:cube} &
+ \cref{gpp:thm:natural,gpp:thm:rational,gpi:prop:poly-greedy}\\
+Where the greedy rule is optimal &
+ \cref{gpi:prop:light,gpi:thm:fourprimes,gpi:cor:restricted,gpi:thm:blocks} & -- & --\\
+The degree-deficit benchmark $m_q$ & -- & -- &
+ \cref{gpp:thm:counterexample,gpp:thm:twoprime,gpp:thm:largeq}\\
+\bottomrule
+\end{tabular}
+\end{center}
 
 \subsection{Product sets and the two smooth-factor optimizations}\label{gpi:sec:local}
 {\raggedright\sources{grh_transfers_density_gaps_and_zero_tests; grh_ideal_densities_and_transfer_conditions_2026-11-26; mcnew_counterexample_and_grh_transfers; grh_prime_patterns_and_branch_precision; grh_transfer_advances_2026-11-26}}
@@ -444,23 +458,8 @@ $100000$ and adding $1/100000$ for the rest, in directed fixed-point integer ari
 \gpifile[.]{grh_transfers_density_gaps_and_zero_tests/checks/check_integer_prefix.py}
 The same method with integer ratios and $Y=83$ gives $\overline\beta-\beta>0.013336$.
 
-For integer ratios a separate calculation is stronger. Apply Lemma~\ref{gpi:lem:BU} with $Y=7$, so
-that $c=8/35$. There are $265$ integers in $S_7\cap[1,5000]$, and the maximal reciprocal sum
-of a subset of them avoiding integer-ratio progressions is
-\[
- M_0=\frac{1619153731921}{497871360000}.
-\]
-Assigning the full remaining smooth mass to the untested tail gives
-\begin{equation}\label{gpi:eq:beta-upper}
- \beta\ \le\ B\ \le\ 1-c\Bigl(\sum_{h\in S_7,\ h\le5000}\frac1h-M_0\Bigr)
- =\frac{5245322990569}{7001316000000}<0.749192 .
-\end{equation}
-The exhaustive calculation uses the common denominator of the $265$ weights. In ascending
-order it branches on including or excluding the least undecided integer; whenever the first
-two terms of a forbidden progression have been selected, the third is removed from the
-candidates, and the selected and remaining weights together bound the optimum on a branch; this is
-\gpifile[.]{grh_transfers_density_gaps_and_zero_tests/checks/check_integer_gap.py}
-McNew's
+For integer ratios a separate calculation is stronger: $\beta<0.749192$ by
+\eqref{gpi:eq:beta-upper} in the proof of \cref{gpi:prop:beta} below, and McNew's
 Theorem~4.4 gives $\overline\beta>0.818410$ \cite{McNew2015Sets}. The difference exceeds
 $0.069218$.
 \end{proof}
@@ -476,7 +475,24 @@ $0.069218$.
 \end{proposition}
 
 \begin{proof}
-The upper bound is \eqref{gpi:eq:beta-upper}. For the lower bound let $P$ be the set of the
+For the upper bound apply Lemma~\ref{gpi:lem:BU} with the integral convention and $Y=7$, so
+that $c=8/35$. There are $265$ integers in $S_7\cap[1,5000]$, and the maximal reciprocal sum
+of a subset of them avoiding integer-ratio progressions is
+\[
+ M_0=\frac{1619153731921}{497871360000}.
+\]
+Assigning the full remaining smooth mass to the untested tail gives
+\begin{equation}\label{gpi:eq:beta-upper}
+ \beta\ \le\ B\ \le\ 1-c\Bigl(\sum_{h\in S_7,\ h\le5000}\frac1h-M_0\Bigr)
+ =\frac{5245322990569}{7001316000000}<0.749192 .
+\end{equation}
+The exhaustive calculation uses the common denominator of the $265$ weights. In ascending
+order it branches on including or excluding the least undecided integer; whenever the first
+two terms of a forbidden progression have been selected, the third is removed from the
+candidates, and the selected and remaining weights together bound the optimum on a branch; this is
+\gpifile[.]{grh_transfers_density_gaps_and_zero_tests/checks/check_integer_gap.py}
+
+For the lower bound let $P$ be the set of the
 eight primes up to $19$. The file
 \gpifile{mcnew_density_and_grh_transfers/checks/integral_ratio_support.txt}
 lists a set
@@ -617,17 +633,15 @@ McNew obtains $\overline\alpha_7<0.772059$ \cite[Section~4]{McNew2015Sets}. Cons
 
 \begin{theorem}[The suprema are attained; \stU]\label{gpi:thm:attain}
 For each of the two conventions over $\Q$, the natural-density supremum $b\in\set{\alpha,\beta}$
-is a computable real number, and there is an admissible set of natural density exactly $b$.
+is a computable real number (by \cref{gpi:thm:ideal-separation}), and there is an admissible
+set of natural density exactly $b$.
 Moreover $b$ is also the supremum of the upper logarithmic densities
 $\limsup_{X\to\infty}(\log X)^{-1}\sum_{m\in E,\,m\le X}1/m$ over all admissible sets $E$.
 \end{theorem}
 
 \begin{proof}
-\emph{Computability.} By Lemma~\ref{gpi:lem:BU}, $vB\le b\le B$ and $B\le1$, so replacing $b$ by
-$B=B(Y)$ costs at most $\sum_{p>Y}p^{-2}\le1/Y$. For fixed $Y$ the finite weighted
-optimization over $S_Y\cap[1,H]$ approximates $B$ from below within
-$1-c\sum_{h\in S_Y,\,h\le H}1/h$, an explicitly computable rational tending to zero as
-$H\to\infty$. This gives effective two-sided bounds without identifying an optimizer.
+\emph{Computability.} This is the case $K=\Q$ of \cref{gpi:thm:ideal-separation}, where $b_\Q$
+is $\alpha$ or $\beta$ according to the convention.
 
 \emph{A uniform estimate for the largest prime factor.} Write $D(m)$ for the largest prime
 factor of $m$, with $D(1)=1$, and let $F_x(y)$ be the proportion of the positive integers
@@ -680,7 +694,7 @@ natural density $b$ has logarithmic density $b$ by partial summation.
 \end{proof}
 
 The polynomial analogue, with an elementary substitute for Dickman's theorem and a decidable
-extremal set, is \cref{gpi:thm:poly-natural}.
+extremal set, is \cref{gpi:thm:poly-natural} in \cref{gpi:sec:poly}.
 
 \subsection{The greedy set is not optimal: an exchange in one ternary digit}\label{gpi:sec:onedigit}
 {\raggedright\sources{grh_prime_patterns_and_branch_precision; mcnew_counterexample_and_grh_transfers; mcnew-density-and-dirichlet-grh}}
@@ -769,7 +783,7 @@ the contribution $1/2$ of the prime $2$ leaves at least $7-1-\tfrac12>5$.
 
 Part~(c) gives an affirmative answer, in every number field and for both conventions, to the
 natural-density form of the questions of Best et al.\ recalled in \cref{gpi:sec:setting}.
-The same exchange over $\F_q[x]$ is Proposition~\ref{gpi:prop:poly-greedy}.
+The same exchange over $\F_q[x]$ is \cref{gpi:prop:poly-greedy} in \cref{gpi:sec:poly}.
 
 \paragraph{Which exchanges with two deletions can help.}
 The exchange \eqref{gpi:eq:capC} deletes two vertices of the binary cube. This is the least
@@ -1403,8 +1417,8 @@ uniform algorithm for $\alpha_{k,d}$, and the bound for the loss gives one for $
 
 For $k=3$ write $\alpha_m=\alpha_{3,m}$. By \cref{gpi:thm:blocksk} it is also the supremum of the
 natural densities of the progression-free block sets of width $m$ that have a natural density, it is
-attained, and $d(R)\le\alpha_1\le\alpha_2\le\dots<\alpha$. The constant and the small widths can be
-sharpened.
+attained, $d(R)\le\alpha_1\le\alpha_2\le\dots<\alpha$, and $\alpha-\alpha_m\le1/(p_{m+1}-1)$, so
+that $\alpha_m\to\alpha$. The constant and the small widths can be sharpened.
 
 \begin{theorem}[Bounded prime blocks for three-term progressions; \stU]\label{gpi:thm:blocks}
 For every $m\ge1$,
@@ -1415,23 +1429,20 @@ and
 \[
  \alpha_1=\alpha_2=\alpha_3=\alpha_4=d(R).
 \]
-The least $m$ with $\alpha_m>d(R)$ satisfies $5\le m\le225$.
+The least $m$ with $\alpha_m>d(R)$ satisfies $5\le m\le225$. The positivity of $\alpha-\alpha_m$
+and the limit are the case $k=3$ of \cref{gpi:thm:blocksk}; the new content is the constant
+$1/p_{m+1}$, the equalities for $m\le4$ and the range for the least $m$.
 \end{theorem}
 
 A progression-free product rule of density greater than $d(R)$ must therefore couple at least five
 primes in some block.
 
 \begin{proof}
-\emph{Approximation by one finite block.} Let $P$ be the set of primes up to an integer $Y\ge2$, and
-let $M_Y$ be the largest reciprocal sum $W(F)$ of a progression-free $F\subseteq S_P$. By
-Lemma~\ref{gpi:lem:BU}, $\alpha\le c_PM_Y$. A maximizing smooth template on $P$ together with Rankin's
-rule elsewhere has width $\pi(Y)$, so by Lemma~\ref{gpi:lem:product}
-\[
- \alpha_{\pi(Y)}\ \ge\ c_PM_Y\prod_{p>Y}(1-p^{-2})\ \ge\ c_PM_Y\,\frac Y{Y+1},
-\]
-by telescoping over all integers greater than $Y$. With monotonicity this proves convergence.
-Choosing $Y=p_{m+1}-1$ gives $\alpha-\alpha_m\le1/p_{m+1}$, since $c_PM_Y\le1$; positivity is
-\cref{gpi:thm:blocksk}.
+\emph{The constant.} Positivity and the limit are \cref{gpi:thm:blocksk} with $k=3$. Take
+$Y=p_{m+1}-1$, $P$ and $M$ as in the upper bound for the loss in its proof, which gives
+$\alpha\le c_PM\le1$ and $\alpha_m\ge c_PM\prod_{p>Y}(1-p^{-2})$. Telescoping over all integers
+greater than $Y$ gives $\prod_{p>Y}(1-p^{-2})\ge Y/(Y+1)$, and hence
+$\alpha-\alpha_m\le1/(Y+1)=1/p_{m+1}$.
 
 \emph{Small widths.} Rankin's rule is itself a rule of width one, so $\alpha_m\ge d(R)$. By
 \cref{gpi:thm:fourprimes}, Rankin's rule is optimal on every block of a rule of width $m\le4$, so the
@@ -1607,15 +1618,15 @@ $(1-1/j)^2\ge(j-2)/j$.
 
 For integral ratios the improvement on the greedy density guaranteed by
 \cref{gpi:thm:onedigit} can be made much larger by an exchange that removes a whole orthant.
-Its integer precedent is McNew's exchange at $2,3,5$. For a nonempty finite set $S$ of prime
-ideals of $K$, with $k=\#S$, replace the permitted local vectors $\mathcal A^k$ by
+Its integer precedent is McNew's exchange at $2,3,5$, and its polynomial analogue is
+\cref{gpp:thm:natural}. For a nonempty finite set $S$ of prime ideals of $K$, with $k=\#S$,
+replace the permitted local vectors $\mathcal A^k$ by the set of \cref{gpp:sec:natural},
 \[
  D_S=\set{u\in\mathcal A^k:\min_iu_i=0}\ \cup\ \bigl(\set{1,2}^k\setminus\set{(1,\dots,1)}\bigr),
 \]
 and let $\mathcal E_S$ be the set of ideals whose exponent vector on $S$ lies in $D_S$ and
-whose exponents outside $S$ lie in $\mathcal A$. Put
+whose exponents outside $S$ lie in $\mathcal A$. With $T(w)$ as in \cref{gpp:thm:natural}, put
 \[
- T(w)=\sum_{a\in\mathcal A,\ a\ge1}w^{a-1},\qquad
  C_S=\prod_{\mathfrak p\notin S}\Bigl[(1-w_{\mathfrak p})\sum_{a\in\mathcal A}w_{\mathfrak p}^a\Bigr].
 \]
 
@@ -1636,13 +1647,9 @@ gives a positive rational lower bound for the gain.
 \end{proposition}
 
 \begin{proof}
-A forbidden triple in $\mathcal E_S$ has zero valuation step outside $S$. Inside $S$ it gives
-$u,u+h,u+2h\in D_S$ with $h\ge0$, $h\ne0$. If the final vector has a zero coordinate, all
-three vectors have a zero there and lie in $\mathcal A^k$, a contradiction. Otherwise the
-final vector lies in the new cube $\set{1,2}^k$. At every moving coordinate the three entries
-must then be $0,1,2$. The initial vector therefore lies in $\mathcal A^k$, so every fixed
-coordinate belongs to $\mathcal A\cap\set{1,2}=\set1$, and the middle vector is the deleted
-all-ones vector.
+A forbidden triple in $\mathcal E_S$ has zero valuation step outside $S$, since $\mathcal A$
+is progression-free. Inside $S$ it would give $u,u+h,u+2h\in D_S$ with $h\ge0$, $h\ne0$, which
+\cref{gpp:lem:ES} excludes.
 
 The densities exist by Lemma~\ref{gpi:lem:product}. The deleted vectors are those of
 $\mathcal A^k$ with all coordinates positive, of mass
@@ -1665,10 +1672,8 @@ $\sum_{\mathfrak p}w_{\mathfrak p}$ diverges.
 
 Enumerating and factoring rational primes gives a terminating search for $S$, and factoring
 an ideal and testing its valuation digits decides membership in $\mathcal E_S$. The exchange
-does not serve for fractional ratios: for two selected coordinates the vectors
-$(0,3),(1,2),(2,1)$ all satisfy the new rule and form a progression with a step of mixed
-sign, and further coordinates may be fixed at one. For that convention the improvement is
-\cref{gpi:thm:onedigit}.
+does not serve for fractional ratios, by the mixed-sign progression of \cref{gpp:rem:mixed};
+for that convention the improvement is \cref{gpi:thm:onedigit}.
 
 \begin{proposition}[An explicit gain in $\Q(\sqrt{-23})$; \stU]\label{gpi:prop:Q23gain}
 Let $K=\Q(\sqrt{-23})$ and let $S$ consist of the four prime ideals of norms $2,2,3,3$. Then,
@@ -1681,7 +1686,8 @@ for the integral convention,
 \begin{proof}
 Write $\omega=(1+\sqrt{-23})/2$, with minimal polynomial $X^2-X+6$. For $p=2,3$ its two
 distinct roots modulo $p$ are $0$ and $1$, so the four prime ideals $(p,\omega)$ and
-$(p,\omega-1)$ have norms $2,2,3,3$. From $\mathcal A\cap[1,8]=\set{1,3,4}$ one gets
+$(p,\omega-1)$ have norms $2,2,3,3$. The bound used in the proof of \cref{gpp:thm:natural},
+which follows from $\mathcal A\cap[1,8]=\set{1,3,4}$, is
 \[
  T(w)\le\overline T(w):=1+w^2+w^3+\frac{w^8}{1-w},\qquad
  \overline T(1/2)=\frac{177}{128},\quad\overline T(1/3)=\frac{5023}{4374},
@@ -1740,6 +1746,4 @@ number in this certificate are checked by
  density $u_K$, or sharp field-specific improvements on the greedy density, for instance for
  quadratic fields as asked in \cite{Best2017Geometric}. For fractional ratios the
  improvements obtained here are those of \cref{gpi:thm:onedigit}.
-\item \emph{Polynomial rings.} How large is the true gap $u_2-b_2$, and more generally
- $u_q-b_q$? What is $b_q$?
 \end{enumerate}

@@ -1,4 +1,4 @@
-\section{Graph towers, spanning-tree valuations and signed cycles}\label{sec:gra}
+\section{Graph towers and spanning-tree valuations}\label{sec:gra}
 
 \providecommand{\grah}{\mathsf{h}}
 \providecommand{\graA}{\mathcal{A}}
@@ -13,24 +13,18 @@
 
 The results of this section are unconditional and use no hypothesis on zeros
 of $L$-functions. They take from the source proof (\cref{src:sec:mechanism})
-only two local devices. The first is the exact valuation of $\zeta-1$ at a
+one local device: the exact valuation of $\zeta-1$ at a
 root of unity $\zeta$ of prime-power order, together with the comparison of
 the valuations of the terms of a polynomial in this uniformizer: a unique
 term of least valuation cannot be cancelled. In a tower of graphs with
 abelian deck groups this reads off the $p$-adic valuation of a Laplacian
-eigenvalue at every character, and the valuations can be summed. The second
-device is the restriction of a positive form to a principal submatrix,
-followed by a Schur complement; it gives the local obstruction used for
-signed cycles in \cref{gra:sec:cycles}. For the prime-to-$p$ part of the
-spanning-tree count, \cref{gra:sec:units} replaces individual valuations by
-Galois stabilisers and the cyclotomic reciprocity map, and treats towers
-with nonabelian $p$-adic analytic deck groups. A third, purely methodological,
-transfer (rotation, and exclusion of zeros from one half-plane by a
-positivity certificate) locates the zeros of a family of Ehrhart
-polynomials in \cref{gra:sec:ehrhart}. Finally, the quadratic character
-projection of \cref{li:lem:norm}, applied on a finite abelian group and on
-its dual, determines the least periods of oriented Cayley walks in
-\cref{gra:sec:cayley}.
+eigenvalue at every character, and the valuations can be summed. For the
+prime-to-$p$ part of the spanning-tree count, \cref{gra:sec:units} replaces
+individual valuations by Galois stabilisers and the cyclotomic reciprocity
+map, and treats towers with nonabelian $p$-adic analytic deck groups. The
+other graph results, on quantum walks, signed square cycles and edge-polytope
+zeros, are in \cref{sec:grw}; its Grover walks also give tower valuations of
+the kind studied here (\cref{gra:thm:grover}).
 
 \subsection{Voltage towers and conductor shells}\label{gra:sec:setting}
 {\raggedright
@@ -128,6 +122,28 @@ powers have order greater than $k$. In (ii) a lower nonzero term has degree
 at least two and coefficient divisible by $p$, hence order at least $e+2$.
 In (iii) the integers $e\,v_p(c_j)+j$ lie in distinct residue classes
 modulo $e$, so the minimum is attained once.
+\end{proof}
+
+The square-torus symbol $\grah(X)+\grah(Y)$ recurs below, and its valuation
+is immediate when its residual quadratic form is anisotropic.
+
+\begin{lemma}[Anisotropic sums of two squares]\label[lemma]{gra:eq:aniso}
+Let $p$ be a prime such that $-1$ is not a square modulo $p$, and let
+$(U,V)$ be a pair of $p$-power roots of unity of joint conductor $p^j>1$.
+Then
+\[
+ v_p\bigl(\grah(U)+\grah(V)\bigr)=2/e_j\le1 .
+\]
+\end{lemma}
+
+\begin{proof}
+Write $U=\zeta^a$, $V=\zeta^b$ in a common primitive coordinate $\zeta$ of
+order $p^j$, with $a,b$ not both divisible by $p$. Since
+$\grah(\zeta^a)=-(\zeta^a-1)^2\zeta^{-a}$ and
+$(\zeta^a-1)/(\zeta-1)\equiv a$ modulo $\zeta-1$, the reduction of
+$(\grah(U)+\grah(V))/(\zeta-1)^2$ modulo $\zeta-1$ is $-(a^2+b^2)$. Since
+$-1$ is a nonsquare modulo $p$, this is nonzero, and the valuation is
+$2v_p(\zeta-1)=2/e_j$. Finally $p$ is odd, so $e_j\ge2$.
 \end{proof}
 
 For a general collected Laurent polynomial the orbit order is computed as
@@ -525,11 +541,10 @@ recurrence proves the formula for all $n\ge4$.
 \end{proof}
 
 \begin{proof}[Proof for Examples 4 and 5]
-For the square torus at $p=3$, the coefficient of $T^2$ in $F_u(1+T)$ is
-$-(a^2+b^2)$ and the lower two coefficients are exactly zero. Every
-primitive pair has $a^2+b^2\ne0$ modulo three. Thus each orbit has order
-$2$, even at $h=1$ by \cref{gra:lem:rules}(ii). The number of orbits is
-$4\cdot3^{h-1}$, giving row 4.
+Row 4 is the case $p=3$, $m=2<p$ of \cref{gra:thm:cutoff} below: the
+coefficient of $T^2$ in $L_a$ is $-(a_1^2+a_2^2)$, nonzero modulo three as in
+\cref{gra:eq:aniso}, so $j(a)=2$ for all eight nonzero $a$, $C=8$ and
+$\nu_n=4\cdot3^n-4-2n$ for $n\ge1$; at $n=0$ both sides vanish.
 
 For row 5 the projected steps are $a$, $2a+3b$, $a+b$. At $h=1$ the
 eigenvalue is three times the number of nonzero projected steps modulo
@@ -899,11 +914,15 @@ Scaling $u$ preserves the first nonvanishing degree.
 
 \begin{theorem}[Moment formula; \stU]\label{gra:thm:moments}
 Assume $p>2m$. Each $r(L)$ is at most $m$, and $j(a)=2r(L)$ for every
-nonzero $a$ on $L$. Consequently, for every $n\ge1$,
+nonzero $a$ on $L$. Consequently the constant $C$ of \cref{gra:thm:cutoff}
+equals $\graA$, and the formula there reads, for every $n\ge1$,
 \[
  \nu_n=\graA\sum_{h=0}^{n-1}p^{(d-1)h}-dn .
 \]
 \end{theorem}
+
+Thus under $p>2m$ the moment formula refines \cref{gra:thm:cutoff}, which
+needs only $m<p$, by identifying its exponents $j(a)$ with twice the depths.
 
 \begin{proof}
 Put $x_i=\langle u,s_i\rangle^2$ in $\F_p$. If their first $m$ power sums
@@ -923,7 +942,8 @@ projective point carries $p-1$ nonzero vectors, hence the constant $C$ of
 
 \begin{example}\label[example]{gra:ex:torus}
 For the square torus ($e_1,e_2$) and $p\ge5$, the first moment is
-$a^2+b^2$. For $p\equiv3\pmod4$ it never vanishes on a projective point;
+$a^2+b^2$. For $p\equiv3\pmod4$ it never vanishes on a projective point,
+by the anisotropy behind \cref{gra:eq:aniso};
 for $p\equiv1\pmod4$ its two isotropic directions have nonzero fourth
 moment $2a^4$. Consequently $\graA=2(p+1)$ and $\graA=2(p+3)$,
 respectively. At $p=5$ this gives $\nu_n=4(5^n-1)-2n$.
@@ -1230,8 +1250,28 @@ incidence enumeration, agree with the table; see
 \grafiles{\artifact{short_tower_distributions_2026-11-27/verification.txt}}
 
 \begin{theorem}[Four steps at every prime; \stU]\label{gra:thm:four}
-For $m=4$ and every prime $p>8$, the unrestricted maximum of $\graA(S)$,
-which is also the maximum over lists with $M_1=0$, is
+Let $m=4$ and let $p>8$ be prime. Let $C\subset\graP^3$ be the curve
+\[
+ C:\quad x_1^2+x_2^2+x_3^2+x_4^2=x_1^4+x_2^4+x_3^4+x_4^4=0,
+\]
+and put $c_p=\#C(\F_p)$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $M_1$ is not the zero polynomial, then $\graA(S)\le2(p+1)+12<4(p+1)$.
+\item\label{gra:thm:fourdist} Among the row planes with $M_1=0$, put
+$E=\graA-4(p+1)$ and $k=12$ if $p\equiv1\pmod8$, $k=0$ otherwise. The
+numbers of such row planes with $E=0,8,16$ are respectively
+\[
+ 2(p+1)-k-c_p/2,\qquad c_p/2,\qquad k .
+\]
+All these planes give simple towers. If $p\equiv1\pmod8$, the twelve
+maximising planes form one orbit under signed permutations; thus the
+maximising residue lists form one orbit under change of basis, signs and
+permutations.
+\item If $p\not\equiv1\pmod8$, then $c_p=0$ if and only if
+$p\in\{11,23,29,47,53,83,149\}$.
+\end{enumerate}
+Consequently the unrestricted maximum of $\graA(S)$, which is also the
+maximum over lists with $M_1=0$, is
 \begin{equation}\label{gra:eq:four}
  \graA_{\max}=4(p+1)+\begin{cases}
  16,&p\equiv1\pmod8,\\
@@ -1241,15 +1281,16 @@ which is also the maximum over lists with $M_1=0$, is
 \end{theorem}
 
 \begin{proof}
-The primes $p\equiv1\pmod8$ are covered by \cref{gra:thm:extremal}. If
-$M_1$ is nonzero, the at most two exceptional directions give
-$\graA\le2(p+1)+12<4(p+1)$. It remains to optimise over lists with $M_1=0$
-at the other primes. Relabel two independent steps and make them
-$e_1,e_2$ by a change of basis. The two rows of the remaining $2\times2$
-block must be perpendicular, both with sum of squared coordinates $-1$.
-The first row $(a,b)$ determines the second up to sign. Changing the sign
-of the second basis coordinate, followed by a sign change of the second
-step, if needed, puts the block in the form
+\emph{Part \textup{(a)}.} If $M_1$ is nonzero, the at most two exceptional
+directions give $\graA\le2(p+1)+12$, the case $t=1$ of
+\eqref{gra:eq:tbound}, and $2(p+1)+12<4(p+1)$ since $p>8$.
+
+\emph{The Klein four group.} Now let $M_1=0$. Relabel two independent steps
+and make them $e_1,e_2$ by a change of basis. The two rows of the remaining
+$2\times2$ block must be perpendicular, both with sum of squared
+coordinates $-1$. The first row $(a,b)$ determines the second up to sign.
+Changing the sign of the second basis coordinate, followed by a sign change
+of the second step, if needed, puts the block in the form
 \[
  B=\begin{pmatrix}a&b\\b&-a\end{pmatrix},\quad a^2+b^2=-1,\qquad
  J=\begin{pmatrix}0&-1\\1&0\end{pmatrix}.
@@ -1268,95 +1309,27 @@ corresponding transpose matrices. A direction fixed by any nonidentity
 element has eigenvalue $\lambda$ with $\lambda^2=-1$ for that
 representative, so $M_3(u)=\lambda^6M_3(u)=-M_3(u)$. If such a direction
 were a root of the quartic $M_2$, it would have depth four, which requires
-$8\mid p-1$. Thus all rational roots of $M_2$ are in orbits of four. Since
-$M_2$ is a nonzero quartic, it has either zero or four rational roots, and
-each has depth three. This contributes precisely zero or eight above
-$4(p+1)$.
+$8\mid p-1$ by \cref{gra:thm:extremal}. Thus on a row plane with no
+direction of depth four, in particular on every row plane with $M_1=0$ when
+$p\not\equiv1\pmod8$, all rational roots of $M_2$ are in orbits of four.
+Since $M_2$ is a nonzero quartic, it has either zero or four rational
+roots, and each has depth three. This contributes precisely zero or eight
+above $4(p+1)$. The projections $x$ in a root direction satisfy
+$\sum x_i^2=\sum x_i^4=0$, so the roots of $M_2$ on a row plane are its
+points on $C$.
 
-Existence of at least one such root, allowing the step list to vary, is
-equivalent to a rational point on the projective curve
-\[
- C:\quad x_1^2+x_2^2+x_3^2+x_4^2=x_1^4+x_2^4+x_3^4+x_4^4=0 .
-\]
-The four projections in an exceptional direction give such a point.
-Conversely, take a nonzero representative $x$ of a point of $C(\F_p)$ and
-put $D=\operatorname{diag}(J,J)$. The vectors $x,Dx$ are perpendicular and
-isotropic in $\F_p^4$. If $Dx=\lambda x$, invariance under $D$ gives
-$\sum x_i^6=0$ as well, since $\lambda^2=-1$; the Newton argument for the
-four squares $x_i^2$ then forces $8\mid p-1$. For the primes under
-consideration the rows $x,Dx$ are therefore independent. Their four
-columns supply spanning steps with identically zero quadratic moment, and
-the first coordinate functional gives the required quartic root.
-
-Over an algebraic closure $C$ is a smooth complete intersection:
-dependence of its two gradients would force all nonzero $x_i^2$ to
-coincide with one common nonzero $c$, and the quadratic equation would
-give $kc=0$ for some $1\le k\le4<p$. The quartic does not vanish
-identically on the smooth quadric, as the point $(1,\sqrt{-1},0,0)$ shows.
-On this quadric, isomorphic over the algebraic closure to
-$\graP^1\times\graP^1$, the curve has bidegree $(4,4)$. It is connected:
-if two nonempty effective divisors of classes $(a,b)$ and $(4-a,4-b)$
-partitioned it disjointly, their intersection number $a(4-b)+b(4-a)$ would
-be positive. Smoothness then gives geometric irreducibility, and
-adjunction gives genus $(4-1)(4-1)=9$. The Hasse--Weil theorem
-\cite{Weil1948Courbes} yields
-\[
- \#C(\F_p)\ge p+1-18\sqrt p>0\qquad(p>322).
-\]
-
-For the $49$ remaining primes $8<p\le322$, $p\not\equiv1\pmod8$, normalise
-a nonzero coordinate to one using permutation and scaling, and loop
-through $y,z\in\F_p$: set $c=-1-y^2-z^2$ and test whether $c$ is a square
-and $1+y^4+z^4+c^2=0$. This exhausts $C(\F_p)$ for the existence test.
-A witness for every successful prime, and an independent count of the
-whole curve at the $62$ primes from $11$ through $317$ by convolving
-two-coordinate moment tables, are recorded in
-\grafiles{\artifact{grh_transfers_lubin_tate_and_graph_towers/checks/graph_checks.txt}\\
-\artifact{grh_transfers_lubin_tate_and_graph_towers/checks/graph_independent_output.txt}}
-The seven failures are exactly the primes in \eqref{gra:eq:four}.
-\end{proof}
-
-\begin{remark}[Simple graphs]\label[remark]{gra:rem:simple}
-The four-step maximum is also attained among simple eight-regular Cayley
-graphs. The row plane $W\subset\F_p^4$ of a spanning list with $M_1=0$ is
-totally isotropic for the dot product. A zero step, or equality of two
-steps up to sign, would put $W$ in the orthogonal complement of $e_i$ or
-of $e_i\pm e_j$. Each complement is a nondegenerate three-space, in which
-a totally isotropic plane would violate $\dim W+\dim W^\perp=3$. Distinct
-nonzero steps up to sign modulo $p$ give a simple graph at every level.
-\end{remark}
-
-Reduced Laplacians at $p=11$ and $p=13$ give four-step valuations $46$ and
-$62$ at level one, in agreement with \eqref{gra:eq:four} and
-\cref{gra:thm:moments}. The extremal lists with $M_1=0$ are the maximal
-isotropic planes $W\subset\F_p^4$ for the dot product; their distribution
-is governed by the curve $C$ of the proof of \cref{gra:thm:four}.
-
-\begin{theorem}[Four-step distribution and the extremal orbit; \stU]\label{gra:thm:fourdist}
-Let $m=4$, $p>8$, and $c_p=\#C(\F_p)$. Among the row planes with $M_1=0$,
-put $E=\graA-4(p+1)$ and $k=12$ if $p\equiv1\pmod8$, $k=0$ otherwise.
-The numbers of such row planes with $E=0,8,16$ are respectively
-\[
- 2(p+1)-k-c_p/2,\qquad c_p/2,\qquad k .
-\]
-All these planes give simple towers. If $p\equiv1\pmod8$, the twelve
-maximising planes form one orbit under signed permutations; thus the
-maximising residue lists form one orbit under change of basis, signs and
-permutations.
-\end{theorem}
-
-\begin{proof}
-The quadric $\sum_{i=1}^4x_i^2=0$ is split: choose $u^2+v^2=-1$ as in the
-proof of \cref{gra:thm:four} and take the orthogonal isotropic rows
+\emph{Part \textup{(b)}.} The quadric $\sum_{i=1}^4x_i^2=0$ is split:
+choose $u^2+v^2=-1$ as above and take the orthogonal isotropic rows
 $(1,0,u,v)$, $(0,1,-v,u)$. Its two rulings therefore give $2(p+1)$
 rational planes, and exactly two of them pass through each rational point
-of the quadric. The quartic restricts nontrivially to every such plane by
-\cref{gra:thm:extremal}. Depth four requires that the squared coordinates
-form a coset of the fourth roots of unity inside the nonzero squares. Let
-$D$ be the set of depth-four points; it is empty unless $p\equiv1\pmod8$.
-Otherwise, with $g$ of order eight, the points of $D$ are the signed
-permutations of $a=(1,g,g^2,g^3)$ up to scaling; normalising the first
-coordinate to $1$ gives $3!\,2^3=48$ points.
+of the quadric; these are the row planes with $M_1=0$. The quartic
+restricts nontrivially to every such plane by \cref{gra:thm:extremal}.
+Depth four requires that the squared coordinates form a coset of the fourth
+roots of unity inside the nonzero squares. Let $D$ be the set of depth-four
+points; it is empty unless $p\equiv1\pmod8$. Otherwise, with $g$ of order
+eight, the points of $D$ are the signed permutations of $a=(1,g,g^2,g^3)$
+up to scaling; normalising the first coordinate to $1$ gives
+$3!\,2^3=48$ points.
 
 Exactly two isotropic planes pass through $[a]$, obtained by adjoining
 $b=(-g,1,-g^3,g^2)$ and $d=(-g,1,g^3,-g^2)$ respectively; they are
@@ -1372,19 +1345,66 @@ twenty-four of the second. Transitivity on $D$ and uniqueness of the
 four-point plane through each point of $D$ give the orbit assertion.
 
 On a plane avoiding $D$ the quartic has zero or four rational roots, each
-of depth three, by the Klein four group argument in the proof of
-\cref{gra:thm:four}; such a plane has excess $0$ or $8$. Every point of
-$C\setminus D$ lies on two planes avoiding $D$. Hence $(c_p-\#D)/2$ planes
-avoiding $D$ have excess $8$, in addition to the $\#D/2$ planes with two
-points of $D$, which proves the counts. Simplicity is \cref{gra:rem:simple}.
+of depth three, by the Klein four group argument above; such a plane has
+excess $0$ or $8$. Every point of $C\setminus D$ lies on two planes
+avoiding $D$. Hence $(c_p-\#D)/2$ planes avoiding $D$ have excess $8$, in
+addition to the $\#D/2$ planes with two points of $D$, which proves the
+counts. Simplicity is \cref{gra:rem:simple} below.
+
+\emph{Part \textup{(c)}.} Over an algebraic closure $C$ is a smooth
+complete intersection: dependence of its two gradients would force all
+nonzero $x_i^2$ to coincide with one common nonzero $c$, and the quadratic
+equation would give $kc=0$ for some $1\le k\le4<p$. The quartic does not
+vanish identically on the smooth quadric, as the point $(1,\sqrt{-1},0,0)$
+shows. On this quadric, isomorphic over the algebraic closure to
+$\graP^1\times\graP^1$, the curve has bidegree $(4,4)$. It is connected:
+if two nonempty effective divisors of classes $(a,b)$ and $(4-a,4-b)$
+partitioned it disjointly, their intersection number $a(4-b)+b(4-a)$ would
+be positive. Smoothness then gives geometric irreducibility, and
+adjunction gives genus $(4-1)(4-1)=9$. The Hasse--Weil theorem
+\cite{Weil1948Courbes} yields
+\[
+ \#C(\F_p)\ge p+1-18\sqrt p>0\qquad(p>322).
+\]
+For the $49$ remaining primes $8<p\le322$, $p\not\equiv1\pmod8$, normalise
+a nonzero coordinate to one using permutation and scaling, and loop
+through $y,z\in\F_p$: set $c=-1-y^2-z^2$ and test whether $c$ is a square
+and $1+y^4+z^4+c^2=0$. This exhausts $C(\F_p)$ for the existence test.
+A witness for every successful prime, and an independent count of the
+whole curve at the $62$ primes from $11$ through $317$ by convolving
+two-coordinate moment tables, are recorded in
+\grafiles{\artifact{grh_transfers_lubin_tate_and_graph_towers/checks/graph_checks.txt}\\
+\artifact{grh_transfers_lubin_tate_and_graph_towers/checks/graph_independent_output.txt}}
+The seven failures are exactly the primes in \eqref{gra:eq:four}.
+
+\emph{The maximum.} By (a), lists with $M_1\ne0$ are not maximisers. By
+(b) the largest excess over $4(p+1)$ among lists with $M_1=0$ is $16$ if
+$p\equiv1\pmod8$, $8$ if $p\not\equiv1\pmod8$ and $c_p>0$, and $0$ if
+$c_p=0$. Part (c) turns this into \eqref{gra:eq:four}.
 \end{proof}
 
-When $p\equiv1\pmod8$, lists with $M_1\ne0$ have $\graA\le2(p+1)+12$ and
-are not maximisers. For $p\not\equiv1\pmod8$ the number of maximising row
-planes is $c_p/2$ if $c_p>0$ and $2(p+1)$ if $c_p=0$. The distributions at
+\begin{remark}[Simple graphs]\label[remark]{gra:rem:simple}
+The four-step maximum is also attained among simple eight-regular Cayley
+graphs. The row plane $W\subset\F_p^4$ of a spanning list with $M_1=0$ is
+totally isotropic for the dot product. A zero step, or equality of two
+steps up to sign, would put $W$ in the orthogonal complement of $e_i$ or
+of $e_i\pm e_j$. Each complement is a nondegenerate three-space, in which
+a totally isotropic plane would violate $\dim W+\dim W^\perp=3$. Distinct
+nonzero steps up to sign modulo $p$ give a simple graph at every level.
+\end{remark}
+
+\begin{remark}[Maximising row planes]
+For $p\not\equiv1\pmod8$ the number of maximising row planes is $c_p/2$ if
+$c_p>0$ and $2(p+1)$ if $c_p=0$; for $p\equiv1\pmod8$ it is twelve. The
+extremal lists with $M_1=0$ are the maximal isotropic planes
+$W\subset\F_p^4$ for the dot product. Reduced Laplacians at $p=11$ and
+$p=13$ give four-step valuations $46$ and $62$ at level one, in agreement
+with \eqref{gra:eq:four} and \cref{gra:thm:moments}. The distributions at
 sixteen primes from $11$ to $509$, computed from both rulings with a
-separate chart count of $C$, agree with \cref{gra:thm:fourdist}:
+separate chart count of $C$, agree with
+\cref{gra:thm:four}\ref{gra:thm:fourdist}:
 \grafiles{\artifact{short_tower_distributions_2026-11-27/verification.txt}}
+\end{remark}
 
 \paragraph{The curve $C$ and the complete four-step census.}
 The count $c_p$ is governed by two fixed elliptic curves over $\Q$, and
@@ -1396,8 +1416,8 @@ with $M_1\ne0$. Put
 and for $p\ge5$ let $a_p=p+1-\#E_1(\F_p)$ and $b_p=p+1-\#E_2(\F_p)$.
 
 \begin{theorem}[The Jacobian of the moment curve; \stU]\label{gra:thm:jacobian}
-Let $C\subset\graP^3$ be the curve $\sum_ix_i^2=\sum_ix_i^4=0$ of the proof
-of \cref{gra:thm:four}. Then $\graJac(C)\sim_\Q E_1^6\times E_2^3$. For every
+Let $C\subset\graP^3$ be the curve $\sum_ix_i^2=\sum_ix_i^4=0$ of
+\cref{gra:thm:four}. Then $\graJac(C)\sim_\Q E_1^6\times E_2^3$. For every
 $p\ge5$ the zeta function of $C/\F_p$ has numerator
 $(1-a_pT+pT^2)^6(1-b_pT+pT^2)^3$; in particular
 \[
@@ -1407,7 +1427,7 @@ $(1-a_pT+pT^2)^6(1-b_pT+pT^2)^3$; in particular
 
 \begin{proof}
 The curve is smooth of genus nine in characteristic zero and at every
-$p\ge5$, by the argument in the proof of \cref{gra:thm:four}. Put
+$p\ge5$, by the argument in the proof of \cref{gra:thm:four}(c). Put
 $y_i=x_i^2$. The image is the conic $Y_0:\sum y_i=\sum y_i^2=0$, and the
 cover $C\to Y_0$ has group $G=\{\pm1\}^4/\{\pm(1,1,1,1)\}$ of order eight,
 as is seen on the open set with no coordinate zero. Its seven nontrivial
@@ -1455,7 +1475,7 @@ the remaining assertions.
 \end{proof}
 
 The Hasse bounds for $E_1$ and $E_2$ give $\abs{c_p-p-1}\le18\sqrt p$, the
-bound used in the proof of \cref{gra:thm:four}. Substituting
+bound used in the proof of \cref{gra:thm:four}(c). Substituting
 $(y_i)=(l+m+n,l-m-n,-l+m-n,-l-m+n)$ turns the conic into
 $l^2+m^2+n^2=0$, on which $\prod_iy_i=2(l^4+m^4+n^4)$; this identifies
 $H$ with the central quadratic twist by $-1$ of the model of
@@ -1498,7 +1518,7 @@ $\delta=48\iota$. The rational points of the split quadric
 $Q:\sum_ix_i^2=0$ form an $\ell\times\ell$ grid, with $2\ell$ generator
 lines, two through each point. Give the points of $Q\setminus C$,
 $C\setminus D$ and $D$ (the depth-four points of the proof of
-\cref{gra:thm:fourdist}) the weights $r-1=1,2,3$, and encode them by
+\cref{gra:thm:four}\ref{gra:thm:fourdist}) the weights $r-1=1,2,3$, and encode them by
 \[
  F(z)=(\ell^2-c)z+(c-\delta)z^2+\delta z^3,\qquad
  \operatorname{Pairs}(h)(z)=\frac{h(z)^2-h(z^2)}2 ,
@@ -1535,7 +1555,7 @@ uniformly random spanning residue matrix with four columns.
 \end{theorem}
 
 \begin{proof}
-The generator table is the content of \cref{gra:thm:fourdist} and its
+The generator table is the content of \cref{gra:thm:four}\ref{gra:thm:fourdist} and its
 proof: the generators through $D$ are of types $D_4$ and $D_2$, each point
 of $D$ lying on one of each, and the generators avoiding $D$ carry zero or
 four points of $C$, each point of $C\setminus D$ lying on two of them. Each
@@ -1626,7 +1646,7 @@ of density $1/2$.
 \end{corollary}
 
 \begin{proof}
-By \cref{gra:thm:fourdist} and \cref{gra:thm:jacobian},
+By \cref{gra:thm:four}\ref{gra:thm:fourdist} and \cref{gra:thm:jacobian},
 $T_p=-(6a_p+3b_p)/(2\sqrt p)$. The $j$-invariants of $E_1,E_2$ are
 $21952/9$ and $35152/9$; they are not integers, so neither curve has
 complex multiplication. At $p=7$ the traces are $-4$ and $0$, so $E_1$ is
@@ -1867,61 +1887,52 @@ The multiplication determinants agree with Sylvester resultants in all
 $384$ cases, and independent fraction-free elimination of the
 $120\times120$ reduced Laplacian of the witness at $n=1$ gives valuation
 $70$; see
-\grafiles{\artifact{five_step_sharpness_2026-11-27/verification.txt}\\
-\artifact{five_step_graph_towers_2026-11-26/maxima.csv}}
-The second file records exhaustive maxima at the $22$ primes from $11$ to
-$101$. For lists with $M_1=0$, a change of basis sends two independent
+\grafiles{\artifact{five_step_sharpness_2026-11-27/verification.txt}}
+Exhaustive searches give the maxima of $\graA$ at every prime
+$11\le p\le181$, for all residue lists and for lists with nonzero
+residues; a step divisible by $p$ in both coordinates counts as a zero
+residue. For lists with $M_1=0$, a change of basis sends two independent
 steps to $(1,0),(0,1)$; with sign representatives for the remaining three
 steps, the key $(x^2,xy,y^2)$ is injective, and each sorted pair of the
 remaining steps determines the key of the last. In every case the maximum
-exceeds the ceiling $2(p+1)+16$ for $M_1\ne0$. The maxima of $\graA$ are,
-for all residue lists and for lists with nonzero residues:
+exceeds the ceiling $2(p+1)+16$ for $M_1\ne0$. The entries marked
+$^{\mathrm a}$ and $^{\mathrm b}$ are \cref{gra:thm:fivestep}(a) and~(b).
 \begin{center}\small\upshape
 \begin{tabular}{rrr@{\qquad}rrr@{\qquad}rrr}
 \toprule
 $p$ & all & nonzero & $p$ & all & nonzero & $p$ & all & nonzero\\
 \midrule
-11 & 72 & 72 & 41 & 184 & 180 & 73 & 312 & 306\\
-13 & 64 & 58 & 43 & 184 & 180 & 79 & 328 & 328\\
-17 & 88 & 80 & 47 & 200 & 200 & 83 & 344 & 344\\
-19 & 88 & 84 & 53 & 224 & 224 & 89 & 376 & 368\\
-23 & 96 & 96 & 59 & 248 & 248 & 97 & 408 & 402\\
-29 & 128 & 128 & 61 & 260 & 260 & 101 & 424 & 424\\
-31 & 148 & 148 & 67 & 280 & 280 & & & \\
-37 & 160 & 160 & 71 & 300 & 300 & & & \\
+$11^{\mathrm a}$ & 72 & 72 & 61 & 260 & 260 & 127 & 520 & 520\\
+13 & 64 & 58 & 67 & 280 & 280 & 131 & 540 & 540\\
+17 & 88 & 80 & 71 & 300 & 300 & 137 & 568 & 562\\
+19 & 88 & 84 & 73 & 312 & 306 & 139 & 568 & 568\\
+23 & 96 & 96 & 79 & 328 & 328 & 149 & 608 & 608\\
+29 & 128 & 128 & 83 & 344 & 344 & 151 & 620 & 620\\
+$31^{\mathrm b}$ & 148 & 148 & 89 & 376 & 368 & 157 & 640 & 640\\
+37 & 160 & 160 & 97 & 408 & 402 & 163 & 664 & 664\\
+41 & 184 & 180 & 101 & 424 & 424 & 167 & 680 & 680\\
+43 & 184 & 180 & 103 & 424 & 424 & 173 & 708 & 708\\
+47 & 200 & 200 & 107 & 440 & 440 & 179 & 728 & 728\\
+53 & 224 & 224 & 109 & 448 & 448 & 181 & 740 & 740\\
+59 & 248 & 248 & 113 & 472 & 466 & & & \\
 \bottomrule
 \end{tabular}
 \end{center}
-A step divisible by $p$ in both coordinates counts as a zero residue. At
-$p=131$ the same search gives the maximum $540=4(p+1)+12$, with or without
-zero residues; the witness $((1,0),(0,1),(0,42),(1,20),(28,18))$ has
-distinct nonzero signed classes, so
-$\max_Sv_{131}(\kappa_n(S))=540(131^n-1)/130-2n$, also among simple
-towers:
+The $22$ primes up to $101$ are recorded in
+\grafiles{\artifact{five_step_graph_towers_2026-11-26/maxima.csv}}
+At $p=131$ the maximum is $540=4(p+1)+12$, with or without zero residues;
+the witness $((1,0),(0,1),(0,42),(1,20),(28,18))$ has distinct nonzero
+signed classes, so $\max_Sv_{131}(\kappa_n(S))=540(131^n-1)/130-2n$, also
+among simple towers:
 \grafiles{\artifact{five_step_sharpness_2026-11-27/benchmark_131.txt}}
+At each of the other fifteen primes from $103$ to $181$ the maximum over
+lists with nonzero residues equals the maximum over simple towers. These
+values are finite verifications; simple witnesses and normalisation counts
+are in
+\grafiles{\artifact{five_step_refinement_2026-11-27/small_benchmarks.txt}}
 The polynomial identities in the proof of (d), the modular test at
 $p=761$ and the witnesses below are checked in
 \grafiles{\artifact{five_step_refinement_2026-11-27/symbolic.txt}}
-The same complementary-key search, run at the fifteen primes from $103$ to
-$181$, gives the following maxima of $\graA$; at each of these primes the
-maximum over lists with nonzero residues equals the maximum over simple
-towers, and every maximum exceeds the ceiling $2(p+1)+16$ for $M_1\ne0$.
-These values are finite verifications; simple witnesses and normalisation
-counts are in
-\grafiles{\artifact{five_step_refinement_2026-11-27/small_benchmarks.txt}}
-\begin{center}\small\upshape
-\begin{tabular}{rrr@{\qquad}rrr@{\qquad}rrr}
-\toprule
-$p$ & all & nonzero & $p$ & all & nonzero & $p$ & all & nonzero\\
-\midrule
-103 & 424 & 424 & 137 & 568 & 562 & 163 & 664 & 664\\
-107 & 440 & 440 & 139 & 568 & 568 & 167 & 680 & 680\\
-109 & 448 & 448 & 149 & 608 & 608 & 173 & 708 & 708\\
-113 & 472 & 466 & 151 & 620 & 620 & 179 & 728 & 728\\
-127 & 520 & 520 & 157 & 640 & 640 & 181 & 740 & 740\\
-\bottomrule
-\end{tabular}
-\end{center}
 
 \begin{proposition}[Exact maxima at six larger primes; \stU, finite verification]\label[proposition]{gra:prop:fivelarge}
 For five steps the maxima of $\graA(S)$ over all residue lists and over
@@ -2080,7 +2091,7 @@ $196(29^n-1)/28-2n$. The search logs with explicit simple witnesses are
 \artifact{seven_step_graph_towers_2026-11-27/search_lower_output.txt}}
 
 \begin{theorem}[Prime step counts; \stU]\label{gra:thm:primestep}
-Let $m\ge5$ be prime, $k=(m-1)/2$ and $p>\max(m^{m-1},27^k)$. If $M_1=0$,
+Let $m\ge7$ be prime, $k=(m-1)/2$ and $p>\max(m^{m-1},27^k)$. If $M_1=0$,
 there are at most two directions of depth $m$. Consequently
 \[
  \graA(S)\le2k(p+1+2m-2k)-2(m-3),
@@ -2122,9 +2133,25 @@ have depth at most $m-1$; relative to the outer bound of
 bound \eqref{gra:eq:tbound} at $t=k-1$ already saves $2(p+5)$.
 \end{proof}
 
+\begin{remark}[The cases $m=5$ and $m=7$]
+The proof applies verbatim to $m=5$, for $p>729$, and gives
+$\graA(S)\le4(p+1)+20$ and at most two depth-five directions when $M_1=0$.
+Both are superseded: \cref{gra:thm:fivestep}(c),(d) give
+$\graA(S)\le4(p+1)+16$ for every prime $p>10$ other than $11$ and $31$, and
+its proof gives at most two depth-five directions whenever $M_1=0$ and
+$p\notin\{11,31,101,131\}$. For $m=7$, where the theorem needs
+$p>7^6=117649$, its bound $6(p+1)+40$ is superseded by the bound $6(p+1)+38$
+of \cref{gra:thm:seven} for every $p>14$. Its structural assertion at $m=7$,
+at most two directions of depth seven when $M_1=0$, is not covered by
+\cref{gra:thm:seven}, whose classification of two depth-seven directions
+assumes $t=3$, that is, $M_2=0$ as well. As a bound, \cref{gra:thm:primestep}
+is new for $m\ge11$.
+\end{remark}
+
 Thus for odd $m$ the outer bound of \eqref{gra:eq:tbound} is attained for
-$m=3$ exactly when $p\equiv1\pmod6$, for $m=5$ only at $p=11$, never for
-$m=7$, and never for prime $m\ge5$ once $p>\max(m^{m-1},27^k)$.
+$m=3$ exactly when $p\equiv1\pmod6$, for $m=5$ only at $p=11$
+(\cref{gra:thm:fivestep}), never for $m=7$ (\cref{gra:thm:seven}), and never
+for prime $m\ge11$ once $p>\max(m^{m-1},27^k)$.
 
 \subsection{How late can the eventual law start?}\label{gra:sec:onset}
 \sources{Effective_Graph_Towers; grh_method_transfers; spanning-tree-sharp-cutoff}
@@ -2159,15 +2186,9 @@ fixed $p$; in particular five loops suffice at $p=3$ to prescribe any
 positive starting level.
 
 \begin{proof}
-For a pair $(U,V)$ of $p$-power roots of unity of joint conductor $p^j>1$,
-write $U=\zeta^a$, $V=\zeta^b$ in a common primitive coordinate $\zeta$ of
-order $p^j$, with $a,b$ not both divisible by $p$. The reduction of
-$(\grah(U)+\grah(V))/(\zeta-1)^2$ modulo $\zeta-1$ is $-(a^2+b^2)$. Since
-$-1$ is a nonsquare modulo $p$, this is nonzero. Consequently
-\begin{equation}\label{gra:eq:aniso}
- v_p(\grah(U)+\grah(V))=2/e_j\le1 .
-\end{equation}
-The eigenvalue at a character $(X,Y)$ is
+Since $p\equiv3\pmod4$, \cref{gra:eq:aniso} gives
+$v_p(\grah(U)+\grah(V))=2/e_j\le1$ for every pair $(U,V)$ of $p$-power
+roots of unity of joint conductor $p^j>1$. The eigenvalue at a character $(X,Y)$ is
 $\grah(X^{p^k})+\grah(Y)+p\,\grah(X)$. The final term has valuation
 strictly above one, with the convention $v_p(0)=+\infty$. Thus whenever
 $(X^{p^k},Y)\ne(1,1)$, the joint conductor of this image alone determines
@@ -2246,10 +2267,8 @@ eventual formula $D_k$ is exactly $k$.
 Index a character by its two coordinate roots of unity, and let $a,b$ be
 their conductor exponents, with exponent $0$ for the trivial root. For a
 nontrivial character write $h=\max(a,b)$ and express the roots as
-$z^u,z^v$ for $z$ primitive of order $3^h$; at least one of $u,v$ is a unit
-modulo $3$. With $\pi=z-1$, the grid symbol $F=\grah(z^u)+\grah(z^v)$
-satisfies $F/\pi^2\equiv-(u^2+v^2)\pmod\pi$. The nonzero squares modulo
-$3$ are all $1$, so this residue is nonzero, and
+$z^u,z^v$ for $z$ primitive of order $3^h$. By \cref{gra:eq:aniso} at
+$p=3$, the grid symbol $F=\grah(z^u)+\grah(z^v)$ has
 $v_3(F)=2/\varphi(3^h)=3^{1-h}$. If $a\le k$, the full symbol equals $3F$
 and has valuation $1+3^{1-h}$. If $a>k$, the extra summand
 $\grah(z^{3^ku})$ has valuation $3^{1-a+k}\le1$, strictly below that of
@@ -2472,7 +2491,7 @@ $b\to\infty$,
  \Theta_p(b),&m\ge\max(3,p).\end{cases}
 \]
 The constants in the upper bound can be taken independent of $m$. For odd
-$p$ and $m<p$ the onset is at most one.
+$p$ and $m<p$ the onset is at most one, by \cref{gra:thm:cutoff}.
 \end{theorem}
 
 \begin{proof}
@@ -2705,9 +2724,14 @@ $(U_2,U_1)\equiv(1,10)\pmod{27}$ on $81$ vertices and
 $(U_2,U_1)\equiv(13,5)\pmod{16}$ on $64$ vertices
 (\artifact{spanning-tree-unit-stabilization/verification.txt}).
 
+Determinants of Grover walks on abelian towers have valuations of the same
+kind; they are computed by the automaton of \cref{gra:sec:effective}, and on
+the ternary square grid at every level by \cref{gra:thm:grover} in
+\cref{sec:grw}.
+
 \subsection{Open questions}\label{gra:sec:open}
 {\raggedright
-\sources{Effective_Graph_Towers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers; grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; grh_transfers_cycle_signings_and_lubin_tate; grh_transfer_advances_2026-11-26; five_step_graph_towers_2026-11-26; five_step_sharpness_2026-11-27; seven_step_graph_towers_2026-11-27; five_step_refinement_2026-11-27; sparse-padic-roots-and-graph-towers; grh_cayley_and_filters}
+\sources{Effective_Graph_Towers; grh_method_transfers_graph_towers_and_finite_rings; grh_method_transfers; grh_transfers_lubin_tate_and_graph_towers; grh_transfer_extensions_2026-11-26; five_step_graph_towers_2026-11-26; five_step_sharpness_2026-11-27; seven_step_graph_towers_2026-11-27; five_step_refinement_2026-11-27; sparse-padic-roots-and-graph-towers}
 }
 
 \begin{enumerate}
@@ -2761,31 +2785,4 @@ moments can occur on a single plane for $m\ge5$? In higher dimension, can
 the distribution of $\graA$ for random step lists be expressed through
 point counts of the successive moment varieties, and which higher moment
 curves have equally explicit rational elliptic factors?
-\item \emph{Oriented Cayley walks.} For a prescribed conductor $f$ and
-spacing $a\sqrt{-f}$, what is the least outdegree of a periodic oriented
-Cayley graph that is connected on the whole host?
-\Cref{gra:prop:cayleycoset} shows that this requirement can change the
-answer of \cref{gra:thm:cayleyperiods}. For larger conductors, which
-connection sets attain the degree bound on hosts of order greater than
-$af$? \Cref{gra:cor:cayleyduality} constrains them by a duality, the
-spectrum and the rank. Nonabelian groups would require control of
-higher-dimensional irreducible representations.
-\item \emph{Square cycles at lengths incompatible with period eight.}
-What are the exact optima of \cref{gra:sec:cycles} at large lengths
-incompatible with period eight? The first undetermined even length is
-$n=52$. Is there a uniform
-description at lengths $8m+2$, $8m+4$ and $8m+6$? The fifty-vertex word is
-evidence for a defect-pattern search, not a proof that one defect always
-wins, and the finite-window language can become much larger at a slightly
-increased threshold.
-\item \emph{A conceptual proof of period eight.} Can the $29$-vertex test
-of \cref{gra:lem:windows} be replaced by a short human-checkable family
-of inequalities for forbidden sign patterns? Such a proof would explain
-the period eight and could extend to $C_n(1,k)$ with $k>2$.
-\item \emph{All widths.} For complete bipartite edge polytopes, are the
-two parity blocks of the Bezoutian of \cref{gra:lem:bezout} positive in
-every width? A representation of their minors as sums with positive
-coefficients could replace the width-by-width certificates and give a
-route to the line property and to interlacing for unrestricted part
-sizes.
 \end{enumerate}

@@ -23,22 +23,42 @@
 \providecommand{\torsU}{\mathcal{U}}
 \providecommand{\torsfiles}[1]{\begin{itemize}[nosep,leftmargin=1.5em,label=--]\footnotesize #1\end{itemize}}
 \renewcommand{\arraystretch}{1.25}
-\section{Torsion specialization: exact costs, obstructions and coefficient fields}\label{sec:cost}
+\section{Torsion specialization II: coefficient fields, characters and limits}\label{sec:cost}
 % Local helper: a compact list of delivered files (paths are too long for running text).
 \providecommand{\costfiles}[1]{\begin{itemize}[nosep,leftmargin=1.5em,label=--]\footnotesize #1\end{itemize}}
 
-The selection theorems of \cref{sec:tors}, in particular \cref{tors:thm:selection}, produce a
-root of unity $\zeta$ of $p$-power order such that an integral $p$-adic polynomial or power
-series of bounded Gauss valuation does not gain valuation at $\zeta-1$. This section treats
-the opposite side of the same problem: how much valuation budget is needed to defeat every
-such specialization on a prescribed set of primitive shells. The answer depends on three
-choices: whether one polynomial is compared with one fixed Gauss valuation or several
-polynomials are compared individually; whether a positive tolerance is allowed; and which
-coefficient field is admitted. Each case is settled by an exact formula or by an exact finite
-computation; for packets with a prescribed number of members, which interpolate between the
-first two cases, the cost is also determined asymptotically (\cref{cost:sec:cardinality}).
-All results are local statements about $p$-adic polynomials. None of them uses a
-Riemann hypothesis.
+This section continues \cref{sec:tors}, with the same notation, conventions and objectives
+(\cref{tors:sec:setup}). There the coefficients were unrestricted in $\OO_{\Cp}$; here the
+coefficient field is first prescribed, and the selection theorems are then applied to
+powers, matrices and characters.
+\begin{itemize}
+\item \emph{Prescribed coefficient fields.} Over a fixed finite extension $K/\Qp$ the
+  Galois symmetry of the roots makes separate exact comparisons possible for families of
+  any cardinality. At tolerance zero the exact price of a shell depends only on the wild
+  part of the ramification index, in one variable with an optimal endpoint
+  (\cref{tors:thm:fixedfield,cost:thm:field,cost:cor:fieldendpoint}) and in several
+  variables without an iterated exponential tower (\cref{tors:thm:notower}). At positive
+  tolerance the shell costs are a finite computation (\cref{cost:prop:mod}), determined in
+  closed form for abelian and for wild radical coefficient fields
+  (\cref{cost:sec:abelian,cost:sec:radical}).
+\item \emph{Powers and matrices.} All selection theorems transfer to the first $m$ powers
+  of a torsion tuple, with sharp endpoints for the first two powers (up to one in one
+  case, \cref{tors:thm:twopowers}; see \cref{tors:sec:powers}), and to determinants, ranks and Fitting ideals
+  (\cref{tors:sec:matrices}).
+\item \emph{Characters.} Packets of selected tuples give packets of anticyclotomic
+  characters on one support in the arithmetic twisting construction of the source
+  (\cref{tors:sec:characters}), and Dirichlet characters of prime conductor
+  (\cref{cost:cor:cardchar}). \Cref{spn:sec:characters,spn:sec:conductor,spn:sec:benchmark}
+  determine when local torsion data extend to global characters and bound their
+  conductors.
+\item \emph{Limits.} \Cref{tors:sec:limits} shows which hypotheses of the selection
+  theorems cannot be dropped; in particular the order of the selected root of unity
+  cannot be prescribed.
+\end{itemize}
+The results on coefficient fields, powers and matrices are local. All results are
+unconditional except \cref{cost:cor:cardchar} and \cref{spn:thm:bounded-conductor}, which
+use \cref{src:thm:dgrh} to find small primes in arithmetic progressions.
+
 
 \subsection{Separate exact bounds over a fixed coefficient field}\label{tors:sec:fixedfield}
 \sources{grh_fixed_field_transfer_2026-11-25; grh-torsion-and-prime-sampling}
@@ -138,20 +158,16 @@ every $a_h$ with $h\ge h_0$ equals $p^{-w}$.
 \end{proof}
 
 \begin{remark}\label{tors:rem:fixedfield}
-(1) The number $C_K(S)$ is exactly the least budget of a family over $\OO_K$ for which the
-conclusion of \cref{tors:thm:fixedfield}(b) fails; it is attained by one explicit
-binomial for each $h\in S$, and equality $\sum_it_i=C_K(S)$ already permits failure. In
-particular the endpoint $H$ in \textup{(c)} is optimal. These facts are proved in
-\cref{cost:thm:field,cost:cor:fieldendpoint}.
-
-(2) The cost depends on $K$ only through the wild part $p^w$ of $e$. Every tamely
-ramified $K$ has the endpoint $h_0+\floor{B}$ of $\Qp$. The earlier fixed-field count,
-which uses only that a shell carrying a root costs at least $1/e$, gives
-$h_0+\floor{eB}$; for $p=2$, $h_0=1$, $B=3$ this is $316$ for $e=105$ and $25$ for $e=8$,
-against $4$ and $14$ from \cref{tors:thm:fixedfield}(c); further values are in
+(1) The budget $C_K(S)$ and the endpoint in \textup{(c)} are optimal
+(\cref{cost:thm:field,cost:cor:fieldendpoint}). The cost depends on $K$ only through the
+wild part $p^w$ of $e$, and every tamely ramified $K$ has the endpoint $h_0+\floor{B}$ of
+$\Qp$. The earlier fixed-field count, which uses only that a shell carrying a root costs
+at least $1/e$ (\cref{cost:prop:wholeshell}), gives $h_0+\floor{eB}$; for $p=2$, $h_0=1$,
+$B=3$ this is $316$ for $e=105$ and $25$ for $e=8$, against $4$ and $14$ from
+\cref{tors:thm:fixedfield}(c); further values are in
 \artifact{grh_fixed_field_transfer_2026-11-25/data/bound_comparison.csv}.
 
-(3) For one polynomial over $\OO_K$ the separate and the aggregate comparison coincide,
+(2) For one polynomial over $\OO_K$ the separate and the aggregate comparison coincide,
 and both \cref{tors:thm:selection} and \cref{tors:thm:fixedfield}(c) apply. When
 $w\le h_0-1$ the fixed-field endpoint is $h_0+\floor{p^wB}$, which is at most the
 universal endpoint $h_0+\floor{p^{h_0-1}B}$.
@@ -447,6 +463,12 @@ common witness $0$. In particular the strict inequality $\sum_it_i<C_K(S)$ in
 \cref{tors:thm:fixedfield}\textup{(b)} cannot be replaced by equality.
 \end{theorem}
 
+In particular \cref{tors:thm:fixedfield}\textup{(b)} follows from the theorem, under the
+same hypotheses: a packet over $\OO_K$ with targets $t_i\ge G_\rho(g_i)$, $\rho\ge\max_{h\in
+S}r_h$ and $\sum_it_i<C_K(S)=C_K(S,0)$ does not block $S$ at tolerance zero, that is, some
+$z$ on a shell of $S$ has $v(g_i(z))\le t_i$ for every $i$. The lower bound in the proof
+below uses only \cref{tors:thm:fixedfield}\textup{(a)}.
+
 \begin{proof}
 Fix $h$ and abbreviate $n=e_h$, $r=r_h$ and $s=\min\set{w,h-1}$.
 
@@ -507,11 +529,11 @@ so no endpoint below the stated one suffices. (iii) A single polynomial with thr
 $G_\rho(g)$ is a packet with one member, so a blocker has $G_\rho(g)\ge C_K(S,0)=\abs S$,
 by Theorem~\ref{cost:thm:field} with $w=0$; the product of the shifted cyclotomic
 polynomials vanishes on the whole window and has $G_\rho=H-h_0+1$ by
-Lemma~\ref{cost:lem:roots}.
+\eqref{tors:eq:gauss}.
 \end{proof}
 
-A numerical comparison of the endpoint in (ii) with the earlier bound $h_0+\floor{e_KB}$ of
-Proposition~\ref{cost:prop:wholeshell} is given in \cref{tors:rem:fixedfield}. Exact rational
+The endpoint in (ii) is compared with the earlier bound $h_0+\floor{e_KB}$ of
+Proposition~\ref{cost:prop:wholeshell} in \cref{tors:rem:fixedfield}(1). Exact rational
 checks of the zero-tolerance formula are in:
 \costfiles{
 \item \artifact{grh_fixed_field_transfer_2026-11-25/checks/zero_tolerance_checks.json}}
@@ -530,8 +552,7 @@ root of valuation $r_h$. Then
 and for $h\in S\setminus S'$ every $z\in Z_h$ satisfies
 $v(g_i(z))=G_{r_h}(g_i)\le t_i$ for all $i$ simultaneously. In particular, among any
 $\floor{e_KB}+1$ shells of radius at most $\rho$ there is one on which a packet of cost at
-most $B$ has no loss at any point. For unramified $K$, $\floor B+1$ shells suffice, and this
-number is optimal at every tolerance.
+most $B$ has no loss at any point.
 \end{proposition}
 
 \begin{proof}
@@ -540,8 +561,7 @@ roots of that valuation, by invariance of the extended valuation. If its degree 
 norm has valuation $D/e_h\in e_K^{-1}\Z$, so $D$ is a multiple of $e_h/\gcd(e_K,e_h)$. Hence a
 shell in $S'$ carries at least $e_h/\gcd(e_K,e_h)$ roots and costs at least
 $1/\gcd(e_K,e_h)\ge1/e_K$ in \eqref{cost:eq:budget}. On a shell without roots at its radius,
-\eqref{cost:eq:shellvalue} gives $v(g_i(z))=G_{r_h}(g_i)$. Optimality for unramified $K$ is
-Corollary~\ref{cost:cor:fieldendpoint}(i).
+\eqref{cost:eq:shellvalue} gives $v(g_i(z))=G_{r_h}(g_i)$.
 \end{proof}
 
 For positive tolerance the function $c_{K,h}$ is an invariant of $K$ that is not determined
@@ -584,7 +604,7 @@ $\bigcup_{h\in S}Z_h$ at tolerance $\delta$ in the aggregate sense is $\sum_{h\i
 
 \begin{proof}
 Extract from a blocker $g$ its monic factor $P_h\in\OO_K[T]$ of roots of valuation $r_h$,
-for each $h\in S$. By Lemma~\ref{cost:lem:roots},
+for each $h\in S$. By \cref{tors:lem:shells}(b),
 $v(g(z))-G_\rho(g)=v(P_h(z))-(\deg P_h)r_h-(G_\rho(g)-G_{r_h}(g))$ on $Z_h$, and the savings
 $G_\rho(g)-G_{r_h}(g)$ are at least $\sum_{j<h}(\deg P_j)(r_j-r_h)$, which by induction and
 $r_j>r_h$ is at least the sum in the recursion. The extracted factor must therefore pass
@@ -985,12 +1005,12 @@ polynomial of degree $m$ is $\floor{m/n}\theta_{p,h}$, attained simultaneously a
 points of the shell. The least degree making it exceed $\delta$ is $kn$ with
 $k=\floor{\delta/\theta_{p,h}}+1$, provided $k<p$, and it costs $kn\,r_h=k/p$. At degree
 $e_h$ the shifted cyclotomic polynomial vanishes on the shell. The case $h=1$ follows from
-the last part of Theorem~\ref{cost:thm:approx}. For bounded integral power series, truncate at a
-degree so high that the omitted terms have valuation greater than $\sum_it_i+\delta$ at
-every witness, at the radius $\rho$ and at every allowed torsion point; this is possible
-because all these arguments have valuation bounded below by a positive number. The
-thresholds are unchanged, each loss at most $\delta$ is unchanged and each loss exceeding
-$\delta$ still exceeds it, so blocking is preserved and the polynomial bound applies.
+the last part of Theorem~\ref{cost:thm:approx}. For bounded integral power series apply
+\cref{tors:lem:truncation} with $a=0$, $M=\sum_it_i+\delta$ and $r>0$ a common lower bound,
+at most $\rho$, for the valuations of the witnesses and of the allowed torsion points. The
+truncations have the same Gauss valuations, the thresholds are unchanged, each loss at most
+$\delta$ is unchanged and each loss exceeding $\delta$ still exceeds it, so blocking is
+preserved and the polynomial bound applies.
 \end{proof}
 
 For fixed $p$ the thresholds $\theta_{p,h}$ increase strictly to $1/(p-1)$, so the
@@ -1364,20 +1384,17 @@ from the source, stated in words; it is part of the construction of anticyclotom
 with small Selmer lengths described in \cref{src:sec:mechanism}, and it does not depend
 on \cref{src:thm:dgrh}.
 
-Fix the CM field $E$, the prime $p$, the set $S_0$ containing the places above $p$, an
-inertia element $g_0$ at a place of $S_0$ away from $p$, the coefficient ring, the Selmer
-data $T_i$ and the Stickelberger systems $Y_k$ of the source. Assume \code{IsTorsionLevel}
-at the required torsion level and all fields of the structures \code{SelmerDatum} and
-\code{StickelbergerSystem}, and write $\beta_a$ for their finite normalized valuation
-budgets, including the global and local terms. In particular the Selmer datum has scalar
-inertia of a special kind, local cohomological conditions and representation hypotheses;
-these are not automatic for arbitrary elliptic curves (\cref{sec:sel}). The source
-constructs an integer $s_0\ge1$, depending only on the fixed data, such that for all
-rational $r>0$ with $s_0r<1$ and all sufficiently large $N$ there exist the following.
+Fix the data of the general twisting theorem of the source (\cref{sel:sec:interface}):
+the CM field $E$, the prime $p$, the Selmer data $T_i$ and the Stickelberger systems $Y_k$,
+with all the hypotheses of the structures \code{SelmerDatum} and
+\code{StickelbergerSystem} and \code{IsTorsionLevel} at the required torsion level, and
+write $\beta_a$ for their finite normalized valuation budgets. The source constructs an
+integer $s_0\ge1$, depending only on the fixed data, such that for all rational $r>0$ with
+$s_0r<1$ and all sufficiently large $N$ there exist the following.
 \begin{itemize}
-\item An auxiliary set $Q$ of primes of degree one, disjoint from its conjugate
-  $\overline Q$ and from the prescribed bad sets, with $2\#Q\le s_0$. It contains a
-  designated first prime, so $Q$ is nonempty.
+\item A nonempty auxiliary set $Q$ of primes of degree one, disjoint from its conjugate
+  $\overline Q$ and from the prescribed bad sets, with $2\#Q\le s_0$
+  (\cref{sel:rem:boundedsupport}).
 \item Characters $\lambda_u\colon G_E\to\Z/p^N\Z$ for $u\in Q$, unramified outside
   $u,\bar u$ and trivial above $p$, whose restrictions to inertia at $u$ are surjective.
   On inertia at $u$ every other $\lambda_{u'}$ is zero.
@@ -1454,7 +1471,10 @@ size $N_0$ of the packet is specified, one common auxiliary level $N$ and one
 parametrization. The theorem adds an explicit bound for the order and a multiplicity to
 the qualitative existence theorem of the source. It is not a statement of positive
 density when conductors are ordered by norm, and a bound for the order of a character
-does not bound the norm of its conductor. The orders within the packet may vary.
+does not bound the norm of its conductor. The orders within the packet may vary. For the
+simpler realization problem without the Frobenius and Selmer conditions of the
+construction, \cref{spn:thm:bounded-conductor} gives an explicit conductor bound under
+\cref{src:thm:dgrh}.
 
 (2) Small normalized length is not vanishing. If the coefficient field has absolute
 ramification index $e_L$, a nonzero module of finite length has normalized length at
@@ -1495,7 +1515,7 @@ further Frobenius, ramification or Selmer conditions.
 \subsection{When local torsion data become global twists}\label{spn:sec:characters}
 \sources{grh_transfer_bridges_2026-11-25}
 
-A torsion-avoidance lemma (\cref{sec:tors}) chooses roots of unity satisfying
+A torsion-avoidance lemma (\cref{tors:sec:characters}) chooses roots of unity satisfying
 polynomial inequalities. A global twisting theorem needs those roots to be
 values of an arithmetic character. There are three separate quantities: the
 orders of the local inertia values, the order of the global character, and
@@ -1710,9 +1730,9 @@ have that same conductor whenever $m<p^N$.
 Choose $t$ distinct nonzero residues modulo $\ell$. For each, the Chinese
 remainder theorem gives a reduced residue class modulo $Q$ which is $1$
 modulo $M$ and has the chosen value modulo $\ell$. Under Dirichlet GRH, the
-least-prime bound $P(a,q)\le(\varphi(q)\log q)^2$ for $q>3$ of Lamzouri, Li
-and Soundararajan \cite[Corollary~1.2]{LamzouriLiSoundararajan2015Conditional} gives a prime
-in each class at most $P$. They are distinct because the residues modulo $\ell$ are distinct.
+least-prime bound $P(a,q)\le(\varphi(q)\log q)^2$ for $q>3$ of
+Theorem~\ref{dir:thm:published}\ref{dir:it:leastprime} gives a prime in each class at most $P$.
+ They are distinct because the residues modulo $\ell$ are distinct.
 Their congruence modulo $f$ ensures complete splitting in $E$; their
 congruence modulo the other factors ensures avoidance and
 $\vp(q_j-1)\ge N+w_0$.
@@ -2143,12 +2163,42 @@ follows from these constructions.
 
 %======================================================================
 
-\subsection{The boundary for selection at a prescribed order}\label{cost:sec:boundary}
-{\raggedright\sources{grh_method_transfers_2026-11-25_1; grh_exact_torsion_transfer_2026-11-25; grh-torsion-and-prime-sampling}}
+\subsection{Hypotheses that cannot be dropped}\label{tors:sec:limits}\label{cost:sec:boundary}
+{\raggedright\sources{grh_method_transfers_2026-11-25_1; grh_beyond_dirichlet_grh_2026-11-25; grh_exact_torsion_transfer_2026-11-25; grh_quantitative_twists_2026-11-25; grh_sharp_transfers_2026-11-25; grh-torsion-and-prime-sampling}}
 
-All the positive statements above let the successful order vary in a window. The
-flexibility cannot be replaced by a conclusion at one prescribed exact order with no
-valuation loss, even for the comparison with the value at the trivial character.
+\begin{remark}\label{tors:rem:hypotheses}
+(1) \emph{Bounded coefficients.} The series $\log(1+T)=\sum_{n\ge1}(-1)^{n+1}T^n/n$
+converges for $v(T)>0$, has the nonzero value $\log(1+p^2)$ of valuation $2$, and
+vanishes at every $\zeta-1$ with $\zeta$ of $p$-power order. Its coefficient valuations
+$-\vp(n)$ are unbounded below, and no scalar multiple of it is integral. Likewise, for a
+proposed $H$ and $x=p^R$ with $R\ge r$, the polynomial
+$\bigl((1+T)^{p^H}-1\bigr)/\bigl((1+x)^{p^H}-1\bigr)$ has the value $1$ at $x$ and
+vanishes at every $\zeta-1$ with $\zeta^{p^H}=1$; its denominator destroys integrality. A
+family with a known common lower bound for the coefficient valuations can be scaled to an
+integral family, but the scaling changes the budget.
+
+(2) \emph{Positive radius.} For $F(T)=T$ one has $G_0(F)=0$, while $v(F(z))>0$ at every
+torsion point. An exact comparison with the coefficient infimum $G_0$ is false.
+
+(3) \emph{A total budget.} For $h\ge1$ let $F_h(T)=\Phi_{p^h}(1+T)\in\Zp[T]$ with the
+witness $x_h=p^2$. Since $v\bigl((1+p^2)^{p^k}-1\bigr)=k+2$ for all $k\ge0$, including
+$p=2$, one has $v(F_h(p^2))=1$ for every $h$. Each nontrivial root of unity of $p$-power
+order annihilates one $F_h$. Infinitely many separate bounds $t_h\le1$ cannot replace a
+finite total budget.
+
+(4) \emph{The order cannot be prescribed.} The polynomial $\Phi_{p^H}(1+T)$ vanishes on
+the whole shell $Z_H$, while its Gauss valuation at any radius $\rho\ge r_H$ is $1$. No
+selection theorem under the present hypotheses can prescribe the exact order, and in
+particular none can assert that the largest admissible order works. The theorems select
+an order in an interval, and the dependence on the budget cannot be removed
+(\cref{tors:rem:nonvanishing}).
+\end{remark}
+
+\paragraph{Selection at a prescribed order without loss.}
+All the positive statements above let the successful order vary in a window, and by
+\cref{tors:rem:hypotheses}(4) the order cannot be prescribed. The flexibility cannot be
+replaced by a conclusion at one prescribed exact order with no valuation loss, even for the
+comparison with the value at the trivial character.
 
 Let $G=C_{p^m}$ with $m\ge2$, written additively with generator $g$ and identity $0$, and
 let $\zeta$ be a primitive $p^m$-th root of unity. In the group ring
@@ -2188,48 +2238,9 @@ that such ramification-sensitive thresholds cannot be dropped. The valuations ar
 exactly for $p=2,3,5,7$ and $m=2,3,4$ in
 \artifact{grh_method_transfers_2026-11-25_1/data/torsion_checks.json}.
 
-The example has a quantifier limit: $t$ tends to zero as $m$ grows, so it rules out no
-loss, and any specified loss $\epsilon<t$, but by itself it does not rule out a statement
-that first fixes $\epsilon>0$ and then takes $m$ large. The obstruction to a universal
-exact-order selector for all polynomial inputs of bounded budget is the polynomial
-$\Phi_{p^H}(1+T)$, which vanishes at every root of prescribed exact order $p^H$ while its
-witness valuation at $0$ is $1$ (\cref{tors:rem:hypotheses}).
-
-\subsection{Hypotheses that cannot be dropped}\label{tors:sec:limits}
-\sources{grh_method_transfers_2026-11-25_1; grh_beyond_dirichlet_grh_2026-11-25; grh_exact_torsion_transfer_2026-11-25; grh_quantitative_twists_2026-11-25; grh_sharp_transfers_2026-11-25}
-
-\begin{remark}\label{tors:rem:hypotheses}
-(1) \emph{Bounded coefficients.} The series $\log(1+T)=\sum_{n\ge1}(-1)^{n+1}T^n/n$
-converges for $v(T)>0$, has the nonzero value $\log(1+p^2)$ of valuation $2$, and
-vanishes at every $\zeta-1$ with $\zeta$ of $p$-power order. Its coefficient valuations
-$-\vp(n)$ are unbounded below, and no scalar multiple of it is integral. Likewise, for a
-proposed $H$ and $x=p^R$ with $R\ge r$, the polynomial
-$\bigl((1+T)^{p^H}-1\bigr)/\bigl((1+x)^{p^H}-1\bigr)$ has the value $1$ at $x$ and
-vanishes at every $\zeta-1$ with $\zeta^{p^H}=1$; its denominator destroys integrality. A
-family with a known common lower bound for the coefficient valuations can be scaled to an
-integral family, but the scaling changes the budget.
-
-(2) \emph{Positive radius.} For $F(T)=T$ one has $G_0(F)=0$, while $v(F(z))>0$ at every
-torsion point. An exact comparison with the coefficient infimum $G_0$ is false.
-
-(3) \emph{A total budget.} For $h\ge1$ let $F_h(T)=\Phi_{p^h}(1+T)\in\Zp[T]$ with the
-witness $x_h=p^2$. Since $v\bigl((1+p^2)^{p^k}-1\bigr)=k+2$ for all $k\ge0$, including
-$p=2$, one has $v(F_h(p^2))=1$ for every $h$. Each nontrivial root of unity of $p$-power
-order annihilates one $F_h$. Infinitely many separate bounds $t_h\le1$ cannot replace a
-finite total budget.
-
-(4) \emph{The order cannot be prescribed.} The polynomial $\Phi_{p^H}(1+T)$ vanishes on
-the whole shell $Z_H$, while its Gauss valuation at any radius $\rho\ge r_H$ is $1$. No
-selection theorem under the present hypotheses can prescribe the exact order, and in
-particular none can assert that the largest admissible order works. The theorems select
-an order in an interval, and the dependence on the budget cannot be removed
-(\cref{tors:rem:nonvanishing}).
-
-(5) \emph{The moving target and separate exact bounds.} As recalled in
-\cref{tors:sec:setup}, a bounded budget does not suffice for the exact comparison with
-$G_{r_h}$ or for separate exact comparisons over $\OO$ with unbounded cardinality; see
-\cref{sec:cost}.
-\end{remark}
+Since $t\to0$ as $m$ grows, the proposition alone does not exclude a selector at a
+prescribed order that allows a fixed loss $\epsilon>0$; the polynomial of
+\cref{tors:rem:hypotheses}(4) does.
 
 \paragraph{Relation to the literature.}
 Kriz and Nordentoft develop horizontal $p$-adic $L$-functions, prove maximum-modulus
@@ -2250,49 +2261,40 @@ in the degree. An application to an arithmetic family requires the interpolation
 identity, the integral normalization and a nonzero witness with a known valuation, which
 the selection theorems do not provide.
 
-\subsection{Open questions}\label{tors:sec:open}
-\sources{grh_quantitative_twists_2026-11-25; grh_fixed_field_transfer_2026-11-25; grh_beyond_dirichlet_grh_2026-11-25; grh_sharp_transfers_2026-11-25; grh_exact_torsion_transfer_2026-11-25; dirichlet_li_recovery}
+\subsection{Open questions}\label{tors:sec:open}\label{cost:sec:open}
+{\raggedright\sources{grh_quantitative_twists_2026-11-25; grh_fixed_field_transfer_2026-11-25; grh_beyond_dirichlet_grh_2026-11-25; grh_sharp_transfers_2026-11-25; grh_exact_torsion_transfer_2026-11-25; dirichlet_li_recovery; grh-torsion-and-prime-sampling; grh-torsion-and-zero-data; grh_method_transfers_sharp_torsion; grh_sharp_torsion_and_symplectic_blocks; grh_method_transfers_research; grh_fixed_cardinality_torsion; grh_transfer_bridges_2026-11-25}}
 
-\begin{question}[Families of fixed cardinality]\label{tors:q:cardinality}
-For families of $n$ polynomials over $\OO$ with separate tolerances, determine the least
-admissible exponent. For $n=1$ it is known exactly (\cref{sec:cost}), and for
-unrestricted $n$ its logarithm is of order budget over tolerance
-(\cref{tors:rem:tolerance}). In particular, can the exponent $n/(c\eta)$ in
+\begin{question}[Fixed packet cardinality]\label{cost:q:cardinality}
+At tolerance zero the cost of blocking with $n$ members is $s_{h_0}\log_p^{\circ(n-1)}H$
+up to the error terms of Theorem~\ref{cost:thm:cardinality}, and every finite instance is
+computed by Theorem~\ref{cost:thm:cardfinite}.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Can the upper error $O(\log B)$ in \eqref{cost:eq:tower} be reduced to $O(1)$, or the
+next term be determined for $n=2$? Is the optimum always attained by consecutive blocks with
+one member each, or do mixed assignments within a shell do better?
+\item\label{tors:q:cardinality} At a fixed positive tolerance $\delta$, what is the
+asymptotic of $H_n(B,\delta)$ as $B\to\infty$, and what is the joint transition when
+$\delta$ decreases with $B$? The tower law at tolerance zero does not determine it. For
+$n=1$ the least endpoint at every tolerance is the recursion of \cref{cost:cor:shells}, and
+for unrestricted $n$ its logarithm is of order budget over tolerance
+(\cref{cost:cor:depth}). In particular, can the exponent $n/(c\eta)$ of
 \cref{tors:thm:fraction,tors:thm:packet} be lowered for $n\ge2$, as
 \cref{tors:prop:linear} does for $n=1$?
+\item Over a fixed finite coefficient field, where the root multisets must be Galois
+stable, how do ramification and cyclotomic intersections constrain the activations and
+change the height of the tower?
+\item Does the delayed product potential extend to the settings \textup{(LT)} and
+\textup{(H)}, and to formal groups over ramified bases with overlapping torsion valuations
+(\cref{cost:sec:ramified})? The cyclotomic proof uses the equal spacing ratios
+$r_{h-1}=pr_h$ and the exact geometry of the shells.
+\end{enumerate}
 \end{question}
 
-\begin{question}[Dimension in the fixed-field theorem]\label{tors:q:dimension}
-Determine the optimal dependence on the number $d$ of variables in
-\cref{tors:thm:notower}. The factor $3^{d-1}$ and the range of slopes in
-\cref{tors:lem:slopes} come from an interpolation estimate, not from an optimality
-argument.
-\end{question}
-
-\begin{question}[Several powers]\label{tors:q:powers}
-For $m=2$ and odd $p$ the endpoint $h_*(r/2)+\floor{2B}$ of \cref{tors:prop:powers}(a) is
-optimal at positive half-integral budgets exactly when $\ord_p(2)$ is even
-(\cref{tors:thm:twopowers,tors:rem:twopowers}). Is the endpoint $h_*(r/m)+\floor{mB}$
-optimal for $m\ge3$, and what is the optimal endpoint when some of the powers $j\le m$ are
-divisible by $p$, in particular for $p=2$ and $m=2$? More generally, when the covering
-densities $c_h$ of \cref{tors:thm:cover} are not constant on $S$, is
-$\sum_{h\in S}c_h$ the exact mixed-shell cost $C_s(S,J)$ for every $s\ge2$?
-\end{question}
-
-\begin{question}[Arithmetic families]\label{tors:q:arithmetic}
-The extremal polynomials of \cref{sec:cost} are explicit, but an arbitrary polynomial
-obstruction need not occur as a Selmer determinant or as an interpolation series.
-Determine sharp exponents under restrictions that hold for actual arithmetic
-interpolation families. For a specific horizontal interpolation system, can the local
-bounds be combined with a witness and uniform estimates for the Euler factors to improve
-a known arithmetic nonvanishing theorem?
-\end{question}
-
-\begin{question}[Density by conductor]\label{tors:q:density}
-Can the shell density in \cref{tors:thm:fraction}, and the multiplicity in
-\cref{tors:thm:arith}, be converted into a density statement when conductors are ordered
-by norm? This requires a bound for the norms of the auxiliary primes in $Q$ and control
-of the variation of the parameter space of the characters.
+\begin{question}[Several variables at positive tolerance]\label{cost:q:several}
+For several coordinates and total positive excess at tolerance $\delta>0$, is the leading
+exponential constant of Corollary~\ref{cost:cor:depth} attained by an obstruction in one variable?
+Sequential substitution gives upper bounds, but it can spend the same tolerance at
+successive coordinates.
 \end{question}
 
 \begin{question}[Which objective does each use of the selector need?]\label{tors:q:objective}
@@ -2304,28 +2306,11 @@ needed, and hence where the exponent of \cref{tors:thm:selection} or of
 \cref{tors:thm:fixedfield} can replace the harmonic one.
 \end{question}
 
-\subsection{Open questions}\label{cost:sec:open}
-{\raggedright\sources{grh-torsion-and-prime-sampling; grh-torsion-and-zero-data; grh_method_transfers_sharp_torsion; grh_sharp_torsion_and_symplectic_blocks; grh_fixed_field_transfer_2026-11-25; grh_method_transfers_research; grh_fixed_cardinality_torsion}}
-
-\begin{question}[Fixed packet cardinality]\label{cost:q:cardinality}
-At tolerance zero the cost of blocking with $n$ members is $s_{h_0}\log_p^{\circ(n-1)}H$
-up to the error terms of Theorem~\ref{cost:thm:cardinality}, and every finite instance is
-computed by Theorem~\ref{cost:thm:cardfinite}.
-\begin{enumerate}[label=\textup{(\alph*)}]
-\item Can the upper error $O(\log B)$ in \eqref{cost:eq:tower} be reduced to $O(1)$, or the
-next term be determined for $n=2$? Is the optimum always attained by consecutive blocks with
-one member each, or do mixed assignments within a shell do better?
-\item At a fixed positive tolerance $\delta$, what is the asymptotic of $H_n(B,\delta)$ as
-$B\to\infty$, and what is the joint transition when $\delta$ decreases with $B$? The tower
-law at tolerance zero does not determine it.
-\item Over a fixed finite coefficient field, where the root multisets must be Galois
-stable, how do ramification and cyclotomic intersections constrain the activations and
-change the height of the tower?
-\item Does the delayed product potential extend to the settings \textup{(LT)} and
-\textup{(H)}, and to formal groups over ramified bases with overlapping torsion valuations
-(\cref{cost:sec:ramified})? The cyclotomic proof uses the equal spacing ratios
-$r_{h-1}=pr_h$ and the exact geometry of the shells.
-\end{enumerate}
+\begin{question}[Dimension in the fixed-field theorem]\label{tors:q:dimension}
+Determine the optimal dependence on the number $d$ of variables in
+\cref{tors:thm:notower}. The factor $3^{d-1}$ and the range of slopes in
+\cref{tors:lem:slopes} come from an interpolation estimate, not from an optimality
+argument.
 \end{question}
 
 \begin{question}[Positive tolerance over a general coefficient field]\label{cost:q:field}
@@ -2347,9 +2332,46 @@ unrestricted construction selects individual torsion points even when their Galo
 conjugates are omitted.
 \end{question}
 
-\begin{question}[Several variables at positive tolerance]\label{cost:q:several}
-For several coordinates and total positive excess at tolerance $\delta>0$, is the leading
-exponential constant of Corollary~\ref{cost:cor:depth} attained by an obstruction in one variable?
-Sequential substitution gives upper bounds, but it can spend the same tolerance at
-successive coordinates.
+\begin{question}[Several powers]\label{tors:q:powers}
+For $m=2$ and odd $p$ the endpoint $h_*(r/2)+\floor{2B}$ of \cref{tors:prop:powers}(a) is
+optimal at positive half-integral budgets exactly when $\ord_p(2)$ is even
+(\cref{tors:thm:twopowers,tors:rem:twopowers}). Is the endpoint $h_*(r/m)+\floor{mB}$
+optimal for $m\ge3$, and what is the optimal endpoint when some of the powers $j\le m$ are
+divisible by $p$, in particular for $p=2$ and $m=2$? More generally, when the covering
+densities $c_h$ of \cref{tors:thm:cover} are not constant on $S$, is
+$\sum_{h\in S}c_h$ the exact mixed-shell cost $C_s(S,J)$ for every $s\ge2$?
+\end{question}
+
+\begin{question}[Arithmetic families]\label{tors:q:arithmetic}
+The extremal polynomials of \cref{sec:tors} are explicit, but an arbitrary polynomial
+obstruction need not occur as a Selmer determinant or as an interpolation series.
+Determine sharp exponents under restrictions that hold for actual arithmetic
+interpolation families. For a specific horizontal interpolation system, can the local
+bounds be combined with a witness and uniform estimates for the Euler factors to improve
+a known arithmetic nonvanishing theorem?
+\end{question}
+
+\begin{question}[Density by conductor]\label{tors:q:density}
+Can the shell density in \cref{tors:thm:fraction}, and the multiplicity in
+\cref{tors:thm:arith}, be converted into a density statement when conductors are ordered
+by norm? This requires a bound for the norms of the auxiliary primes in $Q$ and control
+of the variation of the parameter space of the characters. For the realization problem
+without the Frobenius and Selmer conditions, \cref{spn:thm:bounded-conductor}
+(\cref{spn:sec:conductor}) gives such a bound and thus answers the question in part.
+\end{question}
+
+\begin{question}[An arithmetic family of constrained twists]\label{spn:q:twists}
+Produce a family of auxiliary characters that simultaneously has an explicit
+ray-group presentation with its required-triviality subgroup $D$; a proved
+nonvanishing or bounded-valuation witness on the compatible character
+subgroup of \cref{spn:prop:grid}; controlled local orders, so that the first
+required powers remain ramified; a quantitative support-prime construction
+meeting the actual Frobenius conditions, in particular a bound for the least
+prime splitting completely in the governing field $L_N$ of
+\cref{spn:thm:all-budgets}; and a bound for the associated conductor and
+coefficient-field ramification. A harder benchmark than
+\cref{spn:thm:source-twist-minimum} would replace its class relations by the
+tied cocycle relations of one explicitly chosen Selmer datum. The analogues
+of \cref{spn:thm:ray,spn:thm:bounded-conductor} for $p=2$ and for a
+nonabelian base field are also open.
 \end{question}

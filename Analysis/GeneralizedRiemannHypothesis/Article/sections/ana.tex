@@ -22,13 +22,12 @@ excludes them (\cref{src:sec:mechanism}). This section states that analytic step
 generality needed in \cref{sec:nab,sec:grp,sec:hec}, together with its variants: tests in mean,
 tests without a centring constant, joint tests and the sharp constants of dyadic filters, the
 removal of prime powers, constant-free statistics that determine the one-sided growth
-exponent of a family of Dirichlet $L$-functions exactly and recover its central zeros from a
-finite positive grid, tests from samples on sparse meshes,
-the choice of the auxiliary second scale, and tests on thin sets of twists and of scales. Two
-related positivity results close the section: sparse Hankel tests at rational centres and a
-small-deviation law for random sums over zeros, with the conditional spectral structure of its
-lower tail; a finite certificate for Euler's Gamma product follows. With the exceptions
-marked ``\stG'', the results are unconditional statements of analysis. None of them supplies
+exponent of a family of Dirichlet $L$-functions exactly, the pointwise content of averaged
+bounds, the sampling of a positive ramp on sparse scales (\cref{nab:sec:sampling}) and on
+meshes of finite cubic energy, the choice of the auxiliary second scale, and tests on thin sets
+of twists and of scales. The finite positive grids that recover the central zeros of such a
+family are in \cref{fil:sec:grids}. With the exceptions
+marked ``\stG'', and one reduction, marked ``\stR'' (\cref{nab:cor:rootcount}), the results are unconditional statements of analysis. None of them supplies
 the arithmetic inequality that a criterion asks for. For every function outside the scope of
 \cref{src:thm:dgrh} that inequality is open.
 
@@ -989,6 +988,20 @@ For odd $n$ the situation is different: by \cref{ana:rem:dyadicactive}(1) the in
 observations cannot be dropped there. Deletion of odd indices is not covered by
 \cref{ana:thm:dyadiceven}.
 
+\begin{remark}[Residue visibility after deletion]\label{ana:cor:dyadicdelete}
+Let $n$ be even and $S$ as in \cref{ana:thm:dyadiceven}. The residue vector of the retained
+channels is $((1+z(\rho)^{2^j})r)_{j\in S}$, and $\min_z\anaM_S(z)=c_n$, attained at the
+minimizers $r_ne^{\pm2\pi i/3}$ of $\anaM_n$. Hence \cref{ana:thm:dyadic,ana:cor:minimax} hold for the
+channels $j\in S$ alone, with the same constant and the same extremal construction:
+$\max_{j\in S}\abs{\Res_{s=\rho}F_j}\ge c_n\abs r$, best possible even for real smooth $R$; if
+$\abs{y_j-\Res_\rho F_j}\le\eta$ for $j\in S$, dividing the observation with the largest
+multiplier modulus $\abs{1+z(\rho)^{2^j}}$, $j\in S$, by that multiplier estimates $r$ with
+error at most $\eta/c_n$, and no estimator has a smaller worst-case error uniformly over the
+class and the pole locations. At a fixed $\rho$ the optimal worst-case bound is
+$\eta/\anaM_S(z(\rho))$, since the all-zero data are compatible with
+$r=\pm\eta/\anaM_S(z(\rho))$.
+\end{remark}
+
 For odd $n$ the full doubling chain, with $\alpha_{j+1}=\pi-2\alpha_j$ at every step, gives
 $L\alpha_0-\alpha_{n-1}=(L-1)\pi/3$, and the positive-weight Jensen step fails.
 
@@ -1037,28 +1050,6 @@ increases with $L$.
 
 The stability bounds are those of the full family, under the weaker hypothesis that only the
 retained observations are bounded.
-
-\begin{corollary}[Residue visibility after deletion; \stU]\label{ana:cor:dyadicdelete}
-Let $n$ be even and $S$ as in \cref{ana:thm:dyadiceven}. In the setting of
-\cref{ana:thm:dyadic},
-\[
- \max_{j\in S}\abs{\Res_{s=\rho}F_j}\ge c_n\abs r,
-\]
-and $c_n$ is best possible, even for real smooth $R$. If observations satisfy
-$\abs{y_j-\Res_\rho F_j}\le\eta$ for $j\in S$, then at a known $\rho$ dividing the observation
-with the largest multiplier modulus $\abs{1+z(\rho)^{2^j}}$, $j\in S$, by that multiplier
-estimates $r$ with error at most $\eta/c_n$, and no estimator has a smaller worst-case error
-uniformly over the class and the pole locations. At a fixed $\rho$ the optimal worst-case
-bound is $\eta/\anaM_S(z(\rho))$.
-\end{corollary}
-
-\begin{proof}
-The residue vector is $((1+z(\rho)^{2^j})r)_{j\in S}$, so the lower bound and the error bound
-follow from \cref{ana:thm:dyadiceven}. For sharpness run the construction in the proof of
-\cref{ana:thm:dyadic} with $z_*=r_ne^{2\pi i/3}$, a minimizer of $\anaM_S$. At a fixed $\rho$
-the all-zero data are compatible with $r=\pm\eta/\anaM_S(z(\rho))$, whose channel residues
-have modulus at most $\eta$; at an extremal $\rho$ these two values are $2\eta/c_n$ apart.
-\end{proof}
 
 \begin{theorem}[Angular frequency near the sharp loss; \stU]\label{ana:thm:dyadicangle}
 Let $n$ be even, $S$ as in \cref{ana:thm:dyadiceven}, $r=r_n$, $c=c_n$, and let $\theta$ be
@@ -1624,7 +1615,11 @@ distinct real $\tau_0,\dots,\tau_m$ the matrix $R_{ij}=r(\tau_i-\tau_j)$ is Herm
  \liminf_{x\to\infty}\frac{D_{q,b,P}(x)}{\sqrt x}\le\lambda_{\min}(R).
 \]
 Each zero $\rho=\frac12+i\gamma$, $\gamma\ne0$, gives oscillations of both signs of size at
-least $\abs{P(b^\rho)}m_q(\rho)/(\varphi(q)\abs\rho)$. If distinct positive ordinates
+least
+\[
+ \abs{P(b^\rho)}m_q(\rho)/(\varphi(q)\abs\rho).
+\]
+If distinct positive ordinates
 $\gamma_1,\dots,\gamma_m$ have $r(\gamma_j-\gamma_i)=0$ for $i\ne j$, for instance when all their
 differences are below the least positive ordinate of the family, both bounds hold with
 $\pm(\sum_j\abs{r(\gamma_j)}^2)^{1/2}$. For integer $b$ the conclusions hold on the integers.
@@ -1653,8 +1648,9 @@ and for one of the two bases, independent of $q$, the logarithm exceeds $c\sqrt 
 and is below $-c\sqrt n/\varphi(q)$ infinitely often, with an absolute $c>0$.
 
 \paragraph{Prescribed sparse scales for Dirichlet families.}
-The same interpolation with an unknown exponent works for a constant-free statistic of a
-positively weighted family of characters modulo $q$. Let $b_\chi\ge0$, not all zero, with
+The interpolation with an unknown exponent that proves \cref{ana:thm:powers} for Dedekind zeta
+functions also works for a constant-free statistic of a positively weighted family of
+characters modulo $q$. Let $b_\chi\ge0$, not all zero, with
 $b_{\bar\chi}=b_\chi$, call $\chi$ active if $b_\chi>0$, and put $w(n)=\sum_\chi b_\chi\chi(n)$,
 $\mu=b_{\chi_0}$, $\Psi_w(x)=\sum_{n\le x}\Lambda(n)w(n)$,
 $S_w(x)=\sum_{n\le x}\Lambda(n)w(n)(1/n-1/x)=\int_1^x\Psi_w(u)u^{-2}\dd u$ and
@@ -1701,13 +1697,12 @@ and the transform has a simple pole at each active zero with residue
 $m_w(\rho)P_c(\rho)/(\rho(1-\rho))$, positive at real zeros. If $\anaW_w(x;c)\le Cx^{\eta-1}$ for
 large real $x$, \cref{ana:thm:onesided} with \cref{ana:cor:forms}(a) gives $B_w\le\eta$.
 
-Let $A$ be the upper limit in the statement, so $0\le A\le B_w$ by \eqref{ana:eq:Wbound}, and
-suppose $A<B_w$. Choose $\max(A,B_w-\delta,0)<\eta<B_w$. Then
-$\anaW_w(x_j;c)\le x_j^{\eta-1}$ for large $j$, and for $x_j\le x<x_{j+1}$
-\[
- \anaW_w(x;c)\le\anaW_w(x_j;c)+\int_{x_j}^x\abs{\anaW_w'}\ll x^{\eta-1}+x^{B_w-1-\delta}\log^2(2x)\ll x^{\eta-1},
-\]
-so $B_w\le\eta$, a contradiction. For $x_j=j^k$, $(j+1)^k-j^k=O(x_j^{1-1/k})$, and the identity
+Let $A$ be the upper limit in the statement, so $0\le A\le B_w$ by \eqref{ana:eq:Wbound}. The
+reverse inequality is the interpolation step of the proof of \cref{ana:thm:powers}, with the
+derivative bound in \eqref{ana:eq:Wbound} in place of the variation estimate there: if $A<B_w$
+and $\max(A,B_w-\delta,0)<\eta<B_w$, integrating $\abs{\anaW_w'}$ from the sample point below
+$x$ gives $\anaW_w(x;c)\ll x^{\eta-1}+x^{B_w-1-\delta}\log^2(2x)\ll x^{\eta-1}$ on the whole
+ray, so $B_w\le\eta$, a contradiction. For $x_j=j^k$, $(j+1)^k-j^k=O(x_j^{1-1/k})$, and the identity
 class has $b_\chi=1/\varphi(q)$ for all $\chi$.
 \end{proof}
 
@@ -1969,8 +1964,7 @@ for bounds in mean instead of bounds at sampled points.
 \begin{corollary}[Fourth powers; \stU]\label{nab:cor:quartic}
 If $R(n^4)\le Cn^{-2}$ for $n\ge n_0$, with $C\ge0$, then $R(x)\le(C+8A)x^{-1/2}$ for
 $x\ge n_0^4$. Hence an eventual bound $R(x)\le C'x^{-1/2}$ is equivalent to an eventual
-bound $R(n^4)\le Cn^{-2}$. On the grid $x_j=j^r$ \cref{nab:thm:sampling} applies whenever
-$r\theta\le2$. Moreover, if $L=\limsup_{n\to\infty}n^2R(n^4)$ is finite, then
+bound $R(n^4)\le Cn^{-2}$; other power grids are treated after \cref{ana:prop:grids}. Moreover, if $L=\limsup_{n\to\infty}n^2R(n^4)$ is finite, then
 \[
  L\le\limsup_{x\to\infty}\sqrt x\,R(x)\le L+2A .
 \]
@@ -2041,47 +2035,8 @@ subtracted.
 
 For the remainder of a Dedekind zeta function, \cref{ana:cor:finite} gives the same
 centering-free statistic on every power grid $m^k$, using the explicit formula in place of
-positivity; \cref{nab:prop:certificate} needs only a positive measure, on the quartic grid.
-
-\begin{corollary}[Root counts on the quartic grid; \stR]\label{nab:cor:rootcount}
-Let $f\in\Z[T]$ be monic and irreducible, $K=\Q[T]/(f)$, and for $p\nmid\disc(f)$ let
-$r_f(p)$ be the number of roots of $f$ in $\F_p$. Put
-\[
- B_f(n)=\log16-\frac{15}{16n^4}\sum_{\substack{p\le n^4\\p\nmid\disc(f)}}r_f(p)\log p
- -\sum_{\substack{n^4<p\le16n^4\\p\nmid\disc(f)}}r_f(p)\log p\Bigl(\frac1p-\frac1{16n^4}\Bigr).
-\]
-Then
-\[
- \mathrm{RH}(\zeta_K)\quad\Longleftrightarrow\quad\sup_{n\ge1}n^2B_f(n)<\infty
- \quad\Longleftrightarrow\quad\sup_{n\ge1}n^2R_K(n^4)<\infty ,
-\]
-where $R_K$ is the remainder of Proposition~\ref{nab:prop:dedekind} with $S$ the set of primes
-dividing $\disc(f)$. The bounds are one-sided, and no unspecified centering constant
-appears in $B_f$.
-\end{corollary}
-\begin{proof}
-Here $r_f(p)=a_K(p)$. By Proposition~\ref{nab:prop:dedekind} and the remark following it,
-$\mathrm{RH}(\zeta_K)$ is equivalent to an eventual bound $R_K(x)\le Cx^{-1/2}$, and
-implies the two-sided bound $R_K(x)=O(x^{-1/2})$. Apply Corollary~\ref{nab:cor:quartic} to the
-positive measure $\sum_pr_f(p)\log p\,\delta_p$ with $A=1$, and observe that $B_f$ is the
-statistic $B_2$ of \eqref{nab:eq:B}. Proposition~\ref{nab:prop:certificate} gives the implication from
-the upper bound on $B_f$, and the two-sided estimate gives the converse. Finitely many
-initial terms are finite, so eventual boundedness and the supremum condition agree.
-\end{proof}
-
-The criterion applies to every irreducible polynomial, with no assumption on the
-holomorphy of Artin factors: the Dedekind zeta function itself supplies the continuation
-and the nonnegative multiplicities. The restriction to fourth powers comes from the
-positivity argument; with the explicit formula the same equivalence holds on every fixed
-power grid (\cref{ana:thm:powers,ana:cor:finite}), and by \cref{ana:lem:powers} the
-corollary is also the case $k=4$ of \cref{ana:cor:finite} with prime powers removed. For $f=T^3-T-1$, of discriminant $-23$ and group $S_3$,
-$r_f=1+\tr\rho$ with $\rho$ the standard representation, only $p=23$ is omitted, and the
-bound $\sup_nn^2B_f(n)<\infty$ is equivalent to the Riemann hypothesis for the cubic field;
-\cref{src:thm:dgrh} does not supply it, since the root-count character contains $\rho$.
-The values of the statistic for $n\le20$ are in
-\artifact{grh_method_transfers_2026-11-25/results/cubic_checkpoints.csv}; they illustrate
-the definition and certify nothing about the limit. This field is treated in
-\cref{sec:hec}.
+positivity; \cref{nab:prop:certificate} needs only a positive measure, on the quartic grid. For
+the root-count statistic of a polynomial see \cref{nab:cor:rootcount}.
 
 \subsection{Sampling meshes}\label{ana:sec:mesh}
 {\raggedright\sources{cubic_mesh_sampling_2026-11-26; rh_sampling_and_small_deviations_2026-11-26; grh_periods_sampling_and_zeros; rh_li_universality_2026-11-26}}
@@ -2260,7 +2215,10 @@ of energy at most $3375L^3/N=3375$, and there are at most $\log X/(12\log2)$ of 
 The limits follow from \cref{ana:lem:chord}.
 \end{proof}
 
-The threshold in (i) is sharp even for a real pole of positive residue, which satisfies the
+The pointwise criterion gives the same threshold on power grids: on $x_j=j^p$ the gap condition
+$\log(x_{j+1}/x_j)=O(x_j^{-\theta/2})$ of \cref{nab:thm:sampling} with $\theta=1-\beta$ holds
+exactly when $p\le2/(1-\beta)$. The cubic criterion gains only on nonuniform meshes, such as that
+of (ii). The threshold in (i) is sharp even for a real pole of positive residue, which satisfies the
 sign hypothesis of \cref{ana:thm:onesided}.
 
 \begin{proposition}[An invisible real pole on a power grid; \stU]\label{ana:prop:invisible}
@@ -2302,9 +2260,7 @@ is far above the square-root scale while its weighted cost stays bounded.
 \begin{corollary}[The Riemann hypothesis on an admissible mesh; \stU]\label{ana:cor:rhmesh}
 Let the mesh be admissible at $1/2$, let $R_\Q$ be the remainder \eqref{ana:eq:RK} of $\zeta$
 and $b_j=R_\Q(x_j)_+$. The Riemann hypothesis is equivalent to
-$\sum_j(x_jb_j+x_{j+1}b_{j+1})\Delta_j/x_j^{\sigma+1}<\infty$ for every $\sigma>1/2$. For the
-mesh of \cref{ana:prop:grids}(ii) it therefore suffices that
-$R_\Q(x_j)\le C_\eps x_j^{-1/2+\eps}$ eventually.
+$\sum_j(x_jb_j+x_{j+1}b_{j+1})\Delta_j/x_j^{\sigma+1}<\infty$ for every $\sigma>1/2$.
 \end{corollary}
 
 \begin{proof}
@@ -2315,6 +2271,10 @@ $R_\Q(x)=-\int_x^\infty(\psi(u)-u)u^{-2}\dd u=O(x^{-1/2}\log^2x)$, the limit con
 identified by \cref{ana:lem:mellin}(iii), and admissibility forces $\Delta_j/x_j\to0$, so the sums
 are dominated by $\int x^{-1/2-\sigma}\log^2x\,\dd x<\infty$.
 \end{proof}
+
+For every number field $K$, pointwise bounds $R_K(x_j)\le C_\eps x_j^{-1/2+\eps}$ on the mesh of
+\cref{ana:prop:grids}(ii) already give the Riemann hypothesis for $\zeta_K$: that mesh has
+$\log(x_{j+1}/x_j)=O(x_j^{-1/6})$, and \cref{ana:thm:powers}(i) applies with $\delta=1/6$.
 
 \paragraph{Pointwise conclusions.}
 A pointwise bound between the samples needs square instead of cubic control of the gaps, and
@@ -2330,10 +2290,11 @@ that $R(x)\to0$, with $\abs{R(x_j)}\le2/x_j$ at every node and $R/E$ unbounded a
 \end{theorem}
 
 \begin{proof}
-\emph{Sufficiency.} The condition gives $x_{j+1}/x_j\to1$. On $[a,b]=[x_j,x_{j+1}]$, convexity of
-$u\mapsto\sum_nw(n)(1/n-u)_+$ and the bound $(u-v)(z-u)/(2v^2)$ for the excess of $\log u$ over
-its chord on $[v,z]=[1/b,1/a]$ give
-$R(x)\le\max\set{R(a),R(b)}+\frac c8((b-a)/a)^2$, and both terms are $O(E(x))$.
+\emph{Sufficiency.} The condition gives $x_{j+1}/x_j\to1$. On $[a,b]=[x_j,x_{j+1}]$,
+\cref{nab:lem:jensen}, applied to $\mu=\sum_nw(n)\delta_n$ with logarithmic coefficient $c$,
+and $\log(b/a)\le(b-a)/a$ give
+$R(x)\le\max\set{R(a),R(b)}+\frac c8((b-a)/a)^2$, and both terms are $O(E(x))$. For
+$E(x)=x^{-\theta}$ this is \cref{nab:thm:sampling}.
 
 \emph{Necessity.} Choose infinitely many gaps with $h=\min\set{(b-a)/a,1}$ and
 $h^2/E(a)\to\infty$, put $H=ah$, $s_a=\sqrt{E(a)}/h\to0$, $f(t)=t^3(1-t)^3$ on $[0,1]$, and
@@ -2632,14 +2593,10 @@ all large $X$, and the sum would converge by partial summation.
 \end{proof}
 
 \begin{remark}\label{ana:rem:schedule}
-(1) The grid $x_j=j^4$ satisfies the gap condition for every $\beta\ge1/2$; more generally
-$x_j=j^p$ is admissible exactly when $p\le2/(1-\beta)$, and the fourth powers with growing
-deleted blocks of \cref{ana:prop:grids}(ii) are admissible at $\beta=1/2$ although their gaps
-are not $O(x_j^{3/4})$. The mesh may depend on $d$. The fourth-power mesh and the chord
-interpolation for the prime sum of the ordinary zeta function are due to Setiawan
-\cite{Setiawan2026Primacohedron}. The pointwise interpolation loss and its sharpness for general
-positive measures are given in \cref{sec:nab}, and the sharpness of the cubic budget in
-\cref{ana:thm:cubicopt,ana:thm:densityone}.
+(1) The admissible power grids, among them $x_j=j^4$ for every $\beta\ge1/2$, and the
+deleted-block mesh are described in \cref{ana:prop:grids} and after it; the mesh may depend on
+$d$. The pointwise interpolation loss and its sharpness are in \cref{nab:sec:sampling}, and the
+sharpness of the cubic budget in \cref{ana:thm:cubicopt,ana:thm:densityone}.
 
 (2) If a zero $\rho$ with $\Re\rho>\beta$ existed, then for every $\gamma\in(\beta,\Re\rho)$
 the number of admissible primes $d\le X$ with
@@ -2678,6 +2635,48 @@ $\sum_\rho\abs{c_\rho}<\infty$, and by partial summation
  \sum_{\abs{\Im\rho}\le T}\frac1{\abs\rho}\ll_K\log^2(2T),\qquad
  \sum_{\abs{\Im\rho}>T}\frac1{\abs{\rho(1-\rho)}}\ll_K\frac{\log(2T)}T\qquad(T\ge1).
 \end{equation}
+The total of the coefficients $c_\rho$ is a Hadamard difference. The following lemma is stated
+for the two families treated in this article.
+
+\begin{lemma}[Hadamard mass identity; \stU]\label{ana:lem:hadamardmass}
+Let $\Xi$ be one of the following entire functions, with zeros $\rho$ of multiplicity $m(\rho)$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item For a primitive Dirichlet character $\chi$ of conductor $f>1$ and parity $b\in\set{0,1}$,
+ $\chi(-1)=(-1)^b$: $\Xi_\chi(s)=(f/\pi)^{(s+b)/2}\Gamma((s+b)/2)L(s,\chi)$.
+\item For a number field $K$ of signature $(r_1,r_2)$ and discriminant $d_K$:
+ $\xi_K(s)=s(s-1)\abs{d_K}^{s/2}\Gamma_\R(s)^{r_1}\Gamma_\C(s)^{r_2}\zeta_K(s)$, with
+ $\Gamma_\R(s)=\pi^{-s/2}\Gamma(s/2)$ and $\Gamma_\C(s)=2(2\pi)^{-s}\Gamma(s)$. The case $K=\Q$ is
+ $\zeta$.
+\end{enumerate}
+Then $\sum_\rho m(\rho)/(\rho(1-\rho))$ converges absolutely and
+\[
+ \sum_\rho\frac{m(\rho)}{\rho(1-\rho)}=\frac{\Xi'}\Xi(1)-\frac{\Xi'}\Xi(0)=2\Re\frac{\Xi'}\Xi(1).
+\]
+With Euler's constant $\gamma$, the Euler--Kronecker constant $\gamma_K$ of
+\cref{ana:ex:instances}(a), $\psi(\frac12)=-\gamma-2\log2$ and $\psi(1)=-\gamma$, the value is
+\begin{alignat*}{2}
+ &\log\frac f\pi+\psi\Bigl(\frac{1+b}2\Bigr)+2\Re\frac{L'}L(1,\chi)&\qquad&\text{in (a)},\\
+ &2+2\gamma_K+\log\abs{d_K}-r_1(\gamma+\log4\pi)-2r_2(\gamma+\log2\pi)&&\text{in (b)};
+\end{alignat*}
+for a real character the real part is redundant, and for $\zeta$ the value is
+$2+\gamma-\log(4\pi)=0.0461914\ldots$. If every $\rho$ lies on the critical line, the terms are
+$m(\rho)/(\frac14+(\Im\rho)^2)>0$.
+\end{lemma}
+
+\begin{proof}
+$\Xi$ is entire of order one \cite{Davenport2000Multiplicative}, with $\Xi(0)\ne0$: in (a)
+$\Xi_\chi(0)$ is a unit multiple of $\Xi_{\bar\chi}(1)\ne0$, and in (b) $\xi_K(0)=\xi_K(1)\ne0$. The
+zero counts give $\sum_\rho m(\rho)\abs\rho^{-2}<\infty$, so the Hadamard product gives
+$\Xi'/\Xi(s)=B+\sum_\rho m(\rho)\bigl(1/(s-\rho)+1/\rho\bigr)$, and the difference at $1$ and $0$
+is $\sum_\rho m(\rho)\bigl(1/(1-\rho)+1/\rho\bigr)$, which is the stated absolutely convergent sum.
+The functional equation $\Xi_\chi(1-s)=\varepsilon\,\Xi_{\bar\chi}(s)$, $\abs\varepsilon=1$, and
+$\overline{\Xi_\chi(\bar s)}=\Xi_{\bar\chi}(s)$ give
+$\Xi_\chi'/\Xi_\chi(0)=-\overline{\Xi_\chi'/\Xi_\chi(1)}$; in (b) $\xi_K(1-s)=\xi_K(s)$ and $\xi_K$
+is real on $\R$. The values follow by adding the logarithmic derivatives of the factors at $1$:
+in (a) $\frac12\log(f/\pi)+\frac12\psi(\frac{1+b}2)+L'/L(1,\chi)$; in (b) $1$ from $s$, $\gamma_K$
+from $(s-1)\zeta_K(s)$, $\frac12\log\abs{d_K}$, $-\frac12(\gamma+\log4\pi)$ from each $\Gamma_\R$ and
+$-(\gamma+\log2\pi)$ from each $\Gamma_\C$; compare \cite[(1.2.2), (1.2.3), (1.3.11)]{IharaEulerKronecker}.
+\end{proof}
 
 \begin{theorem}[Prescribed grids; \stU]\label{ana:thm:powers}
 Let $y_j$ be an unbounded increasing sequence with $\log(y_{j+1}/y_j)=O(y_j^{-\delta})$ for
@@ -2727,6 +2726,42 @@ $\Re s=1$. Telescoping over $m,2m,4m,\dots$ gives $R_K(m^k)\le Cm^{-k/2}/(1-2^{-
 nonnegative upper bound $C$ for the statistic, and \cref{ana:thm:powers} applies.
 \end{proof}
 
+\begin{remark}[Root counts on the quartic grid; \stR]\label{nab:cor:rootcount}
+Let $f\in\Z[T]$ be monic and irreducible, $K=\Q[T]/(f)$, and for $p\nmid\disc(f)$ let
+$r_f(p)$ be the number of roots of $f$ in $\F_p$. Put
+\[
+ B_f(n)=\log16-\frac{15}{16n^4}\sum_{\substack{p\le n^4\\p\nmid\disc(f)}}r_f(p)\log p
+ -\sum_{\substack{n^4<p\le16n^4\\p\nmid\disc(f)}}r_f(p)\log p\Bigl(\frac1p-\frac1{16n^4}\Bigr),
+\]
+and let $R_K^\flat$ be the prime-only remainder of \cref{nab:prop:dedekind} with $S$ the set of
+primes dividing $\disc(f)$. Then
+\[
+ \mathrm{RH}(\zeta_K)\quad\Longleftrightarrow\quad\sup_{n\ge1}n^2B_f(n)<\infty
+ \quad\Longleftrightarrow\quad\sup_{n\ge1}n^2R_K^\flat(n^4)<\infty .
+\]
+The bounds are one-sided, and no unspecified centering constant appears in $B_f$. This is the
+case $k=4$ of \cref{ana:cor:finite,ana:thm:powers} with prime powers and the primes dividing
+$\disc(f)$ removed. Indeed $\Lambda_K(p)=r_f(p)\log p$ for $p\nmid\disc(f)$, and
+$B_f(n)=R_K^\flat(n^4)-R_K^\flat((2n)^4)$, as in \eqref{nab:eq:B}. By \cref{ana:lem:powers}(ii)
+with $a=\Lambda_K$, $R_K-R_K^\flat=B'+O(x^{-1/2})$ for a constant $B'$, which is $0$ because
+both remainders tend to $0$. At $x=n^4$ the error is $O(n^{-2})$, so $n^2B_f(n)$ and
+$n^2D_4(n)$, and $n^2R_K^\flat(n^4)$ and $n^2R_K(n^4)$, differ by bounded amounts, and
+finitely many initial terms are finite. The positivity argument gives the same equivalences
+without the explicit formula: apply \cref{nab:cor:quartic} to the positive measure
+$\sum_pr_f(p)\log p\,\delta_p$ with $A=1$, \cref{nab:prop:certificate} with $q=2$, and
+\cref{nab:prop:dedekind} with the remark following it.
+
+The criterion applies to every irreducible polynomial, with no assumption on the holomorphy of
+Artin factors: the Dedekind zeta function itself supplies the continuation and the
+nonnegative multiplicities. For $f=T^3-T-1$, of discriminant $-23$ and group $S_3$,
+$r_f=1+\tr\rho$ with $\rho$ the standard representation, only $p=23$ is omitted, and the bound
+$\sup_nn^2B_f(n)<\infty$ is equivalent to the Riemann hypothesis for the cubic field;
+\cref{src:thm:dgrh} does not supply it, since the root-count character contains $\rho$. The
+values of the statistic for $n\le20$ are in
+\artifact{grh_method_transfers_2026-11-25/results/cubic_checkpoints.csv}; they illustrate the
+definition and certify nothing about the limit. This field is treated in \cref{sec:hec}.
+\end{remark}
+
 \begin{proposition}[One base for every number field; \stU]\label{ana:prop:generic}
 Let $0<\lambda_n\uparrow\infty$ with $\lambda_{n+1}/\lambda_n\to1$. There is a dense countable
 intersection of open sets of bases $b>1$ for which conclusions \textup{(i)} and
@@ -2753,6 +2788,21 @@ every base on one explicit set of integer exponents. Put
 For every $b>1$ at most $O_b(1+\log\log\log X)$ of the cutoffs $b^e$, $e\in\anaE$, lie below
 $X$: indeed $b^{M_j}\le X$ implies $j^2=O_b(1+\log\log\log X)$, and the first $j$ blocks
 contain $j(j+1)/2$ terms.
+
+\begin{lemma}[Box count in a block]\label{ana:lem:boxcount}
+Let $\theta_1,\dots,\theta_t\in\R$, let $q\ge2$ be an integer and $j\ge1$, and put $N=j+1$.
+Then at least $(N/q^t-1)/2$ integers $1\le k\le j$ satisfy $\norm{kM_j\theta_i}_{\R/\Z}\le1/q$ for
+$i=1,\dots,t$. In particular at least one does when $j\ge q^t$.
+\end{lemma}
+
+\begin{proof}
+The fractional parts of the $N$ points $0,M_j\theta,2M_j\theta,\dots,jM_j\theta$ lie in $q^t$
+half-open boxes of side $1/q$ in $[0,1)^t$. If the boxes contain $n_1,\dots,n_{q^t}$ points, the
+number of pairs in a common box is $\sum_b\binom{n_b}2\ge(N^2/q^t-N)/2$ by the Cauchy--Schwarz
+inequality. Two points $k_1M_j\theta$, $k_2M_j\theta$ with $k_1<k_2$ in one box give
+$k=k_2-k_1$ with the stated property, and each positive difference $k$ occurs in at most $N$
+pairs. For $j\ge q^t$ the bound exceeds $0$, and a count is an integer.
+\end{proof}
 
 \begin{theorem}[Extremal values on a prescribed sparse set; \stU]\label{ana:thm:blocks}
 Let $K$ be a number field with signature $(r_1,r_2)$ and discriminant $d_K$, and let $b>1$.
@@ -2783,13 +2833,9 @@ $\sum_{\Re\rho=\Theta}c_\rho\exp(i\gamma_\rho\log x)$, which is empty if $\Theta
 attained.
 
 Fix a finite list of $n$ of its ordinates, set $\theta_i=\gamma_i\log b/(2\pi)$, and take an
-integer $q\ge2$. The fractional parts of $0,M_j\theta,\dots,q^nM_j\theta$ occupy $q^n$
-half-open boxes of side $1/q$ in $[0,1)^n$. Two of these points share a box, and their
-difference supplies $1\le k\le q^n$ with $\norm{kM_j\theta_i}_{\R/\Z}\le1/q$ for all $i$. For
-$j\ge q^n$ this $k$ belongs to the $j$th block. In fact a positive proportion of each large
-block works: for $N=j+1$ points and $B=q^n$ boxes, the number of same-box pairs is at least
-$(N^2/B-N)/2$ by the Cauchy--Schwarz inequality, each positive difference occurs in at most
-$N$ pairs, and so there are at least $(N/B-1)/2$ suitable values of $k$. Absolute summability
+integer $q\ge2$. By \cref{ana:lem:boxcount} with $t=n$, for $j\ge q^n$ at least one, and in
+fact a proportion at least $(2q^n)^{-1}+o(1)$, of the indices $k$ of the $j$th block satisfy
+$\norm{kM_j\theta_i}_{\R/\Z}\le1/q$ for all $i$. Absolute summability
 allows one to discard a tail of arbitrarily small norm and then to choose $q$ so that all
 remaining phases are arbitrarily close to $1$. Hence a subsequence of the normalized values
 tends to $\sum_{\Re\rho=\Theta}c_\rho$. This sum is real by conjugation, and each summand has
@@ -2798,7 +2844,7 @@ positive real part because $\Re[\rho(1-\rho)]=\sigma(1-\sigma)+\gamma_\rho^2>0$.
 
 On the critical line every $c_\rho=1/(1/4+\gamma_\rho^2)$ is positive, and the triangle
 inequality gives the matching upper bound on every block. The value of $S_K$ in terms of the
-invariants of $K$ follows from \cite[(1.2.2), (1.2.3), (1.3.11)]{IharaEulerKronecker}.
+invariants of $K$ is \cref{ana:lem:hadamardmass}(b).
 \end{proof}
 
 For an arbitrary field, a finite upper bound for $\sqrt x\,R_K(x)$ on this grid therefore
@@ -2868,18 +2914,6 @@ whereas the Li coefficients on the same index set detect every failure
 (\cref{li:thm:sparse}).
 \end{question}
 
-\begin{question}[Simple zeros]\label{ana:q:simple}
-Prove that the sampled mean square in \cref{ana:thm:simple}(iii) is at most the displayed
-constant, that is, $D=0$. A multiple zero at very large height would contribute less than the
-bound $1.67\cdot10^{-34}$, so no finite computation of zeros decides this.
-\end{question}
-
-\begin{question}[The lower limit of the source remainder]\label{ana:q:parity}
-Does the parity condition of \cref{ana:prop:parity} hold for the ordinates of $\zeta$ and of
-$L(\cdot,\chi_d)$? If it does, $\liminf_{x\to\infty}\sqrt x\,R_d(x)=-B_d-B_0$ exactly. In
-general, where in the interval of \cref{ana:thm:excursion} does the lower limit lie?
-\end{question}
-
 \begin{question}[Other filter patterns]\label{ana:q:dyadic}
 \Cref{ana:thm:dyadiceven,ana:thm:dyadicthree,ana:thm:dyadicodd} determine $c_n$ for the
 doubling exponents $1,2,\dots,2^{n-1}$; for even $n$, \cref{ana:thm:dyadiceven} shows that
@@ -2894,33 +2928,10 @@ $R_j$ rather than on residues?
 \end{question}
 
 \begin{question}[Uniform versions of the family statistics]\label{ana:q:family}
-The constants in \cref{ana:thm:compact,ana:thm:excursions,ana:thm:grid} are for a fixed
-family. Can they be made effective and uniform in the conductor, with explicit values of the
-local-count, remainder and gap constants $A$, $E$ and $\eta$ of \cref{ana:thm:alias} for a
-chosen modulus, and hence an explicit rounding threshold in \cref{ana:thm:grid}, and with a
+The constants in \cref{ana:thm:compact,ana:thm:excursions} are for a fixed
+family. Can they be made effective and uniform in the conductor, with a
 shrinking width $r\downarrow1$ in \cref{ana:thm:compact}? For such constants, which finite
-positive filter is optimal? \Cref{ana:prop:alias} shows that the alias term $\log k/k^2$ cannot be
-removed on the lattice $k^{-1}\Z$ within the abstract spectral class; is the rate of
-\cref{ana:thm:grid} optimal among irregular sampling schedules, or for actual Dirichlet zero
-spectra? Do the converses of \cref{ana:thm:gridconverse,ana:thm:binomial}(i) hold for a depth
-that grows slowly with $t$? Can noncentral multiplicities be recovered robustly from finitely
+positive filter is optimal? Can noncentral multiplicities be recovered robustly from finitely
 many data with bounded errors when ordinates are close?
 \end{question}
 
-\begin{question}[Conditional laws at finite saddles]\label{ana:q:condlaw}
-\Cref{ana:thm:condlaw,ana:thm:block,ana:cor:fourfifths,ana:thm:medianheight,ana:thm:extremes,ana:thm:functional}
-are limit theorems for a fixed function. Give explicit error bounds in the saddle $u$ for the
-total-variation transitions, which Monte Carlo comparisons show to be slow, and rates for the marked
-extreme limit of \cref{ana:cor:dirextremes}; under regular variation alone no rate is available, and for
-exponential weights only the deterministic centre has an effective enclosure
-(\cref{ana:prop:refinedcentre}). Give versions uniform in the conductor or in the degree $d$ of the
-product.
-\end{question}
-
-\begin{question}[Hankel tests]\label{ana:q:hankel}
-At a prescribed odd stride, when can the bounds of \cref{ana:thm:hankelloss} for disappearances
-and for collisions be attained together? Under explicit separation of a bounded set of zeros,
-how much absolute precision in each $P_k(c)$ certifies a negative eigenvalue of
-$H(c,m;K,b)$? How does the classification of \cref{ana:thm:centres} change for centres in a
-fixed real quadratic field?
-\end{question}

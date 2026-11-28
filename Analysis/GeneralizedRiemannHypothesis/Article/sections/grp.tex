@@ -35,13 +35,17 @@ The prime inequalities are not proved: every criterion below is a reduction,
 and no Riemann hypothesis beyond \cref{src:thm:dgrh}, and no case of Artin's
 primitive-root conjecture, is established.
 
-\subsection{Conventions and the analytic interface}\label{grp:sec:conv}
+\subsection{Conventions}\label{grp:sec:conv}
 {\rightskip=0pt plus 1fil\relax
 \sources{grh_a6_transfer_2026-11-25; grh_sylow_transfer_2026-11-25; psl2_grh_transfer; grh_deficit_transfer_2026-11-25; grh-transfer}
 }
 
 Unless the contrary is stated, $L/\Q$ is a finite Galois extension with group
-$G$. For a subgroup $H\le G$ we write $L^H$ for its fixed field and
+$G$. The analytic interface is \cref{nab:sec:interface}
+(\cref{grp:prop:interface}, \cref{grp:rem:variants}, \cref{grp:cor:detector}), stated
+there for a Galois field $E$, which is $L$ here: the ramp $P_w$, its centred remainder
+$R_w$, the sums $\theta_w$, the mean $\delta_w$ and the prime Dirichlet series
+$D^{\mathrm{pr}}_w$ are those defined there, with $\Frob_p$ for $g_p$. For a subgroup $H\le G$ we write $L^H$ for its fixed field and
 $\pi_H=\Ind_H^G\triv$ for the permutation character on $G/H$, so that
 \[
  \pi_H(g)=\#\grpFix(g,G/H)=\frac{\abs{\set{x\in G:x^{-1}gx\in H}}}{\abs{H}},
@@ -65,7 +69,7 @@ For $\rho\ne1$ the Heilbronn character is the virtual character
  \Theta_\rho=\sum_{\psi\in\grpIrr(G)}\ord_\rho L(s,\psi,L/\Q)\,\psi,
  \qquad \Theta_\rho(1)=\ord_\rho\zeta_L .
 \]
-By \cref{nab:thm:heilbronn} \cite{FooteGinsbergMurty2015Heilbronn}, for every
+By \cref{nab:lem:heilbronn}(a) \cite{FooteGinsbergMurty2015Heilbronn}, for every
 subgroup $C\le G$ and every $\eta\in\grpIrr(C)$,
 \begin{equation}\label{grp:eq:heil}
  \langle\Res_C\Theta_\rho,\eta\rangle=\ord_\rho L(s,\eta,L/L^C),
@@ -166,27 +170,27 @@ the centring constant of \cref{grp:rem:variants} for $W_{21}$ is
 $c=-1-\gamma_{K_5}-\gamma_{K_6}-\gamma_{K_{12}}+2\gamma$.
 
 \begin{theorem}[Positive $A_5$ detectors; \stR]\label{grp:thm:a5-criterion}
-Let $J\in\set{W_{16},W_{21}}$, and use the Riemann hypothesis for $\zeta$ from
-\cref{src:thm:dgrh}. Suppose that for every $\eps>0$ there are
-$C_\eps,X_\eps$ with
+Use the Riemann hypothesis for $\zeta$ from \cref{src:thm:dgrh}. Suppose that for
+every $\eps>0$ there are $C_\eps,X_\eps$ with
 \begin{equation}\label{grp:eq:a5-bound}
- R_J(x)\le C_\eps x^{-1/2+\eps}\qquad(x\ge X_\eps).
+ R_{W_{21}}(x)\le C_\eps x^{-1/2+\eps}\qquad(x\ge X_\eps).
 \end{equation}
 Then $\zeta_L$, $\zeta_{K_5}$, $\zeta_{K_6}$ and $\zeta_{K_{12}}$ satisfy the
 Riemann hypothesis, and every Artin $L$-function of $L/\Q$ is holomorphic and
 nonzero in $1/2<\Re s<1$. Conversely, the Riemann hypothesis for $\zeta_L$
-implies $R_J(x)=O(x^{-1/2}\log^2(2x))$. In prime-only form the weights are
-$16,0,1,1,1$, respectively $21,1,0,1,1$, on the classes $1,2A,3A,5A,5B$, with
-main term $\log x$.
+implies $R_{W_{21}}(x)=O(x^{-1/2}\log^2(2x))$. In prime-only form the weights are
+$21,1,0,1,1$ on the classes $1,2A,3A,5A,5B$, with main term $\log x$.
 \end{theorem}
 
-\begin{proof}
-For $J=W_{16}$ this is the case $q=4$ of \cref{grp:thm:psl-transfer} and
-\cref{grp:cor:psl-root}, with $B=A_4$, $T'=C_5$ and $U=V_4$; in particular
+The detector $W_{16}$, with the weights $16,0,1,1,1$, is by \eqref{grp:eq:a5-w16} the
+case $q=4$ of the detector $W$ of \cref{grp:sec:psl-even}, with $B=A_4$, $T'=C_5$ and
+$U=V_4$: \cref{grp:thm:psl-transfer,grp:cor:psl-root} give the same equivalence for it,
+and \eqref{grp:eq:psl-ineq2} reads
 $3\ord_\rho L(s,W_{16})\le\ord_\rho\zeta_L\le5\ord_\rho L(s,W_{16})$ for
 $1/2<\Re\rho<1$.
 
-Let $J=W_{21}$ and fix $1/2<\beta<1$. By \eqref{grp:eq:a5-bound} and
+\begin{proof}[Proof of \cref{grp:thm:a5-criterion}]
+Fix $1/2<\beta<1$. By \eqref{grp:eq:a5-bound} and
 \cref{grp:cor:detector}(i), $L(s,W_{21})$ has no zero in $\Re s>\beta$. The
 Riemann hypothesis for $\zeta$ ensures that the denominator $\zeta(s)^2$ has
 no zero in $\Re s>1/2$, and the three numerator factors are holomorphic away
@@ -203,9 +207,9 @@ about Artin $L$-functions is \eqref{grp:eq:heil}, and the converse is
 By \eqref{grp:eq:a5-w21}, $R_{W_{21}}=R_{W_{16}}+R_\nu$, and
 $L(s,W_{21})=L(s,W_{16})\,L(s,\omega,L/L^{A_4})$. The detector $W_{16}$ ignores
 the involution class and sees the elements of order three; $W_{21}$ ignores
-the class $3A$ and sees the involutions. Neither inequality
-\eqref{grp:eq:a5-bound} formally implies the other, although each is
-equivalent to the Riemann hypothesis for $\zeta_L$.
+the class $3A$ and sees the involutions. Neither the inequality
+\eqref{grp:eq:a5-bound} nor its analogue for $W_{16}$ formally implies the other,
+although each is equivalent to the Riemann hypothesis for $\zeta_L$.
 
 By \cref{grp:thm:psl-detector}, $W_{16}$ is the unique nonnegative genuine
 character of least degree containing every nontrivial irreducible character
@@ -222,6 +226,58 @@ $b\ge1$ excludes $W_{16}=W_{1,0,1}$. The direct regular-character detector has
 peak $60$ at the same mean.
 \end{remark}
 
+\paragraph{Sparse weights of both signs.}
+For a weight $0\le f\le1$ with $f(1)=0$ whose character coefficients may have both
+signs, \cref{nab:prop:kappa} gives $P_+(f)\ge\kappa(G)P_-(f)$ as soon as $f$ vanishes on
+one nonidentity class.
+For $A_5$ the character table gives the ratios $3/5$, $5/8$ and $(10-2\sqrt5)/15$ at
+elements of orders $2$, $3$ and $5$: at one class of $5$-cycles the extreme normalized
+traces are $(1+\sqrt5)/6$ for a representation of degree three and $-1/4$ for the
+representation of degree four. So omitting even one nonidentity class costs at least
+$(10-2\sqrt5)/15$ in the ratio $P_+/P_-$.
+
+If $f$ on $A_5$ is required to depend only on the order of the Frobenius element, that is
+on the cycle type in the natural action of degree five, write $a,b,c\ge0$ for its values at
+orders $2,3,5$. With class sizes $(1,15,20,12,12)$, and the two characters of degree three
+combined, the signed contributions $60\chi(1)a_\chi$ to the masses are
+\[
+ v_3=-90a+72c,\qquad v_4=80b-96c,\qquad v_5=75a-100b ,
+\]
+and $60P_\pm$ is the sum of the positive, respectively negative, parts of these numbers.
+Since $\sum_iv_i=-15a-20b-24c$, every nonzero admissible weight has $P_->0$.
+
+\begin{proposition}[The rational frontier for $A_5$; \stU]\label{nab:prop:a5frontier}
+The minimum of $P_+/P_-$ over nonzero weights $(a,b,c)$ supported on at most $B$ group
+elements is:
+\begin{center}
+\begin{tabular}{c|c|c}
+$B$ & $\min P_+/P_-$ & $(a,b,c)$ attaining it\\\hline
+$0$--$14$ & no nonzero weight & --\\
+$15$--$19$ & $5/6$ & $(1,0,0)$\\
+$20$--$23$ & $4/5$ & $(0,1,0)$\\
+$24$--$34$ & $3/4$ & $(0,0,1)$\\
+$35$--$38$ & $2/3$ & $(1,3/4,0)$\\
+$39$--$43$ & $5/8$ & $(4/5,0,1)$\\
+$44$--$58$ & $3/5$ & $(0,1,5/6)$\\
+$59$--$60$ & $0$ & $(1,1,1)$
+\end{tabular}
+\end{center}
+\end{proposition}
+\begin{proof}
+Supporting one order fixes the ratio. Below budget $59$ at most two orders are supported;
+normalize their values to sum to one. On each interval where the signs of the $v_i$ are
+fixed the ratio of linear forms is monotone or constant, so its minimum lies at an axis or
+at a zero of some $v_i$. The three interior candidate rays are $(4,3,0)$, $(4,0,5)$ and
+$(0,6,5)$, which give the table by substitution; at budget $59$ the full indicator has
+$P_+=0$. The frontier is recomputed in exact arithmetic by
+\artifact{grh_sharp_torsion_and_symplectic_blocks/checks/check_support.py}.
+\end{proof}
+
+In particular, monitoring fewer than all three nonidentity splitting types of an $A_5$
+quintic forces a positive contribution of at least three fifths of the negative mass. This
+is a statement about the spectrum of the observable; converting mixed signs into a
+conclusion on zeros would need additional information about their multiplicities.
+
 \begin{corollary}[Mean-square distance from congruence weights; \stU]
 \label[corollary]{grp:cor:a5-variance}
 For every fixed modulus $q$ and every $a:(\Z/q\Z)^\times\to\C$, in the notation
@@ -233,13 +289,9 @@ of \cref{nab:thm:periodic},
 \]
 \end{corollary}
 
-This is \cref{nab:thm:periodic} for $G=A_5$: since $A_5$ is perfect,
-$H_q=G$ and $m_q$ is the constant mean $1$, and by \eqref{nab:eq:energy} the
-minimum is the sum of the squared multiplicities of the nontrivial irreducible
-constituents, $1+1+1+2^2=7$ for $W_{21}=\triv+\chi+\chi'+\eta+2\nu$ and $4$ for
-$W_{16}$. So no fixed finite collection of Dirichlet characters represents
-either weight at all unramified primes. The obstruction concerns
-representations through a fixed abelian extension; it does not cover moduli
+This is \cref{nab:thm:periodic} for the perfect group $A_5$, where $H_q=G$ and
+$m_q=1$: by \eqref{nab:eq:energy} the minimum is $1+1+1+2^2=7$ for
+$W_{21}=\triv+\chi+\chi'+\eta+2\nu$ and $4$ for $W_{16}$. It does not cover moduli
 changing with the scale of the prime sum (\cref{nab:rem:fixed}).
 
 \begin{example}[A specified field]\label[example]{grp:ex:a5-field}
@@ -452,54 +504,6 @@ to vanish.
 The last assertion permits poles of individual Artin factors on the critical
 line; it does not prove Artin's holomorphy conjecture.
 
-For $A_5$ the character table gives the ratios $3/5$, $5/8$ and $(10-2\sqrt5)/15$ at
-elements of orders $2$, $3$ and $5$: at one class of $5$-cycles the extreme normalized
-traces are $(1+\sqrt5)/6$ for a representation of degree three and $-1/4$ for the
-representation of degree four. So omitting even one nonidentity class costs at least
-$(10-2\sqrt5)/15$ in the ratio $P_+/P_-$.
-
-If $f$ on $A_5$ is required to depend only on the order of the Frobenius element, that is
-on the cycle type in the natural action of degree five, write $a,b,c\ge0$ for its values at
-orders $2,3,5$. With class sizes $(1,15,20,12,12)$, and the two characters of degree three
-combined, the signed contributions $60\chi(1)a_\chi$ to the masses are
-\[
- v_3=-90a+72c,\qquad v_4=80b-96c,\qquad v_5=75a-100b ,
-\]
-and $60P_\pm$ is the sum of the positive, respectively negative, parts of these numbers.
-Since $\sum_iv_i=-15a-20b-24c$, every nonzero admissible weight has $P_->0$.
-
-\begin{proposition}[The rational frontier for $A_5$; \stU]\label{nab:prop:a5frontier}
-The minimum of $P_+/P_-$ over nonzero weights $(a,b,c)$ supported on at most $B$ group
-elements is:
-\begin{center}
-\begin{tabular}{c|c|c}
-$B$ & $\min P_+/P_-$ & $(a,b,c)$ attaining it\\\hline
-$0$--$14$ & no nonzero weight & --\\
-$15$--$19$ & $5/6$ & $(1,0,0)$\\
-$20$--$23$ & $4/5$ & $(0,1,0)$\\
-$24$--$34$ & $3/4$ & $(0,0,1)$\\
-$35$--$38$ & $2/3$ & $(1,3/4,0)$\\
-$39$--$43$ & $5/8$ & $(4/5,0,1)$\\
-$44$--$58$ & $3/5$ & $(0,1,5/6)$\\
-$59$--$60$ & $0$ & $(1,1,1)$
-\end{tabular}
-\end{center}
-\end{proposition}
-\begin{proof}
-Supporting one order fixes the ratio. Below budget $59$ at most two orders are supported;
-normalize their values to sum to one. On each interval where the signs of the $v_i$ are
-fixed the ratio of linear forms is monotone or constant, so its minimum lies at an axis or
-at a zero of some $v_i$. The three interior candidate rays are $(4,3,0)$, $(4,0,5)$ and
-$(0,6,5)$, which give the table by substitution; at budget $59$ the full indicator has
-$P_+=0$. The frontier is recomputed in exact arithmetic by
-\artifact{grh_sharp_torsion_and_symplectic_blocks/checks/check_support.py}.
-\end{proof}
-
-In particular, monitoring fewer than all three nonidentity splitting types of an $A_5$
-quintic forces a positive contribution of at least three fifths of the negative mass. This
-is a statement about the spectrum of the observable; converting mixed signs into a
-conclusion on zeros would need additional information about their multiplicities.
-
 \subsection{The alternating group \texorpdfstring{$A_6$}{A6}}\label{grp:sec:a6}
 {\rightskip=0pt plus 1fil\relax
 \sources{grh_a6_transfer_2026-11-25}
@@ -684,7 +688,7 @@ following are equivalent.
 \item For every $\eps>0$ there is $K_\eps$ with
 $R_J(x)\le K_\eps x^{-1/2+\eps}$ for all sufficiently large real $x$.
 \item For every $\eps>0$ there is $K_\eps$ with
-$S_J(n)-S_J(2n)+\delta_J\log2\le K_\eps n^{-1/2+\eps}$ for all sufficiently
+$P_J(n)-P_J(2n)+\delta_J\log2\le K_\eps n^{-1/2+\eps}$ for all sufficiently
 large integers $n$.
 \end{enumerate}
 The excluded set $S$ may be any fixed finite set containing the ramified
@@ -773,11 +777,8 @@ available for it. In contrast $P$ has positive coefficients and the correct
 order sign, and $W$ has signed coefficients and the correct order sign.
 \end{remark}
 
-As for $A_5$, an $A_6$-extension is linearly disjoint from every finite
-abelian extension of $\Q$, so within any residue class modulo a fixed modulus
-there are primes of each of the six cycle patterns; no function of finitely
-many Dirichlet characters equals a nonconstant weight of the table at all
-unramified primes (\cref{sec:nab}).
+As for $A_5$, the group $A_6$ is perfect, so by \cref{nab:thm:periodic} no function of
+$p$ modulo a fixed modulus equals a nonconstant weight of the table, even in mean square.
 
 \subsection{The simple group of order \texorpdfstring{$168$}{168}}\label{grp:sec:psl27}
 {\rightskip=0pt plus 1fil\relax
@@ -883,9 +884,8 @@ the second over those with three linear and two irreducible quadratic
 factors; all other primes, including those with irreducible reduction, are
 ignored. The factorization \eqref{grp:eq:psl27-A} reduces the degree of the
 base field of the Hecke characters from $84$ to $21$ without changing the
-test. The weight $W_P$ is not a function of $p$ modulo any fixed modulus, by
-the general argument of \cref{sec:nab}: for the simple group $G$ there are
-primes $p\equiv1$ modulo any $M$ of each Frobenius class.
+test. Since $G$ is simple, the weight $W_P$ is not a function of $p$ modulo any fixed
+modulus (\cref{nab:thm:periodic}).
 \end{example}
 
 The general Sylow-filtered race \cref{nab:thm:sylow} for this group uses all
@@ -1154,11 +1154,11 @@ hypothesis for $\zeta$, gives the signed contrast with weight $q^2-1$ for
 complete splitting, $-1$ for exactly one root and $0$ otherwise. This weight
 is $\Gamma$; it has mean zero, and the logarithmic main term disappears. The
 two formulations are equivalent; the positive one is the natural target for a
-construction based on divisibility. By the proposition on fixed congruences
-in \cref{sec:nab}, the least limiting mean-square error of predicting $w_p$ by
-a function of $p$ modulo a fixed modulus is exactly $\norm{\Gamma}^2=q$. The
-extension of \cref{grp:thm:psl-transfer,grp:cor:psl-root} to the relative
-extension $LK/K$ over an abelian field $K$ is also treated there.
+construction based on divisibility. By \cref{nab:thm:periodic}, $G$ being perfect, the
+least limiting mean-square error of predicting $w_p$ by a function of $p$ modulo a fixed
+modulus is exactly $\norm{\Gamma}^2=q$, and the optimal periodic prediction is the
+constant $1$. The extension of \cref{grp:thm:psl-transfer,grp:cor:psl-root} to the
+relative extension $LK/K$ over an abelian field $K$ is \cref{nab:rem:basechange}.
 
 \begin{example}\label[example]{grp:ex:psl-table}
 The first cases are
@@ -1540,8 +1540,8 @@ $\phi=\grpone_{\set1}$, described after \cref{nab:thm:deficit} (equivalently
 $A_4\setminus\set1$, of density $1/2-1/24=11/24$.
 \end{proof}
 
-Term by term, $D(x)=S_u(2x)-S_u(x)-\delta\log2$ in the notation of
-\cref{grp:sec:conv} (\cref{ana:sec:fd}).
+Term by term, $D(x)=P_u(2x)-P_u(x)-\delta\log2$ in the notation of
+\cref{nab:sec:interface} (\cref{ana:sec:fd}).
 
 \begin{theorem}[Single quartic prime race; \stR]\label{grp:thm:s4-race}
 Assume Dirichlet GRH (\cref{src:thm:dgrh}). For a prime $p\ne283$ let
@@ -1550,10 +1550,10 @@ an irreducible cubic factor, and $w_p=0$ otherwise; that is,
 $w=8\,\grpone_{1^4}-\grpone_{1\,3}$. Then $\zeta_E$ satisfies the Riemann
 hypothesis if and only if for every $\eps\in(0,1/2)$ there is $C_\eps$ with
 \[
- S_w(x)-S_w(x^2)\le C_\eps x^{-1/2+\eps}
+ P_w(x)-P_w(x^2)\le C_\eps x^{-1/2+\eps}
 \]
-for all sufficiently large integers $x$, where $S_w$ is as in
-\cref{grp:sec:conv} with $S=\set{283}$.
+for all sufficiently large integers $x$, where $P_w$ is as in
+\cref{nab:sec:interface} with $S=\set{283}$.
 \end{theorem}
 
 \begin{proof}
@@ -1565,7 +1565,7 @@ weights of \cref{nab:lem:local} are $w_1=3\,\grpone_{V_4}-\grpone_{A_4}
 $w_1+2w_2=(8,0,0,-1,0)=w$, in accordance with \eqref{nab:eq:compressed}. Up
 to a function holomorphic on $\Re s>1/2$,
 \[
- P_w(s)=-\frac12\frac{Q_1'}{Q_1}(s)-\frac13\frac{Q_2'}{Q_2}(s),\qquad
+ D^{\mathrm{pr}}_w(s)=-\frac12\frac{Q_1'}{Q_1}(s)-\frac13\frac{Q_2'}{Q_2}(s),\qquad
  Q_1=\frac{\zeta_{F_1}}{\zeta_{F_0}},\quad Q_2=\frac{\zeta_E}{\zeta_{F_1}} .
 \]
 The support of $w$ has density $9/24=3/8$. By \cref{nab:thm:tower} the
@@ -1577,7 +1577,7 @@ hypothesis for $\zeta_E$.
 
 \begin{remark}[Comparison of the weights]\label[remark]{grp:rem:s4-compare}
 The deficit of \cref{grp:thm:s4} is tested with the orientation opposite to
-that of the race: an upper bound for $S_u(2x)-S_u(x)-\delta\log2$ is an upper
+that of the race: an upper bound for $P_u(2x)-P_u(x)-\delta\log2$ is an upper
 bound for $R_{-u}(x)-R_{-u}(2x)$, and the series of $-u_{\mathrm{def}}$ has the
 positive coefficients $b_j$ at $-\zeta_{F_j}'/\zeta_{F_j}$ (proof of
 \cref{nab:thm:deficit}). The weights to be compared are therefore
@@ -1622,38 +1622,18 @@ $\chi_{-283}$ but cannot separate the identity from the $3$-cycles, both of
 which lie in $A_4$.
 \end{remark}
 
-\begin{proposition}[Minimal support of strict-sign deficits; \stU]
-\label[proposition]{grp:prop:s4-support}
-Among nonnegative class functions on $S_4$ whose inner products with all three
-nonlinear irreducible characters are strictly negative, the unique minimal
-support is the union of the classes $2^2$ and $1\,3$. For a function with
-weights $u$ on $2^2$ and $v$ on $1\,3$ and zero elsewhere, the exact condition
-is $u>0$ and $v>3u/4$.
-\end{proposition}
-
-\begin{proof}
-The sum $\chi_3+\chi_{3'}$ has the values $6,0,-2,0,0$; a strictly negative
-inner product with it forces positive weight on $2^2$. The character $\chi_2$
-is positive at the identity and on $2^2$, zero on the odd classes and negative
-only on $1\,3$, which forces positive weight on $1\,3$. On these two classes
-the inner products with the three-dimensional characters are both $-3u/24$,
-and with $\chi_2$ the value is $(6u-8v)/24$.
-\end{proof}
-
-The minimality refers to this strict-sign architecture and is not a lower
-bound for all possible criteria. Both deficit weights of \cref{grp:thm:s4}
-satisfy the condition, with $(u,v)=(8,9)$ and $(1,1)$.
-
-\subsection{Symmetric groups of degree five and eight}\label{grp:sec:s5}
-{\rightskip=0pt plus 1fil\relax
-\sources{grh_spanning_and_s5_2026-11-26; grh_cyclic_generator_transfer_2026-11-25; grh_sylow_transfer_2026-11-25}
-}
-
-For $S_n$ the general reductions of \cref{sec:nab} already provide prime tests
-with explicit weights, among them the Sylow-filtered weights
-$133,-3,-2,-2$ on the cycle types $1^5$, $1\,2^2$, $1^2\,3$, $5$ of $S_5$.
-This subsection adds an unconditional comparison of zero orders in degree
-five, and records the degree-eight instance of the cyclic-generator test.
+\begin{remark}[Minimal support of strict-sign deficits]\label[remark]{grp:prop:s4-support}
+Let $f\ge0$ be a class function on $S_4$ whose inner products with the three nonlinear
+irreducible characters, the new characters for $N=A_4$, are strictly negative. Then
+\eqref{nab:eq:identity} gives $f(u)>f(1)\ge0$ on $A_4\setminus\set1$, as in
+\cref{nab:thm:minimax}(b), whose normalization $f(1)=0$ is not needed here; so the union
+of the classes $2^2$ and $1\,3$ is the unique minimal support. For a function with
+weights $u$ on $2^2$ and $v$ on $1\,3$ and zero elsewhere, the exact condition is $u>0$
+and $v>3u/4$: the inner products with $\chi_3$ and $\chi_{3'}$ are both $-3u/24$, and
+that with $\chi_2$ is $(6u-8v)/24$. The minimality refers to this strict-sign
+architecture and is not a lower bound for all possible criteria. Both deficit weights of
+\cref{grp:thm:s4} satisfy the condition, with $(u,v)=(8,9)$ and $(1,1)$.
+\end{remark}
 
 \subsection{One splitting test for six quintic fields}\label{grp:sec:six}
 {\rightskip=0pt plus 1fil\relax
@@ -1663,11 +1643,9 @@ five, and records the degree-eight instance of the cyclic-generator test.
 Fix $D=-12451$ or $D=-37363$, and put $E=\Q(\sqrt D)$ and $B=E(\zeta_5)$. For
 these two discriminants $\Cl(E)[5]\simeq\F_5^2$, and the six lines of this
 plane give six pairwise nonisomorphic totally real quintic fields
-$K_1,\dots,K_6$, the reflected fields constructed in \cref{sec:dir}: for a
-class $[\mathfrak a]$ of order five with $\mathfrak a^5=(\alpha)$ and
-$n=\Nm\mathfrak a$, one takes $K=\Q(\beta+n/\beta)$ with $\beta^5=\alpha$.
-Defining polynomials are listed in
-\artifact{grh-exponent-six-and-transfers/rank-two-table.tex}.
+$K_1,\dots,K_6$, the reflected fields of \cref{dir:sec:reflected}
+(\cref{dir:prop:reflection}); they are the six fields of \cref{dir:prop:ranktwo}, with
+the defining polynomials of \cref{dir:tab:ranktwo}.
 
 \paragraph{The joint Galois group.}
 Choose virtual units $\alpha_1,\alpha_2$ representing a basis of
@@ -1719,10 +1697,10 @@ The following are equivalent.
 \item All six $\zeta_{K_i}$ satisfy the Riemann hypothesis.
 \item $\zeta_T$ satisfies the Riemann hypothesis.
 \item For every $\eps>0$ there is $C_\eps$ with
-$S_W(x)-c_W\le C_\eps x^{-1/2+\eps}$ for all sufficiently large $x$, where
-$c_W=\lim_{x\to\infty}S_W(x)$.
+$P_W(x)-c_W\le C_\eps x^{-1/2+\eps}$ for all sufficiently large $x$, where
+$c_W=\lim_{x\to\infty}P_W(x)$.
 \end{enumerate}
-Under these conditions $\abs{S_W(x)-c_W}\ll_{D,S}x^{-1/2}\log^2(2x)$.
+Under these conditions $\abs{P_W(x)-c_W}\ll_{D,S}x^{-1/2}\log^2(2x)$.
 \end{theorem}
 
 \begin{proof}
@@ -1735,14 +1713,15 @@ at the identity and zero elsewhere. Hence
  \zeta_T(s)=\zeta_H(s)F(s)^4,\qquad
  F(s)=\prod_{i=1}^6\frac{\zeta_{K_i}(s)}{\zeta(s)} .
 \]
-Since $H/\Q$ is abelian, $\zeta_H$ is a product of Dirichlet $L$-functions.
+Since $H/\Q$ is abelian, $\zeta_H$ is a product of Dirichlet $L$-functions
+(\cref{dir:prop:abelian}).
 Dirichlet GRH makes each ratio in $F$ holomorphic on $\Re s>1/2$, with a
 nonzero removable value at $1$, and makes $\zeta_H$ zero-free there. Zeros of
 the six numerators in the right half of the strip therefore contribute
 positive orders to $F$, and the functional equations give the equivalence of
 (1) and (2).
 
-Euler factors give $P_W=-F'/F-J$ with $J$ holomorphic on $\Re s>1/2$: at good
+Euler factors give $D^{\mathrm{pr}}_W=-F'/F-J$ with $J$ holomorphic on $\Re s>1/2$: at good
 primes the terms with $p^j$, $j\ge2$, are bounded by $24(\log p)p^{-j\Re s}$,
 and the corrections at the excluded primes are holomorphic on $\Re s>0$. This
 is \eqref{grp:eq:decomp} with $Q_1=F$, so (3) implies that $F$ has no zero in
@@ -1759,12 +1738,9 @@ For every $m\ge1$ and every $h:(\Z/m\Z)^\times\to\C$, in the notation of
 \]
 \end{corollary}
 
-This is \cref{nab:thm:periodic} for the class function $W$ on
-$\Gal(T/\Q)=V\rtimes\F_5^\times$. Its commutator subgroup is $V$, since the
-commutators with the scalar $2$ give every translation, so $H_q\supseteq V$.
-The mean of $W$ on each coset of $V$ is zero (on $V$ the sum is $24-24$, and
-$W$ vanishes on the other three cosets), so $m_q=0$, and the first two rows of
-the table give $\norm W^2=(24^2+24)/100=6$.
+This is \cref{nab:thm:periodic}: the commutator subgroup of $V\rtimes\F_5^\times$ is $V$
+(commutators with the scalar $2$ give every translation), and $W$ has mean zero on each
+coset of $V$, so $m_q=0$ and the minimum is $\norm W^2=(24^2+24)/100=6$.
 
 Among the primes up to $5000$ outside $S$ and the polynomial discriminants,
 the first prime splitting completely in all six fields is $269$ for
@@ -1844,9 +1820,9 @@ $r_\ell(p)-1=V_\ell(\Frob_p)$ for the number $r_\ell(p)$ of roots of
 $X^\ell-2$ modulo $p$. Logarithmic differentiation of the Euler factors, as in
 the proof of \cref{grp:cor:detector}, gives for $\Re s>1$
 \begin{align}
- P_{g_\ell}(s)&=-\frac1{\ell(\ell-1)}\frac{\zeta_{F_\ell}'(s)}{\zeta_{F_\ell}(s)}
+ D^{\mathrm{pr}}_{g_\ell}(s)&=-\frac1{\ell(\ell-1)}\frac{\zeta_{F_\ell}'(s)}{\zeta_{F_\ell}(s)}
  -\frac1\ell\frac{L_\ell'(s)}{L_\ell(s)}+A_\ell(s),\label{grp:eq:kummer-pg}\\
- P_{f_\ell}(s)&=-\frac1\ell\frac{\zeta_{F_\ell}'(s)}{\zeta_{F_\ell}(s)}
+ D^{\mathrm{pr}}_{f_\ell}(s)&=-\frac1\ell\frac{\zeta_{F_\ell}'(s)}{\zeta_{F_\ell}(s)}
  +\frac1\ell\frac{L_\ell'(s)}{L_\ell(s)}+A'_\ell(s),\label{grp:eq:kummer-pf}
 \end{align}
 with $A_\ell,A'_\ell$ holomorphic on $\Re s>1/2$; the residues at $1$ are
@@ -1864,46 +1840,23 @@ weight gives the wrong sign.
 
 \subsubsection{Completely split primes and tests in finite sums}
 
-\begin{proposition}[Completely split primes, exact exponent; \stR]
-\label[proposition]{grp:prop:split}
-Let $M/\Q$ be Galois of degree $n$, and let $R_M=R_w$ for the weight
+For $M/\Q$ Galois of degree $n$ let $R_M=R_w$ for the weight
 $w=\grpone_{\set1}$ on $\Gal(M/\Q)$, so that $\delta_w=1/n$ and $R_M$ is the
-centred ramp sum over the unramified primes that split completely in $M$. The
-Riemann hypothesis for $\zeta_M$ is equivalent to
-\[
- \sup_{x\ge2}\sqrt x\,R_M(x)<\infty .
-\]
-If it holds, then $\abs{R_M(x)}=O_M(x^{-1/2})$; conversely an eventual bound
-$R_M(x)\le C_{M,\eps}x^{-1/2+\eps}$ for each $\eps>0$ suffices.
-\end{proposition}
-
-\begin{proof}
-The coefficient of $p^{-js}$ in $-\zeta_M'/\zeta_M$, for an unramified $p$ of
-residue degree $f$, is $n\log p$ if $f\mid j$ and zero otherwise. Thus
-$P_w=-\frac1n\zeta_M'/\zeta_M+H_M$ with $H_M$ holomorphic on $\Re s>1/2$, and
-the same count gives $\psi_M(t)/n-\theta_w(t)=O_M(\sqrt t)$ for the prime-ideal
-Chebyshev function $\psi_M$. The implications from the one-sided bounds are
-\cref{grp:prop:interface}(b) with $Q_1=\zeta_M$, $\beta=1/2$ and
-$\beta=1/2+\eps$, together with the functional equation. For the forward
-direction, under the Riemann hypothesis for $\zeta_M$ the integrated explicit
-formula \cite{GrenieMolteni2013Integrated} gives
-$\int_0^x(\psi_M(t)-t)\,\dd t=O_M(x^{3/2})$, hence the same bound for
-$A(x)=\int_1^x(\theta_w(t)-t/n)\,\dd t$. Integrating by parts in
-$R_M(x)=-\int_x^\infty(\theta_w(t)-t/n)t^{-2}\,\dd t$, the endpoint term
-$A(x)/x^2$ and the integral $2\int_x^\infty A(t)t^{-3}\,\dd t$ are both
-$O_M(x^{-1/2})$.
-\end{proof}
-
-The exact value of $\limsup\sqrt x\,R_M(x)$ under the Riemann hypothesis for
-$\zeta_M$ is determined in \cref{sec:zer}.
+centred ramp sum over the unramified primes that split completely in $M$. It is
+exactly $1/n$ times the remainder of \cref{nab:prop:dedekind} for $K=E=M$, so by
+\cref{grp:prop:split} and \cref{nab:prop:dedekind}(b) the Riemann
+hypothesis for $\zeta_M$ is equivalent to $\sup_{x\ge2}\sqrt x\,R_M(x)<\infty$,
+and then $\abs{R_M(x)}=O_M(x^{-1/2})$. The exact value of
+$\limsup\sqrt x\,R_M(x)$ under the Riemann hypothesis for $\zeta_M$ is
+\cref{zer:thm:endpoint}.
 
 Let now $E\subset M$ with $E/\Q$ abelian, let $I$ be the set of primes,
 unramified in $M$, which split completely in $E$ but not in $M$, and
-$\delta=1/[E:\Q]-1/[M:\Q]$. After centring, $R_I=R_E-R_M$ exactly, and
-$R_E(x)=O_E(x^{-1/2})$ by \cref{src:thm:dgrh} and \cref{grp:prop:split}.
-Consequently the \emph{lower} bound $R_I(x)\ge-Cx^{-1/2}$ is equivalent to the
-Riemann hypothesis for $\zeta_M$. Its centring constant is removed by the
-dyadic increment
+$\delta=1/[E:\Q]-1/[M:\Q]$. After centring, $R_I=R_E-R_M$ exactly, and by
+\cref{nab:thm:nonsplit}\textup{(i)}$\Leftrightarrow$\textup{(ii)}, applied to
+$\Gal(M/\Q)$ and its normal subgroup $\Gal(M/E)$, the \emph{lower} bound
+$R_I(x)\ge-Cx^{-1/2}$ is equivalent to the Riemann hypothesis for $\zeta_M$. Its
+centring constant is removed by the dyadic increment
 \begin{equation}\label{grp:eq:BI}
  B_I(x)=R_I(2x)-R_I(x)
  =\frac1{2x}\sum_{p\in I,\ p\le x}\log p
@@ -1913,30 +1866,27 @@ dyadic increment
 Under the Riemann hypothesis for $\zeta_M$, $\abs{B_I(x)}=O_M(x^{-1/2})$.
 Conversely, if $B_I(x)\le Cx^{-1/2}$, telescoping on $x,2x,4x,\dots$ gives
 $-R_I(x)\le Cx^{-1/2}/(1-2^{-1/2})$, since the remainder tends to zero; and it
-is enough to check integers $x\ge2$, because $S_I$ is continuous with
-derivative $\theta_I(x)/x^2=O(1/x)$ off the primes. This is the
-nonsplit-prime deficit test of \cref{sec:nab} for the kernel with $c=2$, with
-the exponent $-1/2$ exactly.
+is enough to check integers $x\ge2$, because $P_I$ is continuous with
+derivative $\theta_I(x)/x^2=O(1/x)$ off the primes. Thus $\zeta_M$ satisfies the
+Riemann hypothesis if and only if $\sup_{m\in\Z,\ m\ge2}\sqrt m\,B_I(m)<\infty$: a form
+of \cref{nab:thm:nonsplit}\textup{(v)} for the kernel with $c=2$, with the exponent
+$-1/2$ exactly.
 
-\begin{theorem}[The splitting field of $X^\ell-2$; \stR]\label{grp:thm:kummer-single}
+\begin{example}[The splitting field of $X^\ell-2$; \stR]\label[example]{grp:thm:kummer-single}
 Assume Dirichlet GRH (\cref{src:thm:dgrh}). Let $\ell$ be an odd prime and
 $K_\ell=\Q(\zeta_\ell,2^{1/\ell})$. Let $I$ be the set of primes $p\nmid2\ell$
 for which $X^\ell-2$ is irreducible modulo $p$; equivalently
-$p\equiv1\pmod\ell$ and $2^{(p-1)/\ell}\not\equiv1\pmod p$. With $B_I$ as in
-\eqref{grp:eq:BI} and $\delta=1/\ell$,
+$p\equiv1\pmod\ell$ and $2^{(p-1)/\ell}\not\equiv1\pmod p$. By the description of the
+affine action, $I$ is exactly the set of good primes splitting completely in $F_\ell$ but
+not in $K_\ell$, of density $1/(\ell-1)-1/(\ell(\ell-1))=1/\ell$; here $\Gal(K_\ell/F_\ell)$
+is the translation subgroup, the commutator subgroup of the affine group. The
+preceding paragraph with $E=F_\ell$, $M=K_\ell$ and $\delta=1/\ell$ gives
 \[
  \text{the Riemann hypothesis for }\zeta_{K_\ell}
  \quad\Longleftrightarrow\quad
  \sup_{m\in\Z,\ m\ge2}\sqrt m\,B_I(m)<\infty .
 \]
-\end{theorem}
-
-\begin{proof}
-Take $E=F_\ell$ and $M=K_\ell$. By the description of the affine action,
-$I$ is exactly the set of good primes splitting completely in $F_\ell$ but not
-in $K_\ell$, of density $1/(\ell-1)-1/(\ell(\ell-1))=1/\ell$. Apply the
-preceding discussion.
-\end{proof}
+\end{example}
 
 For $\ell=3$ the group is $S_3$. The three Frobenius types are completely
 split (density $1/6$), linear times irreducible quadratic ($1/2$) and
@@ -1944,12 +1894,9 @@ irreducible cubic ($1/3$). The middle condition is $p\equiv2\pmod3$, whose
 centred sum already has the square-root estimate; the missing estimate
 distinguishes the two types within $p\equiv1\pmod3$. For example $7$ and $31$
 are both $7$ modulo $12$, but $2$ is a cube only modulo $31$. No fixed modulus
-makes this distinction: the commutator subgroup of the affine group is its
-translation subgroup, so the maximal abelian subextension of $K_\ell$ is
-$F_\ell$ and $K_\ell\cap\Q(\zeta_q)=F_\ell$ for every multiple $q$ of $\ell$;
-for a reduced class $a\bmod q$ with $a\equiv1\pmod\ell$, Chebotarev's theorem
-gives the relative densities $1/\ell$ and $1-1/\ell$ for the two splitting
-types within the progression. Numerical values of $\sqrt x\,B_I(x)$ for
+makes this distinction (\cref{nab:thm:periodic}): the maximal abelian subfield of
+$K_\ell$ is $F_\ell$, so within every progression $a\bmod q$ with $a\equiv1\pmod\ell$
+the two splitting types have relative densities $1/\ell$ and $1-1/\ell$. Numerical values of $\sqrt x\,B_I(x)$ for
 $\ell=3,5$ and $x\le10^5$ are in
 \artifact{grh-transfer/checks/kummer-output.txt}.
 
@@ -1957,7 +1904,7 @@ $\ell=3,5$ and $x\le10^5$ are in
 Assume Dirichlet GRH. Let $a$ and squarefree $m\ge2$ be as above. If for every
 $\eps>0$
 \[
- S_{w_{a,m}}(2x)-S_{w_{a,m}}(x)-\delta_{a,m}\log2\le C_{a,m,\eps}x^{-1/2+\eps}
+ P_{w_{a,m}}(2x)-P_{w_{a,m}}(x)-\delta_{a,m}\log2\le C_{a,m,\eps}x^{-1/2+\eps}
 \]
 for all sufficiently large $x$, the sums omitting the primes dividing $am$,
 then $\zeta_{E_m}$ satisfies the Riemann hypothesis; the same holds under the
@@ -1965,9 +1912,9 @@ corresponding mean bound for the positive part. The converse holds as well.
 \end{corollary}
 
 \begin{proof}
-This is the preceding discussion with $E=B_m$, $M=E_m$ and
+This is the discussion before \cref{grp:thm:kummer-single} with $E=B_m$, $M=E_m$ and
 $\delta=\delta_{a,m}$; in the notation of \cref{grp:prop:interface},
-$P_{-w_{a,m}}=-\frac1{[E_m:\Q]}\zeta_{E_m}'/\zeta_{E_m}
+$D^{\mathrm{pr}}_{-w_{a,m}}=-\frac1{[E_m:\Q]}\zeta_{E_m}'/\zeta_{E_m}
 +\frac1{\varphi(m)}\zeta_{B_m}'/\zeta_{B_m}$ up to a holomorphic function, and
 the second term is holomorphic on $\set{\Re s>1/2}\setminus\set1$ by Dirichlet
 GRH.
@@ -2045,7 +1992,7 @@ Conversely, under the Riemann hypothesis for $\zeta_{K_\ell}$,
 \cref{grp:prop:interface}(d) gives
 $R_w(v)=O_\ell(e^{-v/2}(1+v)^2)$ for $w=g_\ell$ and $w=I_\ell$, which are in
 the situation of \cref{grp:prop:interface}(b) by \eqref{grp:eq:kummer-pg} and
-$P_{I_\ell}=-\frac1{\ell-1}\zeta_{F_\ell}'/\zeta_{F_\ell}$ up to a holomorphic
+$D^{\mathrm{pr}}_{I_\ell}=-\frac1{\ell-1}\zeta_{F_\ell}'/\zeta_{F_\ell}$ up to a holomorphic
 function, hence also for $f_\ell=I_\ell-g_\ell$; averaging over a fixed window
 and summing finitely many terms preserves the bound.
 \end{proof}
@@ -2068,14 +2015,12 @@ When $q$ is divisible by all $\ell\in S$, the same residual mean square
 $\sum_\ell b_\ell^2$ is the minimum for $\sum_\ell b_\ell\,\ell\,g_\ell$.
 \end{corollary}
 
-This is \cref{nab:thm:periodic} with $E=K_n=\Q(\zeta_n,2^{1/n})$, the
-compositum of the $K_\ell$, $\ell\in S$, of degree $n\varphi(n)$ (proof of
-\cref{grp:thm:artin2}); its Galois group is the direct product of the affine
-groups. The $V_\ell$ are distinct nonlinear irreducible characters, so in
-\eqref{nab:eq:energy} $m_q=0$ and the minimum is $\sum_\ell b_\ell^2$
-(\cref{nab:cor:nonlinear}). If $\ell\mid q$ for all $\ell\in S$,
-\eqref{grp:eq:kummer-ind} gives $\sum_\ell b_\ell\,\ell\,g_\ell=Z+\sum_\ell
-b_\ell I_\ell$ with $\sum_\ell b_\ell I_\ell$ a function of $p\bmod q$.
+This is \cref{nab:thm:periodic} for $E=K_n=\Q(\zeta_n,2^{1/n})$, whose group is the
+direct product of the affine groups (proof of \cref{grp:thm:artin2}): the $V_\ell$ are
+distinct nonlinear irreducible characters, so $m_q=0$ and the minimum is
+$\sum_\ell b_\ell^2$. If $\ell\mid q$ for all $\ell\in S$, \eqref{grp:eq:kummer-ind} gives
+$\sum_\ell b_\ell\,\ell\,g_\ell=Z+\sum_\ell b_\ell I_\ell$ with $\sum_\ell b_\ell I_\ell$ a
+function of $p\bmod q$.
 
 \subsubsection{Consequences for Artin's conjecture}
 
@@ -2210,11 +2155,12 @@ congruence coefficients vary with the second scale, since a vector of moments
 supplies only a common convex combination and not simultaneous pointwise
 estimates.
 
-\paragraph{All class weights for the pure cubic field.}
-Let $E=\Q(\sqrt[3]2)$ and $M=E(\zeta_3)$. The polynomial $X^3-2$ is Eisenstein at $2$ and has discriminant
-$-108$; its splitting field $M$ has group $S_3$ and quadratic subfield $\Q(\sqrt{-3})$. For $p>3$ let $g_p$
-be the Frobenius class and $r_p$ the number of roots of $X^3-2$ modulo $p$, and let $\tau$ be the character
-of the standard representation, so that $\tau(g_p)=r_p-1$.
+\subsubsection{The case \texorpdfstring{$\ell=3$}{l=3}: all class weights}
+Let $E=\Q(\sqrt[3]2)=B_3$ and $M=E(\zeta_3)=K_3$. The polynomial $X^3-2$ is Eisenstein at
+$2$ and has discriminant $-108$; its splitting field $M$ has group $S_3$ and quadratic
+subfield $\Q(\sqrt{-3})$. For $p>3$ let $g_p$ be the Frobenius class and $r_p$ the number
+of roots of $X^3-2$ modulo $p$, and let $\tau=V_3$ be the character of the standard
+representation, so that $\tau(g_p)=r_p-1$.
 \begin{center}
 \begin{tabular}{lrrrr}
 \toprule
@@ -2226,81 +2172,58 @@ One irreducible cubic & 2 & 0 & $1$ & $-1$\\
 \bottomrule
 \end{tabular}
 \end{center}
-For example $7$ and $31$ are both $7\pmod{24}$, but the cubes modulo $7$ are $0,\pm1$, whereas
-$4^3\equiv2\pmod{31}$; the traces are $-1$ and $2$. The permutation character on the roots is $1+\tau$, so
-the standard factor is $F=\zeta_E/\zeta$. By \cref{src:thm:dgrh} it is holomorphic in the right half of the
-critical strip, and $F(1)$ is finite and positive.
+The permutation character on the roots is $1+\tau$, so the standard factor is
+$F=\zeta_E/\zeta=L_3$ of \eqref{grp:eq:kummer-fact}; it is entire, and $F(1)$ is finite
+and positive.
 
-\begin{theorem}[Three splitting types; \stR]\label{hec:thm:cuberoot}
-Assume \cref{src:thm:dgrh}. Let $w=(u,v,z)$ be real weights on the three rows of the table, in order, and put
+\begin{example}[Three splitting types; \stR]\label[example]{hec:thm:cuberoot}
+Assume \cref{src:thm:dgrh}. Let $w=(u,v,z)$ be real weights on the three rows of the
+table, in order, and put
 \[
  A=\frac{u+3v+2z}6,\qquad B=\frac{u-3v+2z}6,\qquad C=\frac{u-z}3,
 \]
 so that $w=A+B\,\hecsgn+C\tau$. Let
 \[
- S_w(x)=\sum_{3<p\le x}w(g_p)\log p\,\Bigl(\frac1p-\frac1x\Bigr),\qquad
- R_w(x)=S_w(x)-A\log x-c_w,
+ P_w(x)=\sum_{3<p\le x}w(g_p)\log p\,\Bigl(\frac1p-\frac1x\Bigr),\qquad
+ R_w(x)=P_w(x)-A\log x-c_w,
 \]
 where the constant $c_w$ is fixed by $R_w(x)\to0$.
 \begin{enumerate}[label=\textup{(\arabic*)}]
 \item If $C=0$, then $R_w(x)=O_w(x^{-1/2}\log^2(2x))$.
-\item If $C\ne0$, then RH for $\zeta_E$ is equivalent to the following one-sided estimate: for every
-$\eps>0$ there is $K_{w,\eps}>0$ such that, for all sufficiently large $x$,
+\item If $C\ne0$, then RH for $\zeta_E$ is equivalent to the following one-sided estimate:
+for every $\eps>0$ there is $K_{w,\eps}>0$ such that, for all sufficiently large $x$,
 \[
  \hecsgn(C)\,R_w(x)\le K_{w,\eps}x^{-1/2+\eps}.
 \]
 Under RH for $\zeta_E$ the two-sided bound of \textup{(1)} holds for these weights as well.
 \end{enumerate}
-\end{theorem}
+\end{example}
 
-Thus an upper bound for the primes at which $X^3-2$ splits completely suffices, and so does a lower bound
-for the primes at which it is irreducible. For $w=(2,0,-1)$ the logarithmic main term vanishes; this choice
-measures exactly the part missed by the two Dirichlet characters in the table.
+Here $S=\set{2,3}$ and $R_w=AR_\triv+BR_{\hecsgn}+CR_\tau$ with the remainders of
+\cref{grp:prop:interface}(a), and $R_w(x)=-\int_x^\infty(\theta_w(t)-At)t^{-2}\,\dd t$.
+If $C=0$, then $w$ is a combination of $\triv$ and $\triv+\hecsgn$; the quadratic field
+gives $1+\hecsgn(g_p)$ degree-one primes above $p>3$, and the terms of higher residue
+degree and higher powers add $O(\sqrt t\log^2(2t))$. Under RH for the respective Dedekind
+zeta function the prime ideal theorem has error $O(\sqrt t\log^2(2t))$
+\cite{GrenieMolteni2016Explicit}; for the quadratic field this hypothesis is supplied by
+$\zeta_{\Q(\sqrt{-3})}=\zeta L(s,\chi_{-3})$ and \cref{src:thm:dgrh}. Hence
+$\theta_w(t)-At=O_w(\sqrt t\log^2(2t))$, and the integral proves (1). By linearity the estimate in
+(2) is equivalent to $R_\tau(x)\le K'_\eps x^{-1/2+\eps}$. The character
+$\tau=\Ind_{A_3}^{S_3}\psi$, with $\psi$ nontrivial on $A_3$, is real-valued, and
+$L(s,\tau)=F$; the case $a=0$ of \cref{grp:cor:detector} shows that this bound for every
+$\eps$ is equivalent to $F\ne0$ in $\Re s>1/2$, that is, to RH for $\zeta_E$. Then
+$\zeta_M=\zeta\,L(s,\chi_{-3})F^2$, by \eqref{grp:eq:kummer-fact} for $\ell=3$, also
+satisfies the Riemann hypothesis, and the last assertion of \cref{grp:prop:interface}(d)
+gives the two-sided bound for $R_\tau$.
 
-\begin{proof}
-Let $\theta_w(t)=\sum_{3<p\le t}w(g_p)\log p$, so that $S_w(x)=\int_1^x\theta_w(t)t^{-2}\,\dd t$. The prime
-ideal theorem for the fixed fields $E$, $\Q(\sqrt{-3})$ and $\Q$ gives
-$\theta_w(t)=At+O_w(te^{-b\sqrt{\log t}})$ for some $b>0$: the degree-one primes of $E$ above $p>3$ are
-counted by $r_p$, the quadratic field gives $1+\hecsgn(g_p)$, and the terms of higher residue degree and
-higher powers add $O(\sqrt t\log^2(2t))$ in each field. Hence
-\[
- c_w=\int_1^\infty(\theta_w(t)-At)t^{-2}\,\dd t,\qquad
- R_w(x)=-\int_x^\infty(\theta_w(t)-At)t^{-2}\,\dd t .
-\]
-Under RH for the respective Dedekind zeta function the prime ideal theorem has error
-$O(\sqrt t\log^2(2t))$ \cite{GrenieMolteni2016Explicit}; for the quadratic field this hypothesis is supplied
-by $\zeta_{\Q(\sqrt{-3})}=\zeta L(s,\chi_{-3})$ and \cref{src:thm:dgrh}. The last integral proves (1) and the
-forward implication in (2).
-
-For the reverse implication it suffices, by linearity and (1), to treat $w=\tau$ and an upper bound. For
-$\Re s>1$ put $D(s)=\sum_{p>3}(r_p-1)(\log p)p^{-s}$. Comparing Euler factors gives
-$D(s)=-F'(s)/F(s)-H(s)$ with $H$ holomorphic in $\Re s>1/2$: the coefficient at the $j$th power of an
-unramified prime is $\tau(g_p^j)\log p$ with $\abs\tau\le2$, the sum over $j\ge2$ converges absolutely and
-locally uniformly there, and the two ramified primes have local inverse roots that are zero or roots of
-unity. The prime ideal theorem gives $c_\tau=D(1)$. For $\Re s>1$,
-\[
- \int_1^\infty R_\tau(x)x^{-s}\,\dd x=\frac{D(s)}{s(s-1)}-\frac{D(1)}{s-1},
-\]
-and the singularity at $1$ is removable. Each zero $\rho$ of $F$ in $\Re s>1/2$, of multiplicity $m_\rho$,
-gives a simple pole with residue $m_\rho/(\rho(1-\rho))$, which is positive at real zeros because these lie
-below $1$. Fix $1/2<\beta<1$ and take the assumed bound with $\eps=\beta-1/2$. \Cref{hec:lem:landau},
-applied to $g(x)=xR_\tau(x)$, shows that the transform is holomorphic in $\Re s>\beta$. Hence $F$, and with
-it $\zeta_E$ away from its pole, is zero-free in $\Re s>1/2$, and the functional equation of $\zeta_E$ gives
-the left half. In this argument the prime-power correction is holomorphic on the open half-plane, which is
-exactly the domain needed.
-\end{proof}
-
-For this field \cref{nab:thm:periodic}, applied to the nonlinear character $\tau$ of $\Gal(M/\Q)$, gives as
-in \cref{hec:prop:meansq}(i), for every complex function $a$ on $(\Z/q)^\times$,
-\[
- \lim_{x\to\infty}\frac1{\pi(x)}\sum_{\substack{p\le x\\p\nmid6q}}\abs{\tau(g_p)-a(p\bmod q)}^2
- =1+\frac1{\varphi(q)}\sum_{b\in(\Z/q)^\times}\abs{a(b)}^2 .
-\]
-The field $M$ is the case $n=3$ of the fields $\Q(\zeta_n,2^{1/n})$, $n$ squarefree, in Hooley's
-conditional treatment of Artin's primitive-root conjecture for the base $2$, and
-$\zeta_M=\zeta\,L(s,\chi_{-3})F^2$. The theorem therefore identifies the first missing instance, with its
-sign and arithmetic weight; the full conjecture would require the whole family, with the uniformity used
-in the sieve \cite{FanPollack2025Counting}. The Kummer family is treated in \cref{sec:grp}.
+Thus an upper bound for the primes at which $X^3-2$ splits completely suffices, and so
+does a lower bound for the primes at which it is irreducible. For $w=(2,0,-1)$ the
+logarithmic main term vanishes; this choice measures exactly the part missed by the two
+Dirichlet characters in the table, and by \cref{nab:cor:nonlinear} its least mean-square
+distance from a function of $p$ modulo a fixed modulus is $1$. The example identifies the
+first missing instance of Hooley's family, with its sign and arithmetic weight; the full
+conjecture would require the whole family, with the uniformity used in the sieve
+\cite{FanPollack2025Counting}.
 
 \subsection{A nonabelian arithmetic realization: the real \texorpdfstring{$S_3$}{S3} field of discriminant \texorpdfstring{$229$}{229}}
 \label{grp:sec:s3}
@@ -2322,10 +2245,10 @@ Let
  f(X)=X^3-4X+1,\qquad F_0=\Q(\alpha),\ f(\alpha)=0,\qquad
  F=\text{the splitting field of }f .
 \]
-Neither $1$ nor $-1$ is a root, so $f$ is irreducible; it has a real root in
-each of $(-3,-2)$, $(0,1)$, $(1,2)$, and its discriminant is
-$-4(-4)^3-27=229$, a prime. Hence $F$ is totally real, $\Gal(F/\Q)\simeq S_3$,
-$F=F_0(\sqrt{229})$, and only $229$ ramifies in $F$. Put
+By \cref{spn:ex:cubic229} and the discussion after it, $f$ is irreducible with three
+real roots and prime discriminant $229$, $\Gal(F/\Q)\simeq S_3$, and only $229$ ramifies
+in $F$, tamely, with inertia generated by a transposition. Hence $F$ is totally real and
+$F=F_0(\sqrt{229})$. Put
 $k=\Q(\sqrt{229})$, the quadratic subfield; it has conductor $229$.
 
 Let $K=\Q(\sqrt{-d})$ be the imaginary quadratic field of the source
@@ -2361,9 +2284,8 @@ where $\grprd$ denotes the root discriminant.
 
 \begin{proof}
 The subgroup fixing $k$ is $A_3$, so $F/k$ is cyclic cubic. Away from $229$
-the splitting field is unramified. Modulo $229$,
-$f(X)\equiv(X-29)^2(X+58)$, the extension is tame, and the inertia group is
-generated by a transposition; its intersection with $A_3$, which is the
+the splitting field is unramified, and at $229$ the inertia group is generated by a
+transposition (\cref{spn:ex:cubic229} and the discussion after it); its intersection with $A_3$, which is the
 inertia group for $F/k$, is trivial. So the relative different of $F/k$ is the
 unit ideal. The field $E_0/\Q$ is abelian and contains $k$, hence
 $F\cap E_0=k$ and $[E:E_0]=3$. An unramified extension of local fields remains
@@ -2444,9 +2366,9 @@ chosen as the new normalization.
 \end{remark}
 
 The linear-algebra part of the frame input is treated in \cref{sec:spn}: $F$
-has an integral tight frame of bound $229$, which is optimal because every
-ramified prime divides the bound of an integral frame, the elements
-$v_i\zeta_q^j$ give a frame of bound $229q$ on the compatible embeddings of
+has an integral tight frame of bound $229$ (\cref{spn:thm:optimal229}), which is optimal
+because every ramified prime divides the bound of an integral frame, the elements
+$v_i\zeta_q^j$ give a frame of bound $229q$ (\cref{spn:cor:tensor}) on the compatible embeddings of
 $F\Q(\zeta_q)$ and on the induced CM type of $E$, and the self-dual projective
 lattice $A$ admits frames containing prescribed vectors at every sufficiently
 large integer bound. The frame of bound $229q$, divided by its bound and with
@@ -2727,13 +2649,6 @@ Given one or more positive monomial detectors, can their local zero orders
 constrain the Heilbronn character enough to exclude negative irreducible
 coefficients on the critical line? The criteria of this section control the
 open right half of the strip only.
-\end{question}
-
-\begin{question}[Uniform symmetric-group step]\label{grp:q:vn}
-Is $V_n=\Ind_{C_2}^{S_n}\sigma-\grpstd_n$ a nonnegative rational combination
-of characters induced from linear characters of subgroups, for every $n\ge4$?
-By \cref{grp:rem:s5-induction} this would give the corresponding statement for
-$U_n$ in every degree; \cref{grp:thm:s5-identity} settles $n=5$.
 \end{question}
 
 \begin{question}[Kummer blocks]\label{grp:q:kummer}

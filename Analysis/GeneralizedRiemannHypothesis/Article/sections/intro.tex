@@ -21,7 +21,7 @@ Three kinds of statement occur, and the optional argument of each theorem says w
 is.
 \begin{itemize}[leftmargin=2em]
 \item \emph{\stU.} The statement is proved without any hypothesis on zeros. All of
-  Parts~IV and~V, and most of Part~VI, are of this kind.
+  Part~V and of \cref{sec:spn}, and most of Part~VI, are of this kind.
 \item \emph{\stG.} The proof uses \cref{src:thm:dgrh} and nothing else that is unproved.
 \item \emph{\stR.} The statement is an equivalence or an implication between a Riemann
   hypothesis and an explicit inequality, usually a one-sided bound for a weighted count of
@@ -40,76 +40,253 @@ fifth, at commit \code{f6b5955e13} for the 42 of the sixth and at commit \code{7
 the seventh and at commit \code{3c4d27a69c} for the 15 of the eighth; the packet names are unique. Nothing was recomputed for the
 merge, and the mathematical claims are those of the reports.
 
+\subsection{Guide to results}\label{intro:sec:guide}
+
+The table lists topics and questions a reader may look for, with the section that treats each
+and, where it helps, the subsections that hold the main statements.
+
+\begingroup\small
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.58\textwidth}>{\raggedright\arraybackslash}p{0.38\textwidth}@{}}
+\toprule
+Topic or question & Where\\\midrule
+\endfirsthead
+\toprule
+Topic or question & Where\\\midrule
+\endhead
+\bottomrule
+\endfoot
+\multicolumn{2}{@{}l}{\emph{Part I: the input, the source mechanism and the analytic engine}}\\
+The input theorem: what exactly is assumed &
+  \cref{sec:src}: \labelcref{src:sec:input}\\
+Architecture of the source proof; quantifiers of the twisting step; what a transfer must
+supply & \cref{sec:src}: \labelcref{src:sec:mechanism,src:sec:quantifiers,src:sec:limits}\\
+The determinant comparison; paying for missing dimensions &
+  \cref{sec:src}: \labelcref{src:sec:comparison}; \cref{sec:spn}: \labelcref{spn:sec:missing}\\
+The spanning lemma at sharp and at the source's constants; finite selection certificates; why
+almost all of the target must be spanned &
+  \cref{sec:spn}: \labelcref{spn:sec:spanning,spn:sec:source-improvement,spn:sec:certificates,src:sec:span}\\
+Integral frames, integral Gram determinants, self-dual projective lattices &
+  \cref{sec:spn}: \labelcref{spn:sec:frames,src:sec:gram,spn:sec:projective}\\
+One-sided Mellin--Landau zero tests; ramp sums; removing prime powers &
+  \cref{sec:ana}: \labelcref{ana:sec:basic,ana:sec:ramp,ana:sec:primeonly}\\
+Finite-difference, signed-mean and joint detectors; sharp constants for dyadic filters &
+  \cref{sec:ana}: \labelcref{ana:sec:fd,ana:sec:mean,ana:sec:dyadic}\\
+Constant-free statistics for families of Dirichlet characters &
+  \cref{sec:ana}: \labelcref{ana:sec:family}\\
+What averaged bounds recover pointwise; sampling a ramp on sparse scales; sampling meshes &
+  \cref{sec:ana}: \labelcref{ana:sec:mpt,nab:sec:sampling,ana:sec:mesh}\\
+Auxiliary windows; tests on thin sets of twists and of scales &
+  \cref{sec:ana}: \labelcref{ana:sec:window,ana:sec:sparse}\\
+Li coefficients: detection schedules, second differences, the character from filtered Li
+coefficients & \cref{sec:li}: \labelcref{li:sec:sampling,rec:sec:li,li:sec:curv}\\
+Moment pencils, Ritz values, matched ordinates, Hermite and Hankel power-sum tests, cluster
+counts & \cref{sec:li}: \labelcref{li:sec:ritz,li:sec:match,li:sec:hermite,ana:sec:hankel,li:sec:cluster}\\
+The Li heat semigroup and L\'evy processes from Cayley angles; the character from one kernel,
+one path or one time slice &
+  \cref{sec:lih}: \labelcref{li:sec:univ,rec:sec:liheat,li:sec:path,li:sec:offorigin,li:sec:slice}\\
+A small-deviation law for sums over zeros; Euler's Gamma product &
+  \cref{sec:lih}: \labelcref{ana:sec:smalldev,ana:sec:eulergamma}\\[3pt]
+\multicolumn{2}{@{}l}{\emph{Part II: nonabelian zero detection}}\\
+The Riemann hypothesis for the Dedekind zeta function of a Galois field from one prime
+inequality; Heilbronn domination & \cref{sec:nab}: \labelcref{nab:sec:heilbronn,nab:sec:sylow}\\
+Symmetric groups, reflection detectors, normal towers, deficits and nonsplit primes, the zeros
+missing from the abelian part &
+  \cref{sec:nab}: \labelcref{nab:sec:sn,nab:sec:reflection,nab:sec:tower,nab:sec:deficit,nab:sec:missing}\\
+Which Frobenius weights can detect zeros; why fixed congruence weights cannot &
+  \cref{sec:nab}: \labelcref{nab:sec:extremal,nab:sec:periodic}\\
+Detectors for $A_5$, $A_6$, $\PSL_2(7)$, $\PSL_2(q)$, $S_4$, six quintic fields and the real
+$S_3$ field of discriminant $229$ & \cref{sec:grp}; for $S_n$, \cref{nab:sec:sn}\\
+Kummer fields and Artin's primitive-root conjecture &
+  \cref{sec:grp}: \labelcref{grp:sec:kummer}\\
+The cubic field of discriminant $-23$: prime races, eta products, sign tests &
+  \cref{sec:hec}: \labelcref{hec:ss:cubic,hec:ss:othercubic}\\
+Dihedral conductors $47$ and $71$; eta products and Jensen polynomials; class-group and
+Gaussian Hecke characters; modular forms and symmetric powers &
+  \cref{sec:hec}: \labelcref{hec:ss:dihedral,hec:ss:jensen,hec:ss:classgroup,hec:ss:gaussian,hec:ss:sym}\\[3pt]
+\multicolumn{2}{@{}l}{\emph{Part III: zeros and prime sums under Dirichlet GRH}}\\
+Prime races: modulo four in a fixed window, weighted races in which central zeros help,
+moving Gaussian windows & \cref{sec:zer}: \labelcref{zer:sec:window,hec:ss:central,zer:sec:gauss}\\
+Euler products at the critical line; Suzuki's prime-power questions &
+  \cref{sec:zer}: \labelcref{zer:sec:euler,zer:sec:suzuki}\\
+Zhao's Mertens-error question for abelian fields & \cref{sec:zer}: \labelcref{zer:sec:zhao}\\
+Covariance, oscillation and balancing of prime errors at several scales &
+  \cref{sec:flu}: \labelcref{zer:sec:cov,zer:sec:balancing}\\
+Peaks, sharp windows and excursions of normalized prime errors; the source remainder &
+  \cref{sec:flu}: \labelcref{zer:sec:peaks}\\
+Merging scales: stencil variances and multiplicities of zeros &
+  \cref{sec:flu}: \labelcref{zer:sec:coalesce}\\
+Shortest positive averages and filters that cancel prescribed zeros; logarithmic support &
+  \cref{sec:fil}: \labelcref{fil:sec:reflect,fil:sec:two,fil:sec:logsupport,fil:sec:global}\\
+Reading the central multiplicity from prime sums with one positive rule or a finite grid &
+  \cref{sec:fil}: \labelcref{fil:sec:primes}, \cref{ana:thm:grid}\\
+Counting zeros from values to the right of the critical strip; certificates for central
+nonvanishing & \cref{sec:rec}: \labelcref{rec:sec:count}\\
+Zero multisets and multiplicities from prime sums, sparse samples, Taylor data and extremal
+profiles & \cref{sec:rec}: \labelcref{rec:sec:taylor,rec:sec:prime,rec:sec:sparse,rec:sec:profile}\\
+The modulus, the character and twists from the zero spectrum, spacings, blurred zeros, poles,
+low zeros and balanced statistics & \cref{sec:chz}: \labelcref{rec:sec:spectrum,rec:sec:gaps,rec:sec:blur,rec:sec:poles,rec:sec:quadratic,rec:sec:lowzero,rec:sec:homometry}\\
+Both signs of multiplicity differences, and ranks of multiplicity vectors, in short windows &
+  \cref{sec:chz}: \labelcref{rec:sec:localwin,zer:sec:short}\\
+Graph couplings of completed $L$-functions: real zeros, inverse problems, transport of zeros,
+local Cauchy laws & \cref{sec:cpl}: \labelcref{zer:sec:graph,zer:sec:transport}\\
+How often two products of Dirichlet $L$-functions share Euler factors &
+  \cref{sec:eul}: \labelcref{rec:sec:qmatch,rec:sec:cmatch,rec:sec:omatch}\\[3pt]
+\multicolumn{2}{@{}l}{\emph{Part IV: arithmetic consequences of Dirichlet GRH}}\\
+Consequences of published conditional theorems: abelian fields, least primes in progressions;
+primitive roots and Euclidean fields & \cref{sec:dir}: \labelcref{dir:sec:published,dir:sec:roots}\\
+A prime plus a multiple of a prime cube; primes in geometric intervals; prime-generating
+constants; prime-gap graphs &
+  \cref{sec:dir}: \labelcref{dir:sec:cube,dir:sec:geometric,dir:sec:mills,dir:sec:graphs}\\
+Squarefree products of small primes in residue classes; factorizations, disjoint products,
+transition profiles, routing &
+  \cref{sec:prd}: \labelcref{dir:sec:products,dir:sec:factorizations,dir:sec:disjoint,dir:sec:profiles,dir:sec:routing}\\
+Sign patterns of characters at small primes; prime codes and designs &
+  \cref{sec:prd}: \labelcref{dir:sec:signs,dir:sec:codes}\\
+Class-group exponents of imaginary quadratic fields and orders: Euler's list, exponents up to
+eight; representations $n=xy+yz+zx$ &
+  \cref{sec:cls}: \labelcref{cls:sec:inputs,dir:sec:idoneal,dir:sec:xyz,cls:sec:six,cls:sec:seven}\\
+Coefficient fields of CM newforms, reflected fields, isogeny bounds, heavenly abelian varieties &
+  \cref{sec:cmf}: \labelcref{dir:sec:cm,dir:sec:reflected,dir:sec:isogeny,dir:sec:heavenly}\\
+Sparse polynomial equations for singular moduli; growth of the least support &
+  \cref{sec:smd}: \labelcref{smd:sec:classification,smd:sec:growth,smd:sec:uncond}\\
+$p$-adic fewnomial root counts & \cref{sec:smd}: \labelcref{smd:sec:disk,smd:sec:exact}\\[3pt]
+\multicolumn{2}{@{}l}{\emph{Part V: combinatorial transfers}}\\
+Sets without three-term geometric progressions in $\F_q[x]$ and in finite coefficient rings &
+  \cref{sec:gpp}: \labelcref{gpp:sec:counterexample,gpp:sec:upper,gpi:sec:poly,gpp:sec:rings,gpp:sec:squarezero}\\
+The same over the integers and the ideals of number fields (McNew's questions) & \cref{sec:gpi}\\
+Additive constraints from the sparse-place construction: periodic sets, anticodes &
+  \cref{sec:gpp}: \labelcref{gpp:sec:syndetic,gpp:sec:sparse,gpp:sec:lattice}\\
+$p$-adic valuations of spanning-tree counts in graph towers & \cref{sec:gra}\\
+Periodic quantum walks, oriented Cayley walks, signed square cycles, Ehrhart zeros &
+  \cref{sec:grw}: \labelcref{gra:sec:grover,gra:sec:cayley,gra:sec:cycles,gra:sec:ehrhart}\\
+Laws of compressions of random symplectic and orthogonal matrices & \cref{sec:cmp}\\[3pt]
+\multicolumn{2}{@{}l}{\emph{Part VI: local transfers and the arithmetic interface}}\\
+Torsion specialization: the optimal order of the selected root of unity and the exact minimax
+cost & \cref{sec:tors}: \labelcref{cost:sec:minimax,tors:sec:optimal}\\
+Blocking finite sets, torsion shells, ramified bases, nonvanishing alone &
+  \cref{sec:tors}: \labelcref{cost:sec:finite,cost:sec:shell,cost:sec:ramified,tors:sec:nonvanishing}\\
+Separate thresholds, packets of fixed cardinality, positive tolerance &
+  \cref{sec:tors}: \labelcref{cost:sec:packet,cost:sec:cardinality,tors:sec:tolerance}\\
+Prescribed coefficient fields, simultaneous powers, matrices and Fitting ideals &
+  \cref{sec:cost}: \labelcref{tors:sec:fixedfield,cost:sec:fields,cost:sec:abelian,cost:sec:radical,tors:sec:powers,tors:sec:matrices}\\
+From torsion tuples to Dirichlet and anticyclotomic characters; conductor bounds &
+  \cref{sec:cost}: \labelcref{tors:sec:characters,spn:sec:characters,spn:sec:conductor,spn:sec:benchmark}\\
+Hypotheses of the selection theorems that cannot be dropped &
+  \cref{sec:cost}: \labelcref{cost:sec:boundary,tors:sec:limits}\\
+Lubin--Tate branches, pole bounds, jet recovery, Fleck congruences & \cref{sec:lub}\\
+The Selmer interface, trace depth, odd cocycle modules, annihilator witnesses, K-theory and
+Vandiver's conjecture &
+  \cref{sec:sel}: \labelcref{sel:sec:interface,sel:sec:tracedepth,sel:sec:oddsha,spn:sec:annihilator,sel:sec:ktheory}\\[3pt]
+\multicolumn{2}{@{}l}{\emph{Throughout}}\\
+Which results use Dirichlet GRH, which are reductions, which use nothing &
+  the mark in the heading of each statement\\
+Open questions & the last subsection of every section (for \cref{sec:tors}:
+  \cref{tors:sec:open} in \cref{sec:cost})\\
+\end{longtable}
+\endgroup
+
 \subsection{Contents}
 
-\paragraph{Part I: the input and the analytic engine.}
-\Cref{sec:src} states the input and the architecture of its proof, and proves the general
-comparison lemmas that any transfer must satisfy. \Cref{sec:ana} contains the analytic step
+After this introduction the article has twenty-nine sections in six parts.
+
+\paragraph{Part I: the input, the source mechanism and the analytic engine.}
+\Cref{sec:src} states the input and the architecture of its proof, proves the determinant
+comparison, and records the quantifiers of the twisting step and what any transfer must supply.
+\Cref{sec:spn} treats the spanning and completion step of the source and its integral
+refinements: a sharp spanning interface, the source theorem at its original constants, exact
+selection certificates, optimal integral frames, integral Gram determinants and self-dual
+projective lattices; all of it is unconditional. \Cref{sec:ana} contains the analytic step
 in the generality needed later. Its main statement is the one-sided test
 \cref{ana:thm:onesided}; \cref{ana:thm:primeonly} removes prime powers, and
 \cref{ana:thm:window} gives the auxiliary averaging window. The section also treats
-detectors that need only a bound in mean, tests on sparse sets of scales and of twists, the
-classification of sampling meshes, sharp constants for dyadic pole detection, and the
-question of what an averaged bound recovers pointwise. \Cref{sec:li} concerns Li
-coefficients: on which schedules they detect an off-line zero, how the moment pencil they
-define recovers individual zeros and certifies their simplicity, and what near-positivity
-of Hermite power-sum matrices says about the location of zeros.
+detectors that need only a bound in mean, sharp constants for dyadic filters, constant-free
+statistics for families of characters, the question of what an averaged bound recovers
+pointwise, the classification of sampling meshes, and tests on thin sets of scales and of
+twists. \Cref{sec:li} concerns Li coefficients: on which schedules they detect an off-line
+zero, how filtered Li coefficients determine the character, how the moment pencil they define
+recovers individual zeros and certifies their simplicity, and what near-positivity of Hermite
+and Hankel power-sum matrices says about the location of zeros. \Cref{sec:lih} studies the
+infinitely divisible laws defined by the Cayley angles of the zeros and the Li heat kernel,
+which determine the character from one kernel, one path or one time slice, and proves a
+small-deviation law for sums over zeros and a finite certificate for Euler's Gamma product.
 
 \paragraph{Part II: nonabelian zero detection.}
 \Cref{sec:nab} reduces the Riemann hypothesis for the Dedekind zeta function of an arbitrary
 Galois extension of $\Q$ to one inequality over rational primes, given Dirichlet GRH
 (\cref{nab:thm:sylow}). The main tool is a domination of zero multiplicities by Heilbronn
 characters, \cref{nab:thm:heilbronn}, which avoids Artin's holomorphy conjecture. The section
-also determines which Frobenius weights can serve as detectors and proves that weights
+also gives detectors for symmetric groups and reflection detectors, compresses along normal
+towers, determines which Frobenius weights can serve as detectors and proves that weights
 depending only on a fixed congruence cannot (\cref{nab:thm:periodic}). \Cref{sec:grp} makes
-the reduction explicit for particular groups and fields, with optimal detectors in several
-cases, and \cref{sec:hec} treats $L$-functions of degree two: the cubic field of discriminant
-$-23$, dihedral conductors $47$ and $71$, class-group and Gaussian Hecke characters, and
-symmetric powers.
+the reduction explicit for particular groups and fields, among them $A_5$, $A_6$, $\PSL_2(q)$,
+$S_4$, six quintic fields, Kummer fields and the real $S_3$ field of discriminant $229$, with
+optimal detectors in several cases. \Cref{sec:hec} treats $L$-functions of degree two: the
+cubic field of discriminant $-23$, dihedral conductors $47$ and $71$, eta products and Jensen
+polynomials, class-group and Gaussian Hecke characters, and symmetric powers.
 
-\paragraph{Part III: consequences of Dirichlet GRH.}
-\Cref{sec:zer} contains statements about zeros, Euler products at the critical line and
-prime races, including the classification of abelian fields in Zhao's question
-(\cref{zer:thm:zhao}), and the positive definiteness and rigidity of the joint fluctuations
-of smoothed prime errors at several scales, without any independence hypothesis on the
-zeros, together with local Cauchy laws for logarithmic derivatives and the transport of
-zeros under graph couplings. \Cref{sec:rec} asks what prime data determine: it recovers zero multisets, zero
-multiplicities, the modulus and the character of Dirichlet $L$-functions from
-autocorrelations, filtered and extremal prime sums, poles of prime series, zero spacings
-and finitely many zeros, and it counts zeros from values to the right of the critical
-strip. \Cref{sec:fil} determines the shortest positive averages, and the least logarithmic
-support of positive filters, that cancel prescribed zeros or every zero up to a given
-height. \Cref{sec:dir} collects arithmetic consequences. \Cref{sec:cls} proves
-that the known lists of imaginary quadratic fields of class-group exponent six and seven are
-complete (\cref{cls:thm:six,cls:thm:seven}). \Cref{sec:smd} studies the least number of terms
-of a polynomial that vanishes at a singular modulus; its classification of equations with at
-most five terms (\cref{smd:thm:five}) is unconditional, and Dirichlet GRH enters only in a
-growth estimate (\cref{smd:thm:growth}).
+\paragraph{Part III: zeros and prime sums under Dirichlet GRH.}
+\Cref{sec:zer} collects sign results: which of two prime sums leads, when an Euler product
+converges at the critical line, and the exact upper limits of Mertens-type errors, including
+the classification of abelian fields in Zhao's question (\cref{zer:thm:zhao}).
+\Cref{sec:flu} proves the positive definiteness and rigidity of the joint fluctuations of
+smoothed prime errors at several scales, without any independence hypothesis on the zeros,
+and studies simultaneous balancing, extreme values and merged scales. \Cref{sec:fil}
+determines the shortest positive averages, and the least logarithmic support of positive
+filters, that cancel prescribed zeros or every zero up to a given height, and reads the
+central multiplicity from prime sums. \Cref{sec:rec} asks what prime data, samples to the
+right of the critical strip and local Taylor data determine about the zeros: it counts zeros
+from values to the right of the strip and recovers zero multisets and multiplicities from
+filtered, sparse and extremal prime sums. \Cref{sec:chz} treats the opposite direction: it
+recovers the modulus, the character, twists, omitted primes, products and abelian fields from
+the zero spectrum, zero spacings, zeros in short windows, blurred zero measures, poles of prime
+series and finitely many low zeros. \Cref{sec:cpl} couples completed Dirichlet $L$-functions
+along a finite graph, proves that admissible couplings have only real zeros, solves the
+inverse problem, and describes the transport of zeros with local Cauchy laws for logarithmic
+derivatives. \Cref{sec:eul} determines how often two products of Dirichlet $L$-functions can
+have the same Euler factor at a prime.
 
-\paragraph{Part IV: combinatorial transfers.}
+\paragraph{Part IV: arithmetic consequences of Dirichlet GRH.}
+\Cref{sec:dir} collects consequences obtained through published conditional theorems and
+direct ones for primitive roots, Euclidean fields, primes in geometric intervals,
+prime-generating constants and prime-gap graphs. \Cref{sec:prd} studies squarefree products
+of small primes in residue classes, and small primes as samples of characters: sign patterns,
+codes and designs. \Cref{sec:cls} proves that the known lists of imaginary quadratic fields of
+class-group exponent six and seven are complete (\cref{cls:thm:six,cls:thm:seven}), and with
+Euler's list holds every class-group exponent census of the article. \Cref{sec:cmf} bounds
+coefficient fields of CM newforms, reflected fields, isogenies of two families of sextic
+fields and heavenly abelian varieties. \Cref{sec:smd} studies the least number of terms of a
+polynomial that vanishes at a singular modulus; its classification of equations with at most
+five terms (\cref{smd:thm:five}) is unconditional, and Dirichlet GRH enters only in a growth
+estimate (\cref{smd:thm:growth}).
+
+\paragraph{Part V: combinatorial transfers.}
 The source proof uses additive constraints on exponents to exclude multiplicative patterns.
 \Cref{sec:gpp,sec:gpi} apply the same idea to sets without three-term geometric progressions:
-over polynomial rings, where a published density conjecture is disproved
-(\cref{gpp:thm:counterexample}), and over the integers and the ideals of a number field,
-where several questions of McNew are answered (\cref{gpi:thm:integer-gap,gpi:thm:beta-alpha}).
-\Cref{sec:gra} concerns the valuation of the number of spanning trees in towers of graphs,
-and optimal signings of cycle graphs.
+over polynomial rings and finite coefficient rings, where a published density conjecture is
+disproved (\cref{gpp:thm:counterexample}), and over the integers and the ideals of a number
+field, where several questions of McNew are answered
+(\cref{gpi:thm:integer-gap,gpi:thm:beta-alpha}). \Cref{sec:gra} concerns the valuation of
+the number of spanning trees in towers of graphs. \Cref{sec:grw} settles four spectral
+problems on finite graphs: periodic Grover walks, least periods of oriented Cayley walks,
+optimal signings of square cycles and the zeros of a family of Ehrhart polynomials.
+\Cref{sec:cmp} determines the laws of compressions of random symplectic and orthogonal
+matrices over finite fields and local rings, which control the compressions used by the
+spanning step.
 
-\paragraph{Part V: local transfers.}
+\paragraph{Part VI: local transfers and the arithmetic interface.}
 The twisting step of the source proof chooses a root of unity at which finitely many $p$-adic
 power series keep a prescribed valuation. \Cref{sec:tors} proves the selection theorem with
-the optimal bound on the order of the root (\cref{tors:thm:selection}), and \cref{sec:cost}
-proves the matching lower bounds: the exact cost of defeating every such choice
-(\cref{cost:thm:minimax}) and its dependence on the coefficient field. \Cref{sec:lub} proves
-sharp precision statements for branches of Lubin--Tate formal groups
-(\cref{lub:thm:pole}).
-
-\paragraph{Part VI: the arithmetic interface.}
-\Cref{sec:sel} states what the Selmer-group argument of the source proof requires of a
-Galois representation, proves the resulting obstructions (\cref{sel:thm:smith}), and compares
-the modules that occur with standard Galois cohomology. \Cref{sec:spn} treats the spanning
-statement, integral frames, the auxiliary characters of the twisting step, and the exact
-greatest common divisor of the cyclotomic annihilator witnesses (\cref{spn:thm:gcd}).
+the optimal bound on the order of the root (\cref{tors:thm:selection}) together with the
+matching lower bounds, among them the exact cost of defeating every such choice
+(\cref{cost:thm:minimax}). \Cref{sec:cost} determines the dependence on the coefficient field,
+treats powers, matrices and characters, turns torsion data into global twists with explicit
+conductor bounds, and shows which hypotheses cannot be dropped. \Cref{sec:lub} proves sharp
+precision statements for branches of Lubin--Tate formal groups (\cref{lub:thm:pole}).
+\Cref{sec:sel} states what the Selmer-group argument of the source proof requires of a Galois
+representation, proves the resulting obstructions (\cref{sel:thm:smith}), compares the
+modules that occur with standard Galois cohomology, and determines the exact greatest common
+divisor of the cyclotomic annihilator witnesses (\cref{spn:thm:gcd}).
 
 \subsection{How the reports were merged}
 

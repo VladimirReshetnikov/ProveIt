@@ -15,6 +15,23 @@
 \providecommand{\zerLog}{\operatorname{Log}}
 \section{Characters and arithmetic parameters from zeros}\label{sec:chz}
 
+This section treats the inverse problems in which the zeros are the data: which finite or local
+information about the zeros of Dirichlet $L$-functions determines the modulus, the character, an
+auxiliary twist, the primes omitted from an Euler product, the factors of a product of
+$L$-functions, or an abelian field. The data are the signed zero spectrum of
+the source construction (\cref{rec:sec:spectrum}), normalized spacings (\cref{rec:sec:gaps}), zeros in
+short windows at large height, where multiplicity vectors span and balanced multiplicity differences
+take both signs (\cref{rec:sec:localwin,zer:sec:short}), blurred zero measures (\cref{rec:sec:blur}),
+poles of prime series (\cref{rec:sec:poles}), finitely many low zeros
+(\cref{rec:sec:quadratic,rec:sec:lowzero}) and balanced statistics of pooled zeros
+(\cref{rec:sec:homometry}). The tools are \cref{rec:lem:char,rec:lem:gram} of \cref{rec:sec:tools}, the
+uniform Landau formula \cref{zer:lem:rational} and the Guinand--Weil formula \eqref{rec:eq:gwstrip},
+of which the explicit formulas in \cref{rec:sec:spectrum,rec:sec:quadratic,rec:sec:lowzero} are
+instances. The opposite direction, from prime
+data to zeros, is \cref{sec:rec}; the inverse problem for couplings of completed $L$-functions, in which
+the zeros of one coupled function determine an unknown list of characters and the coupling
+(\cref{zer:thm:window,zer:thm:blindlabels,zer:thm:complexdivisor,zer:thm:decode}), is in \cref{sec:cpl}.
+
 \subsection{The modulus and the twist from the signed zero spectrum}\label{rec:sec:spectrum}
 \sources{dirichlet-grh-research; exponent_seven_and_grh_transfers; grh-torsion-and-zero-data}
 
@@ -83,7 +100,8 @@ $\Lambda(n)\chi^*(n)/\sqrt n$ at one sign of $\log n$ and the conjugate coeffici
 other. The primitive principal character also contributes
 $\widehat g(i/2)+\widehat g(-i/2)$ from the poles at $0,1$ of the completed zeta function.
 This is the normalization of \cite[\S2.1]{ChirrePereiraDeLaat2021Primes}; see also
-\cite{Booker2015Lfunctions}. Equivalently the formula follows by shifting the contour of the
+\cite{Booker2015Lfunctions}. It is the formula \eqref{rec:eq:gwstrip} of \cref{rec:sec:localwin}, written
+there for one character, applied to $h=\widehat g$. Equivalently the formula follows by shifting the contour of the
 logarithmic derivative of the completed primitive $L$-function.
 
 As $q>2$, half the characters have each parity, and the odd character $\eta$ interchanges
@@ -157,7 +175,10 @@ In the lattice class the comparison is exact for every $x\ge1$:
 \end{proposition}
 \begin{proof}
 Use $F'(0+)=(\log d)/2$ and solve \eqref{rec:eq:ode} on $t\ge0$. Write
-$S^*(x)=\sum_{p^k\le x}\log(p)\,a(p^k)(p^{-k}-x^{-1})$. The homogeneous solutions are
+\[
+ S^*(x)=\sum_{p^k\le x}\log(p)\,a(p^k)(p^{-k}-x^{-1}).
+\]
+The homogeneous solutions are
 $\cosh(t/2)$ and $\sinh(t/2)$, the particular solution for the continuous forcing is
 $-2t\sinh(t/2)/h$, and an atom of mass $B$ at $u>0$ adds $2B\sinh((t-u)/2)$ for $t\ge u$.
 Consequently
@@ -225,7 +246,10 @@ $L$-function has root number $+1$, so each central order is even.
 Proving the strict lower bound $B_d>-2$ for every such $d$ would establish this subfamily of
 Chowla's conjecture on central nonvanishing \cite{Soundararajan2000Nonvanishing}. The
 one-sided estimate $R(x)\ll x^{-1/2+\eps}$ of the source allows every fixed value of $B_d$
-and supplies no such bound.
+and supplies no such bound. For a single real character, \cref{hec:thm:chowla} in \cref{rec:sec:count}
+certifies $L(1/2,\chi)\ne0$ from finitely many values of $\Lambda_\chi'/\Lambda_\chi$ to the right of the
+critical strip, and \cref{hec:thm:kernels} shows that no bounded number of such values does so uniformly
+in the conductor.
 
 \paragraph{Reading a jump from one high band.}
 The reconstruction can discard every zero of height below $T$, and its errors can be made
@@ -236,7 +260,9 @@ In the general class $\norm F_\infty\le6\log q+3\log d+48$. In the lattice class
 $\norm F_\infty\le9\log d+60$.
 \end{lemma}
 \begin{proof}
-For a primitive character of conductor $f$, let $\Xi$ be its completed function, with an
+The sum $\sum_\gamma m_\chi(\gamma)/(\tfrac14+\gamma^2)$ of a primitive character is the mass $M_\chi$ of
+\cref{zer:lem:mass}, which evaluates the Hadamard expansion at $s=1$; for an explicit bound uniform in the
+conductor we evaluate it at $s=2$ instead. For a primitive character of conductor $f$, let $\Xi$ be its completed function, with an
 additional factor $s(s-1)$ in the zeta case. Its Hadamard logarithmic derivative and
 functional equation give
 \[
@@ -634,10 +660,10 @@ conductor $q$ and parity $a$,
 For tests $h$ holomorphic and rapidly decreasing in a strip wider than $\abs{\Im z}\le\tfrac12$ the
 explicit formula reads, with each zero counted with multiplicity
 \cite{ChirrePereiraDeLaat2021Primes,Davenport2000Multiplicative},
-\begin{equation}\label{rec:eq:gwstrip}
- 2\pi\sum_\rho h(z_\rho)=2\pi\mathbf 1_{q=1}\bigl\{h(\tfrac i2)+h(-\tfrac i2)\bigr\}+\int_\R h(t)G_\chi(t)\dd t
+\begin{multline}\label{rec:eq:gwstrip}
+ 2\pi\sum_\rho h(z_\rho)=2\pi\mathbf 1_{q=1}\bigl\{h(\tfrac i2)+h(-\tfrac i2)\bigr\}+\int_\R h(t)G_\chi(t)\dd t\\
  -\sum_{n\ge2}\frac{\Lambda(n)}{\sqrt n}\bigl\{\chi(n)\widehat h(\log n)+\overline{\chi(n)}\widehat h(-\log n)\bigr\}.
-\end{equation}
+\end{multline}
 It needs no hypothesis on the zeros; complex tests are allowed by linearity, and the tests below
 are reached from compactly supported smooth Fourier transforms by truncation, using the
 unit-interval zero count.
@@ -857,9 +883,22 @@ $B$; the left matrix has rank $d$ and its rows lie in the span of the $m(\rho)$.
 of $\sum_jv_jL'/L(s,\chi_j)$ is $v\cdot m(\rho)$. Conjugation gives negative heights.
 \end{proof}
 
-This sharpens \cref{zer:thm:rank}, whose windows have length $K_q\log T$, and the radii
-$b\log_3T+O_{q,b}(1)$, $b>1/\pi$, obtained earlier for the characters of one modulus. The
-coefficient $1/\pi$ is reached with an additive constant; its optimality is open.
+This sharpens the radii $b\log_3T+O_{q,b}(1)$, $b>1/\pi$, obtained earlier for the characters of one
+modulus. The coefficient $1/\pi$ is reached with an additive constant; its optimality is open.
+
+\begin{remark}[Multiplicity rank in logarithmic windows; \stU]\label{zer:thm:rank}
+Fix $q\ge1$ and apply \cref{rec:thm:localrank} to the $n_q=\varphi(q)$ distinct primitive characters
+$\chi^*$ inducing the characters modulo $q$. For large $T$ every window $(T,T+H)$ with
+$K_q\log T\le H\le T$ contains a window of \cref{rec:thm:localrank} about its midpoint, and real vectors
+spanning $\C^{n_q}$ span $\R^{n_q}$; so there is $K_q$ such that the vectors
+$M(\rho)=(\ord_\rho L(s,\chi^*))_{\chi\bmod q}$, $0<\Re\rho<1$, $T<\Im\rho<T+H$, indexed by distinct zeros
+(a zero absent from one $L$-function contributing a zero entry), span $\R^{n_q}$, and under
+\cref{src:thm:dgrh} the same holds with distinct positive ordinates as indices. This is the form used in
+\cref{zer:sec:balancing,zer:sec:cov}. It yields a nonsingular integer multiplicity matrix of size $\varphi(q)$
+in every such window, also when different characters share zeros, and dividing $[T,2T]$ into intervals of
+length $2K_q\log(2T)$ gives $\gg_qT/\log T$ pairwise disjoint bases with ordinates in $[T,2T]$; no condition
+on rational linear relations among the heights is needed.
+\end{remark}
 
 \begin{lemma}[Distinguishing primes; \stU]\label{rec:lem:frame}
 For every $D_0>0$ there is a finite set $P$ of primes coprime to $Q$ with
@@ -909,9 +948,8 @@ $M,W,H$ fixed at their values for $T$, integrate \eqref{rec:eq:weightedsign} ove
 each ordinate receives total weight at most $\int K=1$, so the sum is at least $2c_0(R-H)$.
 \end{proof}
 
-\Cref{zer:thm:short} gives, for the same unshifted families, mass $\gg H\log\log H$ on intervals of
-length $H\ge(2/\pi+\eps)\log_3T$; the theorem above removes the $\eps$ at the price of a bounded
-mass, and its tests survive translation of the functions (\cref{rec:thm:moving}).
+The beginning of \cref{zer:sec:short} compares this theorem, \cref{rec:cor:balance} and
+\cref{rec:prop:bothsigns} with \cref{zer:thm:short}.
 
 \begin{corollary}[Exact balancing; \stG]\label{rec:cor:balance}
 In each window of the first kind in \cref{rec:thm:bothsigns} the points
@@ -1171,10 +1209,21 @@ $2+iu$ gives the unit-interval count; the rest of the proof is unchanged.
 The next two theorems locate both signs of differences of zero multiplicities on the
 critical line: in every interval of triple-logarithmic length for an arbitrary fixed finite
 family, and in every prescribed box of prime phases for the twist-family difference of the
-source proof. A third statement records that the multiplicity vectors of all characters to a
-fixed modulus have full rank in windows of logarithmic length, and a fourth that no nonzero
-polynomially weighted combination of the multiplicity divisors of distinct primitive
-characters has finite support.
+source proof. The rank of the multiplicity vectors in short windows is \cref{rec:thm:localrank} and
+\cref{zer:thm:rank}, and the rigidity of polynomially weighted multiplicity divisors is
+\cref{zer:thm:polyrigid}.
+
+Three results of this section give both signs of a balanced multiplicity difference, with different
+windows and masses; none of them implies another as a whole. For a fixed family of distinct primitive
+characters, \cref{rec:thm:bothsigns} gives positive mass of each sign in every window of length
+$(2/\pi)\log_3T+2C$, with no $\eps$ and bounded mass, and its binomial tests survive translation of the
+functions (\cref{rec:thm:moving}); \cref{rec:cor:balance} turns this into exact balancing on at most $d$
+ordinates. \Cref{zer:thm:short} below needs intervals of length $H\ge(2/\pi+\eps)\log_3T$ but gives the
+mass $\gg H\log\log H$ of each sign; for untranslated families this also contains the second assertion
+of \cref{rec:thm:bothsigns}, on windows of length $2b\log_3T$, $b>1/\pi$. For all characters of one
+modulus, \cref{rec:prop:bothsigns} gives $\gg T\log T$ ordinates of each sign in $(T,2T)$, more than the
+mass $\gg T\log\log T$ of \cref{zer:thm:short} with $H=T$, which on the other hand applies to every
+fixed family and to intervals of triple-logarithmic length.
 
 \paragraph{Intervals of triple-logarithmic length.}
 Let $\chi_1,\dots,\chi_r$ be distinct primitive Dirichlet characters, of conductors
@@ -1319,7 +1368,7 @@ put
 \]
 Omitted Euler factors have their zeros on $\Re s=0$, so the same integer is obtained with
 the imprimitive functions; for $8\mid q$ and $d\equiv7\pmod8$ it is the residue numerator of
-the source, studied as a whole in \cref{sec:rec}. Write $\mathbb T=\R/(2\pi\Z)$. For a
+the source, studied as a whole in \cref{rec:sec:spectrum}. Write $\mathbb T=\R/(2\pi\Z)$. For a
 finite set $\mathcal B$ of primes put
 $\theta_{\mathcal B}(t)=(t\log b\bmod2\pi)_{b\in\mathcal B}$.
 
@@ -1445,32 +1494,6 @@ cancellation is between two whole products, the angular box is fixed arbitrarily
 amplifier is chosen, and the same height window works in both directions. The count allows
 different multiplicities at a common zero; simplicity, disjointness of zero sets, and the
 conjectural $H\log T$ scale for almost all excess multiplicity are stronger assertions.
-
-\paragraph{Full rank of the multiplicity vectors.}
-The next statement is used in \cref{zer:sec:balancing} and \cref{zer:sec:cov}.
-
-\begin{corollary}[Multiplicity rank; \stU]\label{zer:thm:rank}
-Fix $q\ge1$ and put $n_q=\varphi(q)$. There is $K_q$ such that if $T$ is sufficiently large
-and $K_q\log T\le H\le T$, the vectors
-\[
- M(\rho)=\bigl(\ord_\rho L(s,\chi^*)\bigr)_{\chi\bmod q}\qquad
- (0<\Re\rho<1,\ T<\Im\rho<T+H)
-\]
-span $\R^{n_q}$. Distinct zeros index the vectors; a zero absent from one $L$-function
-contributes a zero entry. Under \cref{src:thm:dgrh} the same vectors are indexed by
-distinct positive ordinates.
-\end{corollary}
-\begin{proof}
-For large $T$ the window $(T,T+H)$ contains a window of the much shorter length allowed in
-\cref{rec:thm:localrank}, around its midpoint, so the vectors $M(\rho)$ span over $\C$, and
-being real they span $\R^{n_q}$.
-\end{proof}
-
-This yields a nonsingular integer multiplicity matrix of size $\varphi(q)$ in every such
-height window, including when different characters share zeros. In particular one can
-choose $\gg_qT/\log T$ pairwise disjoint bases with ordinates in $[T,2T]$, by dividing it
-into intervals of length $2K_q\log(2T)$. The rank argument keeps $q$ fixed; nonsingularity
-places no condition on rational linear relations among the heights themselves.
 
 \subsection{Blurred zero measures and a critical width}\label{rec:sec:blur}
 \sources{dirichlet-zero-recovery}
@@ -1605,7 +1628,11 @@ $\abs{(h*k)(t)/k(t)-L(V'(t))}<\mu_0/2$; and $V(t)/\abs t\to A_0$.
 \end{proof}
 
 \begin{proof}[Proof of \cref{rec:thm:blurlaw}]
-Let $S(w)=\sin(\pi w)/(1-w)$, $S(1)=\pi$, and $U_0(z)=e^{-z\sinh z}S(e^z)S(e^{-z})$. Its inverse transform $h$ is real, even, smooth,
+Let $S(w)=\sin(\pi w)/(1-w)$, $S(1)=\pi$, and
+\[
+ U_0(z)=e^{-z\sinh z}S(e^z)S(e^{-z}).
+\]
+Its inverse transform $h$ is real, even, smooth,
 with all exponential moments of rate below $\pi/2$, and $L(y)=U_0(iy)=e^{y\sin y}\abs{S(e^{iy})}^2$ extends to a positive
 continuous function on $[-\pi/2,\pi/2]$, since the only integer on that half of the unit circle is $1$. By
 \cref{rec:lem:blurpos}, $h*k>0$; normalized, it is $K$, with
@@ -1877,9 +1904,8 @@ Gaussian limit. Rows with large sums are excluded by the count, and a uniform ma
 compactness of the balanced sphere, since finitely many integer types of bounded sum occur.
 \end{proof}
 
-At $H=T$ this gives $\gg T\log T$ ordinates in each direction, more than the mass
-$\gg T\log\log T$ of \cref{zer:thm:short}, which on the other hand applies in intervals of
-triple-logarithmic length.
+This gives $\gg T\log T$ ordinates in each direction in $(T,2T)$; it is compared with
+\cref{zer:thm:short} at the beginning of \cref{zer:sec:short}.
 
 \begin{theorem}[Stable recovery; \stG]\label{rec:thm:stable}
 There are $\alpha_q,K_q>0$ such that for large $T$, every squarefree $m$ and every $f$, if at most
@@ -2010,15 +2036,14 @@ quadratic field). Under \cref{src:thm:dgrh} write the zeros as $\tfrac12+i\gamma
 compact intervals $I,J$ of positive length put $v_I(\gamma)=\int_Ie^{i\gamma x}\dd x$ and
 $C_\chi(I,J)=\Re\sum_\gamma\overline{v_I(\gamma)}v_J(\gamma)$, an absolutely convergent pairing since
 $\abs{v_I(\gamma)}\le\min(\abs I,2/\abs\gamma)$. With $g_{I,J}(u)=\abs{I\cap(J-u)}$ and
-$K_\kappa(u)=e^{-(\kappa+1/2)u}/(1-e^{-2u})$, the Guinand--Weil formula
-\cite{ChirrePereiraDeLaat2021Primes} gives, for $J-I\subset(0,\infty)$,
+$K_\kappa(u)=e^{-(\kappa+1/2)u}/(1-e^{-2u})$, the Guinand--Weil formula \eqref{rec:eq:gwstrip} gives, for
+$J-I\subset(0,\infty)$,
 \begin{equation}\label{rec:eq:packetweil}
  C_\chi(I,J)=-\int_0^\infty g_{I,J}(u)K_\kappa(u)\dd u-\sum_{n\ge2}\frac{\Lambda(n)\chi(n)}{\sqrt n}g_{I,J}(\log n).
 \end{equation}
-Indeed, for smooth $g$ supported in $(0,\infty)$ and $H(t)=\int g(u)\cos(tu)\dd u$ the conductor term
-vanishes, the prime terms are as displayed, and the gamma term, from the integral representation of
-$\psi$, is $-\int gK_\kappa$; the trapezoid $g_{I,J}$, whose cosine transform is
-$\Re(\overline{v_I(t)}v_J(t))$, is reached by mollification.
+This is the quadratic case of its positive-support form \eqref{rec:eq:halfweil} below, applied to
+$H(t)=\int g(u)\cos(tu)\dd u$, the zeros of a real character being symmetric; the trapezoid $g_{I,J}$, whose
+cosine transform is $\Re(\overline{v_I(t)}v_J(t))$, is reached by mollification.
 
 \begin{theorem}[Sign threshold; \stG]\label{rec:thm:signthreshold}
 The supremum $R_\chi$ of the $R>0$ such that $C_\chi(I,J)<0$ whenever $J-I\subset(0,R)$ equals
@@ -2082,22 +2107,6 @@ nontrivial quadratic character modulo $M\le Q^2$, the theorem determines every p
 character of conductor at most $Q$ from its zeros with $\abs\gamma\ll\log^2(2Q)\log\log(3Q)$;
 \cref{rec:thm:lowzero} lowers this height to $O(\log^2(2Q)/\log\log(3Q))$ for characters of every order.
 
-\begin{theorem}[Separation at every higher cutoff; \stG]\label{rec:thm:quaddisplace}
-With $X,r,h,T$ as above and $H\ge2T$, suppose two primitive nonprincipal quadratic characters of
-conductor at most $Q$ differ at a prime $p\le X$ and have the same number of zeros with
-$\abs\gamma\le H$. Then every bijection between the two lists satisfies
-$\sum\abs{\gamma-\gamma'}>H/(144\pi\sqrt X)$; for distinct characters, with $X=C\log^2(2Q)$, this is $\gg H/\log(2Q)$.
-\end{theorem}
-
-\begin{proof}
-Use $\phi(u)=f(u)\recsinc^2(Bu)/f(0)$ with $B=H/8$: $\phi(0)=1$, $\int\phi\le\min(h,\pi/B)$, and
-$\widehat\phi$ averages $\widehat f(t+V)/f(0)$ over $\abs V\le2B$, with $\abs{t+V}\ge3\abs t/4$ for
-$\abs t>H$. The gamma term is again at most $2h/\log2$, the normalized tail is at most
-$\frac{4h\sqrt X}{\log2}H\log(eQH)(4r/(3hH))^r\le1/4$ for $H\ge2T$ (since $r\ge4$), and the
-normalized test has Lipschitz constant at most $9\pi\sqrt X/H$. A matching of smaller displacement
-would force equal values at $p$ by rounding.
-\end{proof}
-
 For $q=Q=3$ and $X=5$ the rule gives $r=14$, $h=1/40$, $T=1120$; with $941$ positive ordinates the
 finite sums at $n=2,3,4,5$ are $-0.990596$, $0.003337$, $1.003759$, $-0.998733$, rounding to
 $-1,0,1,-1$ (\artifact{quadratic_spectra/decoder_example.txt}; the root enumeration is numerical).
@@ -2108,10 +2117,10 @@ $-1,0,1,-1$ (\artifact{quadratic_spectra/decoder_example.txt}; the root enumerat
 Let $\mathcal C(Q)$ be the set of primitive characters of conductor at most $Q\ge3$, the
 conductor-one character included, $L_Q=\log(2Q)$, and $m_\chi(t)=\ord_{s=1/2+it}L(s,\chi)$. For
 $\tau\in\R$, $H>0$ and $F\ge1$ put
-\[
- I=I(\tau,H)=[\tau-H,\tau+H],\qquad J(F,\tau)=\log\log\bigl(e^eF(3+\abs\tau)\bigr),\qquad
+\begin{gather*}
+ I=I(\tau,H)=[\tau-H,\tau+H],\qquad J(F,\tau)=\log\log\bigl(e^eF(3+\abs\tau)\bigr),\\
  L_3(\tau)=\log\log\log\bigl(e^{e^e}+\abs\tau\bigr).
-\]
+\end{gather*}
 Sums over $t\in I$ run over the distinct ordinates in the union of the spectra in question. The
 height needed to identify a primitive character of conductor at most $Q$, of any order, is
 $O(L_Q^2/\log\log(3Q))$: this replaces the quadratic cutoff $O(L_Q^2\log\log(3Q))$ that follows from
@@ -2121,9 +2130,10 @@ subinterval of $(0,\infty)$, with $a$ the parity and $\delta_\chi=\mathbf 1_{q=1
  \sum_\gamma m_\chi(\gamma)\widehat g(\gamma)=-\sum_{n\ge2}\frac{\Lambda(n)\chi(n)}{\sqrt n}g(\log n)
  -\int_0^\infty g(u)\frac{e^{-(a+1/2)u}}{1-e^{-2u}}\dd u+\delta_\chi\int_0^\infty g(u)\bigl(e^{u/2}+e^{-u/2}\bigr)\dd u,
 \end{equation}
-the positive-support case of the Dirichlet explicit formula \cite{ChirrePereiraDeLaat2021Primes}, of which
-\eqref{rec:eq:packetweil} is the quadratic instance: the conductor term and the reflected prime term
-vanish because $g(0)=g(-\log n)=0$, and compact $C^2$ tests follow by smoothing. Every unit interval
+which is \eqref{rec:eq:gwstrip} for $h=\widehat g$, divided by $2\pi$, with the digamma term expanded by its
+integral representation: the conductor term and the reflected prime term vanish because
+$g(0)=g(-\log n)=0$, and compact $C^2$ tests follow by smoothing. Its quadratic instance is
+\eqref{rec:eq:packetweil}. Every unit interval
 $[v,v+1]$ contains $O(\log(3q(2+\abs v)))$ ordinates with multiplicity
 \cite{BennettMartinOBryantRechnitzer2021Counting}.
 
@@ -2224,7 +2234,7 @@ holomorphic and rapidly decreasing in a strip wider than $\abs{\Im t}\le\tfrac12
  -\sum_{n\ge2}\frac{\Lambda(n)}{\sqrt n}\bigl\{\chi(n)g(\log n)+\overline{\chi(n)}g(-\log n)\bigr\}\\
  -\int_0^\infty\frac{e^{-(a+1/2)u}}{1-e^{-2u}}\bigl\{g(u)+g(-u)\bigr\}\dd u,
 \end{multline}
-the conductor term vanishing with $g(0)$ \cite{ChirrePereiraDeLaat2021Primes}. Fix $b>1/\pi$, then
+the conductor term vanishing with $g(0)$. Fix $b>1/\pi$, then
 $1/b<a_*<\pi$ and $\tfrac12<d<\pi/(2a_*)$, and put
 \[
  K(t)=e^{-\cosh(a_*t)},\qquad w(v)=\frac{\int_\R K(t)e^{-itv}\dd t}{\int_\R K(t)\dd t}.
@@ -2671,9 +2681,25 @@ erasures, three insertions, movements below $0.012$) are nearest to the true cha
 $16.91$ (\artifact{robust_dirichlet_spectra_2026-11-26/demo/demo_results.json}; numerical, not certified
 complete). Since $\min\set{1,M_Qx}\le M_Q\min\set{1,x}$, \cref{rec:cor:lowmatch}(i) gives
 $d_{\mathrm{edit}}\gg H/L_Q$ already for $H\ge C\{L_Q^2/\log\log(3Q)+L_3(\tau)\}$, with an unspecified constant;
-\cref{rec:thm:robust} is the version with explicit constants, at a larger height. For quadratic
-characters \cref{rec:thm:quaddisplace} gives the unclipped total displacement with the smaller
-constant $1/(144\pi)$ from the somewhat lower height $2T$.
+\cref{rec:thm:robust} is the version with explicit constants, at a larger height. For complete matchings of
+quadratic characters the decoder of \cref{rec:sec:quadratic} gives an explicit constant for the unclipped
+total displacement:
+
+\begin{remark}[Separation of quadratic characters at every higher cutoff; \stG]\label{rec:thm:quaddisplace}
+With $X,r,h,T$ and $f$ as in \cref{rec:thm:quaddecode} and $H\ge2T$, suppose two primitive nonprincipal
+quadratic characters of conductor at most $Q$ differ at a prime $p\le X$ and have the same number of zeros
+with $\abs\gamma\le H$. Then every bijection between the two lists satisfies
+$\sum\abs{\gamma-\gamma'}>H/(144\pi\sqrt X)$. For distinct characters, with $X=C\log^2(2Q)$ as after
+\cref{rec:thm:quaddecode}, this is $\gg H/\log(2Q)$ from the height $2T\asymp L_Q^2\log\log(3Q)$, which up to
+the constant is the last assertion of \cref{rec:cor:lowmatch}, valid from the lower height
+$O(L_Q^2/\log\log(3Q))$ and for characters of every order. For the explicit constant use
+$\phi(u)=f(u)\recsinc^2(Bu)/f(0)$ with $B=H/8$: $\phi(0)=1$, $\int\phi\le\min(h,\pi/B)$, and
+$\widehat\phi$ averages $\widehat f(t+V)/f(0)$ over $\abs V\le2B$, with $\abs{t+V}\ge3\abs t/4$ for
+$\abs t>H$. The gamma term is again at most $2h/\log2$, the normalized tail is at most
+$\frac{4h\sqrt X}{\log2}H\log(eQH)(4r/(3hH))^r\le1/4$ for $H\ge2T$ (since $r\ge4$), and the
+normalized test has Lipschitz constant at most $9\pi\sqrt X/H$. A matching of smaller displacement
+would force equal values at $p$ by rounding.
+\end{remark}
 
 \subsection{Twist multisets from balanced zero statistics}\label{rec:sec:homometry}
 \sources{dirichlet_zero_packet_homometry; dirichlet_packet_reconstruction; dirichlet-zero-reconstruction}
@@ -2694,7 +2720,10 @@ Landau formula of Ford and Zaharescu \cite[Lemma~2.1]{FordZaharescu2015Unnormali
 \begin{equation}\label{rec:eq:landau}
  L_A(k\log p)=-\frac{\log p}{2\pi p^{\abs k/2}}\psi(p)^kF_A(p,k)\qquad(p\nmid Q,\ k\in\Z\setminus\set0)
 \end{equation}
-and $L_A(t)=0$ at all other nonzero frequencies.
+and $L_A(t)=0$ at all other nonzero frequencies. The main term is that of the uniform Landau formula
+\eqref{zer:eq:rationallandau} of \cref{zer:lem:rational}, whose proof discusses the sources and the
+normalization; here the frequency is fixed and the window is $(0,T]$, with the smaller error of Ford and
+Zaharescu.
 
 \begin{theorem}[Local classification; \stG]\label{rec:thm:localclass}
 The following are equivalent: \textup{(i)} the limits of all balanced measurements agree for $A,B$;
@@ -2901,8 +2930,9 @@ positive zeros in every window $(T,T+C\log(2QT))$, determines the local histogra
 \end{corollary}
 
 \begin{proof}
-With $S(t)=Y^{-1}\sum_{T<\gamma<T+Y}e^{it\gamma}$, the Landau formula of Banks \cite{Banks2023Comparing} under
-\cref{src:thm:dgrh} gives $S(k\log p)=-\frac{\log p}{2\pi p^{\abs k/2}}\psi(p)^kF(k)+O(\log(2QT)/Y)$ for fixed $k\ne0$. Lift each
+With $S(t)=Y^{-1}\sum_{T<\gamma<T+Y}e^{it\gamma}$, the Landau formula of Banks \cite[Theorem~1.2]{Banks2023Comparing} under
+\cref{src:thm:dgrh}, applied to $x=p^{\abs k}$ in the
+normalization of \eqref{zer:eq:rationallandau}, gives $S(k\log p)=-\frac{\log p}{2\pi p^{\abs k/2}}\psi(p)^kF(k)+O(\log(2QT)/Y)$ for fixed $k\ne0$. Lift each
 row to nonzero integers with sum exactly zero; the product of the $S(k_j\log p)$ depends only on
 differences of ordinates and the factors $\psi(p)^{k_j}$ cancel. Distinct values of a product of length
 $s\le6$ differ by at least $(2m^s)^{-(\varphi(E)-2)/2}$ for $E>2$, as a nonzero algebraic integer of $K_E$ with
@@ -2919,3 +2949,69 @@ $(5,5,5,3,3,-21)$ gives $\pm729{,}000{,}000$:
 \artifact{dirichlet_packet_reconstruction/zero-packets/check_probes.txt}\\
 \artifact{dirichlet_packet_reconstruction/zero-packets/rigidity_output.txt}
 \end{center}
+
+\subsection{Open questions}\label{chz:sec:open}
+{\raggedright\sources{dirichlet_inverse_problems; dirichlet_li_rigidity; dirichlet_zero_packet_homometry; dirichlet_zero_recovery; large_kernels_and_dirichlet_zeros; prime_pole_windows; quadratic_spectra; dirichlet-grh-research; grh-torsion-and-zero-data; dirichlet_low_zero_identification; dirichlet_zeros_and_abelian_fields; local_euler_recovery; robust_dirichlet_spectra_2026-11-26; dirichlet_packet_reconstruction; dirichlet_prime_frequency_inverse; translated_dirichlet_zero_divisors; dirichlet-character-zero-windows; dirichlet-zero-reconstruction; dirichlet_zero_windows; dirichlet-zero-windows; dirichlet-zero-recovery; grh-methods-polynomial-density}}
+
+\begin{enumerate}
+\item \emph{The height needed for recovery.} How low can the height needed to recover $(q,d)$ in the
+lattice class be? The bound $O(d^2\log^3(2d))$ of \cref{rec:thm:recovery} isolates one atom at a time;
+probes that distinguish whole arithmetic signatures could use more of the prime data. What is the
+optimal height in \cref{rec:thm:lowzero}? Its proof uses a positive proportion of distinguishing
+primes at the scale $\log^2Q$ and bounds the neighbouring Euler coefficients by absolute values; can
+cancellation among them give enough readings at a smaller bandwidth? How fast must the constants of
+\cref{rec:cor:products,rec:thm:familytriple} grow with the number of factors, and can this be quantified well
+enough to let the number of factors, or the degree in \cref{rec:cor:fieldsbounded}, grow with $Q$? Can one force, at height
+$O(L_Q^2/\log\log(3Q))$ uniformly in the conductor, an ordinate occupied by exactly one of two given
+functions, or bound each direction of multiplicity excess separately? Can the radius
+$O(d^2\log^2(2Q)\log(2d))$ of \cref{rec:thm:localid} be reduced using the integrality of the multiplicity
+differences? Can the field cutoff $\log^2(2D)$ of \cref{rec:thm:fields} be lowered by another $\log\log D$,
+and the term $J(D,\tau)$ reduced uniformly in the discriminant? Which absolute constants make these
+cutoffs practical, and how many \emph{distinct} ordinates, not merely multiplicity discrepancies, must
+separate two characters or two fields at a comparable height?
+\item \emph{Four central values.} Is $B_d>-2$ in \cref{rec:cor:chowla} for every prime
+$d\equiv7\pmod8$? This is a subfamily of Chowla's conjecture; the one-sided estimate of the source
+does not decide it.
+\item \emph{Which multiplicity vectors occur?} \Cref{rec:lem:blocks,rec:thm:precision,rec:thm:detecting}
+treat all abstract nonnegative integer vectors. Which vectors $(\ord_\rho L(s,\chi))_\chi$ actually occur
+at common zeros, and do the worst-case near-collisions of \cref{rec:thm:precision} occur?
+\item \emph{Windows and constants.} \Cref{rec:thm:localrank,rec:thm:localcoeff,rec:thm:bothsigns} reach the
+radius $\pi^{-1}\log\log\log T+O(1)$. Is the coefficient $1/\pi$ optimal, and does a window of fixed radius
+suffice at a fixed modulus, for two fixed characters, for two operators on the same completion
+(\cref{rec:cor:operatorlocal}, at present $C\log\log T$), or for the full range of steps in
+\cref{rec:thm:coalesce}? Is \cref{rec:thm:micro} sharp for the actual zeros? Can one force an ordinate at
+which exactly one of several given functions vanishes, at a comparable radius? How small can the
+constants be made in terms of $q$ and the family, and how much error in locations and residues is
+admissible? Does positive-fraction recovery (\cref{rec:thm:stable}) hold in every window of length
+$T^\theta$ for a fixed $\theta<1$, what is an explicit admissible corruption fraction already for $q=4$, and
+what precision in positions suffices when close ordinates may be merged? For a nonabelian class
+function, what replaces the power-image rank when Artin factors share constituents or have poles?
+\item \emph{Pooled zero statistics.} Can \cref{rec:thm:homuniform} be extended to frequencies with
+$e^{\abs t}\asymp T^2$? What is the smallest packet size giving a nontrivial ambiguity for each
+exponent? For a fixed small mass, what are the exact measurement counts of
+\cref{rec:thm:probecount} as functions of $(E,m)$, what is the least maximum order at the optimal
+adaptive count for general $E$, and how small can the height constant of \cref{rec:cor:probewindow} be
+made?
+\item \emph{Omitted primes.} For primes bounded by $B$, distinct sets of at least three primes have
+distinct short-gap polynomials (\cref{rec:thm:gaps}); how does the minimal separation of their
+coefficient vectors depend on $B$, and what finite height and precision distinguish them? For two
+omitted primes, recovery would follow from the four exponentials conjecture.
+\item \emph{Other $L$-functions.} For automorphic $L$-functions of unknown degree the leading term of
+the zero count measures degree times stride in \cref{rec:prop:lidecode}; what further spectral
+information separates the two? For higher-degree $L$-functions, which gamma parameters can be
+separated at a single prime frequency as in \cref{rec:thm:primefreq}, and which need accuracy finer
+than every inverse power of $\log T$? Do the universal encoding and the positive-residue
+reconstructions extend to families for which the corresponding Riemann hypothesis is known?
+\Cref{src:thm:dgrh} does not supply it.
+\item \emph{Blurred zeros.} What is the optimal modulus of continuity for recovering the translating measures
+of \cref{rec:thm:blur} from finitely many noisy atoms or high windows? Can the unbounded excess in
+\cref{rec:prop:blurwin} be replaced by a fixed constant for continuous laws? Which critical weights, between the
+polynomial discounts of \cref{rec:cor:blurend} and arbitrary subcritical exponential moments, still force
+identification? For other families of $L$-functions, which gamma and pole profiles survive after a positive law
+removes the arithmetic atoms?
+\item \emph{Short intervals.} Does a bounded-length interval suffice for each directional
+multiplicity excess for a fixed pair of characters, and is the coefficient $2/\pi$ in
+\cref{zer:thm:short} optimal? Can one force a genuinely unshared zero in every
+triple-logarithmic interval? The first asks for a stronger localization argument, the last
+for information on individual orders at common zeros.
+\end{enumerate}

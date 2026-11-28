@@ -5,7 +5,18 @@
 \providecommand{\dirE}{\mathbb{E}}
 \providecommand{\dirU}{\mathrm{U}}
 
-\section{Direct arithmetic consequences of Dirichlet GRH}\label{sec:dir}
+\section{Consequences through published theorems: primes, primitive roots and prime gaps}\label{sec:dir}
+
+This section collects arithmetic consequences of Dirichlet GRH for single primes and prime gaps: the
+abelian Dedekind zeta functions and the substitution of the input theorem into published conditional
+theorems (\cref{dir:sec:published}), primitive roots and Euclidean division in cyclic fields
+(\cref{dir:sec:roots}), a prime plus a multiple of a prime cube or fourth power (\cref{dir:sec:cube}), primes
+in geometric intervals and Pomerance's divisibility conjecture (\cref{dir:sec:geometric}), the least
+prime-generating constants for five exponents (\cref{dir:sec:mills}) and Toroczkai's prime-gap graphs
+(\cref{dir:sec:graphs}). The other arithmetic consequences follow in this part: small primes in residue
+classes, with subset products, sign patterns and codes, in \cref{sec:prd}; the class-group censuses of
+imaginary quadratic fields and orders, Euler's idoneal list among them, in \cref{sec:cls}; and CM
+coefficient fields, reflected fields and uniform Galois bounds in \cref{sec:cmf}.
 
 Throughout this section the input theorem \cref{src:thm:dgrh} is used as a statement
 without hypotheses: the Riemann zeta function and every Dirichlet $L$-function
@@ -873,15 +884,9 @@ $T=\ceil{652L^2}$ uses the tail estimate \eqref{dir:eq:g1}.
 \end{remark}
 
 \subsection{Open questions}\label{dir:sec:open}
-\sources{grh-transfer; grh-lean-transfers; grh-arithmetic-transfers; grh_cm_prime_applications; grh-exponent-six-and-transfers; dirichlet-grh-research; squarefree_prime_products; orthogonal_nullity_and_prime_products; squarefree_factorizations; hermite_thresholds_and_quadratic_primes; disjoint-prime-products; entropy_optimal_prime_factorizations_2026-11-27; grh_entropy_products_2026-11-27; grh_growing_factorizations; grh_quadratic_fibre; grh_prime_routing_2026-11-27; prime_character_codes_2026-11-27; prime_sparse_recovery_2026-11-27; prime_sparse_recovery_2026-11-27_2; grh_prime_fingerprints_2026-11-27; hermite_threshold_research; grh_quarter_density; prime_cubature_grh_2026-11-27; prime_legendre_codes_2026-11-27; grh_extensions_2026-11-27_3}
+\sources{grh-transfer; grh-lean-transfers; grh-arithmetic-transfers; grh_cm_prime_applications; grh-exponent-six-and-transfers}
 
 \begin{enumerate}
-\item \emph{The least pair sum.} For $n$ outside Euler's list let $b(n)$ be the
- smallest $x+y$ among the solutions of \eqref{dir:eq:xyz}. Can the uniform upper bound
- $O((\log n)^2)$ of Theorem~\ref{dir:thm:xyz} be lowered while retaining an explicit
- algorithm? Proposition~\ref{dir:prop:xyzprime} forces order at least $\log n\log\log n$ on a
- sequence, and by Proposition~\ref{dir:prop:xyzmin} the question for squarefree $n\equiv1,2\pmod4$
- is that of the least odd prime splitting in $\Q(\sqrt{-n})$.
 \item \emph{Additive cutoffs.} For each fixed $k\ge2$ the argument of
  Theorem~\ref{dir:thm:cube} reduces $n=p+mr^k$ to a finite search (Remark~\ref{dir:rem:powers}).
  What controls the growth with $k$ of the largest exception, which is $24$, $10500$
@@ -906,84 +911,4 @@ $T=\ceil{652L^2}$ uses the tail estimate \eqref{dir:eq:g1}.
 \item \emph{Norm-Euclidean fields of degree eleven.} Which of the cyclic fields of
  degree $11$ and conductor $23$, $67$, $331$ are norm-Euclidean?
  Theorem~\ref{dir:thm:euclid} supplies no positive certificate.
-\item \emph{Quartic coefficient fields.} In coefficient degree four the divisibility
- \eqref{dir:eq:yang} allows CM fields of class number one, two or four. How do the
- quartic coefficient fields from the cyclic and noncyclic class groups of order four
- overlap? The odd-degree proofs use that a sign has an odd root and that the
- coefficient field has a real embedding; neither argument covers every quartic field.
- More generally, Theorem~\ref{dir:thm:cmfinite} concerns CM forms only, and Martin's
- conjecture for non-CM newforms requires other ideas.
-\item \emph{Actual isogenies.} Which of the $66$ primes of Theorem~\ref{dir:thm:strictcc}
- occur as degrees of Momose type~2 isogenies of elliptic curves over sextic fields of
- the two families, in particular $253507$? By Theorem~\ref{dir:thm:isogenysharp} the local
- condition, even when tested at every rational prime, cannot shorten the list
- uniformly; a further obstruction must use the arithmetic of the curves or of their
- moduli.
-\item \emph{Further permutation actions.} For which further transitive Galois actions
- do suitable abelian splitting conditions force short odd Frobenius orbits, and hence
- uniform bounds in even degree? Theorem~\ref{dir:thm:subsets} gives an exact criterion for
- the alternating-group actions on subsets, and the fourteen other transitive actions
- of degree six require an additional argument.
-\item \emph{Heavenly curves at the listed primes.} Does a heavenly elliptic curve
- exist over a field of the two sextic families, or over a cubic field, at each prime
- of \eqref{dir:eq:heavenlylist}, in particular at $4027$? Which field-specific classes
- occur at each of the $25$ candidates of Corollary~\ref{dir:cor:heavenlycubic}?
-\item \emph{Short squarefree products at the logarithm-squared scale.} At $y=C(\log q)^2$, can
- every unit be reached after majority retention with $O(\log q/\log\log q)$ distinct prime
- factors? This would give representatives of polynomial size at the smoothness scale of
- Corollary~\ref{dir:cor:squarefree}. For $y=(\log q)^A$, $A>2$, what is the optimal constant in
- front of $\log q/\log\log q$ for pointwise relative counts? For typical residues it is $1/(A-1)$ for
- almost all prime moduli (Theorems~\ref{dir:thm:typical} and~\ref{dir:thm:typicalsharp}); pointwise,
- Theorem~\ref{dir:thm:short} and Corollary~\ref{dir:cor:almostshort} give $2(A-1)/(A(A-2))$ under
- Dirichlet GRH and $2/(A-1)$ for almost all prime moduli. Can the typical constant
- $(A-1)/(A(A-2))$ under Dirichlet GRH be lowered to $1/(A-1)$ for every modulus? For one product,
- what happens when $\min(k,m-k)=o(\log q)$? Below density one third and in the sparse range
- $B\log q\le h=o(m)$, the fibre distances of the characters of order at most $\floor{1/a}$ decide mixing
- (Theorem~\ref{dir:thm:allmix}) and compound Poisson laws on a bounded quotient give every limiting
- profile (Theorem~\ref{dir:thm:profiles}); what replaces them for dense quotas $h\asymp m$, and do they
- hold uniformly as $a\to0$?
-\item \emph{Mixing at density one quarter.} The support at retained density $1/4$ is given by
- Theorem~\ref{dir:thm:quarter}, and for one product the sparse-quota profiles at every density are
- classified by Theorem~\ref{dir:thm:profiles}, with an $O(1/h)$ comparison in the critical window that
- needs no bound on the number of exceptional primes (Theorem~\ref{dir:thm:fpc}). For $r\ge2$ products,
- and in particular for growing $r$, which statistics determine the approach to uniformity across the
- occupied quotient classes, beyond the relative counts within each class, once the number of exceptional
- primes is not $o(\sqrt m)$ as in Proposition~\ref{dir:prop:sparseexc}?
-\item \emph{Constants for factorizations.} For one tuple of moduli and coverage alone the leading
- constant is the entropy threshold of Theorem~\ref{dir:thm:entropy}. What is the second-order term,
- between the lower bound of order $\log\log M$ and the upper bound $O(\log M/\log B)$, and can a fixed
- height factor $B$ attain the leading constant exactly? Does an entropy law hold for a growing number
- of factors, with deletions, or with comparable numbers of representations? For fixed $A$ and
- deletion fraction, what is the best leading constant in the logarithmic quota of
- Theorem~\ref{dir:thm:factorization} for growing $r$?
- Can the largest prime be made smaller than $K\log^2Q$ for a fixed number of factors while
- keeping the pointwise bound? At a fixed retained density, what is the optimal leading constant of
- the logarithmic quota giving a prescribed relative error in Theorems~\ref{dir:thm:minority}
- and~\ref{dir:thm:disjoint-growing}?
-\item \emph{Hermite thresholds.} Lemma~\ref{dir:lem:hamming}(b) determines $b_k(a)$ in the windows
- $a=h_j+\lambda/\sqrt k$ with $\lambda\le0$. What is the window function for $\lambda>0$, where rare
- extreme layers may be used, and what is the next term in Lemma~\ref{dir:lem:hamming}(b)? Can
- correlations among the prime character sums, or a witness optimized for the conductor-weighted
- Fourier norm, improve the powers of $k$ in Theorems~\ref{dir:thm:signs}
- and~\ref{dir:thm:signswindow}, and is there an arithmetic lower bound for the least prime?
-\item \emph{Computing the quotient.} Can the bounded quotient of Theorem~\ref{dir:thm:quotient}
- be computed from the retained primes in time polynomial in $\log q$, without enumerating the
- characters modulo $q$? Once it is known, Corollary~\ref{dir:cor:anydensity} decides the support of
- disjoint products in polynomial time.
-\item \emph{Routing capacity.} At the cutoff $C(\log q)^2$, Corollary~\ref{dir:cor:routing} routes
- $\gg\log q/\log\log q$ disjoint pairs while the counting bound allows $O(\log q)$; what is the
- capacity? Can the constant $2/(A-2)$ in the length bound of Theorem~\ref{dir:thm:routing} be lowered
- at the same deletion threshold?
-\item \emph{Prime codes.} Can the number of small primes in Theorems~\ref{dir:thm:codes}
- and~\ref{dir:thm:primedecoder} be made nearly linear in the sparsity while keeping the sharp
- corruption fraction, and is the cost $s^6$ of exact rigidity necessary? For moduli without a
- subgroup of characters of order $2k$ the minimum distance may exceed the coherence bound; can a
- tractable decoder use this? Is prime height $(\log Q)^2$ necessary for the fingerprints of
- Theorem~\ref{dir:thm:fingerprint}, and how small can the list size be near capacity? Are the prime
- cutoff $O(n^2\log^2n)$ and the rectangle defect of Theorem~\ref{dir:thm:legendrecodes} optimal for
- Legendre codes?
-\item \emph{Prime designs.} Can the height exponent of Theorem~\ref{dir:thm:cubature} be lowered at a fixed
- positive deletion fraction, is there a sharp obstruction in degree $k\ge2$ analogous to
- Theorem~\ref{dir:thm:threelayer}, and can the bounded reweighting be replaced by equal weights on distinct
- primes?
 \end{enumerate}

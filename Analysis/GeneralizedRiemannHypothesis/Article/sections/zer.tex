@@ -3,7 +3,7 @@
 \providecommand{\hecCov}{\operatorname{Cov}}
 \providecommand{\hecE}{\mathbb{E}}
 \providecommand{\hecind}{\mathbf{1}}
-\section{Zeros, Euler products and prime races under Dirichlet GRH}\label{sec:zer}
+\section{Prime races, Mertens errors and Euler products at the critical line}\label{sec:zer}
 \providecommand{\zerJ}{\mathcal{J}}
 \providecommand{\zerK}{\mathcal{K}}
 \providecommand{\zersinc}{\operatorname{sinc}}
@@ -14,13 +14,19 @@
 \providecommand{\zerSym}{\mathfrak{D}}
 \providecommand{\zerLog}{\operatorname{Log}}
 
-This section collects the consequences of \cref{src:thm:dgrh} that are statements about the
-zeros themselves and about the prime sums they govern: sharp partial Euler products on the
-critical line, the distribution and rigidity of signed zero multiplicities, the covariance,
-oscillation and extremal values of the smoothed prime errors of the source proof at several
-scales, the sign and size of several weighted prime sums, the limiting laws and sign transitions of
-prime races in Gaussian windows, and the motion of zeros when completed $L$-functions are coupled by
-a Hermitian matrix. Every result marked ``\stG'' uses
+This section collects sign and limit results that \cref{src:thm:dgrh} gives for single prime sums:
+when partial Euler products at the critical line have the predicted limit, for paired products at
+every cutoff and for one product outside rare exceptional cutoffs (\cref{zer:sec:euler}), how often
+Suzuki's unsmoothed prime-power error is negative and the sign of his averages over moduli
+(\cref{zer:sec:suzuki}), which of two prime sums leads in a fixed window
+(\cref{zer:sec:window}), in a weighted race in which central zeros help (\cref{hec:ss:central}) and in a
+moving Gaussian window (\cref{zer:sec:gauss}), and the exact upper limits of Mertens-type errors in
+Zhao's question (\cref{zer:sec:zhao}). The joint fluctuations of the smoothed prime errors at several
+scales (covariance, balancing, peaks and merging scales) are in \cref{sec:flu}, positive filters in
+\cref{sec:fil}, the recovery of characters from zeros, including the signed zero spectrum and short
+windows, in \cref{sec:chz}, and Hermitian couplings of completed $L$-functions in \cref{sec:cpl}; the
+cubic race of discriminant $-23$, which assumes the Riemann hypothesis for an Artin $L$-function, is
+\cref{zer:thm:cubicrace} in \cref{hec:ss:cubic}. Every result marked ``\stG'' uses
 \cref{src:thm:dgrh} as its only input on the location of zeros; simplicity of zeros and linear
 independence of ordinates are never assumed. Nontrivial zeros are written
 $\rho=\tfrac12+i\gamma$ and are counted with multiplicity unless stated otherwise, $\Lambda$ is
@@ -380,7 +386,8 @@ the cutoff used in the proof.
 The Mellin residues of the smoothed prime remainder in the source proof are signed
 differences of zero multiplicities. How these signed data determine the modulus and the
 twist, in the limit and from a finite band or a finite initial segment of zeros, and the
-resulting criterion for four central values at once, are treated in \cref{sec:rec}.
+resulting criterion for four central values at once (\cref{rec:cor:chowla}), are treated in
+\cref{rec:sec:spectrum} of \cref{sec:chz}.
 
 \subsection{Suzuki's prime-power questions}\label{zer:sec:suzuki}
 \sources{grh_cm_four_terms_and_prime_bias; grh_method_transfers_2026-11-26}
@@ -712,38 +719,32 @@ dilation $\tau>1$ let
  J_\tau(x)=-\int_x^{\tau x}B(y)\,\frac{\dd y}{y^2}
  =-\sum_{p\le\tau x}b(p)\log p\Bigl(\frac1{\max(p,x)}-\frac1{\tau x}\Bigr).
 \end{equation}
-Every value of $J_\tau$ involves finitely many primes. Two weights are considered:
+Every value of $J_\tau$ involves finitely many primes. The weight treated here is
 $b(p)=\chi_4(p)$ for odd $p$, attached to the Dirichlet beta function $\beta(s)$, for which
-a positive value of $J_\tau$ favors primes $3\bmod4$; and
-$b(p)=\#\set{y\in\F_p:y^3-y-1=0}-1$ for $p\ne23$, attached to the standard two-dimensional
-Artin $L$-function $L(s,\rho)$ of the cubic field of discriminant $-23$, for which a
-positive value favors irreducible primes over twice the completely split primes. The
-factor $1/n-1/x$ is the smoothing that appears in the source proof.
+a positive value of $J_\tau$ favors primes $3\bmod4$. The factor $1/n-1/x$ is the smoothing
+that appears in the source proof. The cubic weight $b(p)=\#\set{y\in\F_p:y^3-y-1=0}-1$,
+$p\ne23$, attached to the standard two-dimensional Artin $L$-function $L(s,\rho)$ of the
+cubic field of discriminant $-23$, is treated in \cref{hec:ss:cubic}
+(\cref{zer:thm:cubicrace}); the equations below are stated for both weights.
 
 \begin{theorem}[The modulo-four race; \stG]\label{zer:thm:mod4}
 For $b=\chi_4$ one has $J_4(x)>0$ for every real $x>3/4$, $J_4(x)=0$ for $0<x\le3/4$, and
 $\liminf_{x\to\infty}\sqrt x\,J_4(x)>3/8$.
 \end{theorem}
 
-The starting point $3/4$ is sharp. The proof has an asymptotic part common to both weights
-and an explicit part special to $\chi_4$.
+The starting point $3/4$ is sharp. The proof has an asymptotic part and an explicit part
+special to $\chi_4$; the asymptotic part, equations
+\eqref{zer:eq:squares}--\eqref{zer:eq:Zformula}, is also used for the cubic weight in
+\cref{hec:ss:cubic}.
 
 \paragraph{The square terms have the decisive sign.}
-For the cubic, the polynomial is irreducible by the rational root test and has nonsquare
-discriminant $-23$, so its splitting field has group $S_3$; the standard representation
-$\rho$ has character equal to the number of fixed letters minus one. For unramified $p$ let
-$g_p$ denote Frobenius. The traces are as follows.
-\begin{center}\small
-\begin{tabular}{lrrrr}\toprule
-Cycle type & Number in $S_3$ & Roots & $\tr\rho(g_p)$ & $\tr\rho(g_p^2)$\\\midrule
-Identity &1&3&2&2\\
-Transposition &3&1&0&2\\
-Three-cycle &2&0&$-1$&$-1$\\\bottomrule
-\end{tabular}\end{center}
-Let $A(y)=\sum_{p^k\le y}\tr\rho(g_p^k)\log p$, using $\chi_4(p)^k$ in the quadratic case.
-The mean of the last column is $(2+6-2)/6=1$. Chebotarev's theorem and partial summation
-give a square contribution $\sqrt y+o(\sqrt y)$ for the fixed cubic field, without any
-hypothesis on its zeros. For $\chi_4$ the squares have weight one at every odd prime, so
+For the cubic weight let $g_p$ denote Frobenius at unramified $p$ in the splitting field,
+with group $S_3$. The trace $\tr\rho(g_p^2)$ is $2$, $2$ and $-1$ at the identity, the three
+transpositions and the two three-cycles, respectively. Let
+$A(y)=\sum_{p^k\le y}\tr\rho(g_p^k)\log p$, using $\chi_4(p)^k$ in the quadratic case. The
+mean of $\tr\rho(g^2)$ over $S_3$ is $(2+6-2)/6=1$. Chebotarev's theorem and partial
+summation give a square contribution $\sqrt y+o(\sqrt y)$ for the fixed cubic field, without
+any hypothesis on its zeros. For $\chi_4$ the squares have weight one at every odd prime, so
 the ordinary prime number theorem suffices. Powers with $k\ge3$ contribute
 $O(y^{1/3}\log^2y)$ in both cases. With $H_\tau(x)=-\int_x^{\tau x}A(y)y^{-2}\,\dd y$ this
 gives
@@ -787,7 +788,7 @@ The constant $D_*(1)$ disappears from $H_\tau$. Equations \eqref{zer:eq:squares}
 \begin{equation}\label{zer:eq:liminf}
  \liminf_{x\to\infty}\sqrt x\,J_\tau(x)\ \ge\ 2(1-\tau^{-1/2})-(1+\tau^{-1/2})Z .
 \end{equation}
-For the completed primitive $L$-function $\zerLL$, both examples have sign $+1$ and
+For the completed primitive $L$-function $\zerLL$, both weights have sign $+1$ and
 $\zerLL(1/2)\ne0$. The Hadamard product for the even entire function
 $z\mapsto\zerLL(1/2+z)$ pairs zeros at $\pm i\gamma$. Its order is one, and evenness
 removes the linear exponential. Differentiating the paired product at $z=1/2$ gives
@@ -861,9 +862,10 @@ term has positive support.
 \end{proof}
 
 \begin{remark}[Sample values]\label{zer:rem:samples}
-Rounded values of \eqref{zer:eq:Jh} at $\tau=4$ illustrate the scale and the sign; the
-proofs do not extrapolate them. The primes $p=2,5,59$ respectively exhibit the irreducible,
-mixed and completely split cases of the cubic. The root counts are exact and the weighted
+Rounded values of \eqref{zer:eq:Jh} at $\tau=4$ illustrate the scale and the sign for
+\cref{zer:thm:mod4} and for the cubic weight of \cref{zer:thm:cubicrace}; the proofs do not
+extrapolate them. The primes $p=2,5,59$ respectively exhibit the irreducible, mixed and
+completely split cases of the cubic. The root counts are exact and the weighted
 sums use floating point; the output is in \artifact{grh_transfers/checks/cubic_check.txt}.
 \begin{center}\small
 \begin{tabular}{rrrrrr}\toprule
@@ -875,15 +877,14 @@ $x$ & Three roots & One root & No roots & $\sqrt x\,J_4$ cubic & $\sqrt x\,J_4$ 
 \end{tabular}\end{center}
 \end{remark}
 
-\subsection{Central zeros of Dirichlet \texorpdfstring{$L$}{L}-functions}\label{hec:ss:central}
+\subsection{A weighted race in which central zeros help}\label{hec:ss:central}
 {\emergencystretch=\textwidth\sources{grh-lean-transfers; mcnew-density-and-dirichlet-grh}}
 
 \Cref{src:thm:dgrh} places the zeros of Dirichlet $L$-functions on the critical line but says nothing
-about the central point. This subsection gives one prime race in which central zeros can only help, and a
-finite test for central nonvanishing together with the exact limits of such tests. All results here use
-\cref{src:thm:dgrh}.
+about the central point. This subsection gives one prime race, simultaneous over all classes of a
+quotient of $(\Z/q\Z)^\times$, in which central zeros can only help. The finite tests for central
+nonvanishing are in \cref{rec:sec:count}.
 
-\paragraph{A simultaneous weighted prime race.}
 Chebyshev's assertion that
 \[
  \sum_{p>2}(-1)^{(p-1)/2}e^{-p/x}\longrightarrow-\infty\qquad(x\to\infty)
@@ -1056,10 +1057,11 @@ all arithmetic relations among the ordinates. For $z\in\mathcal H$ put
  F_z(t)=b_0+2\Re\sum_{\gamma\in\Gamma}b_\gamma e^{-h\gamma^2}z_\gamma e^{i\gamma t}.
 \]
 Every derivative is continuous in $(z,t)$, all $F_z$ are real analytic, and
-$F_z(t+u)=F_{z\theta_u}(t)$. A finite product of coordinate characters restricts to the orbit as
-$e^{i\omega t}$, and it is nontrivial on $\mathcal H$ precisely when $\omega\ne0$; continuous-time
-averaging kills it, and finite linear combinations of these characters are uniformly dense in
-$C(\mathcal H)$. By \eqref{zer:eq:gaussasymp} the logarithmic limiting law of $\mathcal Q$ is
+$F_z(t+u)=F_{z\theta_u}(t)$. As in the proof of \cref{zer:thm:suzukidensity}, continuous-time
+means of continuous functions of $\theta_t$ are $\nu$-integrals: a coordinate monomial restricts to
+the orbit as $e^{i\omega t}$ and is nontrivial on $\mathcal H$ exactly when $\omega\ne0$. The same
+compact group gives the almost periods of \cref{zer:lem:posspec}(i). By \eqref{zer:eq:gaussasymp}
+the logarithmic limiting law of $\mathcal Q$ is
 therefore the image of $\nu$ under $z\mapsto F_z(0)$, and that of $\mathcal P$ is its translate by
 $-r_q/(2n_q)$. Their means are $b_0$ and $b_0-r_q/(2n_q)$.
 
@@ -1579,18 +1581,18 @@ in the second column gives a separate field.}\label{zer:tab:biquadratic}
 \end{table}
 
 \begin{proof}
-\emph{Reduction to characters.} By the Kronecker--Weber theorem, every abelian $K/\Q$ is a
-subfield of a cyclotomic field. Galois duality identifies it uniquely with the finite group
-$V$ of Dirichlet characters trivial on the subgroup fixing $K$. Take every character at its
-primitive conductor when forming its $L$-function; products of characters mean products
-followed by passage to the inducing primitive character. Factoring the Dedekind zeta
-function and adding zero multiplicities gives
+\emph{Reduction to characters.} By the Kronecker--Weber theorem and Galois duality, an abelian
+$K/\Q$ corresponds to the finite group $V$ of Dirichlet characters trivial on the subgroup
+fixing $K$, and $\zeta_K$ is the product of the $L(s,\chi^*)$, $\chi\in V$, taken at primitive
+conductors (\eqref{dir:eq:abelian} in \cref{dir:prop:abelian}); products of characters mean
+products followed by passage to the inducing primitive character. Adding zero multiplicities
+gives
 \begin{equation}\label{zer:eq:BKsum}
  B_K=B_\Q+\sum_{1\ne\chi\in V}B_\chi,\qquad B_\Q=2+\zergE-\log(4\pi),
 \end{equation}
-where $B_\chi$ is the same zero sum for $L(s,\chi)$; the formula for $B_\Q$ follows by
-logarithmically differentiating the completed zeta function at $1$. Every summand is
-positive. A real nontrivial character of a qualifying field must satisfy
+where $B_\chi$ is the same zero sum for $L(s,\chi)$; $B_\Q$ and $B_\chi$ are the masses
+$M_{\triv}$ and $M_{\chi^*}$ of \cref{zer:lem:mass}, which evaluates them by the identity of
+\cref{ana:lem:hadamardmass}. Every summand is positive. A real nontrivial character of a qualifying field must satisfy
 $B_\chi<2-B_\Q$. A nonreal one comes paired with its conjugate of equal weight, since the
 ordinates for $\bar\chi$ are the negatives of those for $\chi$, and must satisfy
 $B_\chi<(2-B_\Q)/2$. The next two steps find every character satisfying the appropriate
@@ -1619,7 +1621,8 @@ $B_{\chi_d}<2$ in his study. A separate computation treats all $4{,}327$ exterio
 in the finite range: every lower endpoint exceeds $2.0442$
 (\artifact{grh-transfer/checks/exterior-results.json}). Thus completeness is independent
 of his numerical search. The numerical comparison is made without locating zeros: Zhao's
-equation (32) is
+equation (32), which is \cref{zer:lem:mass} for $\chi_d$ (with $\psi(1/2)=-\zergE-2\log2$ and
+$\psi(1)=-\zergE$), is
 \begin{equation}\label{zer:eq:zhao32}
  B_{\chi_d}=\log(q/\pi)-\zergE-2\,\mathbf 1_{d>0}\log2+2\,\frac{L'(1,\chi_d)}{L(1,\chi_d)} .
 \end{equation}
@@ -1683,9 +1686,8 @@ character and modulo $2$ there are none. This generates each primitive character
 once. Independently the Dirichlet convolution $\mu*\varphi$ counts $29405$ primitive
 characters of conductor below $400$, including the trivial conductor-one character;
 applying the same inversion to the size of the two-torsion of the unit group counts $243$
-real characters, leaving $29162$ nonreal characters. For the finite comparisons use the
-real part of the same logarithmic derivative at $s=1$, or equivalently the functional
-equation, to obtain
+real characters, leaving $29162$ nonreal characters. For the finite comparisons
+\cref{zer:lem:mass} gives
 \[
  B_\chi=\log(q/\pi)-\zergE-2(1-a)\log2+2\Re\frac{L'}L(1,\chi).
 \]
@@ -1771,7 +1773,8 @@ denominators and adding their numerators, with fixed points counted with half we
 making pairs. Thus $A_\chi\ge(2/3)\Re(\Lambda'/\Lambda)(2,\chi)$ even before localization,
 and $A_\chi>0$. The conductor cutoffs and the finite comparisons therefore classify the
 corresponding completed logarithmic-derivative constant on their own.
-\Cref{src:thm:dgrh} makes $A_\chi$ equal to the absolute zero sum $B_\chi$ and makes the
+\Cref{src:thm:dgrh} makes $A_\chi$ equal to the absolute zero sum $B_\chi$
+(\cref{zer:lem:mass}) and makes the
 statement about the Mertens integral possible.
 \end{remark}
 
@@ -1840,7 +1843,8 @@ its splitting field. With $L_f$ the $L$-series of $f(z)=\eta(z)\eta(23z)$, the p
 representation on the three roots and the regular representation give
 $\zeta_F=\zeta L_f$ and $\zeta_E=\zeta L_{-23}L_f^2$
 \cite{Zagier1991Polylogarithms}. The enclosure $(0.32770,0.35161)$ of
-$2\zerLL'(1)/\zerLL(1)$ recorded at the end of \cref{zer:sec:window}, together with
+$2\Lambda'(1)/\Lambda(1)$, for the completed function \eqref{hec:eq:Lambda23} of $L_f$, recorded
+after \cref{zer:cor:cubicZ} in \cref{hec:ss:cubic}, together with
 $B_{\chi_{-23}}\in(0.56930,0.56931)$ from the quadratic calculation, yields
 \[
  0.3738<B_F<0.3979,\qquad1.2708<B_E<1.3188
@@ -1858,7 +1862,8 @@ unramified rational primes that split completely in $M$. Put
  R_M(x)=\sum_{p\in P_M,\ p\le x}\log p\Bigl(\frac1p-\frac1x\Bigr)-\frac{\log x}n-c_M,
 \]
 where $c_M$ is the unique constant for which $R_M(x)\to0$; it exists by the prime ideal
-theorem with its classical error term (\cref{sec:grp}). Write
+theorem with its classical error term, and $nR_M$ is the remainder $R_M$ of
+\cref{nab:prop:dedekind} for $K=M$. Write
 \[
  b_M=\frac{\#\set{g\in G:g^2=1}}n,
 \]
@@ -1873,9 +1878,9 @@ $\rho=\tfrac12+i\gamma$ listed with multiplicity, then
 If the Riemann hypothesis fails for $\zeta_M$, the same limsup is $+\infty$.
 \end{theorem}
 
-In particular the one-sided criterion for completely split primes (\cref{sec:grp}) can use
-the exponent $-1/2$ exactly. For abelian $M$, \cref{src:thm:dgrh} and the abelian
-factorization supply the first case.
+The theorem contains the equivalence of the Riemann hypothesis for $\zeta_M$ with an eventual
+bound $R_M(x)\le Cx^{-1/2}$, which is \cref{grp:prop:split}. For abelian $M$,
+\cref{dir:prop:abelian} supplies the first case.
 
 \begin{proof}
 Put $\theta(t)=\sum_{p\le t,\ p\in P_M}\log p$. Integrating this step function gives the
@@ -1930,7 +1935,7 @@ with $H_M$ holomorphic in $\Re s>1/2$, by the count of coefficients above. The r
 is regular at $s=1$, and each zero $\rho$ of $\zeta_M$ of multiplicity $m_\rho$ with
 $1/2<\Re\rho<1$ gives a simple pole with residue $m_\rho/[n\rho(1-\rho)]$, which is
 positive at a real zero. The one-sided Mellin--Landau test (\cref{ana:thm:onesided};
-see \cref{sec:grp} for this weight) then excludes every such zero, and the functional
+see \cref{nab:prop:dedekind}(a) for this weight) then excludes every such zero, and the functional
 equation supplies the other half of the critical strip, a contradiction.
 \end{proof}
 
@@ -1958,6 +1963,11 @@ Apply
 \cref{zer:thm:endpoint}, whose hypothesis holds by \cref{src:thm:dgrh}.
 \end{proof}
 
+The corollary is \cref{zer:thm:peak}(i) for the class $1\bmod q$ with the prime squares
+removed: there all prime powers $n\equiv1\pmod q$ are kept and the upper limit is
+$v_1=\varphi(q)^{-1}\sum_\rho(1/4+\gamma^2)^{-1}$, the sum being over the zeros of
+$\zeta_{\Q(\zeta_q)}$, and removing the squares adds $2C(q,1)/\varphi(q)$.
+
 Zhao treats residue-class versions of these mean errors and gives their explicit formula
 \cite[Theorem~4 and \S7]{Zhao2025Mertens}, and also the exact rational-prime case
 $M=\Q$. For the identity residue class the upper endpoint follows with no
@@ -1970,16 +1980,13 @@ For $M=\Q(i)$ the limit superior for the centered sum over $p\equiv1\pmod4$ is
 \[
  3+\frac{\beta'(1)}{\beta(1)}-\log\pi=2.10087969891685\ldots .
 \]
-Indeed $n=2$, $b_M=1$, and the completed entire function is proportional to
-$\xi_M(s)=s(s-1)4^{s/2}(2\pi)^{-s}\Gamma(s)\zeta(s)\beta(s)$. The Hadamard product and the
-symmetry around $1/2$ give
-$\sum_\rho[\rho(1-\rho)]^{-1}=\xi_M'(1)/\xi_M(1)-\xi_M'(0)/\xi_M(0)=2\xi_M'(1)/\xi_M(1)$.
-Evaluating the logarithmic derivative at $1$ cancels the Euler constants from $\Gamma(s)$
-and $(s-1)\zeta(s)$.
+Indeed $n=2$, $b_M=1$ and $\zeta_M=\zeta\beta$, and by \cref{zer:lem:mass} the zero sum is
+$M_{\triv}+M_{\chi_4}=(2+\zergE-\log4\pi)+(\log(4/\pi)-\zergE+2\beta'(1)/\beta(1))
+=2-2\log\pi+2\beta'(1)/\beta(1)$.
 \end{example}
 
 \subsection{Open questions}\label{zer:sec:open}
-{\emergencystretch=6em\sources{grh-transfer; grh_transfers; dirichlet-grh-research; exponent_seven_and_grh_transfers; grh-torsion-and-zero-data; grh-methods-polynomial-density; grh_cm_four_terms_and_prime_bias; grh_method_transfers_2026-11-26; grh_multiscale_covariance; multiscale_prime_fluctuations; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity; sparse_grh_balanced_windows; sharp_multiscale_prime_windows; prime_scale_coalescence_2026-11-26; Gaussian_prime_races; prime_endpoints_and_symplectic_compressions; graph_coupled_zeros_2026-11-26; grh_extensions_2026-11-27; grh_exact_extensions_2026-11-27; grh_path_rigidity_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction; grh_inverse_spectral_2026-11-27; grh-two-open-questions; coupled-dirichlet-inverse-spectrum; dirichlet-coupled-zeros-and-prime-variances; dirichlet-sharp-window-transport}}
+{\emergencystretch=6em\sources{grh-transfer; dirichlet-grh-research; exponent_seven_and_grh_transfers; grh-torsion-and-zero-data; grh_cm_four_terms_and_prime_bias; grh_method_transfers_2026-11-26; Gaussian_prime_races}}
 
 \begin{enumerate}
 \item \emph{Fixed-height Euler products.} Can $F_0(v)/v$ in \eqref{zer:eq:single} be
@@ -1992,11 +1999,6 @@ but supplies no upper bound on it.
 $\eps>a^2/(2\pi)$. Does the fraction vanish for every fixed tolerance, and is the constant
 $2\pi$ optimal? An improvement would have to retain some phase information of the zeros
 below the cutoff or use different arithmetic input.
-\item \emph{Short intervals.} Does a bounded-length interval suffice for each directional
-multiplicity excess for a fixed pair of characters, and is the coefficient $2/\pi$ in
-\cref{zer:thm:short} optimal? Can one force a genuinely unshared zero in every
-triple-logarithmic interval? The first asks for a stronger localization argument, the last
-for information on individual orders at common zeros.
 \item \emph{The boundary value in Suzuki's question.} Does the ordinary logarithmic
 density of $\set{x:E(x)\le0}$ exist, and what is its value? An atom-free limiting
 distribution at the threshold $c$ would give it; a quantitative small-interval estimate at
@@ -2005,55 +2007,6 @@ $c$ surviving the infinite-tail limit would address the missing point.
 intermediate regime $Q\to\infty$ with $Q=o(x)$? Can the exceptional set of finite
 logarithmic measure in \cref{zer:prop:UQ} be replaced by an eventual pointwise statement
 at fixed $Q$?
-\item \emph{Effective constants.} Can the radius $r_q$ and ratio $C_q$ of
-\cref{zer:thm:balancing}, the window $H$ and radius of \cref{zer:cor:smoothbalance}, the
-constants $c,C,K$ of \cref{zer:thm:coercive}, the least eigenvalues in
-\cref{zer:thm:jets,zer:thm:filtered} and a certified window length $L_0$, and the return lengths
-near the peak in \cref{zer:thm:peak}, be made explicit, ideally uniformly in $q$, in the number
-of scales, or in the cut $H$? Near-coincident ordinates must then be separated rigorously, and
-efficient probe primes chosen.
-\item \emph{The eigenvalue gap.} The two bounds of \eqref{zer:eq:coercive} differ by three powers
-of $\log T$. Can information on pair correlation and multiplicities close the gap, and what are
-the sharp asymptotics for arbitrary shifts under stronger hypotheses?
-\item \emph{Merging scales.} \Cref{zer:thm:coalesce} settles the rate for $\zeta$, and
-\cref{zer:cor:classorders} the order of every eigenvalue of the residue-class matrix. What is the best
-upper factor in \cref{zer:lem:localM2}, now at most $1.3208$, over all arithmetic methods, and does
-$M_2(T)\sim\kappa T\log T/(2\pi)$ hold, as \cref{zer:prop:kappa} requires (equivalently, by
-\cref{zer:thm:coalesceinverse}, does one three-point variance have a normalized limit)? What are the
-exact leading constants of the residue-class matrix, which by \cref{zer:thm:identityclass} are the
-limits of the folded pair counts? \Cref{zer:thm:rate} turns a variance remainder with relative saving
-$(\log(1/h))^{-\delta}$ into a count remainder with saving $(\log T)^{-\delta/4}$: is $\delta/4$ optimal, and
-can such a remainder be proved for $\zeta$? Families of stencils characterize all finite limits exactly
-when their symbols have no common real zero (\cref{zer:thm:stencilbank}), on meshes whose logarithmic gaps
-tend to zero, which is necessary for elliptic stencils (\cref{zer:thm:mesh}); four and five equally spaced
-observations are classified by \cref{zer:thm:fourpoint,zer:thm:fivepoint}. Which small-divisor conditions on
-symbols with arbitrarily small values suffice for the exact mesh characterization, and what condition is
-necessary and sufficient for asynchronously sampled families whose individual meshes have gaps while the
-set $\mathcal E$ of \cref{zer:thm:bankmesh} has none? For $\zeta$ itself, can arithmetic constraints on
-multiple zeros beyond \cref{zer:lem:localM2} exclude a nonconstant tangent density in
-\cref{zer:thm:missingfreq}, or the pulses of \cref{zer:thm:mesh}? That would remove the exceptional shapes
-from \cref{zer:thm:coalesceinverse}(i).
-\item \emph{Beyond covariance.} Can the convex-hull statements be upgraded to the interior of the
-actual limiting support, to every ordering of the unsmoothed counts, or to inclusivity of
-ordinary prime races, without a hypothesis on the ordinates? Which nonlinear constraints hold on
-the cluster sets? Positive covariance excludes affine hyperplanes only.
-\item \emph{Less smoothing and other families.} \Cref{zer:thm:unsmoothed} gives strict positivity
-of the multiscale covariance for the unsmoothed counts. Does the jet covariance of
-\cref{zer:thm:jets} survive for unsmoothed counts after the prime-square biases are removed? Can the constants of \cref{zer:thm:unsmoothed} be made uniform as shifts coalesce or as the
-number of scales grows? Does \cref{zer:thm:polyrigid} extend to families with
-other Gamma factors and distinct Euler coefficients, and do the probe arguments extend to
-Frobenius-class functions of Artin $L$-functions under their own Riemann hypothesis (which
-\cref{src:thm:dgrh} does not provide)?
-\item \emph{Kernels and filters.} Which compact filters retain every noncentral frequency with the
-shortest memory or the smallest error, and which other Mellin kernels have nonnegative spectral
-weights on the critical line, with sharper laws or shorter recurrence? Can the compact window
-kernel of \cref{zer:thm:sharpwin} be optimized for given contrasts, or constrained so that the pole
-terms cancel, and do its finite Gram conditions on separated windows have a converse forcing GRH
-without the full positivity criterion of the explicit formula?
-\item \emph{Prime-square bias against the zero sum.} Which other self-dual Artin or
-modular $L$-functions have a prime-square bias large enough to dominate their zero sum?
-Inequality \eqref{zer:eq:liminf} and the curvature bound of \cref{zer:prop:eta} give
-verifiable sufficient conditions.
 \item \emph{Zhao's classification beyond abelian fields.} Which nonabelian number fields
 satisfy $B_K<2$? By \cref{zer:prop:frontier} the search is finite, subject to the Riemann
 hypothesis for each candidate. What is the eventual sign of the integrated Mertens error
@@ -2069,30 +2022,4 @@ The rate \eqref{zer:eq:gaussrate} uses only the curvature in one time direction.
 scales in \eqref{zer:eq:gaussSn} giving an absolutely continuous limiting law in $\R^{\varphi(q)}$
 for the prime statistics? \Cref{zer:thm:gaussscales} gives $\varphi(q)$, and the periodic example after it
 shows that a smaller number needs information about the ordinates.
-\item \emph{Endpoint visits.} Is the constant $n_qC^2$ of \cref{zer:thm:visits}(i), twice the sharp
-leading constant under \eqref{zer:eq:rankloss}, improvable under \cref{src:thm:dgrh} alone? Does a
-substantially weaker bound on the rational rank defect preserve the conductor term in
-\eqref{zer:eq:visitlaw}? Are there useful finite-height rates for the actual densities without any
-assumption on small integer combinations of ordinates?
-\item \emph{Couplings on a prescribed topology.} \Cref{zer:thm:minimax} determines the optimal graph
-for every $W_p$ when all edges are allowed. Which conductances are optimal when the support of the
-graph is prescribed, for instance a path or a tree, or with edge caps or integral conductances (the
-lower bounds of \cref{zer:thm:minimax} remain valid, but equality needs the displayed optimizer), and
-which graph is optimal for a particular
-arithmetic packet of zeros rather than for the worst case given the degrees?
-\item \emph{The inverse problem.} Mixed parities, unknown lists, decoding and robustness are settled by
-\cref{zer:thm:window,zer:cor:blindall,zer:thm:decode,zer:thm:stabledecoder}, and a sufficient window is
-computable (\cref{zer:rem:windowsearch}). Can the first sufficient window of \cref{zer:thm:window} be bounded
-explicitly by a useful function of the conductors, the matrix norm and the corruption budgets, together with
-the stability constant of \cref{zer:thm:stabledecoder}? What height and precision suffice when every reported
-ordinate is rounded? Can the edge weights alone be recovered in time polynomial in the number of vertices?
-What is the strongest discrepancy constant obtainable in \eqref{zer:eq:witness} from the Landau coefficients
-and the counts, over all primes and nonnegative trigonometric polynomials, and can it be determined uniformly
-for conductors up to a bound? Classify the Hermitian matrices with equal principal minors, which the zeros
-cannot separate.
-\item \emph{Sharp transport.} Can the finite part $C(t_0)$ of \cref{zer:thm:finitepart} be computed to
-certified accuracy for a concrete pair of couplings, with explicit constants in the tail? Does the endpoint
-estimate of \cref{zer:thm:sharpinterval} hold for windows at the mean-spacing scale outside a controlled
-exceptional set of heights, and what is the optimal arithmetic scale, given that arguments using only the
-Cayley-transform bound stop at $1/\log d$?
 \end{enumerate}

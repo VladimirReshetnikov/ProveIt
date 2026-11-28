@@ -10,6 +10,25 @@
 \providecommand{\grahat}[1]{\widehat{#1}}
 \section{Quantum walks, signed square cycles and edge-polytope zeros}\label{sec:grw}
 
+Four spectral problems on finite graphs are settled here by cyclotomic
+integrality and finite certificates: exact spectral tests for periodic
+Grover walks on abelian Cayley graphs (\cref{gra:sec:grover}), the least
+periods of oriented continuous-time Cayley walks (\cref{gra:sec:cayley}),
+optimal signings of the square cycles $C_n(1,2)$, certified by Schur
+complements (\cref{gra:sec:cycles}), and a bipartite family of edge
+polytopes whose Ehrhart polynomials have all zeros on the canonical line,
+proved with Bezoutians (\cref{gra:sec:ehrhart}). Three devices of the source
+proof (\cref{src:sec:mechanism}) are transferred. The restriction of a
+positive form to a principal submatrix, followed by a Schur complement,
+gives the local obstruction used for signed cycles. A purely
+methodological transfer, rotation followed by the exclusion of zeros from
+one half-plane by a positivity certificate, locates the Ehrhart zeros. The
+quadratic character projection of \cref{li:lem:norm}, applied on a finite
+abelian group and on its dual, determines the least periods of oriented
+Cayley walks. Grover walks also give tower valuations of the kind studied
+in \cref{sec:gra}, through its automaton (\cref{gra:sec:effective}).
+Nothing here depends on a hypothesis on zeros of $L$-functions.
+
 \subsection{Exact spectral tests for Grover walks}\label{gra:sec:grover}
 \sources{Effective_Graph_Towers; dirichlet_li_recovery}
 
@@ -110,7 +129,8 @@ order $N$ and the first nonzero Taylor coefficient is a $3$-adic unit.
 
 \begin{proof}
 If $(X,Y)$ has joint conductor $3^h>1$, the ternary sum-of-squares
-argument in the proof of \cref{gra:thm:leading} gives $v_3(S)=3^{1-h}$.
+argument of \cref{gra:eq:aniso}, used in the same way in the proof of
+\cref{gra:thm:leading}, gives $v_3(S)=3^{1-h}$.
 There are $8\cdot9^{h-1}$ such pairs, so the sum of $v_3(S)$ over
 nontrivial pairs is $4(3^n-1)$. At $(1,1)$ the value of $S$ is zero.
 
@@ -756,19 +776,28 @@ permutation products and obtains the same eight words.
 \end{proof}
 
 \begin{proposition}[Rigidity below the cutoff; \stU]\label[proposition]{gra:prop:rigidity}
-If $n\ge31$ and $\rho(A)<1397/500$, then $8\mid n$ and the triangle signs
-form a rotation of repeated $\graPi$. When $n\ge23$ the length-$19$ test
-forces either this pattern or alternation.
+Let $\rho(A)<1397/500$. If $n\ge31$, then $8\mid n$ and the triangle signs
+form a rotation of repeated $\graPi$. If $n\ge16$, the triangle word is
+either a rotation of repeated $\graPi$, and then $8\mid n$, or alternating.
 \end{proposition}
 
 \begin{proof}
-By \eqref{gra:eq:compress} every length-$27$ window must be in the finite
-list if $n\ge31$. Its first $26$ signs determine its phase, since the
-eight rotations already have distinct first eight signs. Overlap forces
-the next letter at every step. The primitive period is eight, so closing
-the word around the cycle requires $8\mid n$. For the length-$19$ list,
-the ten prefixes of length $18$ are distinct; the unique continuations
-consist of one cycle of length eight and one of length two.
+Put $\gracut=1397/500$. By \eqref{gra:eq:compress} every length-$27$ window
+must be in the finite list if $n\ge31$. Its first $26$ signs determine its
+phase, since the eight rotations already have distinct first eight signs.
+Overlap forces the next letter at every step. The primitive period is
+eight, so closing the word around the cycle requires $8\mid n$.
+
+For $n\ge16$, regard each of the $42$ surviving length-$12$ words of
+\cref{gra:lem:windows} as an arrow from its $11$-letter prefix to its
+$11$-letter suffix. Delete any arrow whose initial vertex has no incoming
+arrow or whose final vertex has no outgoing arrow; no arrow on a closed
+walk can be removed. The counts after successive rounds are $42,20,10,10$,
+and the ten remaining arrows form the period-eight cycle of $\graPi$ and
+the alternating cycle (second certificate of \cref{gra:lem:windows}). Each
+length-$12$ word occupies $14$ vertices, so by \eqref{gra:eq:compress}
+every cyclic length-$12$ window of the triangle word survives when
+$n\ge16$, and the cyclic word is a closed walk on the ten remaining arrows.
 \end{proof}
 
 At $n=32$ there are $2^{33}$ labelled switching classes before the test.
@@ -872,17 +901,9 @@ records heuristic searches, are $2.777192$, $2.784204$ and $2.789872$ to
 six decimals.
 
 \begin{proof}
-\emph{Lengths $16\le n\le30$.} Let $\gracut=1397/500$. Regard each of the
-$42$ surviving length-$12$ words of \cref{gra:lem:windows} as an arrow
-from its $11$-letter prefix to its $11$-letter suffix. Delete any arrow
-whose initial vertex has no incoming arrow or whose final vertex has no
-outgoing arrow; no arrow on a closed walk can be removed. The counts after
-successive rounds are $42,20,10,10$, and the ten remaining arrows form the
-period-eight and alternating cycles (second certificate of
-\cref{gra:lem:windows}). Each length-$12$ word occupies $14$ vertices, so by
-\eqref{gra:eq:compress} this applies for $n\ge16$: a signing with
-$\rho(A)<\gracut$ has period-eight or alternating triangle word. The
-increasing function $G(n)$ is below $\gracut$ for $n\le30$: put
+\emph{Lengths $16\le n\le30$.} Let $\gracut=1397/500$. By
+\cref{gra:prop:rigidity}, a signing with $\rho(A)<\gracut$ has
+period-eight or alternating triangle word. The increasing function $G(n)$ is below $\gracut$ for $n\le30$: put
 $v=3.14/30$ and $C(t)=1-t^2/2+t^4/24$; then
 $4(C(v)^2+C(2v)^2)<\gracut^2$ by integer arithmetic, and $C(v),C(2v)$
 bound the cosines at $n=30$ from above. Since $2\sqrt2>\gracut$, the
@@ -1030,10 +1051,11 @@ period eight and negative holonomy. One cannot predict the optimiser by
 carrying over the best boundary condition from a different cycle length.
 \end{remark}
 
-\begin{corollary}[Settled cases]\label[corollary]{gra:cor:settled}
-The exact minimum of $\rho(A)$ over all signings of $C_n(1,2)$ is known
-for every even $n$ with $8\le n\le50$ and for every multiple of eight
-$n\ge32$:
+\begin{remark}[Settled cases]\label[remark]{gra:cor:settled}
+By \cref{gra:thm:alternating,gra:thm:cycle8m,gra:thm:fifty}, the exact
+minimum of $\rho(A)$ over all signings of $C_n(1,2)$ is known for every even
+$n$ with $8\le n\le50$ and for every multiple of eight $n\ge32$; the
+following table only collects these theorems:
 \begin{center}\small\upshape
 \begin{tabular}{lll}
 \toprule
@@ -1046,7 +1068,7 @@ $50$ & $\rho_{50}=2.811568906156\ldots$ & $100$: rotations of $\pm\Omega$, $\alp
 \bottomrule
 \end{tabular}
 \end{center}
-\end{corollary}
+\end{remark}
 
 \begin{proposition}[A local gap and the infinite line; \stU]\label[proposition]{gra:prop:line}
 At the cutoff $281/100$ there are $72$ surviving words of length $43$, and
@@ -1325,3 +1347,36 @@ recovers the entire polynomial from the required $d+1$ integer values for
 $K_{2,2}$, $K_{3,5}$, $K_{6,6}$ and $K_{7,9}$, a total of $40$ comparisons
 with \eqref{gra:eq:rotated}; see
 \artifact{grh_method_transfers/checks/instances_output.txt}.
+
+\subsection{Open questions}\label{grw:sec:open}
+{\raggedright\sources{grh_method_transfers; grh_transfers_cycle_signings_and_lubin_tate; grh_transfer_advances_2026-11-26; grh_cayley_and_filters}}
+
+\begin{enumerate}
+\item \emph{Oriented Cayley walks.} For a prescribed conductor $f$ and
+spacing $a\sqrt{-f}$, what is the least outdegree of a periodic oriented
+Cayley graph that is connected on the whole host?
+\Cref{gra:prop:cayleycoset} shows that this requirement can change the
+answer of \cref{gra:thm:cayleyperiods}. For larger conductors, which
+connection sets attain the degree bound on hosts of order greater than
+$af$? \Cref{gra:cor:cayleyduality} constrains them by a duality, the
+spectrum and the rank. Nonabelian groups would require control of
+higher-dimensional irreducible representations.
+\item \emph{Square cycles at lengths incompatible with period eight.}
+What are the exact optima of \cref{gra:sec:cycles} at large lengths
+incompatible with period eight? The first undetermined even length is
+$n=52$. Is there a uniform
+description at lengths $8m+2$, $8m+4$ and $8m+6$? The fifty-vertex word is
+evidence for a defect-pattern search, not a proof that one defect always
+wins, and the finite-window language can become much larger at a slightly
+increased threshold.
+\item \emph{A conceptual proof of period eight.} Can the $29$-vertex test
+of \cref{gra:lem:windows} be replaced by a short human-checkable family
+of inequalities for forbidden sign patterns? Such a proof would explain
+the period eight and could extend to $C_n(1,k)$ with $k>2$.
+\item \emph{All widths.} For complete bipartite edge polytopes, are the
+two parity blocks of the Bezoutian of \cref{gra:lem:bezout} positive in
+every width? A representation of their minors as sums with positive
+coefficients could replace the width-by-width certificates and give a
+route to the line property and to interlacing for unrestricted part
+sizes.
+\end{enumerate}

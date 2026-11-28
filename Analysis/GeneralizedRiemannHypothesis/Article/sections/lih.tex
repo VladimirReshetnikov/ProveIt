@@ -25,21 +25,60 @@
 \providecommand{\liKk}{\mathcal{K}}
 \section{The Li heat semigroup and random laws built from zeros}\label{sec:lih}
 
+The zeros of a Dirichlet $L$-function define, through their Cayley angles $\theta(\gamma)$, an
+infinitely divisible law on the circle, and through the reciprocal powers of their ordinates a
+family of random sums. This section studies these laws. The universal process of
+\cref{li:sec:univ} and its oriented version, the Li heat kernel (\cref{rec:sec:liheat}),
+determine the character from one time slice; \cref{li:sec:path} shows that one path does so
+almost surely, \cref{li:sec:offorigin} describes the oriented kernel away from the origin, and
+\cref{li:sec:slice} determines exactly what one time slice remembers about an arbitrary circle
+jump measure. \Cref{ana:sec:smalldev} proves a small-deviation law for the sums
+$\sum_jG_j/\gamma_j^p$ of independent gamma variables, with the conditional spectral structure of
+its lower tail and its largest terms, and \cref{ana:sec:eulergamma} a finite certificate for
+Euler's Gamma product, which describes their archimedean factors. The notation for angles, jump
+measures and time scales is fixed once at the beginning of \cref{li:sec:univ}. The Li
+coefficients themselves are treated in \cref{sec:li}; the zero counts used are
+\eqref{rec:eq:licount}. Results marked ``\stG'' use \cref{src:thm:dgrh} only to place the zeros
+on the critical line.
+
 \subsection{A universal process from the Cayley angles}\label{li:sec:univ}
 \sources{rh_li_universality_2026-11-26}
 
-In this subsection $\liZ$ is a locally finite multiset of real numbers with multiplicities, and
+\paragraph{Notation for this section.} For real $\gamma$ the \emph{Cayley angle} is
+$\theta(\gamma)=2\arctan(1/(2\gamma))\in(-\pi,\pi)$ for $\gamma\ne0$, and $\theta(0)=\pi$; for
+$\rho=\frac12+i\gamma$ it satisfies $1-1/\rho=e^{i\theta(\gamma)}$ and $\gamma=\frac12\cot(\theta(\gamma)/2)$.
+Let $\chi$ be a primitive Dirichlet character of conductor $q$, with $q=1$ for $\zeta$; sums over
+$\gamma$ run over the ordinates of the nontrivial zeros of $L(s,\chi)$, of both signs and repeated
+with multiplicity, as in \eqref{rec:eq:licount}. The \emph{jump measure} of $\chi$ is
+$\nu_\chi=\sum_\gamma\delta_{\theta(\gamma)}$ on $\mathbb T=\R/2\pi\Z$,
+and its symmetrization is $\nu^{\mathrm s}_\chi=\frac12(\nu_\chi+\check\nu_\chi)$, where
+$\check\nu(B)=\nu(-B)$. The \emph{oriented exponent} is
+\[
+ \lambda_\chi(n)=\lim_{T\to\infty}\sum_{\abs\gamma\le T}\bigl(1-e^{in\theta(\gamma)}\bigr)\qquad(n\in\Z),
+\]
+and the \emph{symmetric exponent} is
+$\Psi_\chi(n)=\Re\lambda_\chi(n)=\int(1-\cos ny)\,\nu^{\mathrm s}_\chi(\dd y)$. Under
+\cref{src:thm:dgrh} every nontrivial zero is $\frac12+i\gamma$, and $\lambda_\chi(n)$ is the complex
+Li coefficient of $L(s,\chi)$ (\stG). The time scale is
+\[
+ w_q(t)=W_0\Bigl(\frac{qe^{\gamma_E-1}}{\pi t}\Bigr),\qquad a_q(t)=\tfrac12tw_q(t)\sim\tfrac12t\log(1/t)
+ \qquad(t\downarrow0),
+\]
+with $W_0$ the positive branch of Lambert's function and Euler's constant $\gamma_E$; for a fixed
+$\chi$ write $w=w_q(t)$ and $a=a_q(t)$.
+
+\paragraph{An abstract multiset.} In this subsection $\liZ$ is a locally finite multiset of real numbers with multiplicities, and
 $N(T)=\#\{\gamma\in\liZ:\abs\gamma\le T\}$ satisfies, for constants $d>0$ and $B\in\R$,
 \begin{equation}\label{li:eq:count}
  N(T)=\frac d\pi T\log T+\frac B\pi T+O(\log(T+2))\qquad(T\to\infty).
 \end{equation}
-Put $\theta(\gamma)=2\arctan(1/(2\gamma))$ for $\gamma\ne0$, $\theta(0)=\pi$,
+With the Cayley angle $\theta$ put
 $\nu=\frac12\sum_{\gamma\in\liZ}(\delta_{\theta(\gamma)}+\delta_{-\theta(\gamma)})$, so that $m$ occurrences
-of $0$ give mass $m/2$ at each of $\pm\pi$, and
+of $0$ give mass $m/2$ at each of $\pm\pi$; for the ordinates of $L(s,\chi)$ this is
+$\nu^{\mathrm s}_\chi$. Put
 \begin{equation}\label{li:eq:symbol}
  \Psi(u)=\int_\R(1-\cos uy)\,\nu(\dd y)=\sum_{\gamma\in\liZ}(1-\cos(u\theta(\gamma))).
 \end{equation}
-Euler's constant is $\gamma_E$ here.
 
 \begin{lemma}[The process; \stU]\label{li:lem:levy}
 $\nu$ is a symmetric L\'evy measure on $[-\pi,\pi]$ with $\nu(\R)=\infty$, $\int\abs y\,\nu(\dd y)=\infty$
@@ -141,14 +180,10 @@ Both scaled characteristic functions differ from $e^{-F_w(\abs s)}$ by $O_r(\sqr
 $L^1$ norm \eqref{li:eq:fcomp}; apply Fourier inversion.
 \end{proof}
 
-For the ordinates of a fixed primitive Dirichlet $L$-function of conductor $q$, counted with
-multiplicity and both signs, $N_\chi(T)=\frac T\pi\log\frac{qT}{2\pi e}+O_\chi(\log(T+2))$
-\cite{BennettMartinOBryantRechnitzer2021Counting}, and $q=1$ gives $\zeta$. Thus $d=1$,
-$B=\log(q/(2\pi))-1$, and
-\[
- w_q(t)=W_0\Bigl(\frac{qe^{\gamma_E-1}}{\pi t}\Bigr),\qquad a_q(t)=\frac t2w_q(t)\sim\tfrac12t\log(1/t).
-\]
-These density statements are unconditional, and all primitive characters of one conductor share the
+For the ordinates of a fixed primitive Dirichlet $L$-function of conductor $q$, the count
+\eqref{rec:eq:licount} is \eqref{li:eq:count} with $d=1$ and $B=\log(q/(2\pi))-1$; then
+$\nu=\nu^{\mathrm s}_\chi$, $\Psi=\Psi_\chi$, and \eqref{li:eq:scale} gives $w=w_q(t)$ and
+$a=a_q(t)$. These density statements are unconditional, and all primitive characters of one conductor share the
 expansion to every logarithmic order; no uniformity in $q$ is asserted. By \cref{src:thm:dgrh}
 every zero is $\rho=\frac12+i\gamma$ with $1-1/\rho=e^{i\theta(\gamma)}$ (with $e^{i\pi}=-1$ at a central zero),
 so the Li coefficients satisfy
@@ -225,28 +260,22 @@ origin.
 \subsection{The character from one Li heat kernel}\label{rec:sec:liheat}
 \sources{dirichlet_li_heat_kernel; dirichlet_li_recovery}
 
-Exponentiating the complex Li coefficients gives a positive convolution semigroup on the circle
-$\mathbb T=\R/2\pi\Z$ whose jumps are the Cayley angles of the zeros; \cref{li:sec:univ} treats the
-symmetrized semigroup with exponent $\Re\lambda_\chi$. Here the orientation is kept. Let $\chi$ be primitive of
-conductor $q$, $q=1$ included. Under \cref{src:thm:dgrh} each nontrivial zero is $\rho=\tfrac12+i\gamma$ and
+Exponentiating the oriented exponents $\lambda_\chi(n)$ of \cref{li:sec:univ}, the complex Li
+coefficients, gives a positive convolution semigroup on $\mathbb T$ whose jumps are the Cayley angles of
+the zeros; \cref{li:sec:univ} treats the symmetrized semigroup with exponent $\Psi_\chi=\Re\lambda_\chi$. Here
+the orientation is kept. Let $\chi$ be primitive of conductor $q$, $q=1$ included; the point $0\in\mathbb T$
+corresponds to no zero. Put
 \[
- 1-\rho^{-1}=e^{i\theta_\gamma},\qquad \theta_\gamma=2\arctan\frac1{2\gamma},\qquad\gamma=\tfrac12\cot(\theta_\gamma/2),
+ p_{\chi,t}(y)=\frac1{2\pi}\sum_{n\in\Z}e^{-t\lambda_\chi(n)-iny}\qquad(t>0,\ y\in\mathbb T).
 \]
-with $\theta_0=\pi$; the point $0\in\mathbb T$ corresponds to no zero. Put, for $n\in\Z$ and $t>0$,
-\[
- \lambda_\chi(n)=\lim_{T\to\infty}\sum_{\abs\gamma\le T}\bigl(1-e^{in\theta_\gamma}\bigr),\qquad
- p_{\chi,t}(y)=\frac1{2\pi}\sum_{n\in\Z}e^{-t\lambda_\chi(n)-iny},
-\]
-zeros repeated with multiplicity, so that $\lambda_\chi(-n)=\overline{\lambda_\chi(n)}$; the symmetric truncation matters
-for the imaginary part, and the normalization through logarithmic derivatives at $s=1$ reverses the
-index for complex $\chi$ \cite{Lagarias2007Li}. Let $\nu_\chi=\sum_\gamma\delta_{\theta_\gamma}$ on $(-\pi,\pi]$. The one-sided counts
-$N^\pm_\chi(T)=\frac T{2\pi}\log\frac{qT}{2\pi e}+O_\chi(\log(2+T))$ give $\int\theta^2\dd\nu_\chi<\infty$, and Lagarias's asymptotic
-under GRH is
+Here $\lambda_\chi(-n)=\overline{\lambda_\chi(n)}$; the symmetric truncation matters for the imaginary part, and
+the normalization through logarithmic derivatives at $s=1$ reverses the index for complex $\chi$
+\cite{Lagarias2007Li}. The one-sided counts after \eqref{rec:eq:licount} give $\int\theta^2\dd\nu_\chi<\infty$,
+and Lagarias's asymptotic under GRH is
 \begin{equation}\label{rec:eq:lagarias}
  \lambda_\chi(n)=\tfrac12n\log n+C_\chi n+O_\chi\bigl(\sqrt n\log(2+n)\bigr)\qquad(n\to+\infty),\quad C_\chi\in\R
 \end{equation}
-\cite{Lagarias2007Li}. Let $w=W_0(qe^{\recgE-1}/(\pi t))$ with $W_0$ the positive branch of Lambert's function, and
-$a=a(t)=\tfrac12tw\sim\tfrac12t\log(1/t)$.
+\cite{Lagarias2007Li}. Throughout, $w=w_q(t)$ and $a=a_q(t)$.
 
 \begin{proposition}[The oriented semigroup; \stG]\label{rec:prop:liheat}
 $p_{\chi,t}$ is an entire periodic function, strictly positive on $\mathbb T$, of integral one, with
@@ -258,8 +287,8 @@ $t\downarrow0$, $ap_{\chi,t}(ax)\to1/(\pi(1+x^2))$ locally uniformly and $p_{\ch
 For a finite cutoff the sum of independent unit-rate Poisson jumps at the listed angles has the
 truncated exponent; the pointwise limit is positive definite and equals one at $n=0$, so it is the
 Fourier sequence of a probability on $\mathbb T$, with compensated exponent
-$\int(1-e^{iu\theta}+iu\theta)\dd\nu_\chi(\theta)-iub$, $b=\lim_T\sum_{\abs\gamma\le T}\theta_\gamma$, which converges because
-$\sum^*\sin\theta_\gamma=-\Im\lambda_\chi(1)$ and $\sum\abs{\theta_\gamma-\sin\theta_\gamma}<\infty$. By \eqref{rec:eq:lagarias} the series converges
+$\int(1-e^{iu\theta}+iu\theta)\dd\nu_\chi(\theta)-iub$, $b=\lim_T\sum_{\abs\gamma\le T}\theta(\gamma)$, which converges because
+$\sum^*\sin\theta(\gamma)=-\Im\lambda_\chi(1)$ and $\sum\abs{\theta(\gamma)-\sin\theta(\gamma)}<\infty$. By \eqref{rec:eq:lagarias} the series converges
 absolutely in every horizontal strip. A nonzero real-analytic nonnegative density is positive almost
 everywhere, so $p_t=p_{t/2}*p_{t/2}$ is positive everywhere. The central profile for $\Re\lambda_\chi$ is
 \cref{li:prop:trace}; replacing $\Re\lambda_\chi$ by $\lambda_\chi$ changes the scaled density by at most
@@ -272,7 +301,7 @@ proportion of $1\le n\le N$ with $\abs{u_n-u}>\eps$ tends to zero.
 
 \paragraph{Finite blocks on a progression.}
 Several characters, unknown positive or complex weights and an arithmetic progression of indices are
-treated at once. Write $z_\rho=1-1/\rho=e^{i\theta_\gamma}$ and $m_\chi(\rho)$ for the multiplicity, sums over $\rho$ running
+treated at once. Write $z_\rho=1-1/\rho=e^{i\theta(\gamma)}$ and $m_\chi(\rho)$ for the multiplicity, sums over $\rho$ running
 over distinct zeros. The count \eqref{rec:eq:licount} gives $\sum_\rho m_\chi(\rho)\abs{1-z_\rho}^2<\infty$, the starred first sum
 converges \cite{Lagarias2007Li}, and the only possible limit point of the $z_\rho$ on the circle is $1$. Fix a nonempty
 finite set $\mathcal C$ of distinct primitive characters, a stride $h\ge1$, a residue $0\le r<h$ and an integer $d\ge0$, and
@@ -340,7 +369,7 @@ $\abs{R(k+i)-1}>\frac12$, or $\max_i\abs{R(k+i)-1}\ge(\eta_0/C_j)\norm b_2$. Tak
 Suppose two weighted lists from the fixed catalogue give sequences whose ratio, after calibration, differs from
 $1$ by at most $\eps$ on a block of length $W$. If their weight difference has norm at most $M$, it has norm at most
 $\eps/c$; at zero error the weights agree. At a common known time this recovers every factor multiplicity of a
-primitive product. If the time is unknown, the identifiable quantities are time times multiplicity: $P$ at time
+primitive product (\cref{li:thm:products} below). If the time is unknown, the identifiable quantities are time times multiplicity: $P$ at time
 $at$ and $P^a$ at time $t$ give the same data for every positive integer $a$. For two individual finite mixtures
 take the union of their catalogues and choose $M$ after the weights are given. Consequently a sequence of blocks
 whose union has natural density zero determines a finite mixture, provided their lengths tend to infinity and
@@ -386,6 +415,35 @@ this obstruction for Dirichlet zeros. By \cref{rec:thm:liblock}(ii) with $d=0$, 
 rotation-invariant sequence $F_{\chi,t}(n+1)F_{\chi,t}(n-1)/F_{\chi,t}(n)^2$ alone determines $t$ and $\chi$, and its modulus $t$
 and the pair $\set{\chi,\bar\chi}$, also when two such observations agree only in density (\stG).
 
+For a finite product $P=\prod_\chi L(s,\chi)^{a_\chi}$ of primitive Dirichlet $L$-functions, the empty product and
+$\zeta$ included, put $H_{P,t}(n)=\prod_\chi F_{\chi,t}(n)^{a_\chi}=\exp\bigl(-t\sum_\chi a_\chi\lambda_\chi(n)\bigr)$; by
+\cref{li:sec:slice} this is the time slice at time $t$ of the multiset of Cayley points of the zeros of $P$.
+
+\begin{corollary}[Every time determines a primitive product; \stG]\label{li:thm:products}
+Let $t>0$ and let $P,Q$ be finite products of primitive Dirichlet $L$-functions. If $H_{P,t}(n)/H_{Q,t}(n)$
+tends to a finite nonzero limit as $n\to+\infty$, then $P$ and $Q$ have the same primitive factors with
+multiplicity, and the limit is $1$. More precisely, with $C_{P,t}(n)=H_{P,t}(n+1)H_{P,t}(n-1)/H_{P,t}(n)^2$, if the factor
+multisets differ there are $\eta>0$ and $L_0\ge1$ such that every block of $L_0$ consecutive positive integers
+contains $n$ with $\abs{C_{P,t}(n)/C_{Q,t}(n)-1}>\eta$.
+\end{corollary}
+
+\begin{proof}
+Let $\mathcal C$ be the set of characters occurring in $P$ or $Q$, with multiplicities $a_\chi$ and $a'_\chi$, and $b=t(a-a')$.
+Then $H_{P,t}/H_{Q,t}=\exp(-A_b)$ in the notation of \cref{rec:thm:liblock} with $h=1$ and $r=0$. If the ratio tends to
+$\ell\ne0$, the constant calibration $\log\ell$ makes the left side of \eqref{rec:eq:calibration} tend to zero along
+intervals of fixed length moving to infinity, so $b=0$ by \cref{rec:thm:liblock} with $d=0$ and $M=\norm b_2$; then the
+ratio is identically $1$. If the factors differ, $b\ne0$, and $C_{P,t}(n)/C_{Q,t}(n)=\exp(-\Delta^2A_b(n-1))$ with the
+forward difference of \cref{rec:thm:liblock}(ii), which gives the block statement.
+\end{proof}
+
+Thus no two distinct primitive products collide at any time, although every exceptional time has
+collisions among admissible multisets (\cref{li:thm:times}). Since $\lambda_{\bar\chi}(n)=\overline{\lambda_\chi(n)}$,
+$\abs{H_{P,t}}^2=H_{P\bar P,t}$. So a finite nonzero limit of $\abs{H_{P,t}(n)}/\abs{H_{Q,t}(n)}$ determines exactly the total
+multiplicity of the factors in each conjugacy orbit $\set{\chi,\bar\chi}$, and the symmetric law is blind precisely to
+conjugating individual factors. For one character, \cref{rec:thm:liheat} also allows different
+times, a rotation and agreement only in natural density; finite blocks on an arithmetic progression of indices
+suffice by \cref{rec:thm:liblock}.
+
 \begin{theorem}[An explicit block for $\zeta$ and Dirichlet beta; \stG]\label{rec:thm:li255}
 Let $\beta(s)=L(s,\chi_{-4})$; the coefficients of $\zeta$ and $\beta$ are real, so their Li coefficients are real. For
 $0\le r<20$ write $A_{u,v}(k)=u\lambda_\zeta(r+20k)+v\lambda_\beta(r+20k)$. For every interval $I$ of $255$ consecutive positive
@@ -419,9 +477,9 @@ With multiplicity in each sum, the two completed functional equations give
 \begin{equation}\label{rec:eq:bothmass}
  \sum_{\rho\text{ of }\zeta}\frac1{\abs\rho^2}+\sum_{\rho\text{ of }\beta}\frac1{\abs\rho^2}=2-2\log\pi+2\frac{\beta'(1)}{\beta(1)}<\frac12 .
 \end{equation}
-Indeed, for either real completion $\Xi$ the difference of its logarithmic derivatives at $1$ and $0$ is $2\Xi'(1)/\Xi(1)$
-by symmetry, and the Hadamard expansion gives the same difference as $\sum1/(\rho(1-\rho))=\sum1/\abs\rho^2$ by
-\cref{src:thm:dgrh}. For $\zeta$ the expression is $2+\recgE-\log(4\pi)$ and for $\beta$ it is $\log(4/\pi)-\recgE+2\beta'(1)/\beta(1)$. For the
+Indeed, by \cref{ana:lem:hadamardmass}, with $\rho(1-\rho)=\abs\rho^2$ by \cref{src:thm:dgrh}, the first sum is
+$2+\recgE-\log(4\pi)$ and the second, for the odd character $\chi_{-4}$ of conductor $4$, is
+$\log(4/\pi)-\recgE+2\beta'(1)/\beta(1)$. For the
 strict bound use $\beta(1)=\pi/4>0.78$, $\log\pi>1.14$ and $\beta'(1)<0.30$; the alternating series for $\beta'(1)$ is bounded above
 by its five terms from $\log3/3$ through $\log11/11$, and termwise differentiation at $1$ follows from uniform
 convergence of the alternating derivative series on a real neighbourhood of $1$.
@@ -546,25 +604,25 @@ independent of \cref{src:thm:dgrh}:
 \sources{grh_path_rigidity_2026-11-27}
 
 Let $\chi$ be primitive of conductor $q_\chi$, with $q_\chi=1$ for $\zeta$, let $m_\chi(\gamma)$ be the
-multiplicity of the ordinate $\gamma$ (zero if $\gamma$ is not an ordinate), and let $X^\chi$, $\nu_\chi$ and
-$\Psi_\chi$ be the process, L\'evy measure and exponent of \cref{li:lem:levy} for the ordinates of
-$L(s,\chi)$, counted with multiplicity and both signs. For $\gamma>0$ the jump rate at each of
+multiplicity of the ordinate $\gamma$ (zero if $\gamma$ is not an ordinate), and let $X^\chi$ be the process of
+\cref{li:lem:levy} for the ordinates of $L(s,\chi)$; its L\'evy measure is $\nu^{\mathrm s}_\chi$ and its exponent
+$\Psi_\chi$ (\cref{li:sec:univ}). For $\gamma>0$ the jump rate at each of
 $\pm\theta(\gamma)$ is $c_\chi(\gamma)=\frac12(m_\chi(\gamma)+m_\chi(-\gamma))$, and a central zero of multiplicity $m$ gives
 rate $m/2$ at each of $\pm\pi$; for a real character the two multiplicities coincide and the rate is
 $m_\chi(\gamma)$. Under \cref{src:thm:dgrh}, $\liEx e^{inX^\chi_t}=e^{-t\Re\lambda_\chi(n)}$ by \eqref{li:eq:liident}. Complex
-conjugation reflects the ordinates and preserves $\nu_\chi$, so $X^\chi$ and $X^{\bar\chi}$ have the same law;
+conjugation reflects the ordinates and preserves $\nu^{\mathrm s}_\chi$, so $X^\chi$ and $X^{\bar\chi}$ have the same law;
 write $[\chi]=\set{\chi,\bar\chi}$.
 
 For $0<\abs y<\pi$ put $G(y)=1/(2\tan(\abs y/2))$, so that $\pm\theta(\gamma)\mapsto\abs\gamma$, and for $T>1$ let
 \[
  B_T=\set{y:T<G(y)\le2T}=\set{y:\theta(2T)\le\abs y<\theta(T)},
 \]
-a band of jump sizes asymptotic to $[1/(2T),1/T]$ with $\nu_\chi(B_T)<\infty$. The marked jumps
+a band of jump sizes asymptotic to $[1/(2T),1/T]$ with $\nu^{\mathrm s}_\chi(B_T)<\infty$. The marked jumps
 $\set{(s,\Delta X_s):0<s\le t,\ \Delta X_s\in B_T}$, $\Delta X_s=X_s-X_{s-}$, form a finite Poisson random measure with
-intensity $\dd s\,\nu_\chi(\dd y)$. Hence for bounded real $f,g$ supported on $B_T$ the finite sums
+intensity $\dd s\,\nu^{\mathrm s}_\chi(\dd y)$. Hence for bounded real $f,g$ supported on $B_T$ the finite sums
 $J_f=\sum_{0<s\le t}f(\Delta X_s)$ satisfy
 \begin{equation}\label{li:eq:poisson}
- \liEx J_f=t\int f\,\dd\nu_\chi,\qquad\operatorname{Cov}(J_f,J_g)=t\int fg\,\dd\nu_\chi,
+ \liEx J_f=t\int f\,\dd\nu^{\mathrm s}_\chi,\qquad\operatorname{Cov}(J_f,J_g)=t\int fg\,\dd\nu^{\mathrm s}_\chi,
 \end{equation}
 and no compensation of smaller jumps is needed. Write $\Lambda(x)=\log p$ if $x=p^k$ is an integral prime
 power and $\Lambda(x)=0$ otherwise, also for nonintegral $x$.
@@ -572,21 +630,21 @@ power and $\Lambda(x)=0$ otherwise, also for nonintegral $x$.
 \begin{lemma}[Band masses and prime frequencies; \stG]\label{li:lem:bands}
 As $T\to\infty$,
 \[
- \nu_\chi(B_T)=\frac T\pi\log T+C_\chi T+O_\chi(\log T),\qquad C_\chi=\frac{\log(q_\chi/(2\pi))+2\log2-1}\pi.
+ \nu^{\mathrm s}_\chi(B_T)=\frac T\pi\log T+C_\chi T+O_\chi(\log T),\qquad C_\chi=\frac{\log(q_\chi/(2\pi))+2\log2-1}\pi.
 \]
 For fixed rational $x>1$,
 \begin{equation}\label{li:eq:bandcos}
- \int_{B_T}\cos(G(y)\log x)\,\nu_\chi(\dd y)=-\frac{T\Lambda(x)\Re\chi(x)}{\pi\sqrt x}+O_{\chi,x}(\log^2T).
+ \int_{B_T}\cos(G(y)\log x)\,\nu^{\mathrm s}_\chi(\dd y)=-\frac{T\Lambda(x)\Re\chi(x)}{\pi\sqrt x}+O_{\chi,x}(\log^2T).
 \end{equation}
 Consequently, for fixed primes $p\ne r$,
 \begin{gather*}
- V_{\chi,p}(T):=\int_{B_T}\cos^2(G(y)\log p)\,\nu_\chi(\dd y)=\frac T{2\pi}\log T+O_{\chi,p}(T),\\
- \int_{B_T}\cos(G(y)\log p)\cos(G(y)\log r)\,\nu_\chi(\dd y)=O_{\chi,p,r}(\log^2T).
+ V_{\chi,p}(T):=\int_{B_T}\cos^2(G(y)\log p)\,\nu^{\mathrm s}_\chi(\dd y)=\frac T{2\pi}\log T+O_{\chi,p}(T),\\
+ \int_{B_T}\cos(G(y)\log p)\cos(G(y)\log r)\,\nu^{\mathrm s}_\chi(\dd y)=O_{\chi,p,r}(\log^2T).
 \end{gather*}
 \end{lemma}
 
 \begin{proof}
-The band mass is $N_\chi(2T)-N_\chi(T)$ with the count recalled after \cref{li:cor:universal}. The integral
+The band mass is $N_\chi(2T)-N_\chi(T)$ with the count \eqref{rec:eq:licount}. The integral
 in \eqref{li:eq:bandcos} is $\sum_{T<\abs\gamma\le2T}m_\chi(\gamma)\cos(\gamma\log x)$, the two half atoms of each ordinate
 together carrying its multiplicity. Since $m_\chi(-\gamma)=m_{\bar\chi}(\gamma)$, it is the sum of the real parts of
 $\sum_{T<\gamma\le2T}m_\xi(\gamma)x^{i\gamma}$ for $\xi=\chi,\bar\chi$, and \cref{zer:lem:rational} with $H=T$ gives
@@ -628,9 +686,9 @@ compensated Poisson integral on $B_T$ with integrand
  \norm{h_T}_\infty=O\bigl((tT\log T)^{-1/2}\bigr).
 \]
 Its log characteristic function at $u$ is
-$t\int(e^{iuh_T}-1-iuh_T)\dd\nu_\chi=-\frac{u^2}2t\int h_T^2\dd\nu_\chi+R_T$ with
-$\abs{R_T}\le\frac{\abs u^3}6\norm{h_T}_\infty t\int h_T^2\dd\nu_\chi$. By \cref{li:lem:bands},
-$t\int h_T^2\dd\nu_\chi\to\sum_jb_j^2\pi p_j/(2(\log p_j)^2)$ and $R_T\to0$, while the bias times
+$t\int(e^{iuh_T}-1-iuh_T)\dd\nu^{\mathrm s}_\chi=-\frac{u^2}2t\int h_T^2\dd\nu^{\mathrm s}_\chi+R_T$ with
+$\abs{R_T}\le\frac{\abs u^3}6\norm{h_T}_\infty t\int h_T^2\dd\nu^{\mathrm s}_\chi$. By \cref{li:lem:bands},
+$t\int h_T^2\dd\nu^{\mathrm s}_\chi\to\sum_jb_j^2\pi p_j/(2(\log p_j)^2)$ and $R_T\to0$, while the bias times
 $\sqrt{tT/\log T}$ tends to zero. The Cram\'er--Wold argument concludes.
 \end{proof}
 
@@ -648,7 +706,7 @@ With $a_p=\pi\sqrt p/\log p$ and $V=V_{\chi,p}(T)$, for every $z>0$,
 
 \begin{proof}
 For $\abs f\le1$, comparing exponential series termwise gives
-$\log\liEx e^{v(J_f-\liEx J_f)}=t\int(e^{vf}-1-vf)\dd\nu_\chi\le tv^2\int f^2\dd\nu_\chi/(2(1-\abs v/3))$ for $\abs v<3$. The
+$\log\liEx e^{v(J_f-\liEx J_f)}=t\int(e^{vf}-1-vf)\dd\nu^{\mathrm s}_\chi\le tv^2\int f^2\dd\nu^{\mathrm s}_\chi/(2(1-\abs v/3))$ for $\abs v<3$. The
 exponential Markov inequality, optimized in $v$, gives
 $\Pr(\abs{J_f-\liEx J_f}\ge u)\le2\exp(-u^2/(2(tV+u/3)))$; substitute $u=tTz/a_p$.
 \end{proof}
@@ -711,7 +769,7 @@ size, so they leave $B_T$ for all large $T$, and the decoder sequences agree eve
 No stability under errors in every small jump is claimed: $G$ has derivative of order $T^2$ on $B_T$.
 
 Fix nonconjugate primitive $\chi,\psi$ and a prime $p$ with $\Delta_p=\Re\chi(p)-\Re\psi(p)\ne0$. For $y$ in the
-finite union of the atoms of $\nu_\chi,\nu_\psi$ in $B_T$ put $\lambda_y=\nu_\chi\set y$, $\mu_y=\nu_\psi\set y$, and
+finite union of the atoms of $\nu^{\mathrm s}_\chi,\nu^{\mathrm s}_\psi$ in $B_T$ put $\lambda_y=\nu^{\mathrm s}_\chi\set y$, $\mu_y=\nu^{\mathrm s}_\psi\set y$, and
 \[
  H_T(\chi,\psi)=\sum_{y\in B_T}\bigl(\sqrt{\lambda_y}-\sqrt{\mu_y}\bigr)^2,\qquad K_p=\frac{(\log p)^2\Delta_p^2}{2\pi p}.
 \]
@@ -733,7 +791,7 @@ The counts at each size suffice; the jump times add no information.
 \begin{proof}
 With $f_y=\cos(G(y)\log p)$, \eqref{li:eq:bandcos} gives
 $M_T:=\sum_yf_y(\lambda_y-\mu_y)=-\frac{T\log p}{\pi\sqrt p}\Delta_p+O(\log^2T)$. Cauchy--Schwarz and
-$(\sqrt\lambda+\sqrt\mu)^2\le2(\lambda+\mu)$ give $M_T^2\le2H_T\int_{B_T}\cos^2(G\log p)\,\dd(\nu_\chi+\nu_\psi)$, and the last integral is
+$(\sqrt\lambda+\sqrt\mu)^2\le2(\lambda+\mu)$ give $M_T^2\le2H_T\int_{B_T}\cos^2(G\log p)\,\dd(\nu^{\mathrm s}_\chi+\nu^{\mathrm s}_\psi)$, and the last integral is
 $\frac T\pi\log T+O(T)$ by \cref{li:lem:bands}. Under the two hypotheses the counts at the sizes $y$ are
 independent Poisson variables with means $t\lambda_y$ and $t\mu_y$; the Hellinger affinity of Poisson laws with
 means $a,b$ is $\exp(-(\sqrt a-\sqrt b)^2/2)$, so the product affinity is $e^{-tH_T/2}$, and the least error is half
@@ -799,14 +857,11 @@ $L$-functions through the same prime frequencies \cite{Banks2023Comparing}.
 \subsection{The oriented kernel away from the origin}\label{li:sec:offorigin}
 \sources{dirichlet-li-kernels}
 
-Here $p_t=p_{\chi,t}$ is the oriented circle kernel of \cref{rec:prop:liheat}, with complex Li coefficients
-$\lambda_\chi(n)$ and jump measure $\nu_\chi=\sum_\gamma\delta_{\theta_\gamma}$ on $\mathbb T=\R/2\pi\Z$, $L=\log(1/t)$ and $a=a(t)\sim\frac12tL$.
-Let $S_m$ be the set of sums modulo $2\pi$ of at most $m$ zero angles, $M_k$ the ordered representation
-counts, and $\delta_m(x)=\operatorname{dist}(x,S_m)$. At points of $S_k\setminus S_{k-1}$ the kernel is a rescaled copy of the
-central Cauchy profile with weight $M_k/k!$, at points outside $\bigcup_mS_m$ it is $O(t^N)$ for every $N$
-(\cref{rec:thm:liecho}), and at almost every point and at its minimum
-$-\log p_t\sim L\log L/\log2$ (\cref{rec:thm:litypical}). The relative estimate of \cref{rec:thm:liecho} holds with
-derivatives: for $x\in S_k\setminus S_{k-1}$ and fixed $R,r$,
+Here $p_t=p_{\chi,t}$ is the oriented circle kernel of \cref{rec:prop:liheat}, in the notation of
+\cref{li:sec:univ}, and $L=\log(1/t)$. Let $S_m$ be the set of sums modulo $2\pi$ of at most $m$ zero angles,
+$M_k$ the ordered representation counts, and $\delta_m(x)=\operatorname{dist}(x,S_m)$; the kernel at these sums
+and at typical points is described by \cref{rec:thm:liecho,rec:thm:litypical}. The relative estimate of
+\cref{rec:thm:liecho} holds with derivatives: for $x\in S_k\setminus S_{k-1}$ and fixed $R,r$,
 \begin{equation}\label{li:eq:Crprofile}
  \Bigl\|ap_t(x+a\,\cdot)-\frac{M_k(x)}{k!}t^kap_t(a\,\cdot)\Bigr\|_{C^r([-R,R])}=O_{x,k,R,r}(t^{k+1})\qquad(\text{\stG}),
 \end{equation}
@@ -825,7 +880,7 @@ logarithmic expansion multiplied by $M_k(x)/k!$.
  \omega(x)=\limsup_{m\to\infty}\frac{\log\log(1/\delta_m(x))}m,
 \]
 with $\omega(x)=\infty$ on $\bigcup_mS_m$. The greedy approximation after \cref{rec:thm:litypical} gives
-$\delta_m(x)\le\exp(-c2^m)$ for large $m$, so $\omega\ge\log2$ everywhere. List the distinct values of $\abs{\theta_\gamma}$ in
+$\delta_m(x)\le\exp(-c2^m)$ for large $m$, so $\omega\ge\log2$ everywhere. List the distinct values of $\abs{\theta(\gamma)}$ in
 nonincreasing order as $b_1\ge b_2\ge\cdots$. Every sum of zero angles is a signed sum
 $\sum_{i\le k}e_ib_{j_i}$, $e_i=\pm1$.
 
@@ -1236,7 +1291,7 @@ For a finite product $P$ of primitive Dirichlet $L$-functions, the empty product
 $E_P$ be the union of the Cayley multisets $\set{1-1/\rho}$ of its factors. By \cref{src:thm:dgrh}, $E_P$ lies in
 $\mathbb T\setminus\set1$ (with $-1$ for a central zero), the cutoff $\abs{1-z}\ge\eps$ means $\abs\rho\le1/\eps$, $\sum\abs\rho^{-2}<\infty$, and
 starred convergence of the Li zero sums \cite{Lagarias2007Li} makes $E_P$ admissible with $\lambda_{E_P}$ the complex Li
-coefficients of \cref{rec:sec:liheat}. Write $H_{P,t}=H_{E_P,t}$.
+coefficients of \cref{rec:sec:liheat}, so that $H_{E_P,t}=H_{P,t}$ in the notation of \cref{li:thm:products}.
 
 \begin{corollary}[Products of $\zeta$ and $\beta$ against arbitrary multisets; \stG]\label{li:cor:zetabetaslice}
 Let $\beta(s)=L(s,\chi_{-4})$. For every $t>0$ and every finite product $P=\zeta^{a_1}\beta^{a_2}$, $E_P$ is the only admissible
@@ -1248,31 +1303,6 @@ Both zero sets are symmetric, with no central zero, and their least positive ord
 and $(6.02,6.03)$ (see \cref{rec:thm:li255}); so $E_P$ has no atom of ordinate $\abs\gamma\le6$, and $6>\sqrt3/2\ge r_f$. Off the exceptional times use \cref{li:thm:times}, and at
 the exceptional ones \cref{li:thm:fiber}.
 \end{proof}
-
-\begin{corollary}[Every time determines a primitive product; \stG]\label{li:thm:products}
-Let $t>0$ and let $P,Q$ be finite products of primitive Dirichlet $L$-functions. If $H_{P,t}(n)/H_{Q,t}(n)$
-tends to a finite nonzero limit as $n\to+\infty$, then $P$ and $Q$ have the same primitive factors with
-multiplicity, and the limit is $1$. More precisely, with $C_{P,t}(n)=H_{P,t}(n+1)H_{P,t}(n-1)/H_{P,t}(n)^2$, if the factor
-multisets differ there are $\eta>0$ and $L_0\ge1$ such that every block of $L_0$ consecutive positive integers
-contains $n$ with $\abs{C_{P,t}(n)/C_{Q,t}(n)-1}>\eta$.
-\end{corollary}
-
-\begin{proof}
-Let $\mathcal C$ be the set of characters occurring in $P$ or $Q$, with multiplicities $a_\chi$ and $a'_\chi$, and $b=t(a-a')$.
-Then $H_{P,t}/H_{Q,t}=\exp(-A_b)$ in the notation of \cref{rec:thm:liblock} with $h=1$ and $r=0$. If the ratio tends to
-$\ell\ne0$, the constant calibration $\log\ell$ makes the left side of \eqref{rec:eq:calibration} tend to zero along
-intervals of fixed length moving to infinity, so $b=0$ by \cref{rec:thm:liblock} with $d=0$ and $M=\norm b_2$; then the
-ratio is identically $1$. If the factors differ, $b\ne0$, and $C_{P,t}(n)/C_{Q,t}(n)=\exp(-\Delta^2A_b(n-1))$ with the
-forward difference of \cref{rec:thm:liblock}(ii), which gives the block statement.
-\end{proof}
-
-Thus no two distinct primitive products collide at any time, although every exceptional time has
-collisions among admissible multisets (\cref{li:thm:times}). The multiset of $\bar P$ is the conjugate of $E_P$, hence
-$\abs{H_{P,t}}^2=H_{P\bar P,t}$. So a finite nonzero limit of $\abs{H_{P,t}(n)}/\abs{H_{Q,t}(n)}$ determines exactly the total
-multiplicity of the factors in each conjugacy orbit $\set{\chi,\bar\chi}$, and the symmetric law is blind precisely to
-conjugating individual factors. For one character this is \cref{rec:thm:liheat}, which also allows different
-times, a rotation and agreement only in natural density; finite blocks on an arithmetic progression of indices
-suffice by \cref{rec:thm:liblock}.
 
 \subsection{A small-deviation law for sums over zeros}\label{ana:sec:smalldev}
 {\raggedright\sources{rh_sampling_and_small_deviations_2026-11-26; dirichlet_spectral_conditioning_2026-11-27; spectral_extremes_2026-11-27}}
@@ -1663,8 +1693,7 @@ approach the limit slowly, and no finite-$u$ error bound is claimed; the data ar
 
 For the height carrying half the total, take $\zeta$ ($q=1$) or a primitive real character of conductor
 $q$, $p=2$, with central zeros removed and every zero counted with multiplicity, and recall
-$N(T)=\frac T{2\pi}(\log\frac{qT}{2\pi}-1)+O_\chi(\log(T+2))$
-\cite{BennettMartinOBryantRechnitzer2021Counting}. With the exact saddle $u$ put
+the one-sided count $N(T)=\frac T{2\pi}(\log\frac{qT}{2\pi}-1)+O_\chi(\log(T+2))$ after \eqref{rec:eq:licount}. With the exact saddle $u$ put
 \[
  \ell=\log\frac{qu}{2\pi},\qquad J(c)=\int_0^c\frac{\log r}{1+r^2}\,\dd r,\qquad
  M_u(c)=\frac\theta{2\pi u}\bigl(\ell\arctan c+J(c)\bigr),
@@ -1976,7 +2005,7 @@ proof of \cref{ana:thm:extremes} allow the top-$k$ map jointly.
 Take the spectrum of \cref{ana:cor:fourfifths}: the positive ordinates, with multiplicity, of an even
 product $H$ of $d$ completed degree-one factors with central zeros removed, so that by
 \cref{src:thm:dgrh} $\anaEx e^{-tX}=(H(0)/H(\sqrt t))^\theta$ for $X=\sum_jG_j/\gamma_j^2$, and
-$p=2$, $\alpha=1$, $N(T)\sim\frac d{2\pi}T\log T$ \cite{BennettMartinOBryantRechnitzer2021Counting}.
+$p=2$, $\alpha=1$, $N(T)\sim\frac d{2\pi}T\log T$ by \eqref{rec:eq:licount}.
 
 \begin{corollary}[Half-normal height of the largest Dirichlet contribution; \stG]\label{ana:cor:dirextremes}
 With the exact saddle $u=\sqrt t$, the centre
@@ -2149,3 +2178,50 @@ accuracy. Exact rational checks at $680$ integer inputs and $2232$ nonreal ratio
 enclosures are recorded in \artifact{gamma-euler-quartic/verification.txt}. The proposition is
 independent of \cref{ana:thm:window}, whose Gamma averages are probability measures on the logarithmic
 variable rather than values of $\Gamma$.
+
+\subsection{Open questions}\label{lih:sec:open}
+{\raggedright\sources{dirichlet_li_heat_kernel; dirichlet_li_recovery; dirichlet-li-kernels; grh_path_rigidity_2026-11-27; spectral_extremes_2026-11-27; dirichlet_spectral_conditioning_2026-11-27}}
+
+\begin{question}[Li heat kernels]
+\Cref{rec:thm:liblock} gives a finite block length $W$ and a Lipschitz constant $c$ for
+every fixed finite set of characters, stride, residue and calibration degree, but only qualitatively, and
+\cref{rec:thm:li255} makes them explicit for $\zeta$ and $\beta$ with $255$ modes. Can $W$ and $c$ be computed uniformly
+from the largest conductor, the stride and the calibration degree, so as to bound the number and precision of
+modes that suffice for all characters of conductor at most $Q$? Is $255$ optimal in \cref{rec:thm:li255}? After subtracting $L\log L/\log2$ in
+\cref{rec:thm:litypical}, what is the next term of the typical negative log-density? (The Hausdorff
+dimension of the set with a prescribed decay rate is given by \cref{li:thm:spectrum}.) Which equal products of Cayley
+factors $1-1/\rho$ from different tuples of zeros can be proved, beyond the extremal construction of
+\cref{rec:ex:liquartic}?
+\end{question}
+
+\begin{question}[Joint decay rates]\label{li:q:decay}
+What are the Hausdorff dimensions of the joint level sets of the lower and upper normalized decay rates
+$\liminf R_t$ and $\limsup R_t$ in \cref{li:thm:spectrum}, whose marginal for the lower rate is
+\cref{li:thm:spectrum}(ii)? Conductor-uniform separation estimates for sums of few Cayley angles, even
+for a restricted set of ordinates, would turn the finite-mode reading after \cref{rec:thm:liecho} into a
+certified stopping rule; the next term of the typical log-density is asked in the question on Li heat kernels
+above.
+\end{question}
+
+\begin{question}[Paths at finite resolution]\label{li:q:paths}
+\Cref{li:thm:path} uses infinitely many exact jump sizes, and \cref{li:thm:information} is a lower bound
+not claimed to be optimal. What is the exact information in one band, and can the orbit $[\chi]$ be
+recovered efficiently from noisy, discretely sampled positions, with constants uniform in the
+conductor, the duration and the probe primes?
+\end{question}
+
+\begin{question}[Finitely many modes of one time slice]\label{li:q:modes}
+\Cref{li:thm:times,li:thm:probe,li:thm:fiber} use all Fourier modes of a time slice. For competitors supported on
+prescribed primitive shells with bounded total mass, how many modes $H_{E,t}(n)$ suffice to distinguish different
+observations at a prescribed error level?
+\end{question}
+
+\begin{question}[Conditional laws at finite saddles]\label{ana:q:condlaw}
+\Cref{ana:thm:condlaw,ana:thm:block,ana:cor:fourfifths,ana:thm:medianheight,ana:thm:extremes,ana:thm:functional}
+are limit theorems for a fixed function. Give explicit error bounds in the saddle $u$ for the
+total-variation transitions, which Monte Carlo comparisons show to be slow, and rates for the marked
+extreme limit of \cref{ana:cor:dirextremes}; under regular variation alone no rate is available, and for
+exponential weights only the deterministic centre has an effective enclosure
+(\cref{ana:prop:refinedcentre}). Give versions uniform in the conductor or in the degree $d$ of the
+product.
+\end{question}

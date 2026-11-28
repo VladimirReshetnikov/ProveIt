@@ -19,8 +19,26 @@
 \providecommand{\anaC}{\mathcal{C}}
 \section{Prime errors at several scales: covariance, balancing, peaks and merging}\label{sec:flu}
 
-\paragraph{Polynomially weighted multiplicity divisors.}
-The rank theorem localizes in height but uses constant weights. The next statement allows
+This section studies the smoothed errors of the prime-power sums in residue classes, with the
+weight $(1/n-1/x)$ of the source proof, as functions of the class and of the scale. Under
+\cref{src:thm:dgrh} they are almost periodic in $\log x$, and the questions are about their joint
+law: positive definiteness and oscillation of the covariance at several scales, with derivatives
+or after a compact filter, without any independence hypothesis on the zeros
+(\cref{zer:sec:cov}); simultaneous balancing of all races in one multiplicative interval
+(\cref{zer:sec:balancing}); extreme values under positive spectral weights, including the
+excursions of the source remainder (\cref{zer:sec:peaks}); and the variance of stencils when
+scales merge, which reads off the multiplicities of zeros (\cref{zer:sec:coalesce}). The
+algebraic input, rigidity of polynomially weighted zero divisors, comes first
+(\cref{flu:sec:polyrigid}). The explicit formula used throughout is \cref{zer:lem:ramp}, and the
+mass of the zero spectrum is \cref{zer:lem:mass}. Sign questions for a single race are in
+\cref{sec:zer}, and positive filters that cancel prescribed zeros, among them a compact kernel
+for all residue classes, in \cref{sec:fil}.
+
+\subsection{Polynomially weighted multiplicity divisors}\label{flu:sec:polyrigid}
+{\emergencystretch=6em\sources{grh-methods-polynomial-density; grh_cm_four_terms_and_prime_bias; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing}}
+
+The multiplicity rank statement \cref{zer:thm:rank} in \cref{sec:chz} localizes in height but
+uses constant weights. The next statement allows
 weights that are polynomials in the zero, characters of different conductors, and an
 arbitrary finite exceptional set; it is the algebraic input of the covariance theorems of
 \cref{zer:sec:cov}. Let $\chi_1,\dots,\chi_r$ be distinct primitive Dirichlet characters, of
@@ -162,12 +180,23 @@ not assumed. For a character put
 the sum over all ordinates of $L(s,\chi^*)$, the central one included. The local zero count
 $O_q(\log(2+\abs y))$ in $[y-1,y+1]$ makes this series absolutely and uniformly convergent.
 
-\begin{lemma}[Ramp explicit formula; \stG]\label{zer:lem:ramp}
+\begin{lemma}[Ramp explicit formula; \stU]\label{zer:lem:ramp}\label{rec:lem:ramp}
 For every $\chi$ modulo $q$ and $x\ge2$,
 \[
- S_\chi(x)=\delta_\chi\log x+c_\chi+x^{-1/2}K_\chi(\log x)+O_q\bigl((1+\log x)/x\bigr).
+ S_\chi(x)=\delta_\chi\log x+c_\chi+\sum_\rho\frac{x^{\rho-1}}{\rho(1-\rho)}+O_q\bigl((1+\log x)/x\bigr),
 \]
-Consequently, uniformly in $a\in G$, for $t\ge\log2$,
+the sum running over the zeros $\rho$ of $L(s,\chi^*)$ in the open strip, with multiplicity; it
+converges absolutely. Hence, as $t\to\infty$,
+\[
+ e^{t/2}\Bigl(S_a(e^t)-\frac t{n_q}-c_a\Bigr)=\frac1{n_q}\sum_{\chi}\overline{\chi(a)}\sum_\rho
+ \frac{e^{(\rho-1/2)t}}{\rho(1-\rho)}+O_q\bigl((1+t)e^{-t/2}\bigr).
+\]
+For a single primitive character the difference between its normalized sum and its zero series is
+real analytic in $t>0$. Under \cref{src:thm:dgrh} the zero sum is $x^{-1/2}K_\chi(\log x)$, so that
+\[
+ S_\chi(x)=\delta_\chi\log x+c_\chi+x^{-1/2}K_\chi(\log x)+O_q\bigl((1+\log x)/x\bigr),
+\]
+and consequently, uniformly in $a\in G$, for $t\ge\log2$,
 \begin{equation}\label{zer:eq:Zexp}
  Z_a(t)=\sum_{\substack{\gamma\in\Gamma_q\\\gamma\ne0}}\frac{v_a(\gamma)}{1/4+\gamma^2}\,e^{i\gamma t}
  +O_q\bigl((1+t)e^{-t/2}\bigr),
@@ -185,10 +214,15 @@ $A(-\tfrac12+iy)=O_q(\log(2+\abs y))$. The local zero count lets the horizontal 
 heights tending to $\pm\infty$ at distance $\gg_q1/\log(2+\abs y)$ from every ordinate; there
 the local partial-fraction expansion bounds $A$ by $O_q(\log^2(2+\abs y))$, so these edges
 vanish for fixed $x$, and the new vertical integral is $O_q(x^{-3/2})$. The residue at $s=1$
-is $\delta_\chi\log x+c_\chi$. At a zero $\rho=\tfrac12+i\gamma$ of multiplicity $m$ it is
-$mx^{\rho-1}/(\rho(1-\rho))=mx^{-1/2+i\gamma}/(\tfrac14+\gamma^2)$. At $s=0$ the function $A$
+is $\delta_\chi\log x+c_\chi$. At a zero $\rho$ of multiplicity $m$ it is
+$mx^{\rho-1}/(\rho(1-\rho))$, which is $mx^{-1/2+i\gamma}/(\tfrac14+\gamma^2)$ when
+$\rho=\tfrac12+i\gamma$; since $\sum_\rho\abs{\rho(1-\rho)}^{-1}<\infty$, the zero sum converges
+absolutely. At $s=0$ the function $A$
 has at most a simple pole, so the residue is $x^{-1}$ times a polynomial of degree at most one
-in $\log x$; no other pole is crossed. For imprimitive $\chi$, each prime $p\mid q$ with
+in $\log x$; no other pole is crossed. Shifting further to $\Re s=-J-\tfrac12$, a trivial zero
+$-j$ adds $-x^{-j-1}/(j(j+1))$ times its order and the left integrals tend to zero as
+$J\to\infty$; this series extends holomorphically to $\Re t>0$ in $x=e^t$, which gives the real
+analyticity. For imprimitive $\chi$, each prime $p\mid q$ with
 $p\nmid f_\chi$ removes
 \[
  \sum_{p^k\le x}\chi^*(p)^k\log p\Bigl(\frac1{p^k}-\frac1x\Bigr)
@@ -292,7 +326,10 @@ uniformly for $1<T<T+H\le2T$,
 where the main term is zero unless $u$ is an integral prime power. This is Banks's extension of
 the Landau--Gonek formula \cite[Theorem~1.2]{Banks2023Comparing}, divided by $\sqrt u$ using
 \cref{src:thm:dgrh}; for fixed $u$ the distance to the nearest other prime power is positive,
-and half-open instead of open endpoints change the sum by $O_{q,u}(\log(2T))$.
+and half-open instead of open endpoints change the sum by $O_{q,u}(\log(2T))$. Banks's paper
+also supplies the contour estimates used in the proof of \cref{zer:lem:rational} in \cref{sec:chz}, which is uniform
+in rational arguments of bounded height but has the weaker remainder $O(Q^4\log^2(2T))$; the fixed
+form \eqref{zer:eq:landaufixed} is needed here because the probe ratios $u$ may be irrational.
 
 \begin{lemma}[Prime probes; \stU]\label{zer:lem:probes}
 For a real $R>0$ with $R\ne1$, only finitely many primes $p$ make $Rp$ an integral prime power.
@@ -1039,6 +1076,10 @@ $3K\tau+H^{-1}\sum_{\gamma,\eta\in E,\ \gamma+\eta\ne0}\norm{c(\gamma)}\norm{c(\
 certified bound for $K$ and positive lower bound for the least eigenvalue may be inserted in
 the proof of \cref{zer:lem:ap}.
 
+Averaging rules that are independent of the centre and of the target, and cancel all ordinates up
+to a height, are in \cref{fil:sec:primes}: the simultaneous rule of \cref{rec:thm:polylogavg} and the
+explicit sinc-product kernel of \cref{zer:thm:kernel}.
+
 \begin{remark}[The remainder of the source proof]\label{zer:rem:sourceremainder}
 Let $d\equiv7\pmod8$ be prime, $(M,d)=1$, and let $R_{d,M}$ be the centred remainder of
 $\sum_{n\le x,\ n\equiv1\bmod M}\Lambda(n)(1-\chi_d(n))(1/n-1/x)$, whose main term is
@@ -1123,12 +1164,11 @@ where $S(x)=\sum_{n\le x}\Lambda(n)(1/n-1/x)$ and
 $\mathcal T(z)=z+\tfrac12(1-z)\log(1-z)-\tfrac12(1+z)\log(1+z)$.
 \end{lemma}
 \begin{proof}
-For the completed entire function $\Xi_\chi$ the Hadamard product gives
-$\Xi_\chi'/\Xi_\chi(1)-\Xi_\chi'/\Xi_\chi(0)=\sum_\rho(1/(1-\rho)+1/\rho)=M_\chi$, an absolutely convergent
-sum of positive terms by \cref{src:thm:dgrh}, and the functional equation with conjugation makes
-the left side $2\Re\Xi_\chi'/\Xi_\chi(1)$. Inserting the Gamma factors, with
-$\xi'/\xi(1)=1+\zergE-\tfrac12\log\pi+\tfrac12\psi(\tfrac12)$ and $\psi(\tfrac12)=-\zergE-2\log2$, gives the
-values (the same identity appears in the proof of \cref{ana:thm:excursion}). For
+By \cref{ana:lem:hadamardmass}, $\sum_\rho m_\chi(\rho)/(\rho(1-\rho))=2\Re\Xi_\chi'/\Xi_\chi(1)$ for the
+completed entire function $\Xi_\chi$, and its gamma-factor evaluation gives the displayed values;
+for $f=1$ one uses $\xi'/\xi(1)=1+\zergE-\tfrac12\log\pi+\tfrac12\psi(\tfrac12)$ and
+$\psi(\tfrac12)=-\zergE-2\log2$. By \cref{src:thm:dgrh}, $\rho(1-\rho)=\tfrac14+\gamma^2$, so the sum is
+$M_\chi$, a convergent sum of positive terms. For
 \eqref{zer:eq:zetaexact}, the contour argument of \cref{zer:lem:ramp} for $-\zeta'/\zeta$, carried to
 the left past all trivial zeros, gives residues $\log x-1-\zergE$ at $1$,
 $x^{\rho-1}/(\rho(1-\rho))$ at each zero, $x^{-1}\log(2\pi)$ at $0$ and $-x^{-2k-1}/(2k(2k+1))$ at $-2k$;
@@ -1217,11 +1257,100 @@ combination the recurring value $B_F(0)$ need not be the maximum, but the recurr
 whole profile holds. Conversely, an eventual bound $E_1(x)\le C$ already excludes zeros of the
 $L(s,\chi)$, $\chi\bmod q$, from $\Re s>\tfrac12$, by \cref{ana:thm:zerotest} with all weights
 $1/n_q$. Thus GRH for the characters modulo $q$ holds if and only if $\limsup E_1(x)<\infty$, and
-then the limsup is $v_1$. For example $v_1\approx0.0461914179$ for $q=1$; for $q=3$,
+then the limsup is $v_1$. For $q=1$ this is the equivalence of \cref{grp:prop:split} with $K=\Q$,
+since the prime powers $p^k$, $k\ge2$, change $\sqrt x$ times the remainder by $O(1)$ only. For
+example $v_1=M_\zeta=2+\zergE-\log(4\pi)\approx0.0461914179$ for $q=1$, by \cref{zer:lem:mass}; for $q=3$,
 $v_1\approx0.0797106939$ and $v_2\approx-0.0335192760$; and for $q=5$ the classes $1$, $2$,
 $3$, $4$ give approximately $0.1522978093$, $-0.0275913840$, $-0.0275913840$ and
 $-0.0509236233$. These decimals are
 evaluated in floating point from \cref{zer:lem:mass} in \artifact{prime_peak_rigidity/check.py}.
+
+\paragraph{Negative excursions of the source remainder.}
+The remainder of the source is bounded from above by the source itself. Its excursions below
+zero at modulus one can be located as follows. Fix a prime $d\equiv7\pmod8$, let
+$\chi=\chi_d$, and write $R_d=R_{d,1}$, so that
+\[
+ R_d(x)=\sum_{n\le x}\Lambda(n)\bigl(1-\chi(n)\bigr)\Bigl(\frac1n-\frac1x\Bigr)
+ -\log x+1+\zergE-\frac{L'(1,\chi)}{L(1,\chi)} .
+\]
+Put
+\[
+ B_0=2+\zergE-\log(4\pi)=0.0461914179\ldots,\qquad
+ B_d=\log\frac d\pi-\zergE+2\,\frac{L'(1,\chi)}{L(1,\chi)} ;
+\]
+since $\chi$ is odd, these are the masses $M_\zeta$ and $M_\chi$ of \cref{zer:lem:mass}. The weight
+$F=1-\chi$ of \cref{zer:thm:univpeak} has period $d$ and $\mu_F=1$, and $E_F(x)=\sqrt x\,R_d(x)$, both
+centring constants being the unique ones for which the remainder tends to $0$; orthogonality gives
+$B_F=K_\zeta-K_\chi$. Hence one sequence of integers $n_j$, the same for all such $d$, satisfies
+$\sqrt{n_j}\,R_d(n_j)\to B_F(0)=B_0-B_d$ for every $d$ simultaneously; in particular
+$\liminf_{x\to\infty}\sqrt x\,R_d(x)\le B_0-B_d$. The following theorem adds the lower bound,
+geometric sequences of scales and the growth in $d$.
+
+\begin{theorem}[Excursion bounds; \stG]\label{ana:thm:excursion}
+For every prime $d\equiv7\pmod8$,
+\[
+ -B_d-B_0\le\liminf_{x\to\infty}\sqrt x\,R_d(x)\le-B_d+B_0 .
+\]
+There is a single sequence of integer exponents $n_j\to\infty$ with
+$\sqrt{a^{n_j}}\,R_d(a^{n_j})\to B_0-B_d$ for every integer $a\ge2$ and every $d$. In
+particular the lower limit divided by $\log d$ tends to $-1$ as $d\to\infty$.
+\end{theorem}
+
+The limits are taken in this order, first in $x$ for fixed $d$. Nothing is asserted about the
+first $x$ at which a given excursion occurs.
+
+\begin{proof}
+Here $K_\zeta$ and $K_\chi$ are the zero series of \cref{zer:sec:cov}, over all nontrivial zeros
+with multiplicity, central zeros included; they are real because $\chi$ is real. For fixed $d$,
+\begin{equation}\label{ana:eq:O1}
+ \sqrt x\,R_d(x)=K_\zeta(\log x)-K_\chi(\log x)+O_d\bigl(x^{-1/2}\bigr).
+\end{equation}
+This is the expansion of \cref{zer:thm:univpeak} for $F=1-\chi$ with a sharper remainder: in the
+contour argument of \cref{zer:lem:ramp}, applied to $-\zeta'/\zeta+L'/L(\cdot,\chi)$, the kernel has
+only a simple pole at $0$, since $\zeta(0)L(0,\chi)\ne0$ for this odd primitive character, and its
+residue depends only on $d$. As $\abs{K(u)}\le K(0)$ for both series (\cref{zer:lem:posspec}(ii)),
+\eqref{ana:eq:O1} proves the lower bound; the upper bound was noted before the theorem.
+
+For the integer exponents, given $j$ take the finitely many frequencies $\gamma\log a$ with
+$2\le a\le j$ and $\gamma$ among the first $j$ ordinates of $\zeta$ and of each $L(\cdot,\chi_d)$ with
+$d\le j$. The integer iterates of their phase vector in the finite torus have a convergent
+subsequence, so differences of increasingly separated indices return all phases to within $1/j$
+of $1$; choose such an exponent $n_j>n_{j-1}$. Absolute convergence of the series gives
+$K_\zeta(n_j\log a)-K_\chi(n_j\log a)\to B_0-B_d$ for every $a$ and $d$, and \eqref{ana:eq:O1} at
+$x=a^{n_j}$ gives the claim. Finally $L'(1,\chi)/L(1,\chi)=O(\log\log d)$ under \cref{src:thm:dgrh}
+\cite[Corollary~3.3.2]{IharaMurtyShimura2009Logarithmic}, which gives $B_d\sim\log d$.
+\end{proof}
+
+\begin{proposition}[When the lower endpoint is attained; \stG]\label{ana:prop:parity}
+The value $-B_d-B_0$ is a limiting value of $\sqrt x\,R_d(x)$ if and only if every finite
+integer relation among the positive ordinates of $\zeta$ and of $L(\cdot,\chi)$ has an even
+total coefficient on the ordinates of $\zeta$. Here each occurrence of an ordinate is
+labelled by its function, so a positive ordinate shared by the two functions already violates
+the condition.
+\end{proposition}
+
+\begin{proof}
+Equality forces each cosine with positive weight in $K_\zeta$ to approach $-1$ and each
+cosine in $K_\chi$ to approach $+1$, because their individually nonnegative
+deficits sum to zero in the limit. The function $\zeta$ has no central zero, and central
+zeros of $L$ contribute with the required sign. On each finite set of frequencies,
+Kronecker's theorem identifies the closure of the real flow with the subtorus cut out by the
+integer relations, and the required sign vector lies in that closure exactly under the
+stated parity condition. A diagonal sequence and the summable tails give the sufficiency for
+all ordinates.
+\end{proof}
+
+For $d=7$ the two endpoints are approximately $-0.30142740$ and $-0.20904456$, and for
+$d=23$ they are $-0.61549819$ and $-0.52311535$. Further values are in the file
+\begin{center}
+\artifact{grh_method_transfers_sharp_torsion/checks/oscillation_bounds.txt}.
+\end{center}
+These numbers evaluate the proven bounds through
+\[
+ \frac{L'(1,\chi)}{L(1,\chi)}=\log(2\pi)+\zergE-\frac1{L(0,\chi)}\sum_{a=1}^{d-1}\chi(a)\log\Gamma(a/d),
+ \qquad L(0,\chi)=-\frac1d\sum_{a=1}^{d-1}a\chi(a).
+\]
+They are not estimates of a lower limit by sampling.
 
 \paragraph{How often the peak is approached.}
 \Cref{zer:thm:peak}(iv) makes the near-peak scales of $E_1$ relatively dense. Their logarithmic
@@ -1747,109 +1876,6 @@ $O(h^2L^2)$, and $\det(D+Q/L+O(hL))=\det D\,[1+\tr(D^{-1}Q)/L+O(L^{-2})]$.
 
 This kernel is the prime error itself; the autocorrelation of the prime error at merging scales
 behaves differently and is treated next.
-
-\paragraph{Negative excursions of the source remainder.}
-The remainder of the source is bounded from above by the source itself. Its excursions below
-zero at modulus one can be located as follows. Fix a prime $d\equiv7\pmod8$, let
-$\chi=\chi_d$, and write $R_d=R_{d,1}$, so that
-\[
- R_d(x)=\sum_{n\le x}\Lambda(n)\bigl(1-\chi(n)\bigr)\Bigl(\frac1n-\frac1x\Bigr)
- -\log x+1+\gamma-\frac{L'(1,\chi)}{L(1,\chi)} .
-\]
-Put
-\[
- B_0=2+\gamma-\log(4\pi)=0.0461914179\ldots,\qquad
- B_d=\log\frac d\pi-\gamma+2\,\frac{L'(1,\chi)}{L(1,\chi)} .
-\]
-
-\begin{theorem}[Excursion bounds; \stG]\label{ana:thm:excursion}
-For every prime $d\equiv7\pmod8$,
-\[
- -B_d-B_0\le\liminf_{x\to\infty}\sqrt x\,R_d(x)\le-B_d+B_0 .
-\]
-A single sequence $x_j\to\infty$ realizes $\sqrt{x_j}\,R_d(x_j)\to B_0-B_d$ for every such $d$
-simultaneously, and there is a single sequence of integer exponents $n_j\to\infty$ with
-$\sqrt{a^{n_j}}\,R_d(a^{n_j})\to B_0-B_d$ for every integer $a\ge2$ and every $d$. In
-particular the lower limit divided by $\log d$ tends to $-1$ as $d\to\infty$.
-\end{theorem}
-
-The limits are taken in this order, first in $x$ for fixed $d$. Nothing is asserted about the
-first $x$ at which a given excursion occurs.
-
-\begin{proof}
-By \cref{src:thm:dgrh} the nontrivial zeros of $\zeta$ and of $L(s,\chi)$ lie on the critical
-line. For $F=\zeta$ or $F=L(\cdot,\chi)$ put
-\[
- H_F(u)=\sum_{\rho=1/2+i\gamma_\rho}\frac{e^{i\gamma_\rho u}}{1/4+\gamma_\rho^2},
-\]
-over all nontrivial zeros with multiplicity, central zeros included. The series converges
-absolutely and uniformly, and is real. For fixed $d$,
-\begin{equation}\label{ana:eq:O1}
- \sqrt x\,R_d(x)=H_\zeta(\log x)-H_{L(\cdot,\chi)}(\log x)+O_d\bigl(x^{-1/2}\bigr).
-\end{equation}
-To see this, integrate $x^sA(s)/(s(s-1))$ over $\Re s=2$, with
-$A=-\zeta'/\zeta+L'/L(\cdot,\chi)$. Mellin inversion gives
-$\sum_{n\le x}\Lambda(n)(1-\chi(n))(x/n-1)$. At $s=1$ the residue is
-$x\bigl(\log x-1-\gamma+L'(1,\chi)/L(1,\chi)\bigr)$, and at a zero $\rho$ it is
-$x^\rho\bigl(m_\zeta(\rho)-m_L(\rho)\bigr)/\bigl(\rho(1-\rho)\bigr)$, coincident zeros
-included. Shift the contour to $\Re s=-1/2$. The kernel has a simple pole at $0$, since
-$\zeta(0)L(0,\chi)\ne0$ for this odd primitive character, with a residue depending only on
-$d$. On the new line the logarithmic derivatives are $O_d(\log(\abs{\Im s}+2))$ by the
-functional equations, and the horizontal edges can be sent to infinity along heights at
-distance $\gg_d1/\log T$ from both zero sets. The new integral is $O_d(x^{-1/2})$. Dividing
-by $\sqrt x$ gives \eqref{ana:eq:O1}.
-
-For the completed entire function $\Xi_F$ the Hadamard product gives
-\[
- \frac{\Xi_F'}{\Xi_F}(1)-\frac{\Xi_F'}{\Xi_F}(0)=\sum_\rho\frac1{\rho(1-\rho)}=H_F(0),
-\]
-and by the functional equation the left side is twice the logarithmic derivative at $1$.
-Inserting the gamma factors gives $H_\zeta(0)=B_0$ and $H_{L(\cdot,\chi)}(0)=B_d$. As
-$\abs{H_F(u)}\le H_F(0)$, \eqref{ana:eq:O1} proves the lower bound.
-
-For finitely many real ordinates, simultaneous approximation returns all their phases
-arbitrarily close to $1$ at arbitrarily large times, whatever their rational relations: the
-integer iterates in the finite torus have a convergent subsequence, and differences of
-increasingly separated indices return to the identity. Enumerate the ordinates of $\zeta$ and
-of the countably many characters, and take $u_j>j$ approximating the first $j$ phases to
-within $1/j$. Absolute convergence of each series gives
-$H_\zeta(u_j)-H_{L(\cdot,\chi)}(u_j)\to B_0-B_d$ for every $d$, which proves the upper bound
-and the simultaneous assertion with $x_j=e^{u_j}$. The same argument with the countably many
-frequencies $\gamma_\rho\log a$, $a\ge2$, gives the integer exponents $n_j$. Finally
-$L'(1,\chi)/L(1,\chi)=O(\log\log d)$ under \cref{src:thm:dgrh}
-\cite[Corollary~3.3.2]{IharaMurtyShimura2009Logarithmic}, which gives $B_d\sim\log d$.
-\end{proof}
-
-\begin{proposition}[When the lower endpoint is attained; \stG]\label{ana:prop:parity}
-The value $-B_d-B_0$ is a limiting value of $\sqrt x\,R_d(x)$ if and only if every finite
-integer relation among the positive ordinates of $\zeta$ and of $L(\cdot,\chi)$ has an even
-total coefficient on the ordinates of $\zeta$. Here each occurrence of an ordinate is
-labelled by its function, so a positive ordinate shared by the two functions already violates
-the condition.
-\end{proposition}
-
-\begin{proof}
-Equality forces each cosine with positive weight in $H_\zeta$ to approach $-1$ and each
-cosine in $H_{L(\cdot,\chi)}$ to approach $+1$, because their individually nonnegative
-deficits sum to zero in the limit. The function $\zeta$ has no central zero, and central
-zeros of $L$ contribute with the required sign. On each finite set of frequencies,
-Kronecker's theorem identifies the closure of the real flow with the subtorus cut out by the
-integer relations, and the required sign vector lies in that closure exactly under the
-stated parity condition. A diagonal sequence and the summable tails give the sufficiency for
-all ordinates.
-\end{proof}
-
-For $d=7$ the two endpoints are approximately $-0.30142740$ and $-0.20904456$, and for
-$d=23$ they are $-0.61549819$ and $-0.52311535$. Further values are in the file
-\begin{center}
-\artifact{grh_method_transfers_sharp_torsion/checks/oscillation_bounds.txt}.
-\end{center}
-These numbers evaluate the proven bounds through
-\[
- \frac{L'(1,\chi)}{L(1,\chi)}=\log(2\pi)+\gamma-\frac1{L(0,\chi)}\sum_{a=1}^{d-1}\chi(a)\log\Gamma(a/d),
- \qquad L(0,\chi)=-\frac1d\sum_{a=1}^{d-1}a\chi(a).
-\]
-They are not estimates of a lower limit by sampling.
 
 \subsection{Merging scales: a cubic logarithmic law}\label{zer:sec:coalesce}
 \sources{prime_scale_coalescence_2026-11-26; dirichlet-zero-multiplicity-and-reconstruction; grh-two-open-questions; dirichlet-coupled-zeros-and-prime-variances}
@@ -2435,6 +2461,11 @@ $w=-(b_1+b_2z+b_4z^2)/b_3=e^{i\phi}$; count the root once exactly when
 The resulting count is the exact number of missing positive frequencies, and it is at most two. If
 $\phi-\alpha\theta=2\pi(\alpha m-n)$ with integers $m,n$, the corresponding frequency is $\abs{\theta+2\pi m}/\log2$.
 \end{theorem}
+
+Padding a four-node stencil with $c_4=0$ gives $b_4=0$; then \eqref{zer:eq:fivequad} becomes the
+cosine rule of the proof of \cref{zer:thm:fourpoint}, and \eqref{zer:eq:fivegroup} becomes
+\eqref{zer:eq:fourexception}. \Cref{zer:thm:fourpoint} keeps what is special to four nodes: the explicit
+interval $I$, the density of the exceptional shapes, $\mathcal B(c)$ and the certified example.
 \begin{proof}
 The cancellations give $\sum_{i,j}c_ic_j(i-j)^2=0$, that is $b_1+b_2/2+b_3/3+b_4/4=0$, and
 $\zerSym_c(0)=6\mathcal B(c)>0$. When $b_3=0$ the symbol is periodic in $\xi$ with period $2\pi/\log2$, which gives
@@ -2446,9 +2477,9 @@ degrees is the product of the extreme coefficients; and for a monomial the linea
 the coefficient and $b_3$ to have distinct magnitudes, the associated distance $1,2$ or $4$ differing from
 $3$. If $z$ were real, $w$ would be real, making $\xi\log2$ and $\xi\log3$ multiples of $\pi$, so $\xi=0$ by
 irrationality of $\alpha$, which is excluded. For each interior root the two choices of $z$ give conjugate
-configurations. Simultaneous lifts of the upper one require $\xi\log2=\theta+2\pi m$ and
-$\xi\log3=\phi+2\pi n$, compatible exactly when \eqref{zer:eq:fivegroup} holds; irrationality allows at most
-one pair $(m,n)$, conjugation accounts for the negative frequency, and distinct roots give distinct
+configurations. The lifting step of the proof of \cref{zer:thm:fourpoint}, with $(\theta,\phi)$ in place of
+$(u,v)$, shows that the upper one lifts to a frequency exactly when \eqref{zer:eq:fivegroup} holds, for at most
+one pair $(m,n)$; conjugation accounts for the negative frequency, and distinct roots give distinct
 positive frequencies.
 \end{proof}
 
@@ -2797,3 +2828,65 @@ variance \cite{Greenhall1998Spectral}. Exact checks of
 the spline norms $\mathcal B_2,\dots,\mathcal B_5$ and of the minimal covariance $\tfrac16I_4$ at modulus
 $8$ are in
 \begin{center}\artifact{dirichlet-zero-multiplicity-and-reconstruction/checks/contrast-results.txt}.\end{center}
+
+\subsection{Open questions}\label{flu:sec:open}
+{\raggedright\sources{grh_cm_four_terms_and_prime_bias; grh_multiscale_covariance; multiscale_prime_fluctuations; grh_spectral_rigidity; grh_filtered_prime_races; grh_prime_error_balancing; prime_peak_rigidity; sparse_grh_balanced_windows; sharp_multiscale_prime_windows; prime_scale_coalescence_2026-11-26; prime_endpoints_and_symplectic_compressions; grh_extensions_2026-11-27; dirichlet-zero-multiplicity-and-reconstruction; grh-two-open-questions; dirichlet-coupled-zeros-and-prime-variances; grh_method_transfers_sharp_torsion}}
+
+\begin{enumerate}
+\item \emph{Effective constants.} Can the radius $r_q$ and ratio $C_q$ of
+\cref{zer:thm:balancing}, the window $H$ and radius of \cref{zer:cor:smoothbalance}, the
+constants $c,C,K$ of \cref{zer:thm:coercive}, the least eigenvalues in
+\cref{zer:thm:jets,zer:thm:filtered} and a certified window length $L_0$, and the return lengths
+near the peak in \cref{zer:thm:peak}, be made explicit, ideally uniformly in $q$, in the number
+of scales, or in the cut $H$? Near-coincident ordinates must then be separated rigorously, and
+efficient probe primes chosen.
+\item \emph{The eigenvalue gap.} The two bounds of \eqref{zer:eq:coercive} differ by three powers
+of $\log T$. Can information on pair correlation and multiplicities close the gap, and what are
+the sharp asymptotics for arbitrary shifts under stronger hypotheses?
+\item \emph{Merging scales.} \Cref{zer:thm:coalesce} settles the rate for $\zeta$, and
+\cref{zer:cor:classorders} the order of every eigenvalue of the residue-class matrix. What is the best
+upper factor in \cref{zer:lem:localM2}, now at most $1.3208$, over all arithmetic methods, and does
+$M_2(T)\sim\kappa T\log T/(2\pi)$ hold, as \cref{zer:prop:kappa} requires (equivalently, by
+\cref{zer:thm:coalesceinverse}, does one three-point variance have a normalized limit)? What are the
+exact leading constants of the residue-class matrix, which by \cref{zer:thm:identityclass} are the
+limits of the folded pair counts? \Cref{zer:thm:rate} turns a variance remainder with relative saving
+$(\log(1/h))^{-\delta}$ into a count remainder with saving $(\log T)^{-\delta/4}$: is $\delta/4$ optimal, and
+can such a remainder be proved for $\zeta$? Families of stencils characterize all finite limits exactly
+when their symbols have no common real zero (\cref{zer:thm:stencilbank}), on meshes whose logarithmic gaps
+tend to zero, which is necessary for elliptic stencils (\cref{zer:thm:mesh}); four and five equally spaced
+observations are classified by \cref{zer:thm:fourpoint,zer:thm:fivepoint}. Which small-divisor conditions on
+symbols with arbitrarily small values suffice for the exact mesh characterization, and what condition is
+necessary and sufficient for asynchronously sampled families whose individual meshes have gaps while the
+set $\mathcal E$ of \cref{zer:thm:bankmesh} has none? For $\zeta$ itself, can arithmetic constraints on
+multiple zeros beyond \cref{zer:lem:localM2} exclude a nonconstant tangent density in
+\cref{zer:thm:missingfreq}, or the pulses of \cref{zer:thm:mesh}? That would remove the exceptional shapes
+from \cref{zer:thm:coalesceinverse}(i).
+\item \emph{Beyond covariance.} Can the convex-hull statements be upgraded to the interior of the
+actual limiting support, to every ordering of the unsmoothed counts, or to inclusivity of
+ordinary prime races, without a hypothesis on the ordinates? Which nonlinear constraints hold on
+the cluster sets? Positive covariance excludes affine hyperplanes only.
+\item \emph{Less smoothing and other families.} \Cref{zer:thm:unsmoothed} gives strict positivity
+of the multiscale covariance for the unsmoothed counts. Does the jet covariance of
+\cref{zer:thm:jets} survive for unsmoothed counts after the prime-square biases are removed? Can the constants of \cref{zer:thm:unsmoothed} be made uniform as shifts coalesce or as the
+number of scales grows? Does \cref{zer:thm:polyrigid} extend to families with
+other Gamma factors and distinct Euler coefficients, and do the probe arguments extend to
+Frobenius-class functions of Artin $L$-functions under their own Riemann hypothesis (which
+\cref{src:thm:dgrh} does not provide)?
+\item \emph{Kernels and filters.} Which compact filters retain every noncentral frequency with the
+shortest memory or the smallest error, and which other Mellin kernels have nonnegative spectral
+weights on the critical line, with sharper laws or shorter recurrence? Can the compact window
+kernel of \cref{zer:thm:sharpwin} be optimized for given contrasts, or constrained so that the pole
+terms cancel, and do its finite Gram conditions on separated windows have a converse forcing GRH
+without the full positivity criterion of the explicit formula?
+\item \emph{Endpoint visits.} Is the constant $n_qC^2$ of \cref{zer:thm:visits}(i), twice the sharp
+leading constant under \eqref{zer:eq:rankloss}, improvable under \cref{src:thm:dgrh} alone? Does a
+substantially weaker bound on the rational rank defect preserve the conductor term in
+\eqref{zer:eq:visitlaw}? Are there useful finite-height rates for the actual densities without any
+assumption on small integer combinations of ordinates?
+\end{enumerate}
+
+\begin{question}[The lower limit of the source remainder]\label{ana:q:parity}
+Does the parity condition of \cref{ana:prop:parity} hold for the ordinates of $\zeta$ and of
+$L(\cdot,\chi_d)$? If it does, $\liminf_{x\to\infty}\sqrt x\,R_d(x)=-B_d-B_0$ exactly. In
+general, where in the interval of \cref{ana:thm:excursion} does the lower limit lie?
+\end{question}

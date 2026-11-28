@@ -3,7 +3,7 @@
 \providecommand{\srcT}{\mathcal{T}}
 \providecommand{\srcRR}{\mathcal{R}}
 \providecommand{\srctr}{\mathsf{T}}
-\section{Spanning, frames, auxiliary characters and matrix statistics}\label{sec:spn}
+\section{Spanning, completion and integral frames}\label{sec:spn}
 
 \providecommand{\spnHS}{\mathrm{HS}}
 \providecommand{\spncodim}{\operatorname{codim}}
@@ -23,15 +23,21 @@
 \providecommand{\spncoker}{\operatorname{coker}}
 
 The source proof (\cref{src:sec:mechanism}) compares an upper and a lower bound
-for one twisted lattice. Several of its intermediate inputs are finite or local
-statements that can be isolated, sharpened and tested without any hypothesis on
-zeros: the second-moment spanning estimate, the integral tight frames, the
-positive-type Fourier estimate for matrix compressions, the auxiliary
-anticyclotomic characters, and the integer that annihilates the odd cyclotomic
-cocycles. This section treats them in that order. Apart from
-\cref{spn:thm:bounded-conductor}, which uses \cref{src:thm:dgrh} through a
-least-prime bound, every result is unconditional. Notation is local to each
-subsection.
+for one twisted lattice, and its determinant comparison
+(\cref{src:sec:comparison}) needs a short family that spans almost all of the
+target, together with integral vectors completing it to a basis. This section
+treats that spanning and completion step and its integral refinements: the
+second-moment spanning lemma at sharp constants and at the source's own
+constants, exact finite selection certificates, why near-full spanning is
+needed and how missing dimensions can be paid for instead, optimal integral
+tight frames and self-dual projective lattices, and lower bounds for integral
+Gram determinants with vanishing minors. Every result is \stU. Notation is local
+to each subsection. The random matrix compressions controlled by the
+positive-type lemma of the source's spanning step are in \cref{sec:cmp}, the
+auxiliary anticyclotomic characters and their conductors in \cref{sec:cost}
+(\cref{spn:sec:characters,spn:sec:conductor,spn:sec:benchmark}), and the
+annihilator of the odd cyclotomic cocycles in \cref{sec:sel}
+(\cref{spn:sec:annihilator}).
 
 %======================================================================
 \subsection{A sharp spanning interface}\label{spn:sec:spanning}
@@ -435,15 +441,14 @@ instantiation at $u=5/b^4$, $v=9/b^4$ and the constants used in
 file.\footnote{\artifact{grh_spanning_and_s5_2026-11-26/checks/spanning_certificates.json}}
 \end{example}
 
-There is a second dimension constraint, $\rank(PB)\ge\ceil{(1-u)s}$.
-Consequently $R$ is the ceiling of the optimal universal coefficient times
-$d$, not necessarily the exact minimum possible total rank for every fixed
-quadruple $(d,s,u,v)$. The cyclic examples establish the sharpness claimed in
-\cref{spn:prop:sharp}.
+The exact least total rank is $r_*=\max\set{\ceil{as},R}$ of
+\cref{spn:thm:rank-spectrum}: $R=\ceil{a^2d/z}$ is its second-moment part, and
+the other part, $\rank(PB)\ge\ceil{as}$, comes from one map alone. In
+\cref{spn:ex:certificate}, $\ceil{as}=20$ and $r_*=R=971$.
 
 %======================================================================
 
-\subsection{Why almost all of the target must be spanned}\label{src:sec:span}
+\subsection{Why almost all of the target must be spanned, and how to pay for missing dimensions}\label{src:sec:span}\label{spn:sec:missing}
 \begingroup\raggedright
 \sources{grh_lean_transfer_analysis; grh_fixed_field_transfer_2026-11-25; grh_transfer_bridges_2026-11-25; grh_beyond_dirichlet_grh_2026-11-25; grh_beyond_dirichlet_2026-11-25; grh_arithmetic_transfers_2026-11-26; grh_transfer_synthesis_2026-11-25; grh_spanning_and_s5_2026-11-26; grh_transfer_advances_2026-11-26; grh_method_transfers_orthogonal_jets_2026-11-26}
 \endgroup
@@ -452,24 +457,30 @@ The last line of the source comparison divides by $n$ and needs only $n\ge D/2$.
 bound (C) needs much more. In \code{integral_forms_long} each vector completing the selected
 family to a basis is taken from a globally spanning auxiliary family and has cost
 \[
-K_{\mathrm{comp}}=2x_1^2b^2+b ,
+C=2x_1^2b^2+b ,
 \]
-the first term bounding its squared norm and the second its denominator height. Before the
-rank hypothesis is used, the proof has reached
-$0\le c+2\delta+(D-n)K_{\mathrm{comp}}+D(b+u-M)$ with $u=fa\log^4b$, which is the second
-hypothesis of \cref{src:prop:rank} with $B=D(b+u)$. Input (B) gives $D-n\le4D/b^2$, and the
-lemma \code{mul_completion_cost_le} combines the two:
+the first term bounding its squared norm and the second its denominator height. Write
+$d=\mathrm{targetDim}$ for the target dimension ($D$ above), $A=\mathrm{mainAmount}$ for the
+main amount ($M$ in (A)--(C)) and $u=fa(\log b)^4$, so that $d,C,u$ play the roles of $D,K,U$ in
+\cref{src:prop:rank}. Before the rank hypothesis is used, the proof has reached
+\begin{equation}\label{spn:eq:source-before-rank}
+ 0\le c+2\delta+(d-n)C+d(b+u-A),
+\end{equation}
+which is the second hypothesis of \cref{src:prop:rank} with $r=d-n$, $K=C$ and $B=d(b+u)$.
+
+\paragraph{The source's use.}
+Input (B) gives $d-n\le4d/b^2$, and the lemma \code{mul_completion_cost_le} combines the two:
 \[
-(D-n)K_{\mathrm{comp}}\le4D\bigl(2x_1^2+b^{-1}\bigr)\le Db
+(d-n)C\le4d\bigl(2x_1^2+b^{-1}\bigr)\le db
 \]
-under the scale inequalities of the source. Since $b\le u$, this yields
-$c+2\delta\ge D(M-3u)$, which is (C). A fixed positive missing fraction would instead leave a
-term of order $Dx_1^2b^2$, far above the error budget. Near-full spanning is thus a
+under the scale inequalities of the source. Since $b\le u$, \eqref{spn:eq:source-before-rank}
+yields $c+2\delta\ge d(A-3u)$, which is (C). A fixed positive missing fraction would instead
+leave a term of order $dx_1^2b^2$, far above the error budget. Near-full spanning is thus a
 requirement of the lower-bound argument even though the final division uses only a positive
 fraction of the dimension, and a statement that a fixed fraction of the target is spanned
-cannot be substituted for (B) unless the completion is made correspondingly cheap. The
-quantitative spanning statements, including a sharper form of (B) and the weakest completion
-budget under which the source argument still runs, are in \cref{sec:spn}.
+cannot be substituted for (B) unless the completion is made correspondingly cheap. A sharper
+form of (B) is \cref{spn:thm:source}; the weakest completion budget under which the source
+argument still runs is \cref{spn:prop:weakening} below.
 
 \begin{example}[Determinants do not control individual directions]\label{src:ex:diag}
 The positive forms $\operatorname{diag}(t,t^{-1})$ and the identity on $\R^2$ have the same
@@ -492,19 +503,9 @@ would need better loss estimates, and whenever a normalised loss grows like $m$ 
 by $m$ leaves a constant and the decay disappears. The exponent in \eqref{src:eq:onesided}
 cannot be improved by enlarging $m$ with the remaining estimates held fixed.
 
-\subsection{A different way to pay for missing dimensions}\label{spn:sec:missing}
-\sources{grh_transfer_bridges_2026-11-25}
-
-The source makes the short family span almost the whole target space. The
-abstract determinant theorem \eqref{src:eq:twisted} shows what that
-hypothesis pays for: completing the family to a basis. The rearrangement of
-that inequality which tracks the cost is \cref{src:prop:rank}. In its
-notation, with target dimension $D=n+r$, completion cost
-$K=b_{\mathrm{short}}+b_{\mathrm{denom}}$ per missing vector and
-$b_{\mathrm{volume}}\le-DA+B$, it gives
-$nmR\le nU+2\delta+B+r(K-A)$: the deficit is charged by $K-A$, the
-\emph{excess} completion cost, rather than by $K$ alone. Normalizing all
-errors by one scale gives the following form.
+\paragraph{Paying for missing dimensions.}
+By \eqref{src:eq:rank} the deficit is charged by the excess completion cost $K-A$, not by $K$
+alone. Normalizing all errors by one scale gives the following form.
 
 \begin{corollary}[Completion cost at a common error scale; \stU]\label{spn:cor:rank-error}
 In \cref{src:prop:rank} write $\varrho=n/D$ and let $E_0>0$. Suppose
@@ -532,19 +533,9 @@ the other errors, is still needed; the resulting exponent bookkeeping is
 \cref{src:rem:rates}.
 
 \begin{proposition}[An explicit weakening inside the source proof; \stU]\label{spn:prop:weakening}
-In the source's notation, let
-\[
- d=\mathrm{targetDim},\quad A=\mathrm{mainAmount},\quad u=fa(\log b)^4,\quad
- C=2x_1^2b^2+b ,
-\]
-so that $d,C,u$ play the roles of $D,K,U$ in \cref{src:prop:rank}.
-Before using its near-full-rank hypothesis, the proof of
-\textup{\code{integral_forms_long}} has obtained
-\begin{equation}\label{spn:eq:source-before-rank}
- 0\le c+2\delta+(d-n)C+d(b+u-A).
-\end{equation}
-Consequently the source's conclusion $c+2\delta\ge d(A-3u)$ already follows
-under the completion budget
+In the notation of \eqref{spn:eq:source-before-rank}, the source's conclusion
+$c+2\delta\ge d(A-3u)$ follows from \eqref{spn:eq:source-before-rank} under the completion
+budget
 \begin{equation}\label{spn:eq:weaker-spanning}
  (d-n)C\le d(2u-b).
 \end{equation}
@@ -570,9 +561,8 @@ bound $2\delta+B+(d-n)C$ by $d(2I_0+3u)$.
 The completing vectors of the source come from a globally spanning auxiliary
 family, with squared-norm exponent $2x_1^2b^2$, scalar denominator-height
 bound $b$, and the displayed volume-height bound; an arbitrary completion is
-insufficient. The original argument obtains the smaller allowance
-$(d-n)C\le db$ from the loss bound $d-n\le4d/b^2$ and its scale inequalities.
-\Cref{spn:prop:weakening} is a weakening of a sufficient hypothesis in the
+insufficient. Compared with the allowance $(d-n)C\le db$ of the source's use,
+\cref{spn:prop:weakening} is a weakening of a sufficient hypothesis in the
 written source argument, not an improvement to the endpoint
 \cref{src:thm:dgrh}: for the same expensive completion the missing fraction
 still tends to zero. For a new target it isolates a distinct task: construct
@@ -807,9 +797,9 @@ disjointness is not assumed.
 \end{proof}
 
 The tensor frame preserves integrality at the inert primes used in the local
-argument for the nonabelian benchmark of \cref{sec:grp}. Its bound still
+argument for the nonabelian benchmark of \cref{grp:sec:s3}. Its bound still
 carries $229$. The correction needed for coprime bounds is a change to the
-appropriate fractional lattice, addressed next.
+appropriate fractional lattice, addressed in \cref{spn:sec:projective}.
 
 %======================================================================
 
@@ -823,7 +813,11 @@ Input (C) is a lower bound for the Gram determinant of an integral family, and i
 between these requirements: how small can the Gram determinant of an integer matrix be when
 many of its maximal minors are nonzero? Cauchy--Binet and integrality give one lower bound; the
 Pl\"ucker relations between the minors force a stronger one, with an explicit penalty for
-vanishing minors.
+vanishing minors. The question complements the integral frames of \cref{spn:sec:frames}: there
+the frame operator of an integral family is required to be a scalar, and the trace-dual
+obstruction (\cref{spn:thm:dual-obstruction}) and \cref{spn:thm:real-eventual} determine which
+scalars occur; here only the Gram determinant is controlled, and the question is how small it
+can be.
 
 \begin{theorem}[Arithmetic determinant amplification; \stU]\label{src:thm:gram}
 Let $A\in\Z^{r\times n}$ have rank $r$, where $n\ge5$ and $2\le r\le n-2$. For an $r$-element
@@ -1220,8 +1214,8 @@ $10\,000$ & $681\,306\,789\,878\,949$ & $0.068157938$\\
 \bottomrule
 \end{tabular}
 \end{center}
-The row counts of the witnesses are recorded with their Gram matrices in
-\artifact{gram-euler-and-zero-filters/gram/examples.json}.
+The row counts of the witnesses are recorded with their Gram matrices in a delivered
+file.\footnote{\raggedright\artifact{gram-euler-and-zero-filters/gram/examples.json}}
 \end{example}
 
 \subsection{Every sufficiently large bound in a self-dual projective lattice}\label{spn:sec:projective}
@@ -1336,7 +1330,7 @@ sufficiently large positive integer bound; in particular it has coprime pairs
 of bounds, and arbitrarily large bounds prime to any fixed integer, and any
 finite set of its elements can be prescribed as frame members with any fixed
 lower multiplicity. This applies to the corrected ideal $A=A_0\OO_E$ of the
-unramified nonabelian benchmark of \cref{sec:grp}, with both unit witnesses
+unramified nonabelian benchmark of \cref{grp:sec:s3}, with both unit witnesses
 inherited from the source prescribed as frame members.
 \end{corollary}
 
@@ -1410,84 +1404,14 @@ growing like $\exp(f^{c})$ for a fixed $c>0$ would exceed the permitted
 scale.
 \end{question}
 
-\begin{question}[Growing symplectic compressions]\label{spn:q:symplectic}
-\Cref{spn:thm:complete-law} gives the exact law of every symplectic compression, and its
-limiting distance from the uniform matrix law is known for fixed frames
-(\cref{spn:thm:first-correction}), isotropic pairs (\cref{spn:thm:symplectic-exact}),
-Lagrangian targets (\cref{spn:thm:rank-blind,spn:thm:growing-form}), wide Lagrangian projections of
-nondegenerate sources (\cref{spn:thm:wide-separation}), a fixed source with a
-nondegenerate target of fixed codimension (\cref{spn:thm:complement-boundary}), and two
-growing nondegenerate frames at every offset from complementary dimension, uniformly in the
-aspect ratio (\cref{spn:thm:offset-profile,spn:thm:uniform-full}). Determine it in the remaining
-regimes, where frames with growing radicals and the complement dimension grow simultaneously; a
-closed answer would need the law of the triple $(s,t_0,t_1)$ under a uniform rectangular matrix,
-and the optimal thresholds of \cref{spn:thm:offset-test} have no known analogue there, because a
-prescribed degenerate Gram form can be realized by a noninjective map and the reduction of
-\cref{spn:prop:residual} must then retain an injectivity constraint. For complementary
-nondegenerate frames, the exactly optimal rank-only test at finite size, and whether the two-bit
-test of \cref{spn:cor:xor} is exactly optimal at finite size, are not determined. Over a complete
-discrete valuation ring, \cref{spn:thm:padic-pairs} shows that for two symplectic frames with
-$n\ge a+b+\min(a,b)-1$ singularity of the residual form modulo $\varpi$ is an optimal equal-prior
-test and the first-digit distance persists at every precision, and \cref{spn:thm:gram-regularity}
-gives the local Gram densities as exact Fourier sums. Below that range it is not known for which
-frame types the distance persists (\cref{spn:rem:padic-endpoint} and the Lagrangian projections of
-\cref{spn:thm:local-five}, where it grows with each digit, show that persistence is not automatic);
-a closed form of the local density in the elementary divisors of the residual form and the optimal
-tests for unequal priors are also open. For wide blocks with an unknown shared source form,
-\cref{spn:thm:hidden-threshold,spn:prop:hidden-wide} settle the blocks with two-dimensional kernels
-conditioned on full row rank; unconditioned blocks, larger kernels, which impose several dependent
-linear constraints, and noisy observations are open, as are the limiting total variation and the
-law of the number of compatible forms inside the window of \cref{spn:thm:hidden-window}. The
-analogous laws for
-nonuniform positive-type weights, which need representation-theoretic information beyond orbit
-counts, and for orthogonal, unitary, symmetric or Hermitian forms, where in characteristic two
-quadratic data cannot be replaced by a symmetric matrix, are also open.
-\end{question}
-
-\begin{question}[Dependence among many observations]\label{spn:q:dependence}
-\Cref{spn:thm:joint-threshold,spn:thm:joint-profile} locate the transition for many frames at total
-dimension $2n$ and identify the limiting profile inside the window when the largest frame has
-dimension $o(D)$. The fixed-gap profile for general frame types, for instance when one frame has
-dimension comparable with the total, and the exactly optimal finite-size tests are not determined;
-they would follow from the law of the invariants $(s,t_1,\dots,t_k)$ under independent uniform cross
-blocks. Forests are the only independent observation graphs (\cref{spn:cor:forest-only}), and growing
-cacti with bounded cycle lengths have the sharp profile of \cref{spn:thm:cactus-detection}; the
-information carried by overlapping cycles in general graphs, of which \cref{spn:thm:anchors} treats
-complete bipartite graphs with a fixed side, the case of cycle lengths growing with $n$, graphs of
-frames of larger dimension, finite local rings and nonuniform sampling are open. A general theorem
-must allow for rare configurations with very large likelihood ratios, which make the chi-square
-divergence of $K_{2,m}$ diverge while its total variation tends to zero.
-\end{question}
-
-\begin{question}[The binary principal nullity in the critical window]\label{spn:q:binary}
-For fixed $t\in\Z$, does $\spnP\set{\nu(Q)\ge k}$ converge along $n=k^2+t$,
-and what is the limiting distribution of the number of complementary pairs
-with nullity at least $k$? A second moment alone cannot identify that law.
-For a fixed gap $n-2r\ge2$, is the constant implicit in
-\eqref{spn:eq:raresum} a closed product for each parity?
-\Cref{spn:thm:rare,spn:thm:saturation} treat diverging gaps and the gaps
-zero and one.
-\end{question}
-
-\begin{question}[An arithmetic family of constrained twists]\label{spn:q:twists}
-Produce a family of auxiliary characters that simultaneously has an explicit
-ray-group presentation with its required-triviality subgroup $D$; a proved
-nonvanishing or bounded-valuation witness on the compatible character
-subgroup of \cref{spn:prop:grid}; controlled local orders, so that the first
-required powers remain ramified; a quantitative support-prime construction
-meeting the actual Frobenius conditions, in particular a bound for the least
-prime splitting completely in the governing field $L_N$ of
-\cref{spn:thm:all-budgets}; and a bound for the associated conductor and
-coefficient-field ramification. A harder benchmark than
-\cref{spn:thm:source-twist-minimum} would replace its class relations by the
-tied cocycle relations of one explicitly chosen Selmer datum. The analogues
-of \cref{spn:thm:ray,spn:thm:bounded-conductor} for $p=2$ and for a
-nonabelian base field are also open.
-\end{question}
-
-\begin{question}[Surviving coefficient primes]\label{spn:q:primes}
-Which primes dividing the exact gcd $G(N,e)$ of \cref{spn:thm:gcd} support a
-nonzero odd component? The calculation rules out some primes universally;
-establishing that a surviving prime occurs requires information about the
-cocycles themselves.
+\begin{question}\label{src:q:gram}
+For fixed $(r,n,z)$, what is the least value of $\det(AA^{\srctr})/D^2$ in
+\cref{src:thm:gram}? The three affine bounds are each attained for $r=2$, $n=5$, but their
+maximum is not claimed to be optimal for every triple. For $r=2$ and $z=0$,
+\cref{src:thm:gramasym} gives $E(n)=\kappa(n-1)^4+O(n^2)$: what are the limit points of
+$(E(n)-\kappa(n-1)^4)/n^2$, at which the row endpoints and the basis shear enter, and from which $n$
+on are all minimizers confined to six rows? For $r=2$ and a fixed number of vanishing minors, where
+the multiplicities of repeated directions must also be optimized, what is the asymptotic minimum? For
+fixed $r\ge3$, what is the sharp constant, or even the order of growth, of $E_r(n)/\binom nr$, which
+\cref{src:cor:gramrank} bounds below by $(2\kappa+o(1))n^2$?
 \end{question}

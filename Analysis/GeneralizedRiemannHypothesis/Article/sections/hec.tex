@@ -26,10 +26,12 @@ modular forms together with their symmetric powers. This section collects what t
 gives for these targets. For each of them we state the exact prime estimate that is equivalent to
 its Riemann hypothesis, we solve the extremal problems that govern the admissible prime weights, and we
 record the unconditional results obtained along the way: real zeros, Jensen polynomials, oscillation of
-the prime sums, and obstructions to realizing the weights by congruence conditions. Every statement that
-mentions a Riemann hypothesis outside the scope of \cref{src:thm:dgrh} is a reduction; the prime
-estimates themselves are open. The final subsection treats two questions about Dirichlet characters
-that are settled, or sharply delimited, by \cref{src:thm:dgrh}.
+the prime sums, and obstructions to realizing the weights by congruence conditions. For the cubic field
+of discriminant $-23$ this includes two sign tests, the sparse sign test and the race in a fixed window.
+Every statement that mentions a Riemann hypothesis outside the scope of \cref{src:thm:dgrh} is a
+reduction; the prime estimates themselves are open. Central zeros of Dirichlet $L$-functions are not a
+degree-two topic: the finite tests for central nonvanishing are in \cref{rec:sec:count}, and the
+weighted race in which central zeros help is \cref{hec:ss:central} in \cref{sec:zer}.
 
 \subsection{Conventions and the Landau step}\label{hec:ss:landau}
 {\emergencystretch=\textwidth\sources{grh_transfer_analysis; grh_beyond_dirichlet_2026-11-25; grh_dihedral_47_71; grh_method_transfers_sharp_torsion}}
@@ -43,8 +45,8 @@ estimates for a fixed function; no uniformity in the field or in the conductor i
 representation $\Ind\psi$ of a one-dimensional character $\psi$ has $L(s,\Ind\psi)=L(s,\psi)$, a Hecke
 $L$-function; no case of Artin's holomorphy conjecture beyond this monomial case is used.
 
-The passage from a one-sided bound to the absence of zeros is always the same. It is proved in
-\cref{sec:ana}, and we recall it in the normalization used below.
+The passage from a one-sided bound to the absence of zeros is always the same. It is
+\cref{ana:thm:onesided}, recalled here in the normalization used below.
 
 \begin{lemma}[Landau step]\label{hec:lem:landau}
 Let $g\colon[1,\infty)\to\R$ be locally integrable with $g(x)=O(x^{A})$ for some $A$, and let
@@ -57,13 +59,11 @@ $g(x)\le Cx^{a}$ for all sufficiently large $x$, then the integral converges for
 holomorphic in that half-plane.
 \end{lemma}
 
-This is \cref{ana:thm:onesided}, with the pointwise hypothesis of \cref{ana:cor:forms}(a), applied to
-$R(x)=g(x)/x$ and $\beta=a$. For a remainder of a logarithmic derivative in the ramp normalization of
-\cref{sec:ana} the residues are computed once in \cref{ana:thm:zerotest}.
-
-With $g(x)=xR(x)$ the lemma applies to transforms $\int_1^\infty R(x)x^{-s}\,\dd x$ and bounds
-$R(x)\le Cx^{a-1}$. Applied to $-g$, it converts a lower bound into holomorphy when the real residues are
-negative. In every application the conclusion is used in the same way: a zero $\rho$ of the tested
+This is \cref{ana:thm:onesided} with the pointwise hypothesis of \cref{ana:cor:forms}(a), applied to
+$R(x)=g(x)/x$ and $\beta=a$; for remainders of logarithmic derivatives in the ramp normalization the
+residues are computed in \cref{ana:thm:zerotest}. With $g(x)=xR(x)$ the lemma bounds transforms
+$\int_1^\infty R(x)x^{-s}\,\dd x$ under $R(x)\le Cx^{a-1}$, and applied to $-g$ it converts a lower bound
+into holomorphy when the real residues are negative. In every application a zero $\rho$ of the tested
 $L$-function with $\Re\rho>a$ would produce a pole of $G$ whose residue is a nonzero combination of zero
 orders, so there is no such zero.
 
@@ -210,31 +210,28 @@ $\gamma_H=\lim_{s\to1}\bigl(\zeta_H'(s)/\zeta_H(s)+1/(s-1)\bigr)$ and the normal
 The sign and the constant are forced by the Laurent expansion at $s=1$; another additive constant would
 destroy a decaying bound.
 
-\begin{theorem}[Principal-class criterion; \stR]\label{hec:thm:principal}
-Fix $0<\beta<1$. If there is a constant $C$ with
-\begin{equation}\label{hec:eq:principalbound}
-\mathcal R_H(x)\le Cx^{\beta-1}\qquad\text{for all sufficiently large }x,
-\end{equation}
-then $\zeta_H$ has no zero with $\Re s>\beta$, and consequently neither do $\zeta_K$, $\zeta_F$ and
-$L_K(s,\psi)$. If \eqref{hec:eq:principalbound} holds for every $\beta>1/2$, then RH holds for $\zeta_H$,
-$\zeta_F$ and $L_K(s,\psi)$.
-\end{theorem}
-
-\begin{proof}
+\begin{example}[Principal-class criterion; \stR]\label{hec:thm:principal}
 By \eqref{hec:eq:classlogder}, $\mathcal R_H$ is the remainder \eqref{ana:eq:RK} of the Dedekind zeta
 function of $H$: the sum is $\sum_{n\le x}\Lambda_H(n)(1/n-1/x)$, where $\Lambda_H(n)$ groups the
 coefficients of $-\zeta_H'/\zeta_H$ by rational norm, and the constant is $1+\gamma_H$. With $u=s-1$ one has
 $-\zeta_H'/\zeta_H(1+u)=1/u-\gamma_H+O(u)$, and division by $s(s-1)=u(1+u)$ gives
 $u^{-2}-(1+\gamma_H)u^{-1}+O(1)$; this is the normalization that makes the Mellin transform of
-$\mathcal R_H$ regular at $s=1$ (\cref{ana:lem:mellin}). At a zero $\rho$ of $\zeta_H$ of multiplicity
-$m_\rho$ the transform has a simple pole with residue $m_\rho/(\rho(1-\rho))$, even if the zero is
-multiple. \Cref{ana:thm:zerotest}, in the instance \cref{ana:ex:instances}(a) with $K=H$, therefore excludes
-every zero of $\zeta_H$ in $\Re s>\beta$. The factorizations \eqref{hec:eq:cubic} and \eqref{hec:eq:galois},
-with all factors holomorphic in the strip, give the statements for the other functions, and the
-functional equations give the zeros to the left of the critical line.
-\end{proof}
+$\mathcal R_H$ regular at $s=1$ (\cref{ana:lem:mellin}). Hence \cref{ana:thm:zerotest} in the instance
+\cref{ana:ex:instances}(a) with $K=H$, equivalently \cref{nab:prop:dedekind}(a) with $q=1$ and $K=H$
+(whose prime-only remainder differs from $\mathcal R_H$ by $O(x^{-1/2})$), gives the following. Let
+$1/2<\beta<1$. If there is a constant $C$ with
+\begin{equation}\label{hec:eq:principalbound}
+\mathcal R_H(x)\le Cx^{\beta-1}\qquad\text{for all sufficiently large }x,
+\end{equation}
+then $\zeta_H$ has no zero with $\Re s>\beta$, and by the factorizations \eqref{hec:eq:cubic} and
+\eqref{hec:eq:galois}, with all factors holomorphic in the strip, neither do $\zeta_K$, $\zeta_F$ and
+$L_K(s,\psi)$. If \eqref{hec:eq:principalbound} holds for every $\beta>1/2$, the functional equations give
+RH for $\zeta_H$, $\zeta_F$ and $L_K(s,\psi)$. For $\beta<1/2$ the bound never holds, since by
+\cref{ana:thm:zerotest} it would exclude the zeros of $\zeta_H$ on the critical line, and $\beta=1/2$ is
+contained in every $\beta>1/2$.
+\end{example}
 
-The theorem makes no use of \cref{src:thm:dgrh}: the estimate would give the Riemann hypothesis for every
+The criterion makes no use of \cref{src:thm:dgrh}: the estimate would give the Riemann hypothesis for every
 factor of $\zeta_H$ at once. Because the selector is the full class-character product, every residue has the same
 sign, and no auxiliary zero-avoiding twist is required. By the averaged forms of the Landau step in
 \cref{ana:cor:forms,ana:thm:moving}, the pointwise bound may be replaced, for every $\eps>0$, by any one of
@@ -320,6 +317,85 @@ separation problem is the degree-two factor $L(s,\rho\otimes\chi_d)$, and (A) an
 common $d$. Unlike \cref{hec:thm:principal}, this route needs an auxiliary nonvanishing statement, because
 the residue \eqref{hec:eq:resd} is a difference of zero orders.
 
+\paragraph{Controlling a degree-two zero sum.}
+The two sign tests below, a sparse sign test and a race in a fixed window, compare a bias from the prime
+squares with the zero sum
+\[
+ Z=\sum_{\rho}\frac1{1/4+(\Im\rho)^2}
+\]
+over the nontrivial zeros of $L$ with multiplicity, as in \eqref{zer:eq:Z}; recall that
+$L=L_K(s,\psi)=L(s,\rho)$ by \cref{hec:prop:cubicfield}. Under RH for $L$,
+\eqref{zer:eq:Zformula} gives $Z=2\Lambda'(1)/\Lambda(1)$ for the completed function
+\eqref{hec:eq:Lambda23}, which is positive on the real axis, so $Z$ needs quantitative control of the
+logarithmic derivative. For the race, the weight is the trace $b(p)=a(p)=\#\set{y\in\F_p:y^3-y-1=0}-1$,
+$p\ne23$, and $J_\tau$ is the window statistic \eqref{zer:eq:Jh} of \cref{zer:sec:window} for this weight;
+a positive value of $J_\tau$ favors the irreducible primes over twice the completely split primes.
+
+\begin{proposition}[\stU]\label{zer:prop:eta}
+Let $F(y)=\prod_j\eta(id_jy)^{r_j}$ with finitely many $d_j,r_j>0$. For the entire Mellin
+transform $M(s)=\int_0^\infty F(y)y^s\,\dd y/y$ let
+\[
+ c=\frac\pi{12}\inf_{y>0}\sum_jr_j\max\set{d_jy,(d_jy)^{-1}}.
+\]
+For every real $\sigma$, $(\log M)''(\sigma)\le1/c$. The transform has no zero at any $s$
+with $\abs{\Im s}\le(\pi/2)\sqrt c$.
+\end{proposition}
+\begin{proof}
+Set $v=\log y$. The product formula for $\eta(ie^v)$ starts with $\exp(-\pi e^v/12)$. For
+$z=ae^v$, the derivative of $\log(1-e^{-z})$ in $v$ is $z/(e^z-1)$, decreasing in $v$. Thus
+$-(\log\eta(ie^v))''\ge(\pi/12)e^v$. Termwise differentiation is justified locally by
+exponential convergence. Eta inversion gives $\eta(ie^{-v})=e^{v/2}\eta(ie^v)$, making this
+second logarithmic derivative even. Apply the two lower bounds to each factor separately.
+The potential $V(v)=-\log F(e^v)$ satisfies $V''\ge c$. The eta product and its inversion
+also give double exponential decay in $v$ at both ends, up to an exponential linear factor.
+The integral is entire and all differentiations below are justified.
+
+Give $U$ density proportional to $\exp(\sigma v-V(v))$, and write $\mu=\mathbb E\,U$.
+Logarithmic differentiation gives $(\log M)''(\sigma)=\operatorname{Var}U$. Integration by
+parts gives $\mathbb E[(U-\mu)(V'(U)-\sigma)]=1$. Subtracting $V'(\mu)$ in place of $\sigma$
+leaves this expectation unchanged. Strong convexity then gives $1\ge c\operatorname{Var}U$.
+Finally, $\cos w\ge\pi/4-w^2/\pi$ on $\R$, strictly except at $w=\pm\pi/2$: on $[0,\pi/2]$
+this follows by differentiating and using $\sin w\ge2w/\pi$, and past $\pi/2$ one has
+$2w/\pi\ge1$. The centered characteristic function consequently has strictly positive real
+part whenever $t^2\operatorname{Var}U\le\pi^2/4$. It equals
+$e^{-it\mu}M(\sigma+it)/M(\sigma)$.
+\end{proof}
+
+\begin{corollary}\label{zer:cor:cubicZ}
+For $f=\eta(z)\eta(23z)$ one has $c=\pi\sqrt{23}/6$, and the completed function
+$\Lambda(s)$ has no zero with $\abs{\Im s}\le(\pi/2)\sqrt c=2.48915\ldots$ \textup{(\stU)}.
+If all zeros of $L(s,\rho)$ in the critical strip have real part $1/2$, then
+$Z\le1/c=6/(\pi\sqrt{23})$ and
+\[
+ \liminf_{x\to\infty}\sqrt x\,J_4(x)\ \ge\ 1-\frac9{\pi\sqrt{23}}>0.4026
+\]
+for the cubic weight $b(p)=\#\set{y\in\F_p:y^3-y-1=0}-1$.
+\end{corollary}
+\begin{proof}
+For $d_1=1$, $d_2=23$ the infimum is $2\sqrt{23}$, attained at $y=1/\sqrt{23}$, by
+comparison with $1/y+23y$. Multiplying $M(s)$ by $23^{s/2}$ gives $\Lambda(s)$ and leaves
+the second logarithmic derivative unchanged. The symmetry forces $(\log\Lambda)'(1/2)=0$.
+Integrating the variance bound up to $1$ gives $(\log\Lambda)'(1)\le1/(2c)$, and
+\eqref{zer:eq:Zformula} gives $Z\le1/c$ under the Riemann hypothesis for $L(s,\rho)$. Take
+$\tau=4$ in \eqref{zer:eq:liminf}.
+\end{proof}
+
+\Cref{zer:prop:eta} gives one formula for all positive eta products; earlier computations reach
+much farther for this particular field \cite{Ng2000Limiting}. The quantity
+$2\Lambda'(1)/\Lambda(1)$ has also been enclosed numerically: with $G(t)=f(it/\sqrt{23})$ and
+$G(1/t)=tG(t)$,
+\[
+ \Lambda(s)=\int_1^\infty G(t)\bigl(t^{s-1}+t^{-s}\bigr)\,\dd t,
+\]
+so $2\Lambda'(1)/\Lambda(1)$ is twice the ratio of the integrals of $G(t)\log t\,(1-1/t)$
+and $G(t)(1+1/t)$, and \artifact{grh-transfer/checks/cubic23.py} encloses it in
+$(0.32770,0.35161)$, consistently with the bound $1/c=0.39823\ldots$. The enclosure
+evaluates the positive eta product on intervals of width $1/64$ up to $16$, using the first
+$12$ factors of each infinite product; for omitted factors $1-u_i$ their product lies
+between $1-\sum u_i$ and $1$, and for the integral tails one uses
+$0<G(t)\le e^{-2\pi t/\sqrt{23}}$ and $\log t\le t$. These integrals and enclosures hold
+independently of any hypothesis on zeros.
+
 \paragraph{A sign test on prime root counts.}
 The strongest form of the reduction uses primes only, a single cutoff, a sign rather than a rate, and a
 sparse set of cutoffs. Consider the first Riesz mean of the trace over primes,
@@ -328,17 +404,7 @@ sparse set of cutoffs. Consider the first Riesz mean of the trace over primes,
 \end{equation}
 Call an increasing unbounded sequence $(x_j)$ \emph{admissible} if
 $x_{j+1}-x_j=O(x_j^{1-\delta})$ for some fixed $0<\delta\le1$; for instance $x_j=j^k$ with $\delta=1/k$,
-for any integer $k\ge1$.
-
-The completed function \eqref{hec:eq:Lambda23} is the one used in \cref{zer:sec:window}, and the zero sum
-that controls the oscillation is
-\[
- Z=\sum_{\rho}\frac1{1/4+(\Im\rho)^2},
-\]
-over the nontrivial zeros of $L$ with multiplicity, as in \eqref{zer:eq:Z}. The curvature bound for positive
-eta products, \cref{zer:prop:eta}, gives in the case $\eta(z)\eta(23z)$ the following
-(\cref{zer:cor:cubicZ}): if RH holds for $L$, then
-$Z=2\Lambda'(1)/\Lambda(1)\le6/(\pi\sqrt{23})$.
+for any integer $k\ge1$. By \cref{zer:cor:cubicZ}, RH for $L$ gives $Z\le6/(\pi\sqrt{23})$.
 
 \begin{theorem}[Sparse sign test; \stR]\label{hec:thm:sign}
 Let $(x_j)$ be an admissible sequence. Then RH for $L$ is equivalent to
@@ -455,67 +521,87 @@ algorithms, and gives $\mathcal{T}(10^6)/1000=-0.788953233$ to the displayed pre
 computation bears on the eventual sign.
 {\emergencystretch=14em\par}
 
+\paragraph{A race in a fixed window.}
+The same bias from the prime squares governs the window statistic $J_4$ of the weight $b(p)=a(p)$, with
+the asymptotic part \eqref{zer:eq:squares}--\eqref{zer:eq:Zformula} of the modulo-four race of
+\cref{zer:sec:window}.
+
+\begin{theorem}[The cubic race; \stR]\label{zer:thm:cubicrace}
+For the cubic weight $b(p)=\#\set{y\in\F_p:y^3-y-1=0}-1$, $p\ne23$, the following are
+equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item every zero of $L(s,\rho)$ in the critical strip has real part $1/2$;
+\item $J_4(x)\ge0$ for every sufficiently large real $x$;
+\item $\displaystyle\liminf_{x\to\infty}\sqrt x\,J_4(x)\ge1-\frac9{\pi\sqrt{23}}>0.4026$.
+\end{enumerate}
+The same equivalence holds with strict positivity in \textup{(ii)}. Without any hypothesis,
+the cubic $J_4$ takes positive values at arbitrarily large $x$.
+\end{theorem}
+\begin{proof}
+The implication (i)$\Rightarrow$(iii) is \cref{zer:cor:cubicZ}, and (iii)$\Rightarrow$(ii) is
+immediate, with strict positivity. For (ii)$\Rightarrow$(i), the Mellin transform of
+$J_\tau$ is $(1-\tau^{s-1})/(s(s-1))$ times $\sum_{p\ne23}b(p)(\log p)p^{-s}$ for
+$\Re s>1$; it has a pole at every zero of $L(s,\rho)$ with $1/2<\Re s<1$, it is regular on
+the real interval $(1/2,\infty)$ because $\Lambda$ is positive there, and the Landau step
+\cref{hec:lem:landau} then shows that an eventually nonnegative $J_\tau$ forces (i). An
+eventually nonpositive $J_\tau$ forces (i) in the same way, by applying the argument to
+$-J_\tau$; for $\tau=4$ this would contradict (iii), which proves the last assertion.
+\end{proof}
+
+The Riemann hypothesis for $L(s,\rho)$ is not a consequence of \cref{src:thm:dgrh}, and
+establishing the sign in (ii) is the open step. The obstructions to replacing the cubic
+weight by congruence weights are \cref{hec:prop:modulus,hec:prop:meansq} below.
+
 \begin{remark}[Two-scale form]\label{hec:rem:twoscale}
-Let $B(y)=\sum_{p\le y,\,p\ne23}a(p)\log p$ and, for a dilation $h>1$,
-$J_h(x)=-\int_x^{hx}B(y)\,y^{-2}\,\dd y$, which is the statistic \eqref{zer:eq:Jh} for the weight $a(p)$.
-\Cref{zer:thm:cubicrace} shows that RH for $L$ is equivalent to $J_4(x)\ge0$ for all sufficiently large $x$,
-and to $\liminf_{x\to\infty}\sqrt x\,J_4(x)\ge1-9/(\pi\sqrt{23})>0.4026$, and that $J_4$ takes positive
-values arbitrarily far out unconditionally. \Cref{hec:thm:sign} replaces the two continuous cutoffs by a
-single one on a prescribed sparse sequence.
+\Cref{hec:thm:sign,zer:thm:cubicrace} are two sign tests for RH for $L$ built on the same comparison of the
+bias from the prime squares with $Z\le6/(\pi\sqrt{23})$, and they differ in the statistic.
+\Cref{zer:thm:cubicrace} uses the ramp over the two continuous cutoffs $x$ and $4x$, at every large real
+$x$, and gives $\liminf\sqrt x\,J_4(x)\ge1-9/(\pi\sqrt{23})>0.4026$; \cref{hec:thm:sign} uses the Riesz
+weight $1-p/x$ with a single cutoff, sampled only on a prescribed sparse sequence, and gives
+$\limsup\mathcal T(x)/\sqrt x<-0.268$. Unconditionally, $J_4$ is positive and $\mathcal T(x_j)$ is negative
+arbitrarily far out.
 \end{remark}
 
 \paragraph{Irreducible primes.}
-The geometric part of the source proof produces nonnegative local amounts. A nonnegative class function
-on a group $G$ whose coefficients on all nonlinear characters are negative is positive on every nonidentity
-element of $[G,G]$, and the indicator of these elements is the pointwise minimal such function in the
-normalization of \cref{sec:nab}. For $S_3$ this indicator is that of the three-cycles, which asks whether
-the cubic is irreducible modulo $p$.
+For $S_3$ the least nonnegative weight of \cref{nab:prop:least} is the indicator of the three-cycles,
+which asks whether the cubic is irreducible modulo $p$, and the nonsplit-prime test
+\cref{nab:thm:nonsplit} with $N=[S_3,S_3]=A_3$ applies to it.
 
-\begin{corollary}[Irreducible-prime criterion for $S_3$ cubics; \stR]\label{hec:thm:irred}
+\begin{example}[Irreducible-prime criterion for $S_3$ cubics; \stR]\label{hec:thm:irred}
 Let $P\in\Z[X]$ be a monic irreducible cubic with nonsquare discriminant, let $E$ be its splitting field,
-with group $S_3$, and let $\tau$ be the standard representation. Assume \cref{src:thm:dgrh}. Then RH for
-$L(s,\tau)$ is equivalent to RH for $\zeta_E$, and hence to each of the equivalent statements of
-\cref{nab:thm:nonsplit} with $N=[S_3,S_3]=A_3$. For this choice the set $\mathcal P$ consists of the primes
-$p\nmid\disc(P)$ at which $P\bmod p$ is irreducible, $\delta=1/2-1/6=1/3$, and the weight is
+with group $S_3$, and let $\tau$ be the standard representation. In the order identity, transposition,
+three-cycle, the characters are $\chi_\tau=(2,0,-1)$ and $\hecsgn=(1,-1,1)$, so the weight of the event
+``$P\bmod p$ is irreducible'' is
 \[
- 3\,\hecind_{A_3\setminus\set1}=1+\hecsgn-\chi_\tau .
+ 3\,\hecind_{A_3\setminus\set1}=1+\hecsgn-\chi_\tau ,
 \]
-In particular RH for $L(s,\tau)$ is equivalent to the bound, for every $\eps>0$,
+and in \cref{nab:thm:nonsplit} with $N=A_3$ the set $\mathcal P$ consists, up to the finitely many primes
+dividing $\disc(P)$, of the primes $p$ at which $P\bmod p$ is irreducible, with $\delta=1/2-1/6=1/3$. The
+representation $\tau$ is induced from a nontrivial character of $A_3$, so $L(s,\tau)$ is an entire Hecke
+$L$-function, and $\zeta_E=\zeta\,L(s,\hecsgn)L(s,\tau)^2$ with all factors holomorphic in the critical
+strip. Assume \cref{src:thm:dgrh}. Then RH for $L(s,\tau)$ is equivalent to RH for $\zeta_E$, and
+statement (iv) of \cref{nab:thm:nonsplit} shows that both are equivalent to the bound, for every
+$\eps>0$,
 \begin{equation}\label{hec:eq:irredP}
  \sum_{\substack{p\le x,\ p\nmid\disc(P)\\ P\bmod p\ \mathrm{irreducible}}}\log p-\frac x3\le C_{P,\eps}x^{1/2+\eps}.
 \end{equation}
-\end{corollary}
+\end{example}
 
-\begin{proof}
-In the order identity, transposition, three-cycle, the characters are $\chi_\tau=(2,0,-1)$ and
-$\hecsgn=(1,-1,1)$, which gives the displayed weight; a prime $p\nmid\disc(P)$ has a three-cycle as
-Frobenius exactly when $P\bmod p$ is irreducible. The representation $\tau$ is induced from a nontrivial
-character of $A_3$, so $L(s,\tau)$ is an entire Hecke $L$-function, and the regular representation gives
-$\zeta_E=\zeta\,L(s,\hecsgn)L(s,\tau)^2$ with all factors holomorphic in the critical strip. With
-\cref{src:thm:dgrh} for the first two factors, RH for $\zeta_E$ and RH for $L(s,\tau)$ are equivalent, and
-\eqref{hec:eq:irredP} is statement (iv) of \cref{nab:thm:nonsplit}.
-\end{proof}
-
-The first Riesz mean of the same primes gives a two-sided form without loss of $\eps$.
-
-\begin{proposition}[Riesz form of the irreducible-prime criterion; \stR]\label{hec:prop:irredriesz}
+\begin{remark}[Riesz form of the irreducible-prime criterion; \stR]\label{hec:prop:irredriesz}
 With $P$ and $\tau$ as in \cref{hec:thm:irred}, put
 \[
  I_P(x)=3\sum_{\substack{p\le x,\ p\nmid\disc(P)\\ P\bmod p\ \mathrm{irreducible}}}
  \log p\,\Bigl(1-\frac px\Bigr).
 \]
-Assume \cref{src:thm:dgrh}. The following are equivalent.
-\begin{enumerate}[label=\textup{(\arabic*)}]
-\item All nontrivial zeros of $L(s,\tau)$ have real part $1/2$.
-\item $I_P(x)=x/2+O_P(\sqrt x)$.
-\item For each $\eps>0$ and all sufficiently large $x$, $I_P(x)\le x/2+C_{P,\eps}x^{1/2+\eps}$.
-\end{enumerate}
-\end{proposition}
-
-\begin{proof}
-Let $w_*$ be the indicator of the three-cycles and $U(x)$ the sum over prime powers $p^k\le x$,
-$p\nmid\disc(P)$, of $3w_*(g_p^k)\log p\,(1-p^k/x)$, where $g_p$ is a Frobenius element. Chebyshev's bound
-gives $U-I_P=O(\sqrt x)$. For $\Re s>1$,
+For the cubic field $K_P=\Q[X]/(P)$ the abelian part is $\Q$ and $a_{K_P}(p)-1=\chi_\tau(g_p)$, so
+$I_P(x)-x/2=-U_{K_P}(x)+O_P(\sqrt x)$ under \cref{src:thm:dgrh}, with $U_{K_P}$ the statistic of
+\cref{nab:thm:missing}. Since $\zeta_{K_P}=\zeta L(s,\tau)$, that theorem and the bound $U_{K_P}=O(\sqrt x)$
+under RH from the first paragraph of its proof show that, given \cref{src:thm:dgrh}, RH for $L(s,\tau)$
+is equivalent to $I_P(x)=x/2+O_P(\sqrt x)$. It is also equivalent to the $\eps$-form: for each $\eps>0$
+and all sufficiently large $x$, $I_P(x)\le x/2+C_{P,\eps}x^{1/2+\eps}$. Indeed, let $w_*$ be the indicator
+of the three-cycles and $U(x)$ the sum over prime powers $p^k\le x$, $p\nmid\disc(P)$, of
+$3w_*(g_p^k)\log p\,(1-p^k/x)$, where $g_p$ is a Frobenius element; Chebyshev's bound gives
+$U-I_P=O(\sqrt x)$. For $\Re s>1$,
 \[
  \int_1^\infty U(x)x^{-s-1}\,\dd x=\frac{A(s)}{s(s+1)},\qquad
  A(s)=-\frac{\zeta'}{\zeta}(s)-\frac{L'}L(s,\hecsgn)+\frac{L'}L(s,\tau)+B(s),
@@ -524,18 +610,10 @@ where $B$ accounts for the finitely many excluded Euler factors and is holomorph
 residue at $s=1$ is $1/2$. After subtraction of $1/(2(s-1))$, the transform of $U(x)-x/2$ has, at a zero
 $\beta$ of $L(s,\tau)$ with $\Re\beta>1/2$ of multiplicity $m_\beta$, a simple pole with residue
 $m_\beta/(\beta(\beta+1))$, positive at real $\beta$; by \cref{src:thm:dgrh} the first two terms of $A$
-contribute no other pole in this region. Assume (3) and fix $a=1/2+\eps<1$. By \cref{hec:lem:landau} the
-transform is holomorphic in $\Re s>a$, so $L(s,\tau)$ has no zero there; let $\eps\to0$ and use the
-functional equation. This proves (1).
-
-Assume (1). All three factors then satisfy their critical-line statements. Start from Mellin inversion
-on $\Re s=2$ with the full logarithmic derivatives, adding back the omitted local terms at a cost
-$O_P(\log x)$, and shift to $\Re s=-1/2$ along heights at distance $\gg_P1/\log T$ from the ordinates. The
-logarithmic derivatives are $O_P(\log^2T)$ on the horizontal segments and $O_P(\log(2+\abs t))$ on the new
-line, the residues at the nontrivial zeros have absolute sum $O_P(\sqrt x)$ because
-$\sum_\rho(1+\abs{\Im\rho})^{-2}$ converges, and the possible double pole at $0$ costs $O_P(1+\log x)$.
-This gives $U(x)=x/2+O_P(\sqrt x)$, which is (2), and (2) implies (3).
-\end{proof}
+contribute no other pole in this region. Given the $\eps$-form, fix $a=1/2+\eps<1$. By
+\cref{hec:lem:landau} the transform is holomorphic in $\Re s>a$, so $L(s,\tau)$ has no zero there; let
+$\eps\to0$ and use the functional equation.
+\end{remark}
 
 For $P=X^3-X-1$, with $E=H$, the estimates in \cref{hec:thm:irred,hec:prop:irredriesz} are open. With
 $I(p)=1$ if $X^3-X-1$ is irreducible modulo $p$ and $I(p)=0$ otherwise, \eqref{hec:eq:irredP} reads
@@ -548,23 +626,17 @@ and under \cref{src:thm:dgrh} it is equivalent to RH for $\zeta_H$.
 The weights $a(p)$ and $I(p)$ cannot be produced by changing the modulus in the source construction, and
 the field $H$ cannot be substituted for the auxiliary field.
 
-\begin{proposition}[Finite-modulus obstruction; \stU]\label{hec:prop:modulus}
-For every integer $q\ge1$, infinitely many unramified primes $p\equiv1\pmod q$ have $a(p)=2$, and
-infinitely many have $a(p)=-1$. Consequently $a(p)$ is not a function of $p$ modulo any fixed integer,
-even after deleting finitely many primes, and it is not a finite linear combination of Dirichlet
-characters. No finite product or quotient of Dirichlet $L$-functions has the Euler product of $L$.
-\end{proposition}
-
-\begin{proof}
-Put $C=\Q(\zeta_q)$. The field $H\cap C$ is abelian over $\Q$, and the largest abelian quotient of $S_3$
-is its sign quotient, so $H\cap C\subseteq K$. The identity and a three-cycle act trivially on this
-intersection, so the pairs $(1,1)$ and $((123),1)$ define elements of $\Gal(HC/\Q)$, viewed as a fibre
-product over $\Gal(H\cap C/\Q)$. The Chebotarev theorem gives infinitely many primes for each of their
-conjugacy classes. The cyclotomic component is trivial, so $p\equiv1\pmod q$, while the traces are $2$ and
-$-1$. A finite list of Dirichlet characters has a common modulus, on whose identity class every character
-equals $1$, and no fixed linear combination can take both values there. The last assertion follows by
-comparing the prime coefficients of logarithmic derivatives.
-\end{proof}
+\begin{remark}[Finite-modulus obstruction; \stU]\label{hec:prop:modulus}
+By \cref{nab:cor:nonlinear} for the degree-two character $a=\chi_\rho$, every fixed periodic function of
+$p$ differs from $a(p)$ in prime mean square by at least $1$. Hence $a(p)$ is not a function of $p$ modulo
+any fixed integer, even after deleting finitely many primes, it is not a finite linear combination of
+Dirichlet characters, and, comparing the prime coefficients of logarithmic derivatives, no finite product
+or quotient of Dirichlet $L$-functions has the Euler product of $L$. Pointwise, for every $q\ge1$
+infinitely many unramified primes $p\equiv1\pmod q$ have $a(p)=2$ and infinitely many have $a(p)=-1$:
+the field $H\cap\Q(\zeta_q)$ is abelian over $\Q$, hence contained in $K$, so the pairs $(1,1)$ and
+$((123),1)$ define elements of $\Gal(H\Q(\zeta_q)/\Q)$, and the Chebotarev theorem applies to their
+classes.
+\end{remark}
 
 The mean-square form of this obstruction is the case $E=H$ of \cref{nab:thm:periodic}. For a modulus $m$
 the field $H\cap\Q(\zeta_m)$ is abelian over $\Q$, hence is $\Q$ or $K$, and it is $K$ exactly when
@@ -615,123 +687,18 @@ $\Gal(H/\Q)$. These are limitations of particular transfer routes, not statement
 from \cref{src:thm:dgrh}.
 \end{remark}
 
-\paragraph{Controlling a degree-two zero sum.}
-For $K=\Q[\alpha]$, $\alpha^3-\alpha-1=0$, the standard Artin factor is the Hecke
-$L$-function of the weight-one form
-\[
- f(z)=\eta(z)\eta(23z),\qquad\zeta_K(s)=\zeta(s)L(s,\rho),
-\]
-with completed function $\zerLL(s)=(\sqrt{23}/(2\pi))^s\Gamma(s)L(s,\rho)$ and
-$\zerLL(s)=\zerLL(1-s)$ \cite{Serre2003Jordan,Zagier2008Elliptic}. The eta product is
-positive on the positive imaginary axis, and its Mellin integral makes $\zerLL(s)>0$ for
-all real $s$, including $s=1/2$. The zero sum $Z$ of \eqref{zer:eq:Z} needs quantitative
-control of the logarithmic derivative as well.
-
-\begin{proposition}[\stU]\label{zer:prop:eta}
-Let $F(y)=\prod_j\eta(id_jy)^{r_j}$ with finitely many $d_j,r_j>0$. For the entire Mellin
-transform $M(s)=\int_0^\infty F(y)y^s\,\dd y/y$ let
-\[
- c=\frac\pi{12}\inf_{y>0}\sum_jr_j\max\set{d_jy,(d_jy)^{-1}}.
-\]
-For every real $\sigma$, $(\log M)''(\sigma)\le1/c$. The transform has no zero at any $s$
-with $\abs{\Im s}\le(\pi/2)\sqrt c$.
-\end{proposition}
-\begin{proof}
-Set $v=\log y$. The product formula for $\eta(ie^v)$ starts with $\exp(-\pi e^v/12)$. For
-$z=ae^v$, the derivative of $\log(1-e^{-z})$ in $v$ is $z/(e^z-1)$, decreasing in $v$. Thus
-$-(\log\eta(ie^v))''\ge(\pi/12)e^v$. Termwise differentiation is justified locally by
-exponential convergence. Eta inversion gives $\eta(ie^{-v})=e^{v/2}\eta(ie^v)$, making this
-second logarithmic derivative even. Apply the two lower bounds to each factor separately.
-The potential $V(v)=-\log F(e^v)$ satisfies $V''\ge c$. The eta product and its inversion
-also give double exponential decay in $v$ at both ends, up to an exponential linear factor.
-The integral is entire and all differentiations below are justified.
-
-Give $U$ density proportional to $\exp(\sigma v-V(v))$, and write $\mu=\mathbb E\,U$.
-Logarithmic differentiation gives $(\log M)''(\sigma)=\operatorname{Var}U$. Integration by
-parts gives $\mathbb E[(U-\mu)(V'(U)-\sigma)]=1$. Subtracting $V'(\mu)$ in place of $\sigma$
-leaves this expectation unchanged. Strong convexity then gives $1\ge c\operatorname{Var}U$.
-Finally, $\cos w\ge\pi/4-w^2/\pi$ on $\R$, strictly except at $w=\pm\pi/2$: on $[0,\pi/2]$
-this follows by differentiating and using $\sin w\ge2w/\pi$, and past $\pi/2$ one has
-$2w/\pi\ge1$. The centered characteristic function consequently has strictly positive real
-part whenever $t^2\operatorname{Var}U\le\pi^2/4$. It equals
-$e^{-it\mu}M(\sigma+it)/M(\sigma)$.
-\end{proof}
-
-\begin{corollary}\label{zer:cor:cubicZ}
-For $f=\eta(z)\eta(23z)$ one has $c=\pi\sqrt{23}/6$, and the completed function
-$\zerLL(s)$ has no zero with $\abs{\Im s}\le(\pi/2)\sqrt c=2.48915\ldots$ \textup{(\stU)}.
-If all zeros of $L(s,\rho)$ in the critical strip have real part $1/2$, then
-$Z\le1/c=6/(\pi\sqrt{23})$ and
-\[
- \liminf_{x\to\infty}\sqrt x\,J_4(x)\ \ge\ 1-\frac9{\pi\sqrt{23}}>0.4026
-\]
-for the cubic weight $b(p)=\#\set{y\in\F_p:y^3-y-1=0}-1$.
-\end{corollary}
-\begin{proof}
-For $d_1=1$, $d_2=23$ the infimum is $2\sqrt{23}$, attained at $y=1/\sqrt{23}$, by
-comparison with $1/y+23y$. Multiplying $M(s)$ by $23^{s/2}$ gives $\zerLL(s)$ and leaves
-the second logarithmic derivative unchanged. The symmetry forces $(\log\zerLL)'(1/2)=0$.
-Integrating the variance bound up to $1$ gives $(\log\zerLL)'(1)\le1/(2c)$, and
-\eqref{zer:eq:Zformula} gives $Z\le1/c$ under the Riemann hypothesis for $L(s,\rho)$. Take
-$\tau=4$ in \eqref{zer:eq:liminf}.
-\end{proof}
-
-\begin{theorem}[The cubic race; \stR]\label{zer:thm:cubicrace}
-For the cubic weight $b(p)=\#\set{y\in\F_p:y^3-y-1=0}-1$, $p\ne23$, the following are
-equivalent:
-\begin{enumerate}[label=\textup{(\roman*)}]
-\item every zero of $L(s,\rho)$ in the critical strip has real part $1/2$;
-\item $J_4(x)\ge0$ for every sufficiently large real $x$;
-\item $\displaystyle\liminf_{x\to\infty}\sqrt x\,J_4(x)\ge1-\frac9{\pi\sqrt{23}}>0.4026$.
-\end{enumerate}
-The same equivalence holds with strict positivity in \textup{(ii)}. Without any hypothesis,
-the cubic $J_4$ takes positive values at arbitrarily large $x$.
-\end{theorem}
-\begin{proof}
-The implication (i)$\Rightarrow$(iii) is \cref{zer:cor:cubicZ}, and (iii)$\Rightarrow$(ii) is
-immediate, with strict positivity. For (ii)$\Rightarrow$(i), the Mellin transform of
-$J_\tau$ is $(1-\tau^{s-1})/(s(s-1))$ times $\sum_{p\ne23}b(p)(\log p)p^{-s}$ for
-$\Re s>1$; it has a pole at every zero of $L(s,\rho)$ with $1/2<\Re s<1$, it is regular on
-the real interval $(1/2,\infty)$ because $\zerLL$ is positive there, and the Landau step
-given in \cref{sec:hec} (an instance of \cref{ana:thm:onesided}) then shows that an
-eventually nonnegative $J_\tau$ forces (i). An eventually nonpositive $J_\tau$ forces (i)
-in the same way, by applying the argument to $-J_\tau$; for $\tau=4$ this would contradict
-(iii), which proves the last assertion.
-\end{proof}
-
-The Riemann hypothesis for $L(s,\rho)$ is not a consequence of \cref{src:thm:dgrh}, and
-establishing the sign in (ii) is the open step. The obstruction to replacing the cubic
-weight by congruence weights is treated in
-\cref{sec:hec}. \Cref{zer:prop:eta} gives one formula for all positive eta products; earlier
-computations reach much farther for this particular field \cite{Ng2000Limiting}. The
-quantity $2\zerLL'(1)/\zerLL(1)$ has also been enclosed numerically: with
-$G(t)=f(it/\sqrt{23})$ and $G(1/t)=tG(t)$,
-\[
- \zerLL(s)=\int_1^\infty G(t)\bigl(t^{s-1}+t^{-s}\bigr)\,\dd t,
-\]
-so $2\zerLL'(1)/\zerLL(1)$ is twice the ratio of the integrals of $G(t)\log t\,(1-1/t)$
-and $G(t)(1+1/t)$, and \artifact{grh-transfer/checks/cubic23.py} encloses it in
-$(0.32770,0.35161)$, consistently with the bound $1/c=0.39823\ldots$. The enclosure
-evaluates the positive eta product on intervals of width $1/64$ up to $16$, using the first
-$12$ factors of each infinite product; for omitted factors $1-u_i$ their product lies
-between $1-\sum u_i$ and $1$, and for the integral tails one uses
-$0<G(t)\le e^{-2\pi t/\sqrt{23}}$ and $\log t\le t$. These integrals and enclosures hold
-independently of any hypothesis on zeros.
-
-\subsection{Two further cubic tests}\label{hec:ss:othercubic}
+\subsection{A twisted cubic event}\label{hec:ss:othercubic}
 {\emergencystretch=\textwidth\sources{grh-lean-transfers; mcnew_counterexample_and_grh_transfers}}
 
-\paragraph{A binary event isolating one twisted factor.}
 Let $H$ be the splitting field of $P(X)=X^3-X-1$ as before and $E=H(i)$, so that
-$G=\Gal(E/\Q)=S_3\times C_2$. Let $\sigma$ be the sign character of $S_3$, $\rho$ its standard character and
-$\eta$ the nontrivial character of $C_2$. For a prime $p\nmid46$ put $f(p)=1$ if either
-$p\equiv1\pmod4$ and $P$ is irreducible modulo $p$, or $p\equiv3\pmod4$ and $P$ has three distinct linear
-factors modulo $p$; put $f(p)=0$ otherwise. Evaluating on the three cycle types for each value of $\eta$
-shows that the corresponding class function is
+$G=\Gal(E/\Q)=S_3\times C_2$, and let $\sigma$, $\rho$, $\eta$ and the binary event $f$ on primes
+$p\nmid46$ be those of \cref{nab:ex:twisted}: $f(p)=1$ if either $p\equiv1\pmod4$ and $P$ is irreducible
+modulo $p$, or $p\equiv3\pmod4$ and $P$ has three distinct linear factors modulo $p$. As computed there,
 \begin{equation}\label{hec:eq:twistid}
- f=\frac{1+\sigma}4+\frac{(1+\sigma)\eta}{12}-\frac{\rho\eta}3 .
+ f=\frac{1+\sigma}4+\frac{(1+\sigma)\eta}{12}-\frac{\rho\eta}3 ,
 \end{equation}
-Its mean is $1/4$, and it has no $\rho$ term.
+with mean $1/4$ and no $\rho$ term; among inversion-invariant binary events with a negative coefficient
+on $\rho\eta$ and none on $\rho$, it is the one of least support.
 
 \begin{theorem}[One Hecke $L$-function from one binary event; \stR]\label{hec:thm:twistedcubic}
 Assume \cref{src:thm:dgrh}. All nontrivial zeros of $L(s,\rho\eta)$ lie on $\Re s=1/2$ if and only if for
@@ -759,12 +726,8 @@ the explicit formula under RH for these finitely many Dirichlet and Hecke $L$-fu
 centered sums by $O(\sqrt x\log^2(2x))$, and \eqref{hec:eq:twistid} gives \eqref{hec:eq:twistbound}.
 \end{proof}
 
-By the classification of admissible binary Frobenius events in \cref{sec:nab}, among such events this $f$
-is the unique inversion-invariant $\set{0,1}$-valued class function of least support that has a negative
-coefficient on $\rho\eta$ and coefficient zero on $\rho$; its support has three of the twelve elements of
-$G$. The
-identity and a three-cycle of $S_3$ have the same image in the abelianization of $G$ and different values
-of $f$, which shows where an estimate beyond congruence conditions is needed.
+The identity and a three-cycle of $S_3$ have the same image in the abelianization of $G$ and different
+values of $f$, which shows where an estimate beyond congruence conditions is needed.
 
 \subsection{Dihedral conductors \texorpdfstring{$47$ and $71$}{47 and 71}}\label{hec:ss:dihedral}
 {\emergencystretch=\textwidth\sources{grh_dihedral_47_71}}
@@ -918,67 +881,63 @@ Choose $Q$ to be $Q_1$ or $Q_2$, once and for all, and let
 each prime being counted once. The corresponding conjugacy class has two of the ten group elements, so the
 density is $1/5$, and the linear smoothing halves the main term.
 
-\begin{theorem}[One class, two factors; \stR]\label{hec:thm:primes47}
-Assume \cref{src:thm:dgrh}. For either choice of $Q$ the following are equivalent.
-\begin{enumerate}[label=\textup{(\arabic*)}]
-\item The nontrivial zeros of both $L_1$ and $L_2$ lie on $\Re s=1/2$.
-\item For every $\eps>0$ there is $A_\eps$ such that $S_Q(x)\le x/10+A_\eps x^{1/2+\eps}$ for all large
-$x$.
-\item For every $\eps>0$ there is $A_\eps$ such that $S_Q(x)\ge x/10-A_\eps x^{1/2+\eps}$ for all large
-$x$.
-\end{enumerate}
-In particular either direction of the error suffices by itself, and common zeros of the two factors cannot
-defeat the test.
-\end{theorem}
-
-\begin{proof}
-Let $r$ generate the rotations of the dihedral group, labelled so that the class of $Q_1$ corresponds to
+\begin{remark}[One class, two factors; \stR]\label{hec:thm:primes47}
+Let $r$ generate the rotations of $\Gal(H/\Q)=D_{10}$, labelled so that the class of $Q_1$ corresponds to
 $r^{\pm1}$. By class field theory the unramified rational primes represented by $Q$ are exactly those with
-Frobenius in $C=\set{r,r^{-1}}$, respectively $C=\set{r^2,r^{-2}}$. Put $a=(\sqrt5-1)/2$ and
-$b=-(\sqrt5+1)/2$. For the first class, column orthogonality gives
+Frobenius in the rotation class $C=\set{r,r^{-1}}$, respectively $C=\set{r^2,r^{-2}}$. Put
+$a=(\sqrt5-1)/2$ and $b=-(\sqrt5+1)/2$. For the first class, column orthogonality gives
 \[
  5\,\hecind_C=\triv+\hecsgn+a\chi_1+b\chi_2,
 \]
-where $\chi_j$ is the Artin character of $f_j$; for the second class $a$ and $b$ are interchanged. Here
-$a+b=-1$, and $a,b$ are linearly independent over $\Q$.
-
-Let $U(x)$ be the sum of $\hecind_C(g_p^k)(1-p^k/x)\log p$ over $p^k\le x$, $p\ne47$; Chebyshev's estimate
-gives $U-S_Q=O(\sqrt x)$. For $\Re s>1$,
+where $\chi_j$ is the Artin character of $f_j$; for the second class $a$ and $b$ are interchanged. Since
+$5$ is prime, one rotation class suffices in \cref{nab:thm:rotation}, and \cref{hec:thm:real47} shows that
+$L_1$ and $L_2$ have no real zeros. Hence \cref{nab:cor:rotation} gives, under \cref{src:thm:dgrh} and for
+either choice of $Q$, that the following are equivalent:
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item the nontrivial zeros of both $L_1$ and $L_2$ lie on $\Re s=1/2$;
+\item for every $\eps>0$ there is $A_\eps$ such that $S_Q(x)\le x/10+A_\eps x^{1/2+\eps}$ for all large
+$x$;
+\end{enumerate}
+and that under (1) the error is $O(\sqrt x)$. The lower bound is a further equivalent:
+\begin{enumerate}[label=\textup{(\arabic*)},resume]
+\item for every $\eps>0$ there is $A_\eps$ such that $S_Q(x)\ge x/10-A_\eps x^{1/2+\eps}$ for all large
+$x$.
+\end{enumerate}
+Indeed, let $U(x)$ be the sum of $\hecind_C(g_p^k)(1-p^k/x)\log p$ over $p^k\le x$, $p\ne47$; Chebyshev's
+estimate gives $U-S_Q=O(\sqrt x)$. For $\Re s>1$,
 \begin{align*}
  \int_1^\infty U(x)x^{-s-1}\,\dd x&=\frac{D(s)}{s(s+1)},\\
  5D(s)&=-\frac{\zeta'}\zeta(s)-\frac{L'}L(s,\chi_{-47})-a\frac{L_1'}{L_1}(s)-b\frac{L_2'}{L_2}(s)+B(s),
 \end{align*}
 where the ramified correction $B$ is holomorphic in $\Re s>0$. The residue at $s=1$ is $1/10$; subtract
-$1/(10(s-1))$ and call the result $M(s)$. By \cref{src:thm:dgrh}, \cref{hec:thm:real47} (which gives
-$\Lambda_j>0$ on the real axis) and the cancellation at $1$, the function $M$ is regular at every real
-point of $(1/2,\infty)$. At a nonreal $\rho$ with $\Re\rho>1/2$ its residue is
+$1/(10(s-1))$ and call the result $M(s)$. By \cref{src:thm:dgrh}, \cref{hec:thm:real47} and the
+cancellation at $1$, the function $M$ is regular at every real point of $(1/2,\infty)$. At a nonreal
+$\rho$ with $\Re\rho>1/2$ its residue is
 \[
  -\frac{a\ord_\rho L_1+b\ord_\rho L_2}{5\rho(\rho+1)},
 \]
-and the numerator vanishes only if both integer multiplicities vanish. Take $\sigma_0=1/2+\eps<1$. Under
-(2) or (3), \cref{hec:lem:landau} applies to $U(x)-x/10$ or to its negative, with no real pole to consider,
-and shows that $M$ is holomorphic in $\Re s>\sigma_0$. The residue formula excludes all zeros there; let
-$\eps\to0$ and use the functional equations. Conversely $\zeta_H=\zeta L(s,\chi_{-47})L_1^2L_2^2$, and
-under (1) and \cref{src:thm:dgrh} the effective Chebotarev theorem for this fixed field
-\cite{GrenieMolteni2017Effective} gives the weighted count $x/5+O(\sqrt x\log^2(2x))$; partial integration
-against $1-p/x$ gives both one-sided estimates.
-\end{proof}
+and since $a$ and $b$ are linearly independent over $\Q$ the numerator vanishes only if both integer
+multiplicities vanish. Under (3), \cref{hec:lem:landau} applies to $x/10-U(x)$, with no real pole to
+consider, and shows that $M$ is holomorphic in $\Re s>1/2+\eps$; let $\eps\to0$ and use the functional
+equations. In particular either direction of the error suffices by itself, and common zeros of the two
+factors cannot defeat the test.
+\end{remark}
 
 No rational congruence weight reproduces this class, even in mean square. Let $m$ be any modulus and $v$
 any function of a reduced residue class modulo $m$; since $v$ is also a function of the class modulo
 $\lcm(47,m)$, we may assume $47\mid m$. The intersection of $H$ with $\Q(\zeta_m)$ is then $K$, the maximal
-abelian subextension of $H/\Q$. Chebotarev's theorem in the compositum gives
-the uniform distribution on the five rotations for residue classes that split in $K$; the conditional
-probability of $C$ is $2/5$ there and $0$ on inert classes. Therefore
+abelian subextension of $H/\Q$, so the subgroup $H_m$ of \cref{nab:thm:periodic} is the rotation group and
+only the coefficients $a/5$ and $b/5$ of the two nonlinear characters are lost. Reading off
+\eqref{nab:eq:energy}, with $a^2+b^2=3$,
 \begin{equation}\label{hec:eq:325}
  \lim_{X\to\infty}\frac1{\pi(X)}\sum_{\substack{p\le X\\p\nmid47m}}\abs{\hecind_C(g_p)-v(p\bmod m)}^2
- \ge\frac12\cdot\frac25\cdot\frac35=\frac3{25},
+ \ge\frac{a^2+b^2}{25}=\frac3{25},
 \end{equation}
 with equality for $m=47$ and the conditional mean. An exhaustive enumeration through $10^6$ finds $7{,}819$,
 $15{,}692$ and $15{,}690$ primes represented by $Q_0,Q_1,Q_2$, with $47$ omitted, and the centered values
 $(S_Q(x)-x/10)/\sqrt x$ for $Q_1,Q_2$ are about $-0.04823$ and $-0.11582$ at this cutoff
 (\artifact{grh_dihedral_47_71/sample_primes.py}). These counts check the identification of the classes;
-the theorem requires a bound at all large $x$.
+the criterion requires a bound at all large $x$.
 {\emergencystretch=14em\par}
 
 \paragraph{A real-zero bound at prime levels.}
@@ -1111,7 +1070,8 @@ extends to the whole imaginary axis, and the Mellin integral is positive at ever
 
 For a dihedral group of order $2n$ with $n$ prime, a single nonidentity rotation class detects every
 nonzero vector of nonnegative integral zero multiplicities, by Galois conjugation of the character values
-(\cref{sec:nab}); when the nonlinear factors have no real zero in $(1/2,1)$, a one-sided bound suffices.
+(\cref{nab:thm:rotation,nab:cor:rotation}); when the nonlinear factors have no real zero in $(1/2,1)$, a
+one-sided bound suffices.
 \Cref{hec:prop:pos71} supplies the real-axis hypothesis unconditionally. Hence, under \cref{src:thm:dgrh},
 for any one of the three nonprincipal inverse pairs $[a]$ of classes the upper bound
 \begin{equation}\label{hec:eq:71bound}
@@ -1607,8 +1567,8 @@ with $c_w$. This gives (3).
 For $w=\hecind_{B\setminus\set1}$, orthogonality gives $a_\eta=(\abs B-1)/h$ for $\eta\in B^\perp$ and
 $a_\chi=-1/h$ otherwise, so the test detects every remaining factor, with prime density
 $(\abs B-1)/(2h)$. In a ring class field the event is splitting completely in the fixed field of $B$ and
-not in the full field. This aggregate case is an instance of the normal-subgroup criterion of
-\cref{sec:nab}. Selecting a single pair of factors requires a different weight.
+not in the full field. This aggregate case is an instance of the normal-subgroup criterion
+\cref{nab:thm:nonsplit}. Selecting a single pair of factors requires a different weight.
 
 \paragraph{Isolating one dihedral factor.}
 Fix a character $\chi\notin B^\perp$ of order $n>2$. Since $L_K(s,\chi)=L_K(s,\chi^{-1})$, we seek a
@@ -1736,11 +1696,10 @@ the prime ideal theorem give the two-sided error $O_n(\sqrt x\log^2(2x))$. No ho
 Artin factors is used.
 \end{proof}
 
-The first case is $Q_3=4X^2+4XY+17Y^2$, of density $1/8$; here $K_3=\Q(i,\sqrt[4]2)$ and the test counts
-the primes $p\equiv1\pmod8$ for which $2$ is a quartic nonresidue. Detecting $v_2(c)=2$ in $p=a^2+c^2$
-uses splitting in a nonabelian extension of $\Q$: the class group at conductor eight is cyclic of order
-four and complex conjugation inverts it, so the Galois group over $\Q$ is dihedral of order eight, and the
-test is not a restriction to Dirichlet residue classes.
+For $n=3$, $Q_3=4X^2+4XY+17Y^2$ and $K_3=\Q(i,\sqrt[4]2)$, with dihedral group of order eight over $\Q$,
+and the theorem is statement (iv) of \cref{nab:thm:nonsplit} with $N=[G,G]$ for the field and event of
+\cref{nab:ex:nonsplit}(a). For $n\ge4$ the lower field $K_{n-1}$ is not abelian over $\Q$, so the theorem
+is not covered by that statement.
 
 \subsection{Hecke characters of the Gaussian field}\label{hec:ss:gaussian}
 {\emergencystretch=\textwidth\sources{grh-methods-polynomial-density}}
@@ -2000,12 +1959,11 @@ Under these equivalent conditions, $\abs{R_f(x)}\ll_{E,d,\eps}x^{-1/2+\eps}$ for
 \end{theorem}
 
 \begin{proof}
-\emph{Interpolation.} This is the chord interpolation of the first step of the proof of
-\cref{ana:thm:sparse}. As a function of $t=1/x$, $S_f(1/t)$ is convex, each summand being a nonnegative
-coefficient times $(p^{-k}-t)_+$. Between $t_-=(n+1)^{-4}$ and $t_+=n^{-4}$ it lies below its secant. The
-secant of $-a_0\log t$ exceeds that function by at most $a_0(t_+-t_-)^2/(8t_-^2)=O_d(n^{-2})$, by the
-interpolation remainder and the second derivative $a_0/t^2$. Since $x\asymp n^4$, the sampled bounds imply
-$R_f(x)\le B'_\eps x^{-1/2+\eps}$ for all large $x$.
+\emph{Interpolation.} The sum $S_f$ is the ramp sum of the positive measure with mass
+$(\log p)f(2\cos(k\theta_p))$ at each $p^k$, and $R_f$ is its remainder with $A=a_0$ and $c=c_f$ in
+the notation of \cref{nab:sec:sampling}. On the grid $x_n=n^4$ one has $\log(x_{n+1}/x_n)\le4/n$, so
+\cref{nab:thm:sampling} with $\theta=1/2-\eps$ applies (\cref{nab:cor:quartic}), and the sampled bounds
+imply $R_f(x)\le B'_\eps x^{-1/2+\eps}$ for all large $x$.
 
 \emph{Zeros from the upper bound.} For $\Re s>1$ termwise integration gives
 \begin{equation}\label{hec:eq:symmellin}
@@ -2139,14 +2097,11 @@ $\Delta$ together with those of $\zeta$.
 
 \paragraph{A nonnegative deficit weight for a single $L$-function.}
 A different normalization isolates one $L$-function with nonnegative weights and without a centring
-constant. For $c>1$ let
-\[
- K_c(y)=\begin{cases}1-c^{-1},&0<y\le1,\\ y^{-1}-c^{-1},&1<y\le c,\\0,&y>c,\end{cases}
-\]
-so that for a coefficient sequence $a(n)$ with $T(x)=\sum_{n\le x}a(n)(1/n-1/x)$ one has
-$T(cx)-T(x)=x^{-1}\sum_{n\le cx}a(n)K_c(n/x)$. The transform of this finite difference carries the factor
-$H_c(s)=(c^{s-1}-1)/(s(s-1))$, which is positive on the positive real axis and has no zeros in
-$0<\Re s<1$; the one-sided finite-difference detector built on it is \cref{ana:thm:fd}.
+constant. For $c>1$ let $K_c$ be the nonnegative kernel and $H_c(s)=(c^{s-1}-1)/(s(s-1))$ its Mellin
+multiplier, as in \cref{nab:sec:interface}: for a coefficient sequence $a(n)$ with
+$T(x)=\sum_{n\le x}a(n)(1/n-1/x)$ one has $T(cx)-T(x)=x^{-1}\sum_{n\le cx}a(n)K_c(n/x)$, and $H_c$ is
+positive on the positive real axis and has no zeros in $0<\Re s<1$. The one-sided finite-difference
+detector built on it is \cref{ana:thm:fd}.
 
 \begin{theorem}[Deficit detector; \stR]\label{hec:thm:deficit}
 Let $L(s,\pi)$ be a normalized self-dual cuspidal automorphic $L$-function of degree $d$ over $\Q$ whose
@@ -2182,7 +2137,7 @@ negative coefficient, the test detects a single symmetric power, and the residue
 Neither criterion bears on the order of vanishing at the centre.
 
 \subsection{Open questions}\label{hec:ss:open}
-{\emergencystretch=\textwidth\sources{grh_transfers; grh-lean-transfers; grh_dihedral_47_71; grh_transfers_density_gaps_and_zero_tests; mcnew_density_and_grh_transfers; mcnew_counterexample_and_grh_transfers; grh-methods-polynomial-density; grh-torsion-and-zero-data; grh_transfers_singular_moduli_and_symmetric_powers; mcnew-density-and-dirichlet-grh; grh_transfers_lubin_tate_and_graph_towers}}
+{\emergencystretch=\textwidth\sources{grh_transfers; grh-lean-transfers; grh_dihedral_47_71; grh_transfers_density_gaps_and_zero_tests; mcnew_density_and_grh_transfers; mcnew_counterexample_and_grh_transfers; grh-methods-polynomial-density; grh-torsion-and-zero-data; grh_transfers_singular_moduli_and_symmetric_powers; grh_transfers_lubin_tate_and_graph_towers}}
 
 Every reduction in this section leaves a one-sided prime estimate unproved. The questions below ask for
 these estimates in their smallest instances, and for the extensions of the unconditional results that the
@@ -2198,15 +2153,17 @@ divisibility distinguishes the identity from a three-cycle inside the same quadr
 (the principal form $u^2+uv+6v^2$ represents the completely split primes and $2u^2+uv+3v^2$ the primes at
 which the cubic is irreducible), enough independent such forms, a determinant lower bound with controlled
 denominators, and a matching archimedean main term. \Cref{hec:prop:modulus,hec:prop:meansq} show that
-this information cannot come from a fixed set of residue classes. The same question is open for the weight
-$r_p-1$ of the field $\Q(\sqrt[3]2)$ in \cref{hec:thm:cuberoot}.
+this information cannot come from a fixed set of residue classes. For the field $\Q(\sqrt[3]2)$ of
+\cref{hec:thm:cuberoot} the corresponding estimate is the first Kummer block of
+\cref{grp:prob:inequalities}.
 \item \emph{A selective event.} Can the comparison be realized for the binary event of
 \cref{hec:thm:twistedcubic}, with its negative coefficient on $\rho\eta$ and its vanishing coefficient on
 $\rho$?
 \item \emph{Other sign tests.} For which other self-dual Artin or modular $L$-functions of degree two does
 the bias from prime squares exceed the total contribution of the zeros, as in \eqref{hec:eq:limsup}, so
 that the Riemann hypothesis for the function becomes equivalent to an eventual sign of a prime sum? The
-curvature bound of \cref{zer:prop:eta} gives a verifiable sufficient condition for positive eta products.
+curvature bound of \cref{zer:prop:eta} gives a verifiable sufficient condition for positive eta products,
+and inequality \eqref{zer:eq:liminf} gives one for the two-cutoff race.
 \item \emph{Conductor $47$.} Can the prime weight of the class of $Q_1$ in \cref{hec:thm:primes47} be
 realized as a local divisibility contribution of an integral theta lift, with the determinant lower bound
 retained? Reproducing its mean $1/5$ gives no control of its error.
@@ -2232,10 +2189,6 @@ proved for $N=r=1$?
 \cref{hec:thm:symDelta} for the degree-one weight $2+\tau(p)p^{-11/2}$, or the bound of \cref{hec:thm:symE}
 for the curve $y^2+y=x^3-x$ and $d=1$? \Cref{hec:prop:66} identifies the part of the local data that no
 fixed modulus sees.
-\item \emph{Central nonvanishing.} For quadratic characters, can sampling sites depending on the
-conductor, with a number of samples $k=k(q)$ tending to infinity and uniform estimates for the logarithmic
-derivatives at these sites, force a central multiplicity bound below two? By \cref{hec:thm:kernels} no
-bounded number of samples can.
 \end{enumerate}
 
 \emergencystretch=\hecsavedemergencystretch\relax

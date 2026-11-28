@@ -5,6 +5,37 @@
 \providecommand{\dirU}{\mathrm{U}}
 \section{Small primes in residue classes: subset products, sign patterns and codes}\label{sec:prd}
 
+Under \cref{src:thm:dgrh} the primes up to a fixed power of $\log q$ are equidistributed in
+$(\Z/q\Z)^\times$ and in the values of every character modulo $q$, with an error that is small
+uniformly in short dyadic ranges. This section uses that input in two ways. The first five
+subsections study subset products: which residues are squarefree products of small primes after
+arbitrary deletions (\cref{dir:sec:products}), simultaneous congruences for the factors
+(\cref{dir:sec:factorizations}), disjoint products in one modulus (\cref{dir:sec:disjoint}), transition
+profiles at every density (\cref{dir:sec:profiles}) and rainbow routing (\cref{dir:sec:routing}). The
+last two treat the small primes as samples of characters: primes with a prescribed majority of
+quadratic signs, and prime designs after erasures (\cref{dir:sec:signs}), and small primes as codes for
+sparse character sums (\cref{dir:sec:codes}). The analytic input is the smoothed prime-sum estimate
+\cref{rec:lem:gram} (and \cref{rec:lem:triangle} for the once-integrated kernel), with the exact
+certificate argument of \cref{dir:lem:bump} for rational weights; the notation and the conventions
+\stG, \stU\ are those of \cref{sec:dir}.
+
+Booker and Pomerance asked for squarefree smooth representatives of every class modulo a prime
+\cite{BookerPomerance2017Squarefree}. Klurman, Shparlinski and Ter\"av\"ainen observed under GRH that
+unrestricted subset products of all primes up to $(\log q)^B$, $B>4$, cover every unit, and constructed
+a common small set of primes for almost all moduli \cite{KlurmanShparlinskiTeravainen2026Generation};
+Hughes obtains a first-order optimal size for that covering problem \cite{Hughes2026Few}. Related
+results are due to Munsch and Shparlinski on smooth squarefree representatives
+\cite{MunschShparlinski2020Smooth}, Martin and Parvardi on subproducts of small residues
+\cite{MartinParvardi2022Subproducts}, Matom\"aki and Ter\"av\"ainen on products of a bounded number of
+larger primes \cite{MatomakiTeravainen2023Products}, and Pach on fixed-cardinality subset sums in a
+finite abelian group \cite{Pach2025Equidistribution}. Erd\H{o}s and R\'enyi proved near-entropy covering
+by random unrestricted subset sums in finite abelian groups \cite{ErdosRenyi1965Probabilistic}, Ma and
+Tang study the second-order term of that threshold \cite{MaTang2026Erdos}, and Lee and Oh study
+zero-sum-free sequences in random subsets of cyclic groups \cite{LeeOh2023ZeroSum}. The results below
+add an endpoint cutoff, exact numbers of factors, arbitrary retained sets and relative counts through a
+bounded quotient; \cref{dir:thm:factorization} does not optimize its leading constant, while for one
+tuple of moduli and prescribed proportions \cref{dir:thm:entropy} does.
+
 \subsection{Squarefree products of small primes after deletions}\label{dir:sec:products}
 \sources{squarefree_prime_products; orthogonal_nullity_and_prime_products; grh_entropy_products_2026-11-27}
 
@@ -41,9 +72,10 @@ the once-integrated estimate
 \[
  \sum_{n\le t}(t-n)\Lambda(n)\chi(n)\ll t^{3/2}\log(2q)\qquad(t\ge2,\ \chi\ne1)
 \]
-of \cite[(13.28)]{MontgomeryVaughan2007Multiplicative}; its Mellin kernel contains
-$1/(s(s+1))$, so each critical-line zero contributes $t^{\rho+1}/(\rho(\rho+1))$ with an
-absolutely summable weight, and no factor $\log t$ is lost. Fix $0<\eta<1/2$ and let
+(also \cite[(13.28)]{MontgomeryVaughan2007Multiplicative}): it is $t$ times \eqref{rec:eq:triangle} of
+\cref{rec:lem:triangle} for the primitive character inducing $\chi$, whose zero sum is
+$\ll\sqrt t\log(2q)$ under \cref{src:thm:dgrh} since $\sum_\rho\abs{\rho(\rho+1)}^{-1}\ll\log(2q)$, and passing to $\chi$
+costs $O(tL\log t)$; no factor $\log t$ is lost on the zeros. Fix $0<\eta<1/2$ and let
 $w(n)=((y-n)_+-((1-\eta)y-n)_+)/(\eta y)$, which is $1$ up to $(1-\eta)y$ and decreases
 linearly to $0$ at $y$. The estimate bounds $\abs{\sum_nw(n)\Lambda(n)\chi(n)}$ by
 $O(\sqrt y\log(2q)/\eta)$. Removing prime powers costs $O(\sqrt y\log^2y)$, restoring the last
@@ -143,6 +175,10 @@ polylogarithmic in $q$, a positive value of $\lambda_k$ is far larger than the e
 which gives the exact support and the relative asymptotic.
 \end{proof}
 
+For $r=1$ and $A=3$, \cref{dir:thm:disjoint-growing} below contains \eqref{dir:eq:profile} in relative form. The
+theorem is kept because its proof (the Gram bound, the word ball and the swap argument) is used by
+\cref{dir:thm:disjoint-growing,dir:thm:minority,dir:thm:typical,dir:thm:fibre,dir:thm:allmix,dir:thm:profiles}.
+
 \begin{corollary}[Squarefree representatives with a prescribed number of factors; \stG]\label{dir:cor:squarefree}
 Given $0<\delta<1/2$ there are $B,C>0$ such that for all sufficiently large $q$, with $y=CL^2$,
 every $S\subseteq\mathcal P$ with $m\ge(1/2+\delta)N$ and every $BL\le k\le m-BL$,
@@ -163,12 +199,14 @@ can be enlarged, since Dirichlet's theorem gives a prime in each nonzero class.
 \begin{remark}[The half and third thresholds; sharpness]\label{dir:rem:thresholds}
 For $a>1/3$ the only other possibility is $d=2$, given by one nonprincipal quadratic character
 $\chi$. If $S$ contains primes of both signs, a swap of two primes of opposite sign changes the
-quotient value, so both values occur and every unit is represented; if $S$ lies in one sign
-class, all products lie in the class fixed by $k$. So for $a>1/3$ full coverage in the range of
-\cref{dir:thm:quotient} holds exactly when no nonprincipal quadratic character is constant on
-$S$. If $s$ of the $m$ primes have sign $-1$, the two quotient masses are $(1\pm E)/2$ with
-$E=\binom mk^{-1}[z^k](1+z)^{m-s}(1-z)^s$; one prime of the opposite sign suffices for coverage,
-although the two counts can differ markedly. Conversely, for an integer $d\ge2$ take primes
+quotient value, so both values occur and every unit is represented in the range of
+\cref{dir:thm:quotient}; if $S$ lies in one sign class, all products lie in the class fixed by $k$.
+So for $a>1/3$ full coverage in the range of \cref{dir:thm:quotient} holds exactly when no
+nonprincipal quadratic character is constant on $S$. If $s$ of the $m$ primes have sign $-1$, the two quotient masses are
+$(1\pm E)/2$ with $E=\binom mk^{-1}[z^k](1+z)^{m-s}(1-z)^s$, so one prime of the opposite sign gives
+coverage although the two counts can differ markedly; \cref{dir:thm:fibre} gives both counts with
+relative errors, and \cref{dir:thm:disjoint-support} the coverage criterion for several products.
+Conversely, for an integer $d\ge2$ take primes
 $q\equiv1\pmod d$ and a quotient of $G$ of order $d$, and retain the most populous coset among
 the primes of $\mathcal P$. This retains at least $N/d$ primes, confines all products of a fixed
 length to one coset, and any quotient explaining this support exactly has order at least $d$.
@@ -222,10 +260,9 @@ gives $1-\Re z^j\le j^2(1-\Re z)$, hence $F_d(z)\ge d^2-C_d(1-\Re z)$. So
 $1-b_\chi(A)\ge[d^2M-N(d+d(d-1)\rho)]/(C_dM)\ge d^2\eps/(2C_d)$ for large $q$, and
 \cref{dir:lem:circle} applies.
 
-For sharpness take primes $q\equiv1\pmod d$, a character of exact order $d$, and retain its
-kernel in $\mathcal P$; averaging $1,\chi,\dots,\chi^{d-1}$ shows that the retained density is
-$1/d+o(1)$, and every product has character value one. For $d=2$ this is the example of
-\cref{dir:rem:thresholds}.
+For sharpness use the construction of \cref{dir:rem:thresholds} with the kernel of a character $\chi$
+of exact order $d$ modulo a prime $q\equiv1\pmod d$: averaging $1,\chi,\dots,\chi^{d-1}$ shows that the
+retained density is $1/d+o(1)$, and every product has character value one.
 \end{proof}
 
 Once the retained density exceeds $1/3$ by a fixed amount, every nonprincipal character except
@@ -557,17 +594,8 @@ hypotheses (all $q\le Q$, deletions counted against the whole list, every power 
 range of $k$) controls the length of the list only up to a factor two.
 
 Even with unrestricted subset sizes, covering all units modulo a prime $q\in[Q,2Q]$ needs
-$2^{\abs U}\ge q-1$, so the order $\log Q$ of the common list is optimal. Klurman, Shparlinski
-and Ter\"av\"ainen observed under GRH that unrestricted subset products of all primes up to
-$(\log q)^B$, $B>4$, cover every unit, and constructed a common small set of primes for almost
-all moduli \cite{KlurmanShparlinskiTeravainen2026Generation}. Related results are due to
-Munsch and Shparlinski on smooth squarefree representatives
-\cite{MunschShparlinski2020Smooth}, Martin and Parvardi on subproducts of small residues
-\cite{MartinParvardi2022Subproducts}, Matom\"aki and Ter\"av\"ainen on products of a bounded
-number of larger primes \cite{MatomakiTeravainen2023Products}, and Pach on fixed-cardinality
-subset sums in a finite abelian group \cite{Pach2025Equidistribution}. The results above add an
-endpoint cutoff, exact numbers of factors, arbitrary retained sets and relative counts through
-a bounded quotient.
+$2^{\abs U}\ge q-1$, so the order $\log Q$ of the common list is optimal. Earlier work on subset
+products of small primes is surveyed at the start of \cref{sec:prd}.
 
 \begin{example}\label{dir:ex:products}
 \begin{enumerate}[label=\textup{(\arabic*)}]
@@ -648,7 +676,10 @@ Since $Q^{-A}<1$, \eqref{dir:eq:factorization} gives the exact support. The modu
 divide one another or share large factors. When all $q_j$ are equal, the first $r-1$ residues
 are free and the last is forced; when $g=1$ every tuple occurs. For $r=2$ the problem reduces,
 by the Chinese remainder theorem, to one subset product modulo $\lcm(q_1,q_2)$, and the joint
-problem begins with three factors.
+problem begins with three factors. \Cref{dir:thm:minority} below, at retained density $a=1/2+\eps/2$,
+contains the theorem up to the constants and with its own prime window $[x,2x]$,
+$x=K_\delta\log^2(2Q^2)$; the direct proof given here is shorter and makes the quota explicit,
+$b=2(A+6)/\eps$.
 
 \paragraph{A bound for one prescribed partition.}
 Let $q_j\le Q$, put $H=\prod_j\dirU(q_j)$ and $M=\lcm(q_1,\dots,q_r)$, and let $T$ be any set
@@ -730,19 +761,10 @@ in $[x,2x]$ with $L\le n=\abs S\le2L$ and
 \begin{proof}
 Fix a nonnegative smooth function $W$ supported in $(1,2)$ with $\int W=1$, and put
 $w_p=(\log p)W(p/x)$; then $\sum_pw_p=x+o(x)$. For a primitive nonprincipal $\psi$ of conductor
-$f$, the smoothed explicit formula at real-part cutoff $1/4$ \cite[Exercise~45]{Tao2014Notes}
-gives
-\[
- \sum_{j\ge1}\Lambda(j)\psi(j)W(j/x)=-\sum_{\Re\rho>1/4}x^\rho\widetilde W(\rho)
- +O_W\bigl(x^{1/4}\log(2f)\bigr),\qquad\widetilde W(s)=\int_0^\infty W(u)u^{s-1}\,du .
-\]
-By \cref{src:thm:dgrh} every zero in the sum has real part $1/2$; since
-$\abs{\widetilde W(1/2+it)}\ll_W(1+\abs t)^{-3}$ and a unit interval at height $j$ contains
-$O(\log(f(2+\abs j)))$ zeros, the zero sum is $O_W(\sqrt x\log(2f))$. Prime powers contribute
-$O_W(\sqrt x\log^2(2x))$, and passing from $\psi$ to an induced character modulo $h$ costs at
-most $\norm{W}_\infty\log h$. Hence $\abs{\sum_pw_p\chi(p)}/\sum_pw_p$ is at most a constant times
-$\log(2Q)/\sqrt x+\log^2(2x)/\sqrt x$, which is at most $\delta/4$ once $K_\delta$ and then $Q$
-are large.
+$f$, \cref{rec:lem:gram} with $\xi=1$ gives $\sum_pw_p\psi(p)=O_W(\sqrt x\log(2f))$, and passing from $\psi$
+to an induced character modulo $h$ costs at most $\norm{W}_\infty\log h$. Hence
+$\abs{\sum_pw_p\chi(p)}/\sum_pw_p$ is at most a constant times $\log(2Q)/\sqrt x$, which is at most
+$\delta/4$ once $K_\delta$ and then $Q$ are large.
 
 Put $\mu=3L/2$ and select each prime independently with probability $\mu w_p/\sum w$; these
 probabilities are $O(L\log(2x)/x)\le1$ for small $c_\delta$. For each admissible $\chi$ the sum
@@ -1033,9 +1055,8 @@ absolute and $K_A$ depending only on $A$.
 \begin{proof}
 Give each such prime mass proportional to $w_y(p)\log p$, where
 $w_y(v)=\frac2y\bigl((2y-v)_+-2(3y/2-v)_++(y-v)_+\bigr)$ is the triangle of height one on $[y,2y]$; the
-normalizer is $y/2+o(y)$. The once-integrated estimate of
-\cite[(13.28)]{MontgomeryVaughan2007Multiplicative} used in the proof of \cref{dir:lem:bias}, at the
-three points $2y,3y/2,y$, gives $\abs{\sum_vw_y(v)\Lambda(v)\chi(v)}\ll\sqrt y\,\ell_M$ for $\chi\ne1$;
+normalizer is $y/2+o(y)$. The once-integrated estimate in the proof of \cref{dir:lem:bias}, which comes
+from \cref{rec:lem:triangle}, at the three points $2y,3y/2,y$ gives $\abs{\sum_vw_y(v)\Lambda(v)\chi(v)}\ll\sqrt y\,\ell_M$ for $\chi\ne1$;
 higher prime powers cost $O(\sqrt y\log^2(2y))=o(\sqrt y\,\ell_M)$ uniformly for $B\le\ell_M^A$. Each mass is
 at most $3\log(2y)/y$.
 \end{proof}
@@ -1192,8 +1213,9 @@ mass at least $(1+mr)^{-6D^2r}\ge Q^{-36D^2}$ by \eqref{dir:eq:mixedsize}, which
 Fourier error by the choice of $B$. All occupied projections restrict to the same character of
 $\Delta_g$, fixed by $P_T$, which bounds their number and gives the case $D=1$.
 
-\emph{Sharpness.} Let all moduli equal a prime $\ell\equiv1\pmod D$ and retain the most populous coset
-in $U$ of the subgroup of index $D$ of $\dirU(\ell)$, at least $\abs U/D\ge a\abs U$ primes. Every
+\emph{Sharpness.} Let all moduli equal a prime $\ell\equiv1\pmod D$ and retain, as in
+\cref{dir:rem:thresholds}, the most populous coset in $U$ of the subgroup of index $D$ of $\dirU(\ell)$, at
+least $\abs U/D\ge a\abs U$ primes. Every
 character of the cyclic quotient of order $D$ has bias one on this set, so $J$ is that character
 group, $E/\Delta_g\to J^{r-1}$ is onto and $[E:\Delta_g]=D^{r-1}$; each quota fixes its label's quotient
 residue, and compatibility imposes one relation among the $r$ residues, so the support is a $D^{1-r}$
@@ -1233,14 +1255,6 @@ occupied sign class, and the dynamic program above gives the same sign law.
 \artifact{squarefree_factorizations/check_quotient_output.txt},
 \artifact{squarefree_factorizations/test_lower_output.txt}}
 \end{example}
-
-Common prime lists and Boolean subset products for almost all moduli are treated by Klurman,
-Shparlinski and Ter\"av\"ainen \cite{KlurmanShparlinskiTeravainen2026Generation}, and Hughes
-obtains a first-order optimal size for that covering problem \cite{Hughes2026Few};
-\cref{dir:thm:factorization} does not optimize its leading constant, while for one tuple of moduli and
-prescribed proportions \cref{dir:thm:entropy} does. Erd\H{o}s and R\'enyi proved near-entropy covering by
-random unrestricted subset sums in finite abelian groups \cite{ErdosRenyi1965Probabilistic}, and Ma and
-Tang study the second-order term of that threshold \cite{MaTang2026Erdos}.
 
 \subsection{Disjoint products of small primes in one modulus}\label{dir:sec:disjoint}
 \sources{disjoint-prime-products; grh_quadratic_fibre; grh_quarter_density}
@@ -1512,23 +1526,25 @@ of the cut,
 \cref{dir:thm:smallquotients} completes the proof.
 \end{proof}
 
+At retained density $m\ge N/4$, for large $q$ and $h\ge BL$, \cref{dir:cor:anydensity} with $a=1/4$ and
+\cref{dir:thm:smallquotients} decide the support: the quotient $\Gamma=\widehat{H_\tau}$ has order $d\le4$ and depends only on $S$, and with $b$
+and $z_j$ as in \cref{dir:cor:anydensity} a target $g\in G^r$ occurs if and only if the histogram of
+$(z_1,\dots,z_r)$ passes the test of \cref{dir:thm:smallquotients} for $\Gamma$. The same test can be run
+without determining $\Gamma$.
+
 \begin{theorem}[Exact support at quarter density; \stG]\label{dir:thm:quarter}
 Fix $A>0$. There are $B,C>0$ such that for all large $q$, every $S\subseteq\mathcal P$ with $m\ge N/4$, every
-$r\ge1$ and all quotas with $h\ge BL$ the following hold. The quotient $\Gamma=\widehat{H_\tau}$ has order
-$d\le4$, depends only on $S$, and with $b$ and $z_j$ as in \cref{dir:cor:anydensity} a target $g\in G^r$
-occurs if and only if the histogram of $(z_1,\dots,z_r)$ passes the test of \cref{dir:thm:smallquotients} for
-$\Gamma$; at every occupied $g$ the relative count is that of \cref{dir:thm:disjoint-growing}. Equivalently,
-without determining $\Gamma$: $g$ occurs if and only if, for every character $\chi$ of exact order $2$, $3$
-or $4$, the test of \cref{dir:thm:smallquotients} for the cyclic group $\chi(G)$ passes for the colouring
-$p\mapsto\chi(p)$ of $S$, with a most frequent value $b_\chi$ of $\chi$ on $S$ as baseline and corrected
-targets $\chi(g_j)b_\chi^{-n_j}$. Balanced quotas allow $r\asymp L/\log L$.
+$r\ge1$ and all quotas with $h\ge BL$ the following hold. A target $g\in G^r$ occurs if and only if, for
+every character $\chi$ of exact order $2$, $3$ or $4$, the test of \cref{dir:thm:smallquotients} for the cyclic
+group $\chi(G)$ passes for the colouring $p\mapsto\chi(p)$ of $S$, with a most frequent value $b_\chi$ of $\chi$ on
+$S$ as baseline and corrected targets $\chi(g_j)b_\chi^{-n_j}$; at every occupied $g$ the relative count is that
+of \cref{dir:thm:disjoint-growing}. Balanced quotas allow $r\asymp L/\log L$.
 \end{theorem}
 
 \begin{proof}
-The first form is \cref{dir:cor:anydensity} with $a=1/4$ and \cref{dir:thm:smallquotients}. In the second,
-necessity follows by projection: an allocation realizing $g$ maps under $\chi$ to an allocation of the
+Necessity follows by projection: an allocation realizing $g$ maps under $\chi$ to an allocation of the
 $\chi$-coloured primes with the same quotas, and the implication from (a) to (b) in \cref{dir:thm:packing}
-needs no hypotheses. For sufficiency, if $\Gamma$ is cyclic a generator of $H_\tau$ is among the tested
+needs no hypotheses. For sufficiency use the quotient test above: if $\Gamma$ is cyclic a generator of $H_\tau$ is among the tested
 characters, its most frequent value is the image of a most frequent colour, and its test is the quotient
 test. If $\Gamma=C_2\times C_2$, each inequality of \eqref{dir:eq:klein} is the test of one of the three
 quadratic characters in $H_\tau$ with the image of $b$ as baseline. If that image is not a most frequent
@@ -1537,7 +1553,7 @@ projection and the inequality holds trivially; otherwise it is the tested condit
 that of \cref{dir:thm:disjoint-growing}.
 \end{proof}
 
-The second form uses only characters of order at most four, but enumerating them for composite $q$ is not
+The theorem uses only characters of order at most four, but enumerating them for composite $q$ is not
 claimed to take time polynomial in $\log q$.
 
 For a character $\chi$ of order $2$ or $3$ choose a most frequent value $b$ of $\chi$ on $S$, put
@@ -1617,7 +1633,8 @@ $\ceil{N/4}$. Retain $\ceil{N/4}-2r$ primes of value $b$ and $r$ primes of each 
 none of value $-b$. For large $q$ these choices exist, $2r/m\to0$, $b$ is the unique most frequent value, and
 $\theta$ has bias $1-2r/m>1-\tau$ on $S$, so $H_\tau$ contains the cyclic group of order four generated by
 $\theta$ and, having order at most four, equals it. Balanced quotas with $h\ge BL$ exist in the stated range of
-$r$. \Cref{dir:prop:missing,dir:thm:quarter} give the assertions; in a proper marginal a residue tuple is
+$r$. \Cref{dir:prop:missing} and the quotient test before \cref{dir:thm:quarter} (\cref{dir:cor:anydensity} with
+\cref{dir:thm:smallquotients}) give the assertions; in a proper marginal a residue tuple is
 extended by giving an omitted coordinate corrected colour zero.
 \end{proof}
 
@@ -1859,10 +1876,11 @@ of size $m_0\ge N/2$, the other class having at least $(1-\eps)N/2$ elements by 
 $s=\floor{\lambda_0m_0/h}$ primes of the other class; then $hs/m\to\lambda_0$ and \cref{dir:cor:fibre}
 applies. For $\lambda_0=0$ either add none, or add one prime, which gives full support with limiting
 deviation one; adding $\floor{(m_0/h)\sqrt h}$ primes gives limit zero.
-(b) Let $\eta$ be a character of order three and $\chi$ the quadratic character. The six characters they
-generate have bias at most $\eps<1/10$ on $\mathcal P$, so each joint fibre has at most $(1+5\eps)N/6$
-primes. Take $S$ of size $\ceil{N/3}$ inside the largest fibre of $\eta$; either sign class of $\chi$ in $S$
-then has at least $(1-5\eps)N/6$ elements, yet every $k$-product lies in the fibre $\eta(g)=\eta(S)^k$.
+(b) Use the construction of \cref{dir:rem:thresholds} for a character $\eta$ of order three: $S$ is a set of
+$\ceil{N/3}$ primes in the largest fibre of $\eta$, so every $k$-product lies in the fibre $\eta(g)=\eta(S)^k$. With
+$\chi$ the quadratic character, the six characters generated by $\eta$ and $\chi$ have bias at most $\eps<1/10$
+on $\mathcal P$, so each joint fibre has at most $(1+5\eps)N/6$ primes and either sign class of $\chi$ in $S$ has
+at least $(1-5\eps)N/6$; thus $s$ stays a fixed positive fraction of $m$.
 \end{proof}
 
 Exact rational checks of the parity identities over all $44\,280$ triples with $m\le80$ give
@@ -1906,13 +1924,6 @@ the construction of \cref{dir:thm:packing} in $2\,564$ comparisons with the fixe
 \artifact{disjoint-prime-products/checks/repair_results.txt},
 \artifact{grh_quarter_density/verification.txt}}
 \end{example}
-
-Squarefree smooth representatives of single classes go back to Booker and Pomerance
-\cite{BookerPomerance2017Squarefree}; common short prime lists for Boolean subset products are due to
-Klurman, Shparlinski and Ter\"av\"ainen and to Hughes
-\cite{KlurmanShparlinskiTeravainen2026Generation,Hughes2026Few}, and fixed-cardinality subset sums of
-an abelian group are treated by Pach \cite{Pach2025Equidistribution}. Zero-sum-free sequences in random
-subsets of cyclic groups are studied in \cite{LeeOh2023ZeroSum}.
 
 \subsection{Sparse transition profiles at every density}\label{dir:sec:profiles}
 \sources{grh_extensions_2026-11-27_3}
@@ -2767,14 +2778,14 @@ translate it by $u_i\mapsto v_iu_i$ to obtain $g$; translation preserves the uni
 Fourier coefficients. So $g$ has mean $g_0\gg_a1$, $L(g)\ll_ak^{D/2}$ and degree at most $D$, and
 $g(u)>0$ forces $\sum_iv_iu_i>a\sqrt k$. For $A\subseteq[k]$ the character
 $\chi_A=\prod_{i\in A}\legendre\cdot{q_i}$ is primitive of conductor $f_A=\prod_{i\in A}q_i$, by
-the Chinese remainder theorem, so $\log(2f_A)\le D\log(2Y)$ for $\abs A\le D$. The once-smoothed
-explicit formula for $-L'/L$ with kernel $x^s/(s(s+1))$, as in the degree-one case of
-\cite[Lemma~6]{Bellaiche2016Chebotarev}, gives for $x\ge3$
+the Chinese remainder theorem, so $\log(2f_A)\le D\log(2Y)$ for $\abs A\le D$. The smoothed
+explicit formula \eqref{rec:eq:triangle} of \cref{rec:lem:triangle}, with kernel $x^s/(s(s+1))$ (the degree-one
+case of \cite[Lemma~6]{Bellaiche2016Chebotarev}), gives for $x\ge3$
 \[
  \sum_{p<x,\ p\nmid\mathcal Q}\Bigl(1-\frac px\Bigr)\log p\,\chi_A(p)
  =\mathbf 1_{A=\varnothing}\frac x2+O\bigl(\sqrt x\log(2f_A)+\log\operatorname{rad}\mathcal Q\bigr):
 \]
-the pole of $-\zeta'/\zeta$ gives $x/2$, \cref{src:thm:dgrh} bounds the zero sum by
+by \cref{src:thm:dgrh} and $\sum_\rho\abs{\rho(\rho+1)}^{-1}\ll\log(2f_A)$ the zero sum is
 $O(\sqrt x\log(2f_A))$, higher prime powers contribute
 $\sum_{j\ge2}\vartheta(x^{1/j})\ll\sqrt x$, and removing the primes dividing $\mathcal Q$ costs at
 most $\log\operatorname{rad}\mathcal Q\le k\log Y$. Multiplying by $\widehat g(A)$ and summing gives
@@ -3129,9 +3140,10 @@ $(p-X)^3(2X-p)^3$ have bias at most $\delta$ and largest weight $\ll\log X/X$.
 \end{lemma}
 
 \begin{proof}
-(a) Let $W$ be smooth, nonnegative, supported in $(1,2)$ with $\int W=1$, and $w_p=(\log p)W(p/X)$. The
-smoothed explicit formula in the proof of \cref{dir:lem:oneset} gives
-$\sum_pw_p\xi(p)=\mathbf 1_{\xi\text{ principal}}X+O_W(\sqrt X\log(2h))$ for every character $\xi$ modulo $h$; so
+(a) Let $W$ be smooth, nonnegative, supported in $(1,2)$ with $\int W=1$, and $w_p=(\log p)W(p/X)$.
+\Cref{rec:lem:gram}, applied to the primitive character inducing $\xi$ (the primes dividing $h$ cost
+$O_W(\log h)$), gives $\sum_pw_p\xi(p)=\mathbf 1_{\xi\text{ principal}}X+O_W(\sqrt X\log(2h))$ for every character $\xi$
+modulo $h$; so
 $W_0=\sum_pw_p\ge X/2$ and the weighted mean of every admissible $\xi$ is at most $b/32$ once $K$ is large,
 since $\log(2h)\le4L$. Select each prime independently with probability $mw_p/W_0$, which is at most one
 for large $K$ because $b^{-2}\le10^6Q^6$. Bernstein's inequality for the real and imaginary parts and a
@@ -3140,16 +3152,14 @@ sums at most $bm/16\le bn/8$. At most $s\log Q/\log X$ sampled primes divide $M$
 $2sb^2/(B\log X)\le b/8$; removing them changes each sum by at most their number, so the mean on $S_M$ is
 at most $(b/8+b/8)/(1-b/8)<b$.
 
-(b) For $\chi,\psi\in\mathcal X_Q$ inflate both to $\lcm$ of their conductors, at most $Q^2$; the quotient is
-principal exactly when $\chi=\psi$, by uniqueness of the inducing primitive character, and agrees with
-$\overline{\chi(p)}\psi(p)$ at every prime, ramified ones included, up to $O(\log Q)$ in the weighted sum.
-Take $x=K\mu^{-2}\log^2(2Q/\mu)$ and select each prime of $[x,2x]$ with probability $M_0w_p/\sum w$,
-$M_0=B\mu^{-2}\log(2Q)$; the weighted Gram deviation is at most $\mu/8$, each centred summand of
+(b) Take $x=K\mu^{-2}\log^2(2Q/\mu)$ and select each prime of $[x,2x]$ with probability $M_0w_p/\sum w$,
+$M_0=B\mu^{-2}\log(2Q)$. By \cref{rec:lem:gram} for $\chi,\psi\in\mathcal X_Q$, of conductors at most $Q$, the weighted
+Gram deviation is at most $\mu/8$ once $K$ is large, each centred summand of
 $\sum_p\mathbf 1_{p\in P}(\overline{\chi(p)}\psi(p)-\mathbf 1_{\chi=\psi})$ has modulus at most one, and Bernstein's inequality
 over at most $Q^4$ pairs gives the sample.
 
-(c) For the weight $w(t)=(t-1)^3(2-t)^3$ on $[1,2]$, which is $C^2$, apply the smoothed explicit formula to
-$g_X(t)=w(t)\log X/\log(Xt)$, whose Mellin transform satisfies $\abs{H_X(1/2+i\gamma)}\ll(1+\abs\gamma)^{-2}$ by
+(c) For the weight $w(t)=(t-1)^3(2-t)^3$ on $[1,2]$, which is $C^2$, argue as in the proof of \cref{dir:lem:bump}
+with $g_X(t)=w(t)\log X/\log(Xt)$, whose Mellin transform satisfies $\abs{H_X(1/2+i\gamma)}\ll(1+\abs\gamma)^{-2}$ by
 two integrations by parts; this gives
 \[
  \sum_{p\nmid q}w(p/X)\chi(p)=\mathbf 1_{\chi=1}X\int_1^2\frac{w(t)\,dt}{\log(Xt)}+O\Bigl(\frac{\sqrt X\log(2q)}{\log X}\Bigr),
@@ -3458,8 +3468,9 @@ $\mu_X(p)\propto w(p/X)\log p$ with $X=B\log^2Q$. Characters of order dividing $
 space in the direct limit over moduli, and a primitive character is the unique representative of its
 class. For independent $\chi_1,\dots,\chi_r\in\mathcal X_{Q,\ell}$, pad wildcards by zero; every nonzero Fourier
 index $a\in\F_\ell^r$ corresponds to the nonprincipal character $\prod_j\chi_j^{a_j}$ of modulus at most $Q^r$, so
-the smoothed explicit formula (as in the proof of \cref{dir:lem:oneset}) bounds each nontrivial
-coefficient of the law of the padded column by $O(r\log(2Q)/\sqrt X+\log^2(2X)/\sqrt X)=O(r/\sqrt B)+o(1)$.
+\cref{rec:lem:gram}, applied to the primitive character inducing it (padding and ramified primes cost
+$o(1)$ after normalization), bounds each nontrivial coefficient of the law of the padded column by
+$O(r\log(2Q)/\sqrt X)+o(1)=O(r/\sqrt B)+o(1)$.
 Fourier inversion on $\F_\ell^r$ gives $\dirP(\text{column}=v)\le(1+\eta)\ell^{-r}$ for every $v$, for any fixed
 $\eta>0$ once $B$ is large. Draw the $n$ primes successively from $\mu_X$ restricted to unused primes; the
 removed mass is $O(\log\log Q/\log Q)$, so any prescribed $r\times m$ matrix of symbols on $m$ fixed positions
@@ -3582,15 +3593,12 @@ $D$, with no restriction on $D$,
 \end{lemma}
 
 \begin{proof}
-By the prime number theorem $W_X\sim(X/\log X)\int_1^2w=X/(630\log X)$, which gives the second bound. For
-$g_X(t)=w(t)/\log(Xt)$ on $[1,2]$ the Mellin transform $G_X$ satisfies
-$\abs{G_X(\sigma+it)}\ll(1+\abs t)^{-3}/\log X$ for $-1/2\le\sigma\le2$, by three integrations by parts in
-$\log t$, as $w$ and its first three derivatives vanish at the endpoints. The explicit formula obtained by
-shifting from $\Re s=2$ to $\Re s=-1/2$ gives
-$\sum_m\Lambda(m)\chi(m)g_X(m/X)=-\sum_\rho X^\rho G_X(\rho)+O(1/\log X+\log(2D)/(\sqrt X\log X))$, the possible
-trivial zero at $0$ included in the error and no residue at $1$. By \cref{src:thm:dgrh} and the unit-interval
-zero count $\ll\log(2D(k+2))$ the zero sum is $\ll\sqrt X\log(2D)/\log X$. Prime powers with exponent at least two
-cost $O(\sqrt X)$, and dividing by $W_X$ gives the first bound.
+By the prime number theorem $W_X\sim(X/\log X)\int_1^2w=X/(630\log X)$, which gives the second bound. Argue as
+in the proof of \cref{dir:lem:bump} with $g_X(t)=w(t)/\log(Xt)$ on $[1,2]$, whose Mellin transform $G_X$ satisfies
+$\abs{G_X(\sigma+it)}\ll(1+\abs t)^{-3}/\log X$ for $-1/2\le\sigma\le2$ by three integrations by parts in $\log t$, as $w$
+and its first three derivatives vanish at the endpoints. Since $\chi$ is nonprincipal there is no residue at $1$,
+and the contour shift with \cref{src:thm:dgrh} gives $\sum_m\Lambda(m)\chi(m)g_X(m/X)\ll\sqrt X\log(2D)/\log X+1$. Prime
+powers with exponent at least two cost $O(\sqrt X)$, and dividing by $W_X$ gives the first bound.
 \end{proof}
 
 \begin{lemma}[Small bias and affine subspaces; \stU]\label{dir:lem:affine}
@@ -3718,3 +3726,65 @@ the success probability.
 \artifact{prime_legendre_codes_2026-11-27/examples_summary.csv},
 \artifact{prime_legendre_codes_2026-11-27/checks.txt}}
 \end{example}
+
+\subsection{Open questions}\label{prd:sec:open}
+{\raggedright\sources{squarefree_prime_products; orthogonal_nullity_and_prime_products; squarefree_factorizations; hermite_thresholds_and_quadratic_primes; disjoint-prime-products; entropy_optimal_prime_factorizations_2026-11-27; grh_entropy_products_2026-11-27; grh_growing_factorizations; grh_quadratic_fibre; grh_prime_routing_2026-11-27; prime_character_codes_2026-11-27; prime_sparse_recovery_2026-11-27; prime_sparse_recovery_2026-11-27_2; grh_prime_fingerprints_2026-11-27; hermite_threshold_research; grh_quarter_density; prime_cubature_grh_2026-11-27; prime_legendre_codes_2026-11-27; grh_extensions_2026-11-27_3}}
+
+\begin{enumerate}
+\item \emph{Short squarefree products at the logarithm-squared scale.} At $y=C(\log q)^2$, can
+ every unit be reached after majority retention with $O(\log q/\log\log q)$ distinct prime
+ factors? This would give representatives of polynomial size at the smoothness scale of
+ Corollary~\ref{dir:cor:squarefree}. For $y=(\log q)^A$, $A>2$, what is the optimal constant in
+ front of $\log q/\log\log q$ for pointwise relative counts? For typical residues it is $1/(A-1)$ for
+ almost all prime moduli (Theorems~\ref{dir:thm:typical} and~\ref{dir:thm:typicalsharp}); pointwise,
+ Theorem~\ref{dir:thm:short} and Corollary~\ref{dir:cor:almostshort} give $2(A-1)/(A(A-2))$ under
+ Dirichlet GRH and $2/(A-1)$ for almost all prime moduli. Can the typical constant
+ $(A-1)/(A(A-2))$ under Dirichlet GRH be lowered to $1/(A-1)$ for every modulus? For one product,
+ what happens when $\min(k,m-k)=o(\log q)$? Below density one third and in the sparse range
+ $B\log q\le h=o(m)$, the fibre distances of the characters of order at most $\floor{1/a}$ decide mixing
+ (Theorem~\ref{dir:thm:allmix}) and compound Poisson laws on a bounded quotient give every limiting
+ profile (Theorem~\ref{dir:thm:profiles}); what replaces them for dense quotas $h\asymp m$, and do they
+ hold uniformly as $a\to0$?
+\item \emph{Mixing at density one quarter.} The support at retained density $1/4$ is given by
+ Theorem~\ref{dir:thm:quarter}, and for one product the sparse-quota profiles at every density are
+ classified by Theorem~\ref{dir:thm:profiles}, with an $O(1/h)$ comparison in the critical window that
+ needs no bound on the number of exceptional primes (Theorem~\ref{dir:thm:fpc}). For $r\ge2$ products,
+ and in particular for growing $r$, which statistics determine the approach to uniformity across the
+ occupied quotient classes, beyond the relative counts within each class, once the number of exceptional
+ primes is not $o(\sqrt m)$ as in Proposition~\ref{dir:prop:sparseexc}?
+\item \emph{Constants for factorizations.} For one tuple of moduli and coverage alone the leading
+ constant is the entropy threshold of Theorem~\ref{dir:thm:entropy}. What is the second-order term,
+ between the lower bound of order $\log\log M$ and the upper bound $O(\log M/\log B)$, and can a fixed
+ height factor $B$ attain the leading constant exactly? Does an entropy law hold for a growing number
+ of factors, with deletions, or with comparable numbers of representations? For a fixed relative
+ error $Q^{-A}$ and a fixed deletion fraction or retained density, what is the best leading constant
+ in the logarithmic quota of Theorems~\ref{dir:thm:factorization}, \ref{dir:thm:minority}
+ and~\ref{dir:thm:disjoint-growing}, also for growing $r$? Can the largest prime be made smaller than
+ $K\log^2Q$ for a fixed number of factors while keeping the pointwise bound?
+\item \emph{Hermite thresholds.} Lemma~\ref{dir:lem:hamming}(b) determines $b_k(a)$ in the windows
+ $a=h_j+\lambda/\sqrt k$ with $\lambda\le0$. What is the window function for $\lambda>0$, where rare
+ extreme layers may be used, and what is the next term in Lemma~\ref{dir:lem:hamming}(b)? Can
+ correlations among the prime character sums, or a witness optimized for the conductor-weighted
+ Fourier norm, improve the powers of $k$ in Theorems~\ref{dir:thm:signs}
+ and~\ref{dir:thm:signswindow}, and is there an arithmetic lower bound for the least prime?
+\item \emph{Computing the quotient.} Can the bounded quotient of Theorem~\ref{dir:thm:quotient}
+ be computed from the retained primes in time polynomial in $\log q$, without enumerating the
+ characters modulo $q$? Once it is known, Corollary~\ref{dir:cor:anydensity} decides the support of
+ disjoint products in polynomial time.
+\item \emph{Routing capacity.} At the cutoff $C(\log q)^2$, Corollary~\ref{dir:cor:routing} routes
+ $\gg\log q/\log\log q$ disjoint pairs while the counting bound allows $O(\log q)$; what is the
+ capacity? Can the constant $2/(A-2)$ in the length bound of Theorem~\ref{dir:thm:routing} be lowered
+ at the same deletion threshold?
+\item \emph{Prime codes.} Can the number of small primes in Theorems~\ref{dir:thm:codes}
+ and~\ref{dir:thm:primedecoder} be made nearly linear in the sparsity while keeping the sharp
+ corruption fraction, and is the cost $s^6$ of exact rigidity necessary? For moduli without a
+ subgroup of characters of order $2k$ the minimum distance may exceed the coherence bound; can a
+ tractable decoder use this? Is prime height $(\log Q)^2$ necessary for the fingerprints of
+ Theorem~\ref{dir:thm:fingerprint}, and how small can the list size be near capacity? Are the prime
+ cutoff $O(n^2\log^2n)$ and the rectangle defect of Theorem~\ref{dir:thm:legendrecodes} optimal for
+ Legendre codes?
+\item \emph{Prime designs.} Can the height exponent of Theorem~\ref{dir:thm:cubature} be lowered at a fixed
+ positive deletion fraction, is there a sharp obstruction in degree $k\ge2$ analogous to
+ Theorem~\ref{dir:thm:threelayer}, and can the bounded reweighting be replaced by equal weights on distinct
+ primes?
+\end{enumerate}
