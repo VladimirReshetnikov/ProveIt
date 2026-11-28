@@ -189,6 +189,10 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialExceptionalBall.lean](GRHArticle/ProgressionFree/PolynomialExceptionalBall.lean) bounds the exceptional count for each prime degree over the entire degree ball. Summing over all degrees and nonzero leading coefficients gives the degree-specific probability bound times $q^{N+1}-1$, the exact number of nonzero polynomials in the ball.
 
+[PolynomialLargeFieldGap.lean](GRHArticle/ProgressionFree/PolynomialLargeFieldGap.lean) proves the strict positive gap and explicit upper bound in `gpp:thm:largeq` for the actual supremum over every finite field of size $q\ge16$. Its sharper upper bound is $q^{-q+14}+(\lfloor q/2\rfloor-1)q^{-q}+q^{-(q+1)}$. More generally, any depth cutoff gives a sum of one exceptional rate per prime degree plus the deep-layer loss.
+
+[PolynomialLargeFieldAsymptotics.lean](GRHArticle/ProgressionFree/PolynomialLargeFieldAsymptotics.lean) completes the asymptotic conclusions of `gpp:thm:largeq`. For any family of finite fields tending to infinite size along a filter, the difference between the actual supremum and the benchmark tends to zero after multiplication by any fixed natural power of the field size. The extended-real limsup of the normalized logarithm is at most $-1$. Explicit bounds also quantify both convergence statements.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
