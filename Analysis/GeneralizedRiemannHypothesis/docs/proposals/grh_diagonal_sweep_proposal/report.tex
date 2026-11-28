@@ -1,0 +1,244 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.95in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,hyperref,xcolor,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\definecolor{ink}{HTML}{143B55}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=ink,citecolor=ink,pdftitle={A deterministic diagonal sweep for the theta-lift proof}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\rev}{835c3695d07c0f77060c5cc63f92eeb52a7d21c2}
+\newcommand{\base}{https://github.com/VladimirReshetnikov/ProveIt/blob/835c3695d07c0f77060c5cc63f92eeb52a7d21c2/Analysis/GeneralizedRiemannHypothesis}
+\newcommand{\auxlink}[3]{\href{\base/Lean/grh/src/New/Determinant/AuxiliaryForms/#1.lean\#L#2}{\texttt{#1.lean:#2} (#3)}}
+\newcommand{\RR}{\mathsf R}
+\newcommand{\DD}{\mathsf D}
+\newcommand{\Tr}{\mathcal T}
+\newcommand{\absup}{\mathcal A}
+\title{\vspace{-1em}\bfseries A deterministic diagonal sweep\\[2pt]\large Shortening the auxiliary-form transfer in the theta-lift proof of Dirichlet GRH}
+\author{Research and implementation proposal}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The readable Alp\"oge--Claude Lean proof transfers periods across two grids of unitary groups by a well-founded induction on the set of remaining squares. We replace this general path calculus by an explicit, nested diagonal sweep. In the source, an off-diagonal exchange preserves the number of roots of unity in a coefficient, whereas a diagonal exchange can enlarge it by the number of columns in a residue-ring matrix. A uniform bound applied to all $m^2$ turns obscures this distinction. The sweep proves the identical period-transfer conclusion with coefficient-growth factor $V^m$ instead of $V^{m^2}$, and in fact $h^{mr+m^2t}$ using the actual ranks, where $h$ is the residue-ring cardinality. Endpoint-sensitive counting improves the complete finite-sum bound further. All ratios of special values are retained, no new arithmetic input is postulated, and the existing downstream estimates follow by weakening. The mathematical replacement is proved below; the Lean integration and net source-line savings have not been verified by a build.
+\end{abstract}
+\tableofcontents
+\section{Recommendation and scope}
+The target is not the analytic zero-exclusion argument, the construction of the good labels, or the local exchange theorem itself. It is the global orchestration of exchanges in the lower-bound auxiliary-form argument. The guide describes the triangular chain of lifts and the exchange square in its discussion of the chain determinant (\href{\base/docs/guide/theta_lifts_and_dirichlet_zeros.tex\#L1019}{guide, lines 1019--1020}). Auxiliary forms supply a controlled basis completion (lines 1106--1161). The present replacement keeps those mathematical contracts exactly.
+
+The repository reports a proof of Mathlib's ordinary RH and GRH for all Dirichlet characters. We use the local results in that development as inputs, not as newly established claims of this note. The original proof's README reports independent checking and points to the build instructions. We inspected the proof interfaces, not all of the original 300,000 lines; no independent kernel replay was performed here. The source baseline is the immutable ProveIt commit
+\begin{center}\small\texttt{\rev}\end{center}
+The original \texttt{Statements.lean} and \texttt{Main.lean} are unmodified. In particular the pole exception, the critical-strip quantifiers, and the use of the functional equation are untouched.
+
+\paragraph{What changes.} Replace the general existence of a next turn, the set of squares under a path, and the strong induction on its complement by explicit paths indexed by a stage and a column. Keep the typed path objects, their append operations, and all local exchange proofs. The resulting core argument is a two-loop fold. A conservative first port can retain all public theorem statements; an optional second port changes the coefficient bound internally.
+
+\paragraph{Why this is worthwhile.} The deleted theory is combinatorial rather than analytic: the file \texttt{GridPaths.lean} is 369 lines including comments and blanks, and a large portion is devoted to arbitrary paths, rather than the first-to-last transfer actually needed. The improvement also eliminates a mathematically unnecessary power of the residue-ring cardinality. This is a significant simplification of this local proof component, not a claim to shorten the entire development by a large percentage. The exact net savings need to be measured after integration.
+
+\section{The source contract}
+\subsection{Path notation}
+In both halves a typed path starts at $(0,m)$. Write $\DD$ for the step $(a,b+1)\to(a,b)$ and $\RR$ for $(a,b)\to(a+1,b)$. A two-grid path has a common diagonal index $k$, with both halves ending at $(k,k)$. A half thus has exactly $m$ steps, with $k$ right steps and $m-k$ down steps. The half indexed by $z=1$ has its geometric indices exchanged; the half $z=0$ is not exchanged. The first path is $(\DD^m,\DD^m)$, the last $(\RR^m,\RR^m)$. These are exactly the source definitions in \auxlink{GridPaths}{155}{TwoGridPath}.
+
+Off the diagonal an exchange replaces $\DD\RR$ by $\RR\DD$ in one half. If the prefix ends at $(a,b+1)$ and $a<b$, the geometric square is $(a,b)$ in half 0 and $(b,a)$ in half 1. A diagonal exchange at $(j,j)$ replaces the terminal $\DD$ in \emph{both} halves by $\RR$, changing the common endpoint from $(j,j)$ to $(j+1,j+1)$.
+
+\subsection{Period transfers and scalar factors}
+For paths $P,Q$, let $\Tr(P,Q;k,c)$ denote the source predicate \code{TransfersPeriods}: for every input family of path data with root-count bound $N(\vartheta)$ there exist output data with bound $k(\vartheta)N(\vartheta)$, and if the latter period is proportional to a prescribed function $\Xi$, then the input period is proportional to $\Xi/c(\vartheta)$. Here $c$ is a function of the twists with values in $\mathbb C^\times$; the proportionality constants are independent of the twist and of both input forms, but may depend on the real point. This is not a pointwise equality of all periods nor an assertion of nonvanishing.
+
+Let $\absup(c,f)$ denote \code{HasAbsUpToNormPower}: the squared absolute value of $c(\vartheta)$ is a fixed positive constant times a fixed power of the twist modulus norm times $f(\vartheta)^2$. The source supplies multiplication for this relation and for transfers:
+\begin{align*}
+\Tr(P,P;1,1),\qquad
+\Tr(P,Q;k,c)\land\Tr(Q,R;k',c')&\Longrightarrow\Tr(P,R;kk',cc'),\\
+\absup(c,f)\land\absup(c',f')&\Longrightarrow\absup(cc',ff').
+\end{align*}
+The products are pointwise. Transfer bounds can be increased by monotonicity. The first two facts are \auxlink{Turns}{803}{definition and composition}, and the finite-product absolute-value lemma is used at \auxlink{DiagonalTurns}{650}{global transfer}.
+
+Set $f_{ij}=\code{turnRatio}(i,j)$; these ratios carry the analytic information and must never be omitted or double-counted. The two local transfer theorems have the following more precise form.
+\begin{itemize}
+\item \textbf{Off-diagonal.} For $a<b<m$ and $z\in\{0,1\}$, there exists $c_{abz}$ with $\absup(c_{abz}, f_{ab})$ for $z=0$, or $\absup(c_{abz},f_{ba})$ for $z=1$. For every compatible context with the two-step corner in half $z$, the transfer has bound $1$. See \auxlink{Turns}{944}{off-diagonal transfer}. Its proof explicitly uses the empty line, hence a unique column matrix.
+\item \textbf{Diagonal.} For $j<m$, there exists $c_{jj}$ with $\absup(c_{jj},f_{jj})$; the transfer with any two prefixes to $(j,j+1)$ has bound $V=\code{vectorCountBound}$. See \auxlink{DiagonalTurns}{592}{diagonal transfer}. Its proof has a sharper bound, the actual number of column matrices, discussed in Section~\ref{sec:exact}.
+\end{itemize}
+In each statement the scalar family is chosen before the path context and before its input data. That order of quantification is essential for composing the period identities. We will use the source's nonzero scalar families and will not divide by an unspecified proportionality constant (which may vanish).
+
+\section{An explicit replacement for the path induction}
+Define the synchronized paths
+\[
+P_j=(\RR^j\DD^{m-j},\RR^j\DD^{m-j}),\qquad 0\le j\le m.
+\]
+They meet the diagonal at $(j,j)$. For $j<m$, first use the diagonal turn at the last step, yielding two halves
+\[
+\RR^j\DD^{m-j-1}\RR.
+\]
+Now move the new right step leftwards through all remaining down steps in half 0, then through those in half 1. At intermediate column $b$ ($j+1\le b\le m$), the active half is
+\begin{equation}\label{eq:half}
+H_{j,b}=\RR^j\DD^{m-b}\RR\DD^{b-j-1}.
+\end{equation}
+The other half is fixed during these turns; the common diagonal is now $(j+1,j+1)$. We have $H_{j,j+1}=\RR^j\DD^{m-j-1}\RR$ and $H_{j,m}=\RR^{j+1}\DD^{m-j-1}$.
+
+\begin{lemma}[Explicit corner]\label{lem:corner}
+For $j+1\le b<m$, $H_{j,b}$ changes to $H_{j,b+1}$ by one legal inner turn at $(j,b)$ in the active half. In the two-grid index this is $(j,b)$ for half 0 and $(b,j)$ for half 1.
+\end{lemma}
+\begin{proof}
+Take the prefix $q=\RR^j\DD^{m-b-1}$ ending at $(j,b+1)$, and the suffix $s=\DD^{b-j-1}$ from $(j+1,b)$ to $(j+1,j+1)$. The old path is $q\DD\RR s$ and the new path is $q\RR\DD s$. The indices obey $j<b<m$ and the other half has the same endpoint. This is precisely the off-diagonal transfer hypothesis; the reflected indexing in half 1 is by definition. No arbitrary-path search, cardinal subtraction, or well-founded induction is needed.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Stage $j$ & Squares processed in order \\
+\midrule
+Diagonal & $(j,j)$ \\
+Half 0 & $(j,j+1),(j,j+2),\ldots,(j,m-1)$ \\
+Half 1 & $(j+1,j),(j+2,j),\ldots,(m-1,j)$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Every stage covers exactly the squares with $\min(i,k)=j$. These blocks are disjoint and partition $\{0,\dots,m-1\}^2$. There are $m$ diagonal turns and $2\sum_{j<m}(m-j-1)=m(m-1)$ off-diagonal turns. For $m=0$ there are no turns; the transfer is reflexive. The construction does not require a nonempty grid.
+
+\begin{theorem}[Deterministic weighted transfer]\label{thm:sweep}
+Using the two local transfer results and the composition law, there is $c$ such that
+\begin{align*}
+\absup\!\left(c,\prod_{i,j<m}f_{ij}\right),\qquad
+\Tr(P_0,P_m; V^m,c).
+\end{align*}
+More generally, if the diagonal transfer at $(j,j)$ has bound $K_j(\vartheta)$ instead of $V$, the conclusion has bound $\prod_{j<m}K_j$.
+\end{theorem}
+\begin{proof}
+Fix a stage $j$. The diagonal result takes $P_j$ to the pair of halves $H_{j,j+1}$, with bound $K_j$ and scalar $c_{jj}$. Apply Lemma~\ref{lem:corner} in half 0 by induction on $b$, then in half 1 by the same induction. Each factor has bound 1. The composition law gives a transfer from $P_j$ to $P_{j+1}$ with bound $K_j$ and scalar
+\[
+C_j=c_{jj}\prod_{b=j+1}^{m-1} c_{jb0}\,c_{jb1}.
+\]
+Its absolute-value ratio is $f_{jj}\prod_{b>j} f_{jb} f_{bj}$. An ordinary induction over $j$ composes these transfers, starting with the identity at $P_0$. The resulting scalar is $c=\prod_{j<m}C_j$ and bound $\prod_{j<m}K_j$. The partition by minimum coordinate and the product rule for $\absup$ give the required ratio product. Taking $K_j=V$ proves the first claim.
+\end{proof}
+
+This is a directed construction: it transports the data forward and propagates the proportionality assertion backward exactly as the source's \code{TransfersPeriods.trans} does. It requires neither a reversible exchange nor any uniqueness of the output data. Reordering factors uses commutativity of the scalar groups only, not commutativity of the theta-lift operators.
+
+\paragraph{Example $m=3$.} The sequence of geometric squares is
+\[
+(0,0),(0,1),(0,2),(1,0),(2,0),\quad
+(1,1),(1,2),(2,1),\quad(2,2).
+\]
+The synchronized half-words are $DDD$, $RDD$, $RRD$, $RRR$. The first diagonal step makes $DDR$ in both halves. It is followed by two swaps in each half. The local ratios from all nine squares occur once, but only three diagonal factors increase the coefficient budget.
+
+\section{The exact diagonal budget}\label{sec:exact}
+Write $h=h(\vartheta)$ for the cardinality of the finite residue ring of \code{gridModulus} at the twist $\vartheta$ (not its underlying prime or the norm of the twist alone). Let $r=D.r$, $t=D.t$, $m=D.m$, and $R=2D.n(m)$, the source uniform bound on grid ranks. Then $V=h^R$ and $W=\code{edgeMatrixCountBound}=h^{R^2}$. These identities are definitions at \auxlink{PathData}{502}{cardinality bounds}.
+
+The source's rank lemma \href{\base/Lean/grh/src/New/UpperBound/Objects/Parameters.lean\#L172}{\texttt{Parameters.lean:172}, \texttt{card\_gridIndex}} gives
+\begin{equation}\label{eq:rank}
+d_z(a,b)=r+z+a(t+z)+b(t-z),\qquad z\in\{0,1\}.
+\end{equation}
+Here $t-z$ is natural subtraction, and $t\ge 1$ in the original data. At a diagonal turn the line meets the common subdiagonal space with index type $D.\code{GridIndex}\ 0\ (j+1)\ j$, of rank $r+(2j+1)t$. The source uses a column vector indexed by that type and \code{Unit}; its cardinal is therefore
+\[
+K_j=h^{r+(2j+1)t}.
+\]
+This formula does not require the residue ring to be a field. A finite matrix type is a function type on the Cartesian product of its row and column indices, so an $a$ by $b$ matrix over a ring with $h$ elements has exactly $h^{ab}$ possibilities, including the empty matrix when either index is empty.
+
+\begin{theorem}[Sharp input to the transfer fold]\label{thm:exact}
+The exact diagonal bound above is valid for the same scalar families and the same transfer conclusions. Consequently Theorem~\ref{thm:sweep} holds with bound
+\[
+\boxed{\prod_{j<m}K_j=h^{mr+t m^2}.}
+\]
+In particular $h^{mr+t m^2}\le V^m\le V^{m^2}$ for $m\ge1$, and equality of all three bounds holds when $m=0$.
+\end{theorem}
+\begin{proof}
+In \auxlink{Turns}{522}{local path-data exchange}, the output root-count budget is exactly
+\[
+\#\operatorname{Mat}_{B,T}(\mathcal O/\mathfrak m)\ N.
+\]
+For diagonal exchange, the proof at \auxlink{DiagonalTurns}{592}{diagonal transfer} obtains this output and immediately applies \code{IsPathDatum.mono} using \code{card\_column\_le\_vectorCountBound}. Keep the pre-weakening bound and omit that one application. All matching assertions, square-law constants, line reversal, and period proportionality steps are unchanged. Formula~\eqref{eq:rank} evaluates the column count. The sum of $2j+1$ for $0\le j<m$ is $m^2$, giving the claimed product. Each actual rank is at most $R$ by the source's rank bound; hence each $K_j\le V$. For $m\ge1$, $m\le m^2$, and $V\ge1$. The empty case is immediate.
+\end{proof}
+
+There is no claim that the new budget is the optimal norm bound of the transform. Fourier cancellation or shorter representations as sums of roots of unity might improve it further. The bound is exact as a count of possible column matrices and is sufficient for all existing consumers. In particular, replacing $V^{m^2}$ by 1 would be unjustified: a diagonal Fourier sum can have every summand equal to 1 at the trivial character and then its absolute value is the full cardinality.
+
+\section{A second improvement: count the endpoints, not a worst-case square}
+The global transfer can be implemented first with no changes to the construction of the first path or the summation on the last. A further compatible improvement dispenses with both uniform endpoint matrix bounds. We describe it separately so the simpler first patch remains independently useful.
+
+\subsection{First-path coefficients}
+The source \auxlink{GridFirstColumns}{672}{coset cardinality} counts the families \code{LevelCosets} indexed by $(z,i)$ with $z\in\{0,1\}$ and $i<m$. The group at such an index is $\operatorname{GL}_{d_z(0,i)}(\mathcal O/\mathfrak m)$, and the quotient cardinal is bounded by the group cardinal, which is bounded by the total matrix cardinal. The first datum is a sum over these coset families of terms which are zero or roots of unity (see \auxlink{GridFirstColumns}{691}{first datum}). Thus its root-count bound can be taken to be
+\[
+N_0=h^A,\qquad A=\sum_{z=0}^1\sum_{i=0}^{m-1} d_z(0,i)^2.
+\]
+Proof: take the product of the individual cardinal bounds instead of bounding each by $h^{R^2}$. The rest of the existing first-path proof still applies with this stronger \code{IsPathDatum} hypothesis. In particular we do not alter the coset averaging or its equivariance. A simpler intermediate implementation can keep the exact cardinal of \code{LevelCosets} rather than even introducing $A$.
+
+\subsection{Last-path tuples}
+For any finite edge set $E$, the tuple type supported on $E$ has cardinal
+\begin{equation}\label{eq:tuplecount}
+\#\{S:\ S_e=0\ (e\notin E)\}
+=\prod_{e=(u,v)\in E}h^{d(u)d(v)}.
+\end{equation}
+The proof is the bijection between a supported tuple and its restriction to the edge set, with inverse extension by zero. Equivalently one can use \auxlink{PathData}{585}{sum over an inserted edge} with a constant summand 1 and induction on $E$. No grid path enumeration or uniform bound on the number of edges is needed. The source already has the membership characterization and this insertion identity.
+
+The last path consists of the two rows from $(0,m)$ to $(m,m)$, one in each grid. The edges are pairwise distinct (even at the diagonal the grid index distinguishes them). By \auxlink{LastPath}{688}{last-path edges}, its tuple cardinal is exactly $h^B$, where
+\[
+B=\sum_{z=0}^1\sum_{i=0}^{m-1}d_z(i,m)d_z(i+1,m).
+\]
+In \auxlink{LastPath}{891}{last-path sum}, the existing proof obtains the witness $L=N\,\#E_{\mathrm{tuples}}$ for the number-of-summands bound, and then weakens the cardinal to $W^{2m}$ at line 987. With the exact tuple cardinal it instead supplies $L\le Nh^B$. The other factors, the product of class counts over $2m+1$ nodes, are unchanged. All local integrality arguments are unchanged as well, since only the upper bound on $L$ is being strengthened.
+
+\begin{theorem}[Combined endpoint-sensitive estimate]
+With $A,B$ as above and $E_\Delta=mr+tm^2$, the final root-count budget is at most $h^{A+E_\Delta}$, and the factor $L$ in the last-path summation is at most $h^{A+E_\Delta+B}$. This replaces, respectively,
+\[
+W^{2m}V^{m^2}\quad\text{and}\quad W^{4m}V^{m^2}.
+\]
+Both new bounds are at most the original bounds for all admissible data.
+\end{theorem}
+\begin{proof}
+The first assertion is the product of the first-path budget and the transfer bound in Theorem~\ref{thm:exact}. Multiplication by the exact last-path tuple cardinal proves the second. Each rank is at most $R$, and there are $2m$ terms in each endpoint sum, so $A,B\le2mR^2$. Also $E_\Delta\le mR\le m^2R$ for $m\ge1$. All quantities vanish if $m=0$. These inequalities and $h\ge1$ prove the comparison.
+\end{proof}
+
+\paragraph{Illustration.} The following deliberately uses simple integer rank parameters $m=10$, $r=9$, $t=45$, $R=920$, not a claim of an admissible GRH data instance. The original and new exponents of $h$ for $L$ are:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Bound & Exponent \\
+\midrule
+Original uniform $4mR^2+m^2R$ & $33,948,000$ \\
+Uniform with only diagonal charges $4mR^2+mR$ & $33,865,200$ \\
+Endpoint-sensitive $A+E_\Delta+B$ & $10,845,175$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The exact decomposition is $A=1,206,745$, $E_\Delta=4,590$, $B=9,633,840$. The combined bound uses about 31.95\% of the original exponent in this illustration. The first improvement alone mostly simplifies the argument rather than the final enormous estimate; the endpoint refinement supplies the larger numerical improvement. No improved final GRH error constant is claimed.
+
+\section{Integration and preservation of the determinant}
+\subsection{A safe compatibility proof}
+Keep \code{exists\_transfersPeriods\_first\_last} with its original statement. Prove the stronger version using the explicit sweep, then call \code{TransfersPeriods.mono} once with $V^m\le V^{m^2}$. In the $m=0$ case both powers are 1. This preserves the same statement of \code{exists\_integral\_lowerChainUpTo\_}\allowbreak\code{eq\_lastPathPeriod} at \auxlink{SpanningForms}{397}{first-to-last use}. It obtains data on the last path, a scalar family with the required special-value ratio, and an onto restriction map. The first-path theorem, the last-path period computation and the proof of the onto property are untouched. The scalar family may be different from the old one; only its existential specification is needed.
+
+The second stage can change \code{lastPathBound} (line 63 of \texttt{SpanningForms.lean}) to $V^m W^{2m}$ or the exact expression $h^{A+E_\Delta}$. The existing statements downstream of the auxiliary construction do not require the stronger root-count bounds explicitly. Where a proof requires an old bound, use \code{IsPathDatum.mono}. The optional endpoint refinement can similarly wrap the improved last-path summation theorem in the old bound $Nh^B\le NW^{2m}$; alternatively use the actual $L$ in the norm proof and compare to the old estimate once. This ensures that the exponential cost $\exp(x^{200}b^2)$ in \code{norm\_lastPathPeriod\_le} and the subsequent $\exp(2x^{201}b^2)$ squared-norm estimate remain valid without reoptimizing parameter constants.
+
+\subsection{End-to-end logical placement}
+The relevant output at \auxlink{SpanningForms}{773}{short lifts span} is used in \href{\base/Lean/grh/src/New/Determinant/Twist/LongForms.lean\#L59}{\texttt{LongForms.lean:59}} to construct auxiliary forms spanning the target. Those forms fill the missing dimensions in the determinant comparison; their ordinary sizes and twisted integrality are controlled. Keeping the old contract preserves \texttt{integral\_forms\_long} (line 214), hence the bound in \href{\base/Lean/grh/src/New/Reduction/MainInequality.lean\#L87}{\texttt{MainInequality.lean:87}}. The analytic argument in \href{\base/Lean/grh/src/New/Reduction/OneSidedBound.lean\#L239}{\texttt{OneSidedBound.lean:239}} then has the identical input. Nothing here changes the nature of the analytic proof or constitutes a separate proof of RH.
+
+\subsection{What to remove}
+The new proof needs typed paths, their append, row and column constructors, the bounds on endpoint indices, and the local transfer theorems. It does not need the general set of enclosed squares or a theorem finding a turn of an arbitrary nonfinal path. The following are candidates for retirement after a reference check:
+\begin{itemize}
+\item \texttt{GridPaths.lean:64--150}: the square-set definitions and lemmas, corner existence, and associated append bookkeeping. Retain the endpoint inequalities and any elementary row facts still used elsewhere.
+\item \texttt{GridPaths.lean:175--365}: the general \code{Turn} relation, \code{squares} theory, the extraction of corners from general turns, \code{exists\_turn}, and \code{turn\_induction}. Retain \code{diagonalIndex\_le} and first/last definitions. A deterministic sweep may construct the local prefixes and suffixes directly, so it need not construct a \code{Turn} witness at all.
+\item \texttt{DiagonalTurns.lean:627--668}: replace the general turn dispatcher and the global strong-induction proof. Keep the diagonal local transfer theorem at line 592 and the off-diagonal one in \texttt{Turns.lean}.
+\item If exact endpoint counts are adopted, replace the generic \code{card\_tuplesOn\_edges\_le} and possibly \code{GridPath.card\_edges\_le} by the restriction/extension cardinality identity. The direct last-path edge description already exists. Do not remove \code{eq\_and\_le\_of\_mem\_edges}, which is used for the local corner hypotheses.
+\end{itemize}
+A connector code search found the general turn induction used in the global transfer theorem and the generic path tuple cardinal bound used in the last-path summation. This search is not an exhaustive dependency graph; check with a local source search and clean build before deleting. Approximately 250--300 gross source lines (including comments and blanks) are in the candidate combinatorial block and dispatcher; the new typed constructors and arithmetic proofs will consume some of those savings. No measured net reduction is asserted. A separate implementation blueprint is included.
+
+\section{Nonduplication audit and limitations}
+We enumerated all 18 proposal directories in the pinned snapshot, inspected their README summaries, and scanned the 28 TeX sources for headings and targeted terms (grid paths, diagonal turns, the transfer and coefficient-bound names, and related traversal language). The accompanying audit records the directory hashes and subject summaries. This is a targeted nonduplication review, not a formal proof of the absence of similar remarks in all supporting code or prose.
+
+The closest existing proposal is \href{\base/docs/proposals/orbital_theta_exchange/orbital_theta_exchange.tex}{orbital theta exchange}, which constructs canonical orbital sections and matched partners for the \emph{local} exchange. The proposed sweep is compatible with that change: it assumes precisely the local transfer theorem's contract, not a particular choice of its proof. The Gram-adjoint proposal concerns a one-lift comparison operator and integral frames; it does not change the two-grid traversal. The centered and signed-gain proposals change spanning/completion and the global product-formula accounting, not the finite coefficient expansion supplying auxiliary forms. The class-count proposal changes a class-count estimate, not the number of edge matrix tuples. The remaining proposals address arithmetic labels, interpolation, local Hecke estimates, derivative sharpness or analytic selection and cutoffs. None of the inspected reports proposes this deterministic sweep or the rank-sensitive finite-sum exponents.
+
+\paragraph{Verification status.} The sweep, rank sum, and endpoint-sensitive bounds are mathematical consequences of explicitly identified source lemmas. Python regressions cover $m=0$ through $64$, checking endpoints, legal corner indices, uniqueness of the square cover, the scalar product, and exact arithmetic for the cardinal exponents on 1,008 parameter sets. The tests do not certify the analytic exchange laws or substitute for a Lean proof. The pinned source anchors were fetched using GitHub; the local source-audit script requires a checkout and was not run here. A Lean executable and the pinned Mathlib build were unavailable in this environment. No edits were made to GitHub and no complete Lean patch or rebuilt kernel certificate is claimed.
+
+\section{Further research questions}
+\begin{enumerate}
+\item Can a single typed word representation remove most dependent-index transport from the sweep without complicating the local form-map theorem? Compare the new implementation against the readable and compact versions separately.
+\item Can the coefficient budget be reduced below the column cardinal using a support bound, or a Fourier norm with an integrality-preserving normalization? A pointwise cancellation assumption is not enough; the estimate must hold under every complex embedding used by the height argument.
+\item Can the redundant coset at the reflected initial diagonal node be removed from the first average (the source remarks that it does not act)? This requires keeping the twist-dependent normalization in the modulus-power scalar rather than absorbing it into a twist-independent proportionality constant without proof.
+\item Can class-count and endpoint matrix-count refinements be combined to reduce the auxiliary-form size exponents enough to simplify the admissible-data parameter tower? Such a parameter change would need a complete audit of downstream inequalities, not just the improvement shown here.
+\end{enumerate}
+
+\section*{Source and reproduction record}
+\addcontentsline{toc}{section}{Source and reproduction record}
+\begin{itemize}
+\item \href{\base/Lean/grh/README.md}{Readable Lean package README}, \href{\base/Lean/grh/GUIDE.md}{reading guide}, and \href{\base/Lean/grh/src/Statements.lean}{Mathlib theorem statements}.
+\item \href{\base/docs/guide/theta_lifts_and_dirichlet_zeros.tex}{Human-readable guide (TeX source)} and \href{https://github.com/VladimirReshetnikov/ProveIt/tree/835c3695d07c0f77060c5cc63f92eeb52a7d21c2/Analysis/GeneralizedRiemannHypothesis/docs/proposals}{existing proposal snapshot}.
+\item Verification information for the upstream shorter editions is linked in the guide: \url{https://math.mit.edu/~drew/shortgrh/}. We report the source's verification claims, not a new independent validation of the original proof.
+\end{itemize}
+The archive contains this TeX source, the PDF, \texttt{LEAN\_PLAN.md}, \texttt{check\_sweep.py}, its actual output, source and proposal manifests, and an optional source verifier. Build the PDF with two runs of \texttt{pdflatex -halt-on-error report.tex}. Run the checks with \texttt{python3 check\_sweep.py}. See the README for the source verification command.
+\end{document}
