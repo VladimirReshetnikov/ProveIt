@@ -244,6 +244,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [SixthNormPairCertificates.lean](GRHArticle/ClassGroups/SixthNormPairCertificates.lean) verifies the sixth-power norm obstruction for all 28 eligible prime pairs through 2113 and the additional pair (2381, 3323). [SixthNormCollisionBound.lean](GRHArticle/ClassGroups/SixthNormCollisionBound.lean) derives the bound of 18 positive norm coefficients from the pair checks and the small-prime nonresidue assumptions. The full pair search through 5500 and the passage to the exponent-six class-group census remain open.
 
+[SevenReducedFormTable.lean](GRHArticle/ClassGroups/SevenReducedFormTable.lean) checks the discriminant and conductor arithmetic and counts all primitive reduced forms for the 40 recorded exponent-seven orders. The counts are seven forms for 38 orders and 49 for the other two, giving 364 representatives in total. [ReducedFormsReadback.lean](GRHArticle/ClassGroups/ReducedFormsReadback.lean) proves these counts apply to the same reduced forms used for the analytic class polynomial. The group exponent and completeness of the order list remain open. [SixthQuadraticCharacter.lean](GRHArticle/ClassGroups/SixthQuadraticCharacter.lean) expresses the sixth-power nonresidue assumption using Legendre symbols.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in [grh/src/Main.lean](grh/src/Main.lean).
