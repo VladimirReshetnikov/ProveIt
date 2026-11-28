@@ -1,0 +1,121 @@
+\section{Scope, conclusions, and verification status}
+
+The source's public conclusions concern the Riemann zeta function and
+\emph{Dirichlet} \(L\)-functions. Its entry point proves the five statements in
+\src{Main}{\code{Main.lean}}, using the Mathlib-facing definitions in
+\src{Statements}{\code{Statements.lean}}. This review uses GRH with that
+Dirichlet scope; it does not extend the source's conclusion to all
+automorphic or Artin \(L\)-functions.
+
+The pinned readable tree contains 803 Lean files and 477,020 physical lines in
+\code{src}. Physical lines include comments and blanks. A syntactic import
+walk from \code{Main} reaches all 803 files. This does not show that every
+declaration is needed: imports and proof-term dependencies are different
+graphs. It does show that a claim of large savings from merely removing
+unreachable imported files would be unsupported by this snapshot.
+The archive contains the measurements and a reproducible audit script.
+
+The supplied \guide{} explains the arithmetic determinant comparison and is
+valuable for locating the conceptual bottleneck. The proposed changes below
+were checked against the corresponding Lean definitions and hypotheses, not
+only against the guide's prose.
+
+\begin{center}
+\begin{tabular}{@{}p{.34\textwidth}p{.60\textwidth}@{}}
+\toprule
+Component & Status in this delivery\\
+\midrule
+Exact power homogeneity of the common-multiplier height &
+Kernel-checked standalone generalization of the actual definition.\\
+Determinant recurrence; additive costs; triangular count &
+Kernel-checked abstract lemmas. They assume the stated recurrence.\\
+Specialization to \code{New.HeightLe} &
+Insertion-ready candidate, explicitly not compiled in the full source tree.\\
+Local exchange-to-cost conversion and full determinant migration &
+Mathematical derivation and integration plan; not a completed patch.\\
+One-vector branching norm bound &
+Mathematical proof with existing source prerequisites identified;
+source specialization not kernel-checked here.\\
+The full RH/GRH project &
+Read and analyzed at relevant interfaces; not rebuilt or independently
+replayed in this session.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The repository's \href{https://github.com/VladimirReshetnikov/ProveIt/blob/9050b04000647d588d0c78d945180abcd3b0bcf7/Analysis/GeneralizedRiemannHypothesis/Lean/grh/README.md}{README}
+reports full builds and independent checker acceptance. Those are the
+repository's reports, not new verification claims made here. For the new
+standalone lemmas, compilation succeeded and the printed axiom sets contain
+only \code{propext}, \code{Classical.choice}, and \code{Quot.sound}.
+No revised proof of the five final theorems is being claimed.
+
+The practical conclusion is two concrete, compatible simplifications of
+substantial local arguments. I do not claim a measured percentage reduction
+of the entire 477,020-line development. A net line count and build-time claim
+require completing the integrations.
+
+\section{The part of the proof that must survive}
+
+\subsection{The arithmetic comparison}
+
+Fix the progression modulus \(Q\), an admissible auxiliary prime \(d\), and the
+quadratic character \(\chi_d\). The proof constructs a long chain of theta lifts
+whose length satisfies \(m\asymp\sqrt{x}\). Its upper estimate makes a large
+prime discrepancy produce many short vectors. Its spanning estimate ensures
+that sufficiently many of those vectors are independent. The lower estimate
+uses integrality, twist-dependent height bounds, and the product formula to
+limit how short their combined volume can be.
+
+Write \(d_T\) for the dimension of the target forms, to avoid confusing it
+with the auxiliary prime. In the notation of the source, put
+\[
+ L=fa(\log b)^4,\qquad
+ H=m k\,\operatorname{directionAmount}=\operatorname{mainAmount}.
+\]
+Theorem C is the statement that, for an independent family with
+\(n\ge(1-4/b^2)d_T\), logarithmic squared-covolume allowance \(V_0\), and
+index allowance \(\delta\),
+\begin{equation}
+ V_0+2\delta\ \ge\ d_T(H-3L).
+ \label{eq:theoremC}
+\end{equation}
+This is
+\src{New/Determinant/Twist/LongForms}{\code{integral_forms_long}}.
+The coefficient of \(H\) matters. Losing a copy of the ordinary-direction
+contribution changes the cancellation with the short-form theorem.
+
+The three inputs are assembled in
+\src{New/Reduction/MainInequality}{\code{MainInequality.lean}}.
+The eventual one-sided prime-remainder estimate is then converted to the
+Dirichlet zero-free half-plane in
+\src{New/Reduction/OneSidedBound}{\code{OneSidedBound.lean}} and the
+\src{New/Reduction/Zeros/Criterion}{zero-detection criterion}.
+The half-plane statement and the functional equation produce the
+public critical-line statements.
+
+The main proposal changes how the determinant lower bound is organized.
+It preserves \eqref{eq:theoremC}, so it can coexist with the stronger
+spanning, short-form, torsion-selection, and analytic proposals already
+in the repository.
+
+\subsection{Why a chain cannot simply be treated as independent single lifts}
+
+The source uses a triangular diagram of lifts and descents. Moving a descent
+past a lift introduces a scalar. For a chain of length \(m\), the crossings are
+indexed by
+\[
+ \{(i,j):1\le i<j\le m\}.
+\]
+The first arrows in the rows have the stable ranks needed by the Rallis
+formula, whereas consecutive arrows of the long chain do not all have that
+property. Thus a valid simplification retains the square laws, their adjoint
+laws, and the induction proving injectivity.
+
+The relevant interfaces are
+\src{New/Determinant/Chain/TriangleNorms}{\code{TriangleNorms}},
+\src{New/Determinant/Chain/ChainNorms}{\code{ChainNorms}}, and
+\src{New/Determinant/Chain/NormOfChain}{\code{NormOfChain}}.
+The simplification proposed here removes unnecessary information carried
+\emph{through} that induction; it does not replace the induction by an
+unjustified multiplication of single-lift volumes.

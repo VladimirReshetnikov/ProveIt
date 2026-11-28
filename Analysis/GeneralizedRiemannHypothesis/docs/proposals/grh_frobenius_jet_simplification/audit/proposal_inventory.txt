@@ -1,0 +1,85 @@
+# Existing simplification proposals: exclusion inventory
+
+## Snapshot and scope
+
+- Repository: `VladimirReshetnikov/ProveIt`.
+- Pinned commit: `9050b04000647d588d0c78d945180abcd3b0bcf7`.
+- Root examined: `Analysis/GeneralizedRiemannHypothesis/docs/proposals`.
+- This snapshot has **18 top-level proposal directories**.
+- Retrieved and saved **64 textual files**, including **28 TeX sources**, all proposal READMEs, and the integration/formalization plans selected by their suffixes and directory roles.
+- All 64 saved source files were checked byte for byte against the pinned local checkout and against their Git blob SHA-1 values. `source_manifest.json` also contains SHA-256 values and byte lengths.
+- Review scope: all proposal summaries, every TeX section/subsection outline, mathematical statements and integration/future-work sections relevant to the exclusions below. This is a mechanism inventory, not an independent verification of each existing proposal's proof or executable artifacts.
+- Older proposals sometimes refer to folders such as `dyadic_place_coloring` that are not top-level folders in this pinned snapshot. The current explicit-place construction is in `theta-lift-simplifications/paraboloid.tex`. Do not silently treat an old inventory as the current one.
+
+## Mechanism-by-mechanism inventory
+
+| Directory | Existing proposal mechanisms | What would duplicate it |
+|---|---|---|
+| `centered_theta_lift_simplification` | Center the Hilbert–Schmidt covariance of the translated source; derive a deficit-dependent rank increment directly on the ramified source; choose a rank target from the actual cost of completing a basis; reduce translate cost to (3d_T\log b) and derive (m\mathcal R\le17fa(\log b)^4). Includes a nonadaptive product-of-contractions proof. | A direct or centered greedy spanning lemma, adaptive completion threshold, smaller logarithmic translate budget, or random contraction sampling on the same moment input. |
+| `cm_norm_theta_simplification` | Use the already available CM norm variable rather than squares of rational local scalars in the cancelling theta product. Two cancelling factors at unramified places, three at the ramified place; combine generic coupling and one-copy witnesses to obtain four-copy local sharpness with the same budget as `leastValLE_twelve`; safe first port pads four copies to twelve. | Reducing the number of cancellation copies by CM norm pairing, exploiting the one-copy spanning witness, or replacing the local four-squares construction by these local CM choices. |
+| `cyclotomic-interpolation-and-theta-lifts` | A mixed-radius torsion interpolation grid gives a root-of-unity order bound independent of dimension and polynomial degrees at fixed valuation budget. One choice works for every power of a character. Also stronger near-spanning from two moments, retaining the existing translate budget and obtaining (O(b^{-4})) missing dimension. | Multivariable torsion selection by low-cost interpolation grids, one character for the full power chain, or the associated affine rank recurrence. |
+| `discrete_hecke_simplification` | Replace Pieri-cone real volume/integration/Riemann-sum counting by signed integer-lattice enumeration. Evaluate cycle determinants and the alternating monomial-orbit sum to recover the inverse flag count. Retain Frobenius power packing, use finite quotient residue counts plus an elementary limit. Second change: direct saturation/Smith argument for exceptional local elementary divisors and truncated colength, avoiding auxiliary generators and Nakayama. | Merely proposing a combinatorial Pieri count, signed lattice enumeration, direct saturation of bad Smith directions, or the same threshold colength argument. This directory was added in the head commit and is easy to miss. |
+| `edge_hecke_simplification` | Build the invariant-average contract by scaled tensor symmetrization, coefficient operators and an integral orbit trace rather than explicit Schur-algebra/restricted-representation machinery. Obtain exceptional Smith-factor count by a threshold decomposition and low-rank perturbation/principal-submatrix test; turn it directly into a truncated colength certificate. | Replacing the invariant average by integral orbit traces or removing supplementary generators by this Smith-rank test. The average's integral orbit, rather than saturation alone, is essential. |
+| `gram_adjoint_simplification` | Use the existing Weyl–Fock matrix identity (GH=hI) to prove an integral adjoint directly; replace the specialized tight-frame construction and cardinality estimates. Use paired-conjugate dual norms for arbitrary complex automorphisms. May reduce (n_{\rm aut}h^2LL^*) to (n_{\rm aut}hLL^*) without changing the downstream contract. | Tight-frame removal using inverse Gram duality, the one-hook normalization, or the paired-conjugation adjoint norm argument. |
+| `grh-class-count-finite-quotient` | For each short-basis Gram matrix (G), encode a unitary class by columns of (A^{-1}) modulo integral vectors, in (G^{-1}R^r/R^r\simeq R^r/GR^r). Bound the quotient via (|N(\det G)|). Avoid bounded strong approximation and the extra bounded matrix (GX), preserving the exact explicit class-count constant. | A finite-cokernel/residue invariant replacing the auxiliary principal representative in `New.Space.card_stdClasses_le`. |
+| `grh_order_tests_2026-11-27` | Replace primitive labels by norm power tests plus one subgroup exclusion; preserve every audited full scalar-order consumer. Exact elementary count, with a union-bound-only implementation option; at least (q^r/(4r)) labels and sufficient condition (f\ge4rL). | Primitive-label weakening by these explicit norm conditions, or replacing the totient bound by this union/count argument while retaining full scalar order. |
+| `newton_torsion_simplification` | A one-shell Newton divided-difference method, weighted Gauss valuations and harmonic averaging give dimension/degree-free common exact primitive order with a singly exponential level ceiling. This explicitly resolves a further question of the earlier interpolation proposal. | A new torsion-interpolation note whose only improvement is singly exponential level or all coordinates in one primitive shell, using Newton extraction/harmonic loss. |
+| `orbital_theta_exchange` | Replace selected symmetric coset representatives, extended finite summation and finite-support reduction by normalized orbital sections and a primitive-frame projection. Prove an algebraic twisted-coinvariant kernel theorem with a finite translation-difference certificate; complementary frames yield canonical matching and primitive partners for all full-rank Schwartz–Bruhat data. | A normalized orbital integral or canonical coinvariant reformulation of the theta exchange/matched data, including removal of continuity assumptions for algebraic functionals. |
+| `proof_simplifications` | Two short Dirichlet polynomials plus quadratic large sieve select the auxiliary prime; an elementary character-sum/Fourier-completion alternative is also supplied. Direct smoothed Perron at the far cutoff. Direct ramified-source spanning strengthens missing dimension to (20d/b^4), with a logarithmic-budget sharpness example. | Large-sieve/Fourier auxiliary-prime selection, a far-cutoff contour shift, or direct ramified-source affine rank recurrence. |
+| `rh-simplifications` | Stronger direct spectral rank recurrence with constant analysis; simultaneous roots-of-unity interpolation; quadratic large-sieve auxiliary-prime selection. Endpoint assembly and full power-of-one-character use are explicit. | The same three substitutions, even if constants or presentation differ. |
+| `rh_sparse_theta_proof` | Reciprocal-cutoff convexity reduces arithmetic data to fourth powers or a compatible dyadic grid; interpolate with (O(x^{-1/2})) loss. Also a local-average variant, Gaussian tail second moments, mollified quadratic-twist selection and a weakened sufficient arithmetic criterion. | Merely restricting the arithmetic proof to sparse cutoffs, replacing pointwise arithmetic by local averages, or using averaged Gaussian tails for the twist. |
+| `rh_two_order_tests_proposal` | For (r=3^a), retain maximal 2- and 3-primary components and exclude (z^{3(q^{r/3}-1)}=1). Exact count ((q^r-3q^{r/3}+2)/(3r)); weaken the sole full scalar-order consumer to (6^{s+6}); preserve normalization and power robustness. Weighted projector loss (f\epsilon+e^{-f/(6r)}) per block, with both block errors retained. | Two-order robust labels, replacing a full tame-order certificate by two surviving prime components, or this complement-mass improvement over witness-mass counting. |
+| `robust_theta_labels` | Three power tests give a dense robust label family stable under prime-power maps and tame normalization; matrix span and a (6^s) scalar-order certificate survive. Exact cyclic count and elementary witness lower bound remove the analytic totient estimate. | Robust-root three-test predicates, the two-prime surviving-order principle, or their Galois/projector transfer. |
+| `shorter-theta-lift-proof` | Elementary smooth character blocks and Poisson summation or a one-page quadratic-large-sieve proof select the twist. Direct spanning on ramified forms. Classical fixed-modulus PNT at the far cutoff and endpoint interpolation. | The analytic quadratic-twist or direct spanning substitutions, even if bundled differently. |
+| `signed_theta_gain_simplification` | Separate local loss of divisibility from local colength cost. Compare one fixed determinant by a signed product formula instead of introducing a rounded global rational normalization. Expose a (150fa\log b) local colength budget and derive (m\mathcal R\le(1+O(1/\log b))fa(\log b)^4). | Exact signed normalization, separating gauge from colength, or improving only these constants using that already-exposed budget. |
+| `theta-lift-simplifications` | Three independent changes: integral basis adapted to a flag, choose one row from each available operator for an exact clearing determinant (also compressed lift); denser finite-field labels with surviving orbit and norm order; explicit paraboloid/digit code for sparse infinite places, avoiding a well-populated sphere. | Flag-row determinant selection, the same local integral pivots for compressed lifts, norm/order label weakening, or the explicit paraboloid replacement of Behrend-style sphere selection. |
+
+## Explicitly proposed future directions
+
+These are *not* established replacement proofs in the existing reports. The user asks not to repeat proposals; merely restating one of these directions would still overlap. A genuinely proved solution may be a substantive extension, but should say which prior question it answers.
+
+### Spanning, completion and global determinant
+
+The centered-moment note already proposes:
+
+1. A single continuously varying rank–height budget, balancing the marginal cost of one extra translate against one missing dimension.
+2. Weaker orbital estimates made possible by the exact tolerance formula for moment error.
+3. Charging local index by newly acquired rank rather than full translate dimension; it warns the current uniform colength estimate alone does not imply this.
+4. An exterior-power chain determinant estimate that could eliminate completion; it warns that an unsigned height inequality does not recover the required main term.
+
+The signed-gain note already proposes:
+
+1. Replace the (N)-level cost (mfb) by the actual rank-weighted cost of nontrivial elementary divisors.
+2. Jointly optimize gauges and colength through exterior powers.
+3. Establish arithmetic estimates only for the twist pair used after choosing the regular family, rather than universal integrality.
+4. Track individual lower-height losses more sharply.
+
+### Local upper bounds
+
+The discrete-Hecke note asks whether one can:
+
+1. Work at finite packing scale (M=1) instead of asymptotic Frobenius power packing.
+2. Use an Ehrhart quasipolynomial identity to remove even its elementary limit.
+3. Propagate the full Smith-factor profile instead of only the exceptional count.
+4. Use root-by-root shifts for a multi-block variant.
+
+The edge-Hecke note asks for a direct perfect pairing on the integral small-defect space, bypassing invariant averaging; the residue dimension estimate alone is explicitly insufficient. It also mentions tighter multinomial carry constants and avoiding the power-packing/volume argument (the latter is now partly addressed by the discrete-Hecke note).
+
+### Local labels and places
+
+The robust-label note explicitly asks for a direct scalar-unit conclusion instead of an intermediate divisibility statement; general ranks beyond powers of three; simultaneous reduction of field towers and sparse-place costs; and exploitation of exact Green weights to relax the all-allowed condition.
+
+The theta-lift local note asks for summing individual local determinant losses before their worst case, and for counting additional robust labels whose exponent is divisible by 3.
+
+### Integral adjoints
+
+The Gram-adjoint note already suggests exact paired bounds at individual embeddings, extension of rational duality to auxiliary-form completion with nontrivial stabilizers, and reuse for other Weyl/Schur modules.
+
+## Important audit cautions
+
+- Several existing notes overlap each other. Their claims of “distinct from all existing proposals” concern older snapshots with only 5–14 folders. The current exclusion task must use the union above.
+- Count gains, smaller constants or numerical parameter relaxations do not by themselves demonstrate a shorter full Lean proof.
+- Source files mentioned as candidates for deletion are affected regions, not verified net savings. Their helper declarations can have unrelated callers.
+- The user's “likely implemented” instruction means a new proposal should survive composition with these changes. Re-deriving the same public interface by another elementary calculation is not automatically a significant new simplification.
+- A new proof should identify an untouched mechanism, give its replacement theorem, prove the missing bridge and inspect all downstream consumers. In particular, preserving the common main term in the determinant comparison is essential.
+

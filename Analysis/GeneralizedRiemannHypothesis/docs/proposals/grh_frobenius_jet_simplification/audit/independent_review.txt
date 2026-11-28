@@ -1,0 +1,468 @@
+# Independent stress test of the finite-jet replacement
+
+Baseline: `VladimirReshetnikov/ProveIt`, commit
+`9050b04000647d588d0c78d945180abcd3b0bcf7`.
+All source paths below are relative to
+`Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/`.
+
+## Verdict and scope
+
+The proposed replacement survives the checks below. The raw exponent of a
+resolution theta product supplies both actual consumers of the expanded
+`couplingSum` normal form, with the same valuations, factorial factors and
+error terms. The necessary replacement is an interface change: retain an
+exact factorization with an integral raw exponent, and prove a finite
+null-moment condition for upper bounds and a first-gradient condition for
+inert-prime sharpness. Do not merely erase `couplingSum` from the current
+theorem statements while retaining their hypotheses.
+
+This note is a mathematical/source-level review. It does not claim a
+completed integrated Lean refactor, a successful full-project replay, or a
+measured reduction in kernel-checking time.
+
+## 1. The coefficient ring really can be nonreduced
+
+The source uses the actual quotient
+
+\[
+ k=\mathcal O_{\mathbb C_p}/(\pi_p),\qquad
+ \pi_p=\texttt{piPrimeInt d},
+\]
+
+not the residue field of the valuation ring. This is explicit in
+`FormalGroup/Exponent.lean`, `reducePiPrime` and its following instances
+(lines 495–513):
+
+* The quotient is nontrivial because `norm_piPrime_lt_one` implies that
+  `piPrimeInt d` is not a unit.
+* It has characteristic `p` because `piPrimeInt_dvd_natCast d` states
+  `piPrimeInt d ∣ (p : valRingCp p)`.
+* `reducePiPrime_eq_iff` identifies equality in the quotient with divisibility
+  of the difference by `piPrimeInt d`.
+
+The quotient is generally nonreduced. For example, choose a square root
+`a` of `π_p` in `C_p`. Then `v(a)=v(π_p)/2`, so its class is nonzero in
+`O/(π_p)` but its square is zero. Frobenius therefore must not be assumed
+injective. Its additivity and multiplicativity are sufficient throughout
+the proposed proof.
+
+This matches the source's existing congruence infrastructure.
+`Lib/General/Algebra/SeriesCongruences.lean`, `dvd_sum_pow_sub_sum`, already
+passes to `R ⧸ Ideal.span {π}` for an arbitrary commutative ring `R` and
+`π ∣ p`, establishes characteristic `p`, and applies Frobenius additivity.
+It requires no field, reducedness, perfection or noetherianity hypothesis.
+`C_dvd_iff_forall_dvd_coeff` equates constant-series divisibility with
+coefficientwise divisibility. The one-variable analogue is used in
+`map_reducePiPrime_eq_iff` in `Exponent.lean`.
+
+The raw exponent lemmas to retain are
+`exists_seriesToCp_eq_exponentSeries_of_inert` (line 420) and
+`exists_seriesToCp_eq_exponentSeries_of_ramified` (line 446). They assert
+divisibility by `PowerSeries.C (piPrimeInt d)`, exactly the strong
+coefficientwise congruence needed here. Reduction only modulo the maximal
+ideal would be insufficient for the upper divisibility bound.
+
+## 2. The weights are Frobenius-fixed for the actual application
+
+Every weight in the relevant theta products is a natural multiplicity:
+
+* `CMLattice.rescale_thetaProd_eq_mul_expSubst`,
+  `FormalGroup/ThetaProducts.lean` line 405, takes `m : I → ℕ`.
+* `piPrimeInt_dvd_sum_linearSeries_sub_coupling`, line 244, takes
+  `m : J → ℕ` and `IsResolution u m`.
+* `Parameters.exists_hasNormalForm`, line 443, quantifies over
+  `m : J → ℕ`.
+* `Sharpness/Cases.lean`, `exists_hasNormalForm_resolutionForms`, uses
+  `c : J → ℕ` for the tight-frame multiplicities.
+
+After reduction these weights lie in the prime field, so
+`m_i^(p^a)=m_i`. This is essential. The pair identity below does not hold
+without change for arbitrary coefficients in `k` that are not fixed by
+Frobenius. The scalar `λ` is allowed to be arbitrary and is kept outside
+Frobenius; no equality `λ^p=λ` is used.
+
+## 3. Finite Frobenius argument and the exact cutoff
+
+Let `k` be any commutative characteristic-`p` ring, let
+
+\[
+ J_B(k)=k[z_1,\ldots,z_n]/(z_1,\ldots,z_n)^{B+1},
+ \qquad I=(z_1,\ldots,z_n),
+\]
+
+and let `L_i∈I`. The family is finite. Write `F(x)=x^p`,
+`b(U,V)=Σ_i m_i U_i V_i`, and
+
+\[
+ M_e=b(L,F^eL)=\sum_i m_i L_i^{p^e+1}.
+\]
+
+For all nonnegative `a,b`,
+
+\[
+ b(F^aL,F^bL)
+ =M_{|a-b|}^{p^{\min(a,b)}}.                 \tag{1}
+\]
+
+This follows from the Frobenius homomorphism and the fixed weights. It
+does not use any cancellation or injectivity. Since `L_i∈I`, `M_e=0`
+automatically if `p^e+1>B`.
+
+For `q=p^r`, the equation `Y−Y^q=L` has the unique solution in `I`
+
+\[
+ Y=\sum_{a=0}^{h-1}L^{q^a}\quad(q^h>B).      \tag{2}
+\]
+
+Existence follows by telescoping. If `D` is the difference of two
+solutions, `D=D^q=D^{q^h}=0`. This uniqueness argument is valid in the
+nonreduced quotient because it uses nilpotence of the variable ideal, not
+injectivity of Frobenius on coefficients.
+
+In the inert case, `q=p²`. Thus `Y` is a finite sum of even Frobenius
+iterates of `L`, whereas `FY` is a finite sum of odd iterates. If every
+odd `M_e` with `p^e+1≤B` vanishes, every term of `b(Y,FY)` vanishes by
+(1). Hence `λ b(Y,FY)=0`.
+
+In the ramified case, `q=p`. If every `M_e`, including `M_0`, with
+`p^e+1≤B` vanishes, (1) gives both `b(Y,Y)=0` and `b(L,L)=0`, hence
+`λ(b(Y,Y)−b(L,L)/2)=0`. The `e=0` hypothesis must be retained. All
+actual nonsplit primes are odd; the inverse of `2` is therefore
+available.
+
+The argument also works after arbitrary integral zero-constant
+substitutions `z↦Z`: the resulting `L_i(Z)` still belong to `I`. They
+need not remain linear. The current upper-bound consumer assumes
+divisibility of the relevant coupling series globally; this is stronger
+than the finite-degree vanishing needed here. Its cutoff `e≤log_p B`
+includes every needed exponent, because `p^e+1≤B` implies `p^e≤B`.
+
+## 4. Exact factorization and integrality threshold
+
+Keep the one-curve data supplied before the expansion into two-index
+monomials:
+
+\[
+ \theta(\varpi z)=W_0(z)\exp(c\Xi(z)),
+ \quad c=\varpi^{p+1}/p,
+ \quad W_0,\Xi\in\mathcal O[[z]],\quad \Xi(0)=0.
+\]
+
+`FormalGroup/Exponent.lean`, `exists_rescale_theta_eq_mul_expSubst`
+(line 240), provides the factorization, while the raw congruence lemmas
+provide integral `Ξ`. The scaled parameter from
+`Lib/CM/FormalGroup/FormalParameter.lean`, `exists_scaled_formalParam`
+(line 224), already supplies `Y−Y^q≡z (mod π_p)` before its final,
+stronger coefficient-formula field. That equation, rather than the
+stronger infinite coefficient formula, suffices.
+
+For a resolution, retain the literal raw exponent
+
+\[
+ \Psi(z)=\sum_i m_i\Xi(L_i(z)).
+\]
+
+`rescale_thetaProd_eq_mul_expSubst` gives the exact product
+factorization, with integral prefactor. Any factor `H` in the
+multiseries ring becomes integral after the same rescaling by
+`rescale_mem_range_of_mem_multiSeriesRing` and is absorbed into that
+prefactor. The moment congruence, which is retained unchanged, gives
+`M_e≡Γ_e (mod π_p)`.
+
+If the finite Frobenius argument shows all coefficients of `Ψ(Z)` of
+degree at most `B` divisible by `π_p`, then the existing lemma
+`Divisibility/NormalForm.lean`, `norm_coeff_expSubst_smul_le_one`
+(line 131), directly proves integrality of the exponential in those
+degrees, provided
+
+\[
+ v(c\pi_p)\ge\frac1{p-1}.
+\]
+
+The source has equality, not a newly imposed slack condition:
+`Parameters.norm_pow_succ_div_mul_piPrimeInt`,
+`FormalGroup/ThetaProducts.lean` line 114. Explicitly:
+
+\[
+\begin{array}{c|c|c|c}
+ &v(\varpi)&v(\pi_p)&v(c\pi_p)\\\hline
+ \text{inert}&1/(p^2-1)&1&1/(p-1)\\
+ \text{ramified}&1/(2p-2)&1/2&1/(p-1).
+\end{array}
+\]
+
+The bound is sufficient at equality: the factorial denominators satisfy
+`v_p(k!)≤k/(p−1)`. There is no loss in the derivative order, no enlarged
+charge and no changed error term. Finite integrality of the exponential
+is enough; its coefficients in higher degrees need not be integral.
+
+## 5. Precise inert gradient formula and jet precision
+
+In characteristic `p`, with the raw inert reduction
+
+\[
+ \overline\Psi=\overline\lambda\sum_i m_iY_i^{p+1},
+ \qquad Y_i-Y_i^{p^2}=L_i,
+\]
+
+differentiation gives `dY_i=dL_i` and
+
+\[
+ d\overline\Psi
+ =\overline\lambda\sum_i m_iY_i^p\,dL_i
+ =\overline\lambda\sum_{\substack{e\ge1\\e\ {\rm odd}}}dM_e.
+                                                        \tag{3}
+\]
+
+The last sum is finite in each degree: `Y_i^p` has, degreewise, exactly
+the terms `L_i^{p^e}` for positive odd `e`. Differentiating the moment
+congruence gives
+
+\[
+ d\overline\Psi
+ =\overline\lambda\sum_{e>0\ {\rm odd}}d\overline\Gamma_e.
+                                                        \tag{4}
+\]
+
+For `Γ_e=Σ_x z_x^{p^e}z_{pr(e,x)}`, its derivative in `z_y` is
+
+\[
+ \partial_y\overline\Gamma_e
+ =\sum_{x:\,pr(e,x)=y}z_x^{p^e},             \tag{5}
+\]
+
+because `e>0` and the derivative of each `p^e`-power vanishes. Formula
+(5) remains correct if a partner happens to equal its starting variable.
+
+**The off-by-one point:** ordinary differentiation is not a map from
+`J_B(k)` to itself. For instance, the zero class of `z^{B+1}` can have a
+nonzero derivative class in degree `B`. To determine a derivative
+through degree `D`, use the original series through degree `D+1`, or
+the well-defined linear derivative map `J_{D+1}(k)→J_D(k)`. Equivalently,
+differentiate in the full formal-series ring and then truncate. To
+establish the selected leading gradient at degree `p^{e_τ}`, use raw
+exponent precision `p^{e_τ}+1`.
+
+This is not a derivative-order loss repeated once for each later
+differentiation. The source's generic recurrence retains the exact
+formal series throughout; only their residues are replaced by the
+selected gradient product. See the next section.
+
+For completeness, the ramified analogue is
+
+\[
+ d\overline\Psi=
+ \overline\lambda\left(\tfrac12dM_0+
+             2\sum_{e\ge1}dM_e\right).
+\]
+
+No ramified sharpness consumer currently needs this extra statement.
+
+## 6. Unit leading coefficient and the unchanged sharpness argument
+
+For the canonical scaled parameter, `Y=z+O(z^{p²})` modulo `π_p` in
+the inert case. Thus
+
+\[
+ [z^{p+1}]\Xi\equiv\lambda\pmod{\pi_p}.
+\]
+
+`FormalGroup/Exponent.lean`,
+`CMLattice.norm_coeff_exponentSeries_eq_one` (line 566), proves that
+this coefficient has norm one. Since `v(π_p)>0`, `λ` is a unit. This
+derivation precedes and bypasses the expanded normal form; it must not
+be obtained by invoking the final theorem one intends to remove.
+
+Now let `Φ₀,e` be the existing `IsCouplingFamily`. For a selected
+`τ∈Φ₀`, put `y_τ=pr(e_τ,τ)`. Kill all variables whose places are
+outside `Φ₀`, then reduce to the residue field of `O`. Equations
+(4)–(5) and the existing no-earlier-partner condition imply
+
+\[
+ \left.\overline{\partial_{y_\tau}\Psi}\right|_{\Phi_0}
+ =\overline\lambda\,z_\tau^{p^{e_\tau}}
+       +\text{terms of total degree }>p^{e_\tau}.         \tag{6}
+\]
+
+This is exactly the `IsLowestTerm` input proved for `couplingSum` in
+`Sharpness/Couplings.lean`,
+`IsCouplingFamily.isLowestTerm_pderiv_couplingSum` (line 201). Its
+downstream use needs only (6) with a unit coefficient, not the full
+support of `Ψ`. The coefficient can depend on `τ`, as after scaling;
+the product of these coefficients is still a unit.
+
+The differential part is already generic in the source. If
+`F=W exp(c Ψ)`, with integral unit `W`, integral zero-constant `Ψ`,
+and `|c|>1`, then
+
+\[
+ \partial F=(c\,\partial\Psi+B)F\qquad(B\text{ integral}).
+\]
+
+For integral `g`,
+
+\[
+ \partial(gF)=c\,g'F,\qquad
+ g'=g\,\partial\Psi+c^{-1}(\partial g+gB).
+\]
+
+Since `c^{-1}` belongs to the maximal ideal, reduction gives
+`ḡ'=ḡ·(∂Ψ)̄`. Therefore `j` successive derivatives produce an
+integral multiplier whose residue is the product of the `j` selected
+gradients. There is no need to know `j` successive derivatives of
+the finite-jet approximation. This is already proved by
+`exists_pderiv_mul_expSubst`, `exists_pderiv_mul_eq_smul` and
+`exists_jet_mul_prod_X` (lines 108, 126, 148).
+
+Given a cancelling-copy product `U` with `U(0)=1`, the coefficient
+norm conclusion of `IsCouplingFamily.norm_coeff_pairExponent`
+(line 358) therefore remains exactly
+
+\[
+ |\nu''!|\,
+ \left|[z'^{\nu'}z''^{\nu''}]
+      F(z'+z'')\prod_{c\ne0}F(\delta_cz')\right|
+ =|c|^{\sum_\tau j_\tau}.
+\]
+
+The source's subsequent factorial/Legendre estimates, the least
+valuation bound and its global error budget remain unchanged. This
+argument works with the existing six-copy norm cancellation or with
+the separately proposed two-copy cancellation.
+
+## 7. Rescaling: transport the consumer contracts
+
+For integral `α`, variable rescaling gives
+
+\[
+ F(\varpi\alpha z)=W(\alpha z)\exp(c\Psi(\alpha z)).
+\]
+
+The upper condition is preserved because
+`Γ_e(αZ)=α^{p^e+1}Γ_e(Z)`. Inert gradient coefficients become
+`λ α^{p^e+1}`. When `α` is a unit, these remain units, and (6) is
+preserved.
+
+If `ϖ'=αϖ` has the same norm as `ϖ`, then `α` is a unit. To normalize
+the scalar as `c'=ϖ'^{p+1}/p`, use
+
+\[
+ W'(z)=W(\alpha z),\quad
+ \Psi'(z)=\alpha^{-(p+1)}\Psi(\alpha z),\quad
+ c'=\alpha^{p+1}c.
+\]
+
+The new selected coefficient is
+`λ α^{p^e-p}`, still a unit. The null-moment contract is also preserved.
+
+Do **not** assert that the normalized one-variable resolvent remains
+unchanged under such rescaling. If `Y−Y^q=z`, then
+`Y'(z)=Y(αz)/α` satisfies
+
+\[
+ Y'-\alpha^{q-1}(Y')^q=z,
+\]
+
+which generally differs from `Y'−(Y')^q=z`. Either retain the
+canonical `ϖ` and transport the consumer contracts, or allow this
+twisted resolvent. The first option is shorter. The present
+`HasNormalForm.exists_of_norm_eq` has no external caller in the
+checked tree, but preserving its natural analogue poses no difficulty.
+
+## 8. Uniformity in resolutions and actual consumers
+
+The canonical one-curve `ϖ,Ξ,λ` can be chosen once for the CM curve and
+the prime. The multivariate raw exponent `Ψ=Σ_i m_iΞ(L_i)` is allowed
+to depend on the resolution. The checked consumers do not require
+these raw exponents to agree for different resolutions.
+
+`Vacuum/Divisibility.lean`, `exists_hasNormalForm_jetSeries`
+(lines 170–203), expresses each standard datum as one theta product
+times an integral multiseries factor `H`; it then rescales variables
+by the integral scalar `ι_p(c·periodFactor)`. There is no step that
+forms a sum of unrelated raw exponential factorizations. Thus the
+resolution-dependent factorization and its upper certificate suffice.
+
+`Divisibility/Count.lean` uses the normal-form interface at its final
+charged-direction substitutions. Retain the charged frame construction
+and `dvd_subst_coupling_directionSubst_of_charges`; replace only the
+call to `HasNormalForm.norm_coeff_subst_le_one` by the finite
+null-moment integrality theorem. The numerical argument is unaffected.
+
+`Sharpness/Cases.lean`, `exists_hasNormalForm_resolutionForms`
+(lines 245–272), obtains the factorization for a resolution and
+rescales variables by the unit `taylorScale`. Section 7 proves exactly
+the required transport. The raw `W` is a unit because the theta
+product has constant term one; the generic source lemma
+`isUnit_of_rescale_thetaProd_eq` already establishes this without a
+coupling-sum assumption.
+
+## 9. Why this does not repeat the existing proposals
+
+The closest archived proposal is
+`docs/proposals/cm_norm_theta_simplification/report.tex`. Its lines
+194–195 explicitly say that it keeps the normal form, coupling
+coefficient identity, factorial losses and eventual main term.
+Its coupling section assumes the existing normal-form hypotheses
+(around lines 582–608), and improves the number of cancelling copies.
+The present proposal changes those hypotheses and eliminates the
+two-index exponent representation, while using whatever cancelling
+product that proposal supplies.
+
+The discrete Hecke/Smith, integral flag-row, signed-gain, Gram-adjoint,
+orbital-exchange, sparse-cutoff, twist-selection and arithmetic-label
+proposals concern different interfaces. The finite-jet argument keeps
+their improved downstream statements and does not re-propose them.
+No global novelty claim is made for Frobenius, nilpotent resolvents or
+lowest-term multiplication; the contribution is the weaker sufficient
+interface and the proof that both local consumers can use it without
+changing any bound.
+
+## 10. Recommended integration acceptance criteria
+
+1. Prove the finite characteristic-`p` pairing and resolvent lemmas over
+   an arbitrary commutative ring, with natural weights explicitly.
+2. Package the canonical one-curve raw exponent before any expanded
+   `primePowerSeries`/`couplingSum` theorem.
+3. Prove upper divisibility through a requested degree, using `O/(π_p)`.
+4. Prove inert gradient lowest terms, with one additional degree of
+   exponent precision, and then pass to the residue field for units.
+5. Generalize the sharpness coefficient theorem from `couplingSum`
+   to an arbitrary integral exponent with these lowest-gradient terms.
+6. Migrate the three consumer files above, preserve their final
+   numerical statements, and only then remove unused expansion and
+   infinite-sum lemmas.
+
+The distinction between the quotient `O/(π_p)` and the residue field,
+the natural weights, the ramified zeroth moment, and the one-degree
+derivative precision are the material correctness checks. All are
+satisfied by the inspected source inputs.
+
+## 11. Independent review of the finite regression checker
+
+Reviewed
+`deliverable/grh_frobenius_jet_simplification/checks/check_finite_jets.py`
+without changing it or adding tests. No indexing or algebraic error was
+found. `length_for(q,B)` returns a length with `q^h>B`, including the
+empty resolvent for `B=0`. The inert pairing indexes
+`abs((2a+1)−2b)` and `min(2a+1,2b)` match the pair of odd/even
+Frobenius iterates. The ramified correction is `−M_0/2`. Gradient tests
+compute the exponent in degree `B+1`, differentiate to degree `B`, and
+include exactly the positive exponents satisfying `p^e≤B` (odd only
+in the inert case). The deliberately non-Frobenius-fixed scalar `λ`
+stays outside all Frobenius operations.
+
+The reported total is arithmetically consistent: 29 parameter cases
+times three trials, with 16 pairing, six resolvent, two uniqueness,
+one inert, one ramified and four gradient assertion groups per trial,
+plus four negative controls, equals 2,614 groups. These are exact finite
+regressions, not a proof of the universal theorem or a full-project
+replay.
+
+One boundary when pruning declarations: `Sharpness/OneCurve.lean:298`
+still uses the final coefficient-congruence field of
+`exists_scaled_formalParam`. The new local-exponent route can ignore
+that field, but it should be retained unless this separate consumer is
+also adapted. The two-index `primePowerSeries` coefficient machinery
+itself occurs only in `Lib/General/Algebra/SeriesCongruences.lean` and
+`FormalGroup/Exponent.lean` in the checked tree.

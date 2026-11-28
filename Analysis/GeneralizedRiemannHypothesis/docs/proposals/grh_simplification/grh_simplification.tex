@@ -1,0 +1,103 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,fancyhdr}
+\usepackage{listings,xurl}
+\usepackage[colorlinks=true,linkcolor=teal!65!black,urlcolor=teal!65!black,citecolor=teal!65!black]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{HTML}{183246}
+\definecolor{accent}{HTML}{087E8B}
+\definecolor{pale}{HTML}{EFF5F7}
+\hypersetup{pdftitle={Shortening the determinant and branching arguments in the Lean RH/Dirichlet-GRH proof},
+pdfauthor={Technical review}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}RH / Dirichlet GRH: two simplifications}
+\fancyhead[R]{\small 27 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=4pt,leftmargin=20pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\numberwithin{equation}{section}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\HLe}{\operatorname{HeightLe}}
+\newcommand{\SC}{\operatorname{SC}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\ip}[2]{\left\langle#1,#2\right\rangle}
+\newcommand{\src}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9050b04000647d588d0c78d945180abcd3b0bcf7/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/#1.lean}{#2}}
+\newcommand{\compact}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh-compact/src/#1.lean}{#2}}
+\newcommand{\proposal}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/tree/9050b04000647d588d0c78d945180abcd3b0bcf7/Analysis/GeneralizedRiemannHypothesis/docs/proposals/#1}{#2}}
+\newcommand{\code}[1]{{\small\nolinkurl{#1}}}
+\newcommand{\guide}{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/9050b04000647d588d0c78d945180abcd3b0bcf7/Analysis/GeneralizedRiemannHypothesis/docs/guide/theta_lifts_and_dirichlet_zeros.tex}{human-readable guide}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+keepspaces=true,frame=single,rulecolor=\color{accent!35},backgroundcolor=\color{pale},
+aboveskip=8pt,belowskip=8pt}
+\begin{document}
+\begin{titlepage}
+\color{ink}
+{\large TECHNICAL REVIEW AND PROPOSED REFACTOR\par}
+\vspace{12mm}
+{\huge\bfseries Shortening the determinant\\[3pt]
+and branching arguments\par}
+\vspace{5mm}
+{\Large in the Lean RH / Dirichlet-GRH proof\par}
+\vspace{9mm}
+{\large Direct height certificates, exact power descent,\\
+and a norm bound from one highest-weight vector\par}
+\vspace{10mm}
+\color{black}
+\textbf{Recommendation.}
+Replace exact absolute-value metadata for exchange scalars by additive bounds
+on their normalized squared moduli. Add the exact power-descent lemma for
+\code{HeightLe}, so that this change preserves the current unsquared determinant
+estimate and all constants in Theorem C. Independently, replace the branching
+operator's full evaluation-vector argument by Schur's lemma and one calibrated
+highest-weight coefficient.
+
+\textbf{What is established here.}
+The height lemma and an abstract determinant/cost recurrence have been checked
+with the repository's pinned Lean and Mathlib versions. The report supplies the
+mathematical derivation of both refactors, identifies the source interfaces,
+audits all 18 existing proposal bundles, and separates checked components from
+integration work.
+
+\textbf{Attribution.}
+Square-cost bookkeeping, determinant-first induction, and the
+Gram-adjoint/Schur branching argument have precedents in the compact edition.
+This report credits those sources. Its additions include an exact height
+root lemma, guarded additive budgets, a direct unit-tensor calibration,
+and a migration plan for the readable proof.
+\vfill
+\small
+Reviewed source commit:
+\url{https://github.com/VladimirReshetnikov/ProveIt/commit/9050b04000647d588d0c78d945180abcd3b0bcf7}\\
+Lean subtree: \code{e8c80c2a260890eaf2c9410ce3a8b24951e80506}\\
+Lean 4.35.0; Mathlib \code{56a005855ea17e0b0958f73ec801ae140b0a1679}\\
+Prepared 27 November 2026, Los Angeles time.
+\end{titlepage}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\input{sections_context}
+\input{sections_height}
+\input{sections_triangle}
+\input{sections_branching}
+\input{sections_audit}
+\end{document}

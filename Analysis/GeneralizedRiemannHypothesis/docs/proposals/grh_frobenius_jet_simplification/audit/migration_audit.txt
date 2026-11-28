@@ -1,0 +1,205 @@
+# Source audit for the finite Frobenius / raw-exponent proposal
+
+## Baseline and scope
+
+Repository: **VladimirReshetnikov/ProveIt**. Commit: **9050b04000647d588d0c78d945180abcd3b0bcf7**, dated 2026-11-28 03:00:36 UTC. Every source reference below is pinned to this commit. Paths in the source tables are relative to `Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/`.
+
+The audit inspected all **803 Lean files** in that source tree for explicit names, and manually checked the producer and the two consumer branches. This is a lexical and source-level audit, not an elaborated Lean environment dependency graph. It is sufficient to identify the migration boundary, but the proposed full refactor has not been compiled.
+
+The mathematical argument is in `grh_frobenius_jet_simplification.pdf` (with its `.tex` source). The reproducible range and occurrence audit is in `checks/audit_source_interfaces.py`; its output `audit/source_audit.json` records physical line counts, Git blob SHA-1 and SHA-256 hashes, declarations inside each region, and all lexical occurrences of the interface names.
+
+## The architectural change
+
+Keep the already constructed integral one-variable exponent \(\Xi\), the exact theta factorization, and its finite resolution sum
+\[
+\Psi=\sum_i m_i\,\Xi(L_i).
+\]
+Supply two consequences of this exponent directly:
+
+1. **Null-substitution integrality:** its reduction vanishes through degree \(B\) when the relevant coupling moments vanish.
+2. **Inert sharpness:** selected restricted first derivatives have their prescribed lowest pure prime-power terms with unit coefficient.
+
+The finite Frobenius pairing identity proves the first statement without identifying a double infinite expansion. Differentiating the raw formal-parameter relation proves the second statement without differentiating that expansion.
+
+In particular, the change removes the obligation to construct and manipulate
+\[
+\sum_{e,j}\lambda_{e,j}\Gamma_e^{p^j}.
+\]
+This is a change in what is proved at the interface, not merely a replacement of \(\operatorname{tsum}\) notation by a finite sum.
+
+The raw exponent is allowed to depend on the chosen resolution. The scale \(\varpi\), the one-curve exponent \(\Xi\), and its unit scalar \(\lambda\) are chosen uniformly first. Existing consumers do not compare exponents from different resolutions.
+
+## Exact gross affected ranges
+
+These are **752 physical source lines to replace or remove**, including local comments and blank lines. This is not a claim of 752 lines of net savings. The new finite algebra lemmas, raw-factorization adapters, and revised theorem signatures must be subtracted. Some elementary proof fragments in these ranges will be reused. Counted regions do not include most downstream signature edits.
+
+| File | Inclusive source ranges | Physical lines | Treatment |
+|---|---:|---:|---|
+| `Lib/General/Algebra/SeriesCongruences.lean` | 36–234 | 199 | Remove the specialized `PrimePowerSeries` section after its only external consumer is migrated. |
+| `New/Derivatives/FormalGroup/Exponent.lean` | 519–554; 599–747 | 185 | Remove reduction to `primePowerSeries` and replace the double-series existence assembly by raw congruence plus unit coefficient. |
+| `New/Derivatives/Divisibility/NormalForm.lean` | 41–57; 88–126; 140–284; 343–417 | 276 | Replace `couplingSum`/`HasNormalForm` and their infinite-sum consequences by raw exponent and finite certificate interfaces. |
+| `New/Derivatives/FormalGroup/ThetaProducts.lean` | 294–346; 435–473 | 92 | Delete the double-series substitution theorem; replace the final normal-form assembly by the finite resolution sum and its two certificates. |
+| **Total** | | **752** | Gross affected window; new implementation not subtracted. |
+
+### 1. SeriesCongruences: 199 lines of specialized expansion machinery
+
+The complete `PrimePowerSeries` section, lines 36–234, defines the prime-power support series and proves:
+
+- support at sums of two prime powers;
+- uniqueness and injectivity of the \((p^e+1)p^j\) parametrization;
+- coefficients of the odd-times-even product and of the full square;
+- summability and reconstruction of those products as the double series.
+
+The only external occurrences of `primePowerSeries` and its specialized coefficient/reconstruction lemmas are in `FormalGroup/Exponent.lean`. The finite pairing identity needs none of this support classification.
+
+Source: [SeriesCongruences.lean, specialized section](https://github.com/VladimirReshetnikov/ProveIt/blob/9050b04000647d588d0c78d945180abcd3b0bcf7/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/Lib/General/Algebra/SeriesCongruences.lean#L36-L234).
+
+### 2. Exponent: keep the hard arithmetic, remove expansion assembly
+
+**Retain** the theta/formal-group arithmetic through the raw exponent congruences:
+
+- `CMLattice.exists_rescale_theta_eq_mul_expSubst`, line 240;
+- `CMLattice.exists_seriesToCp_eq_exponentSeries_of_inert`, line 420;
+- `CMLattice.exists_seriesToCp_eq_exponentSeries_of_ramified`, line 446;
+- quotient/reduction infrastructure, lines 491–517;
+- `CMLattice.norm_coeff_exponentSeries_eq_one`, lines 563–588;
+- `isUnit_of_piPrimeInt_dvd_sub`, lines 590–595.
+
+**Remove or replace**:
+
+- `map_reducePiPrime_eq_primePowerSeries`, line 522;
+- `C_dvd_pow_sub_primePowerSeries_odd_mul_even`, line 535;
+- `C_dvd_sq_sub_primePowerSeries_univ_sq`, line 549;
+- `summable_smul_X_pow_mul_X_pow`, line 606;
+- `CMLattice.exists_eq_exponentSeries_dvd_sub_tsum_of_inert`, line 624;
+- `CMLattice.exists_exponentSeries_tsum_of_ramified`, line 663;
+- `CMLattice.exists_exponent_tsum`, line 702.
+
+The final theorem has only one external caller: `ThetaProducts.lean:453`. It can expose the formal-parameter equation and raw congruence instead of a family \(\lambda_{e,j}\). In the inert case the unit scalar follows by extracting the coefficient of \(z^{p+1}\) from \(\Xi\equiv\lambda Y^{p+1}\), since \(Y=z+O(z^{p^2})\). At the ramified prime, the needed quadratic coefficient follows from \(Y=z+O(z^p)\), with \(p\ne2\).
+
+Source: [Exponent.lean](https://github.com/VladimirReshetnikov/ProveIt/blob/9050b04000647d588d0c78d945180abcd3b0bcf7/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Derivatives/FormalGroup/Exponent.lean).
+
+### 3. NormalForm: replace the intermediate representation, retain useful finite lemmas
+
+**Retain**:
+
+- `coupling`, lines 36–39;
+- `subst_expSubst`, lines 59–64;
+- `subst_coupling`, lines 66–70;
+- `rescale_coupling` and `le_order_coupling`, lines 72–86, if useful for the finite contract;
+- `norm_coeff_expSubst_smul_le_one`, lines 128–138, which already proves the exponential integrality estimate needed after finite Frobenius vanishing;
+- the finite `partnerPowerSum` definition and its elementary derivative/coefficient/order facts, lines 286–341, if useful when deriving the selected lowest terms.
+
+The counted ranges contain four distinct obligations that disappear or become weaker:
+
+1. Constructing `couplingSum` and `HasNormalForm`.
+2. Proving convergence, constant coefficient, substitution, and scaling for that double sum.
+3. Absorbing the difference between the raw exponent and the normalized sum into an integral factor, then using the normalized sum to prove divisibility.
+4. Differentiating the infinite sum and extracting its residue support.
+
+The last two public gradient lemmas, `residue_coeff_pderiv_couplingSum` (394) and `exists_eq_single_of_residue_coeff_pderiv_ne_zero` (411), are consumed only by `Sharpness/Couplings.lean`. Their new analogues concern an arbitrary \(\Psi\) with the finite gradient certificate.
+
+The old norm-equal-scale theorem `HasNormalForm.exists_of_norm_eq` has no external textual caller. Its useful conclusion is still easy to preserve via raw scaling, without an exact canonical coefficient family.
+
+Source: [NormalForm.lean](https://github.com/VladimirReshetnikov/ProveIt/blob/9050b04000647d588d0c78d945180abcd3b0bcf7/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Derivatives/Divisibility/NormalForm.lean).
+
+### 4. ThetaProducts: the raw producer already exists
+
+**Retain** the resolution moment identity:
+
+\[
+\sum_i m_i L_i^{p^e+1}\equiv\Gamma_e\pmod\pi,
+\]
+implemented as `Parameters.piPrimeInt_dvd_sum_linearSeries_sub_coupling`, line 244.
+
+**Retain** the exact valuation radius `norm_pow_succ_div_mul_piPrimeInt`, line 114; the integrality theorem `CMLattice.rescale_mem_range_of_mem_multiSeriesRing`, line 379; and the finite product identity `CMLattice.rescale_thetaProd_eq_mul_expSubst`, line 405. The latter already constructs the raw exponent \(\sum_i m_i\Xi(L_i)\).
+
+**Delete** `dvd_sum_subst_sub_couplingSum`, lines 294–346, whose entire purpose is commuting and reconciling the double series.
+
+**Replace** `Parameters.exists_hasNormalForm`, lines 435–473. Its existing finite factorization calculation, especially lines 458–467, is reusable. The final congruence to `couplingSum` and call to `.of_dvd_sub` are replaced by the Frobenius null-moment and gradient certificates.
+
+Source: [ThetaProducts.lean](https://github.com/VladimirReshetnikov/ProveIt/blob/9050b04000647d588d0c78d945180abcd3b0bcf7/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/New/Derivatives/FormalGroup/ThetaProducts.lean).
+
+## Every downstream consumer identified
+
+The name `couplingSum` appears in only three source files: `NormalForm`, `ThetaProducts`, and `Sharpness/Couplings`. The name `HasNormalForm` appears in only six: `NormalForm`, `ThetaProducts`, `Divisibility/Count`, `Vacuum/Divisibility`, `Sharpness/Couplings`, and `Sharpness/Cases`. Module comments are included in these searches.
+
+| Consumer | Existing use | Replacement and invariant |
+|---|---|---|
+| `Divisibility/Count.lean:587,664,709` | Carries `HasNormalForm` through three local estimates. The actual call is `.norm_coeff_subst_le_one` at 620. | Finite null-substitution integrality with exactly the same degree and valuation bound. Null frames, Weyl/Frobenius counting, and determinant charges stay as they are. |
+| `Vacuum/Divisibility.lean:170–193` | `exists_hasNormalForm_jetSeries` obtains one resolution presentation, integral extra factor, and integral scalar rescaling. Used at 225 and 263. | Raw factorization for that resolution, multiplied by the same integral factor. Transport integrality through arbitrary integral scalar rescaling, including nonunits. |
+| `Sharpness/Couplings.lean:201–224` | `isLowestTerm_pderiv_couplingSum` uses prescribed gradient coefficient and support exclusion. | Same lowest-term argument from a certificate for arbitrary \(\Psi\). A global gradient series identity is unnecessary. |
+| `Sharpness/Couplings.lean:242–271` | `norm_coeff_powerDegree` multiplies those lowest terms. | Identical finite lowest-term proof; each chosen coefficient remains a unit. |
+| `Sharpness/Couplings.lean:328–351` | `exists_jet_prod_copySubst_couplingSubst`. | **Already accepts arbitrary integral \(\Xi\)** and an exact exponential factorization. Keep the generic derivative recurrence. |
+| `Sharpness/Couplings.lean:358–417` | `norm_coeff_pairExponent` specializes the generic derivative lemma to `couplingSum`. | Generalize the input to \(\Psi\) with the selected lowest-gradient certificate; all coefficient norms and factorial factors remain the same. |
+| `Sharpness/Couplings.lean:506,581` | Two least-valuation wrappers destruct the normal form and call the coefficient result. | Destruct raw factorization and its gradient certificate; keep the same valuation conclusion. The CM norm-pair proposal may independently reduce copy count. |
+| `Sharpness/Cases.lean:245–272` | `exists_hasNormalForm_resolutionForms` obtains the product factorization and rescales by `D.taylorScale`. Called at 561 and 610. | This rescaling is a unit at the relevant inert prime. It multiplies the degree-\(p^e\) gradient coefficient by \(\alpha^{p^e+1}\), preserving units. |
+
+The generic cancelling-product derivative recurrence only uses first derivatives of \(\Psi\) after residue reduction, because its error terms have a factor \(\kappa^{-1}\) in the maximal ideal. Repeated multiplicities \(j_\tau\) therefore do **not** force repeated differentiation of finite jets. For the selected degree \(p^e\) gradient term, work in degree \(p^e+1\) before taking one derivative.
+
+The unit condition on \(W\) in sharpness also survives directly: Sharpness/Couplings.lean:455, CMLattice.isUnit_of_rescale_thetaProd_eq, already accepts an arbitrary exponent with zero constant term and proves \(W(0)=1\) from the normalized theta product. No unit claim about the extra factor in the more general divisibility input is needed.
+
+## Scalar transport: preserve the useful contracts
+
+For an integral scalar \(\alpha\), replace \(W(z),\Psi(z)\) by \(W(\alpha z),\Psi(\alpha z)\). Null moments are multiplied by \(\alpha^{p^e+1}\), so null-substitution integrality survives even when \(\alpha\) is a nonunit. Gradient units survive when \(\alpha\) is a unit, as required in sharpness.
+
+If \(\varpi'=\alpha\varpi\) has the same norm, take \(\alpha\) a unit and
+\[
+c'=\alpha^{p+1}c,\qquad
+\Psi'(z)=\alpha^{-(p+1)}\Psi(\alpha z).
+\]
+Then the degree-\(p^e\) gradient coefficient is multiplied by \(\alpha^{p^e-p}\), still a unit.
+
+Do **not** unnecessarily demand that the resolvent, normalized by division by \(\alpha\), retain the identical equation. If \(Y-Y^q=L\), then \(Y(\alpha z)/\alpha\) satisfies a twisted equation with coefficient \(\alpha^{q-1}\). The consumer certificates transport directly, so this introduces no extra proof obligation. Alternatively, retain \(Y(\alpha z)\) and the scaled linear form \(\alpha L(z)\) without normalizing \(Y\).
+
+## Contingent orphan helpers: 84 additional physical lines
+
+The following helper regions have no outside textual consumers after the counted expansion-specific uses are removed:
+
+| File | Ranges | Lines | Caution |
+|---|---:|---:|---|
+| `SeriesCongruences.lean` | 262–324 | 63 | Order-of-substitution and continuity/summability lemmas. The new finite degree proof may reuse the order lemma; retaining generic library results is reasonable. |
+| Same | 338–352 | 15 | Closedness of scalar divisibility under infinite sums. Not needed by the proposed finite proof. |
+| Same | 372–377 | 6 | One-variable congruence composition helper; may remain useful to the raw proof. |
+| **Total** | | **84** | Optional cleanup only; excluded from the primary 752-line total. |
+
+**Do not delete** the general Frobenius congruence `dvd_sum_pow_sub_sum` at 247, coefficient-divisibility conversion at 256/366, valuation/divisibility equivalence at 329, or the valuation-ring estimate at 381. They have retained callers or are immediately useful in the replacement.
+
+**Do not drop** the coefficient formula in `CMLattice.exists_scaled_formalParam` merely because the new raw route uses its equation instead: `Sharpness/OneCurve.lean:298` also consumes that formula. The one-variable formal-parameter construction is retained. No savings from those files are counted.
+
+## Novelty relative to all 18 existing proposal directories
+
+The full proposal inventory and the hashes identifying the source snapshots are in `audit/proposal_inventory.txt` and `audit/source_manifest.json`. All 64 saved text files were verified against the pinned checkout and their Git blob hashes.
+
+The nearest proposal is `cm_norm_theta_simplification`. Its report explicitly says, at lines 194–195, that it keeps the normal form and coupling coefficient identity. Its mechanism is the CM norm cancellation identity and fewer theta copies. The present mechanism weakens the normal-form proof obligation and keeps its two consequences via finite Frobenius algebra. It works with the old cancelling product or the proposed shorter product.
+
+Source: [CM norm proposal, report.tex:194–195](https://github.com/VladimirReshetnikov/ProveIt/blob/9050b04000647d588d0c78d945180abcd3b0bcf7/Analysis/GeneralizedRiemannHypothesis/docs/proposals/cm_norm_theta_simplification/report.tex#L194-L195).
+
+Other existing mechanisms are separated as follows:
+
+| Existing proposal family | Existing object simplified | Why the new proposal remains after implementation |
+|---|---|---|
+| `discrete_hecke_simplification`, `edge_hecke_simplification` | Pieri counting, invariant averages, exceptional Smith factors | Finite raw-exponent certification precedes and is independent of those derivative-counting/colength inputs. No lattice-point enumeration or Smith argument is reproposed. |
+| `gram_adjoint_simplification` | Integral adjoints and tight-frame normalization | The new theta exponent argument only needs an integral resolution. Either existing or proposed resolution construction supplies it. |
+| `centered_theta_lift_simplification`, direct spanning notes | Moment-driven spanning and auxiliary completion | The finite Frobenius moments here are formal polynomial moments from a resolution, not operator covariance moments used for spanning. No rank recurrence is changed. |
+| `signed_theta_gain_simplification`, flag determinant proposal | Global signed comparison, gauges, local index, row selection | The local coefficient bounds and main terms are preserved exactly. This proposal does not reoptimize determinant costs. |
+| `cyclotomic-interpolation-and-theta-lifts`, `newton_torsion_simplification` | Torsion point selection and interpolation level | Their inputs are recovered with the same local coefficient estimates. No new torsion grid or interpolation bound is proposed. |
+| Robust/dense label and order-test proposals | Admissible finite-field labels, scalar orders, norm tests | The partner and resolution identities remain valid inputs under those changes. No order predicate or label count is altered. |
+| `orbital_theta_exchange` | Orbital sections and matching/coinvariant presentation | The raw local theta coefficient certificate is independent of that matching interface. |
+| `grh-class-count-finite-quotient` | Class-number bound via finite quotients | No class-count mechanism appears here. |
+| Analytic twist-selection, sparse-cutoff, paraboloid proposals | Auxiliary twist, analytic endpoint, sparse places | Their mechanisms are untouched; this is an arithmetic local representation simplification. |
+
+A targeted search through all proposal TEX/Markdown/text/Lean sources for normal forms, `couplingSum`, `primePowerSeries`, finite jets, Frobenius orthogonality, and raw exponents found no preexisting proposal of this mechanism. This supports the novelty conclusion within the user-supplied corpus; it is not a claim of novelty in the wider mathematical literature.
+
+## Implementation boundaries and success criterion
+
+A sensible port has three small phases:
+
+1. Add the finite Frobenius pairing/resolvent core and prove the raw one-curve certificate using the existing integral parameter and raw exponent lemmas.
+2. Expose finite null-substitution integrality and selected lowest-gradient terms; migrate both existing consumers, including nonunit versus unit rescaling.
+3. Remove the now-unreferenced double-series machinery, build the project, and report the actual diff and build diagnostics.
+
+There is no need to introduce a broad finite-jet framework if the existing power-series order and coefficient API can express truncation more economically. The mathematical quotient argument is a proof specification; a Lean implementation may use order inequalities and coefficientwise finite precision.
+
+Success requires the same coefficient bounds, factorial losses, local sharpness rate, and final arithmetic main term. A shorter-looking exponent formula alone would not be enough. The proposed core is sufficient for those invariants, and the source audit locates all remaining integration obligations.
+

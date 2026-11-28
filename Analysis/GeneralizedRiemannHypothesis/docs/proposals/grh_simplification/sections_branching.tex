@@ -1,0 +1,224 @@
+\section{Proposal II: a branching norm bound from one vector}
+\label{sec:branch}
+
+There is relevant prior code here too. The compact edition's
+\compact{Lib/GLn/Branching/Branching}{\code{exists_branching_matrix}}
+already uses the Gram adjoint, Schur's lemma, and the norm of the adjoint
+on a highest-weight vector. It calibrates that vector using Cartan
+multiplication and \code{weylNormSq_le_mul_of_toPoly_eq}.
+The readable edition instead uses the extended-tensor argument analyzed below.
+
+The recommendation is to bring the compact proof's representation-theoretic
+reduction back to this readable interface. The direct signed-coordinate
+or fixed-unit-tensor calibration below gives an alternative that needs
+only the existing filling matrix, yields a stronger standalone norm theorem,
+and avoids transporting the Cartan norm argument. It is not a claim that
+the Schur reduction is newly discovered. Nor is it a measured improvement
+over the compact implementation, whose final Cartan calibration is already
+very short. In fact the readable source already has the needed Cartan
+norm inequality. For the shortest implementation, try the direct port
+first; the unit-tensor proof is an optional interface refinement.
+
+\subsection{The general linear-algebra fact}
+
+\begin{theorem}[One-vector calibration of an intertwiner]
+\label{thm:onevector}
+Let \(W,V\) be finite-dimensional complex Hermitian spaces. Suppose \(B:W\to V\)
+intertwines unitary representations, allowing a unitary character twist
+on \(V\), and the commutant on \(V\) consists of scalars. Let \(v\in V\)
+have norm one. Suppose \(E:W\to\C^J\) is an isometry and \(w\in\C^J\)
+has norm one, with
+\begin{equation}
+ \ip{v}{B\xi}=c\,\ip{w}{E\xi}
+ \qquad(\xi\in W).
+\end{equation}
+Then \(\norm{B\xi}^2\le |c|^2\norm{\xi}^2\) for every \(\xi\in W\).
+No multiplicity-free decomposition of \(W\) is assumed.
+\end{theorem}
+
+\begin{proof}
+Let \(D=B^\dagger\). Equivariance and unitarity imply that \(BD\)
+commutes with the target representation. By the commutant hypothesis,
+\(BD=\lambda I_V\). Since \(BD\) is positive semidefinite,
+\(\lambda\) is real and nonnegative.
+
+Equation (9.1) and Cauchy--Schwarz give
+\[
+ |\ip{Dv}{\xi}|=|\ip{v}{B\xi}|
+ \le |c|\norm{\xi}.
+\]
+Take \(\xi=Dv\); treating the zero case separately yields
+\(\norm{Dv}\le|c|\). Hence
+\[
+ \lambda=\ip{v}{BDv}=\norm{Dv}^2\le|c|^2.
+\]
+For arbitrary \(\eta\in V\),
+\(\norm{D\eta}^2=\lambda\norm{\eta}^2\).
+For \(z=B\xi\), Cauchy--Schwarz now gives
+\[
+ \norm z^2=|\ip{Dz}{\xi}|
+       \le\sqrt{\lambda}\norm z\,\norm\xi.
+\]
+If \(z=0\) the conclusion is immediate; otherwise divide and square.
+\end{proof}
+
+Equivariance makes all target directions have the same adjoint norm.
+Only one target direction needs a coefficient calculation.
+
+\subsection{The source already supplies the hypotheses}
+
+Take \(B\) to be the integral branching matrix in
+\src{Lib/GLn/Branching/NormBound}{\code{weylNormSq_mulVec_le_of_equivariant}}.
+The two Gram matrices \(G_W,G_V\) define the source and target Hermitian
+forms. The existing filling matrix satisfies
+\begin{equation}
+ G_W=E^*E,
+ \qquad E=\operatorname{fillingMatrixOver}(\C,N,\gamma+\kappa').
+\end{equation}
+Thus \(E\) is an isometry for the source's \code{weylNormSq}.
+This is the Gram factorization already used at the end of the current
+norm proof.
+
+Choose the target highest-weight evaluation vector
+\begin{equation}
+ v=\operatorname{weylEval}
+   \bigl(n,\kappa_0,\operatorname{permArray}(\operatorname{rowEquivFin})\bigr).
+\end{equation}
+Its norm is exactly one, by
+\src{Lib/GLn/SchurModule/GramMatrix}{\code{weylNormSq_weylEval_permArray}}.
+The needed commutant statement is already
+\src{Lib/GLn/SchurModule/WeylKernel}{\code{mem_range_scalar_of_commute_schur}},
+which applies to tuples of unitary matrices.
+
+The source's hypothesis \code{B_block} is
+\begin{equation}
+ B\,S_W(g)=\delta(g)S_V(g)B,\qquad
+ \delta(g)=\prod_\tau\det(g_\tau)^{\kappa'_\tau(\operatorname{rank}n_\tau)}.
+\end{equation}
+For unitary \(g\), \(|\delta(g)|=1\). It is exactly the allowed character
+twist in the abstract theorem.
+
+One can also stay entirely in the source's matrix formalism. Since \(B\)
+and the Gram matrices are real, define
+\begin{equation}
+ D=G_W^{-1}B^{\mathsf T}G_V.
+\end{equation}
+This is the Hermitian adjoint. Apply \code{B_block} at \(g^{\mathsf T}\),
+transpose, and use
+\src{Lib/GLn/SchurModule/WeylKernel}{\code{weylGramOver_mul_schur}} to obtain
+\begin{equation}
+ S_W(g)D=\delta(g)D S_V(g).
+\end{equation}
+Combining (9.4) and (9.6) gives
+\begin{equation}
+ \delta(g)S_V(g)BD=\delta(g)BD S_V(g).
+\end{equation}
+For unitary \(g\), \(\delta(g)\ne0\), so the existing Schur lemma applies.
+This avoids adding an independent representation-theoretic framework.
+
+\subsection{The shortest coefficient proof already has its ingredients}
+
+The readable
+\src{Lib/GLn/SchurModule/GramMatrix}{\code{weylNormSq_le_mul_of_toPoly_eq}}
+says that the Gram norm is submultiplicative for Cartan multiplication
+expressed via \code{toPoly}. The Gram-adjoint identity and \code{B_top} give
+\[
+ \operatorname{toPoly}_{\gamma+\kappa'}(Dv)
+   =c\,K_\gamma(y_{\rm first})K_{\kappa'}(y_{\rm last}),
+\]
+where \(K\) denotes the corresponding Weyl kernel and the two arrays are
+the permutation arrays with the new row first and last.
+Each factor is \code{toPoly} of a norm-one evaluation vector.
+Apply the existing submultiplicativity lemma and
+\code{weylNormSq_smul} to obtain
+\(\norm{Dv}^2\le|c|^2\) directly.
+This is the compact implementation's calibration, with ingredients
+already present in the readable imports.
+
+Combined with the Schur argument above, this is the shortest plausible
+source migration. No new Cartan theory is needed. The next subsection
+gives a second proof that isolates a reusable single-coefficient
+criterion and uses only the filling-matrix isometry.
+
+\subsection{An alternative direct coefficient calibration}
+
+The hypothesis \code{B_top} identifies the polynomial represented by
+the row \(v^*G_VB\) with \(c\) times \code{branchVector}.
+The lemma \code{branchVector_eq_prod_tableauPoly} writes this polynomial
+as the product of the minors specified by \code{branchRows}.
+Every column of those rows is an injection.
+
+Sorting each column changes its determinant only by a sign. Consequently
+the product is a signed single filling polynomial,
+\begin{equation}
+ \operatorname{branchVector}=\epsilon\,\operatorname{fillingPoly}(T_0),
+ \qquad \epsilon\in\{1,-1\}.
+\end{equation}
+By
+\src{Lib/GLn/SchurModule/TensorModel}{\code{nablaCombination_fillingMatrixOver}}
+and injectivity of \code{nablaCombination}, \code{B_top} becomes
+\begin{equation}
+ \ip{v}{B\xi}=c\,\epsilon\,(E\xi)_{T_0}.
+\end{equation}
+This is Theorem~\ref{thm:onevector} with a signed coordinate unit vector \(w\).
+
+For implementation, a fixed-tensor proof may be easier than formal sorting.
+Define \(w_T\) as the product, over the branch columns, of the corresponding
+identity-matrix minors in filling \(T\). Expanding the row substitution
+at the identity gives
+\begin{equation}
+ \operatorname{branchVector}
+     =\sum_T w_T\,\operatorname{fillingPoly}(T).
+\end{equation}
+Cauchy--Binet at the identity, with injective rows, gives
+\(\sum_T|w_T|^2=1\).
+This proves the same coefficient calibration using one fixed tensor.
+It does not require constructing tensors for arbitrary evaluation arrays
+or proving their pairwise isometry.
+
+Therefore the exact current conclusion follows:
+\begin{equation}
+ \boxed{\ 
+ \operatorname{weylNormSq}(B\xi)
+     \le c^2\operatorname{weylNormSq}(\xi).\ }
+\end{equation}
+The source has \(c\in\Z\), so \(|c|^2=c^2\).
+
+\subsection{A stronger statement and a concrete deletion target}
+
+The current norm theorem additionally assumes the weight relation
+\begin{equation}
+ \kappa_{0,\tau}(h)=\kappa'_\tau(h)+\gamma_\tau(h+1)
+ \qquad(0<h<\operatorname{rank}n_\tau).
+\end{equation}
+The new proof of the norm bound does not use (9.12).
+The hypotheses \code{B_top} and \code{B_block} already provide the
+coefficient and equivariance information. The relation can remain
+in callers that construct \(B\), but the norm theorem itself may drop it.
+This strengthens the reusable statement while shortening its proof.
+
+The current route constructs \code{extendedTensor}, proves a
+Cauchy--Binet identity for arbitrary inputs, divides by determinant
+polynomials on a dense open set, proves that the associated evaluation
+vectors span, and applies a general projection inequality.
+
+The measured replacement targets in
+\src{Lib/GLn/Branching/NormBound}{\code{NormBound.lean}} are 246 physical
+lines of helpers starting at \code{extendedTensor}, 41 lines in the final
+theorem body, and the four-line \code{leadingMinorAlong} definition.
+These are 291 gross candidate lines, not net savings.
+Keep \code{branchRows}, \code{branchVector_eq_prod_tableauPoly}, and the
+earlier branching construction. New adjoint and fixed-tensor lemmas will
+take some space.
+
+A source-wide reference scan found no external uses of the 12 contraction
+helpers targeted here. The final norm theorem's external consumer is in
+\src{Lib/GLn/Branching/IntegralMap}{\code{IntegralMap.lean}};
+keeping the old conclusion makes the change local.
+
+This differs from the existing Gram-adjoint proposal. That proposal changes
+the integral and archimedean estimates for a one-lift comparison operator
+using an integral Fock Gram identity. Here the operator is the algebraic
+branching map, and the replacement uses the target commutant and a single
+highest-weight coefficient. It neither changes the Fock integral adjoint
+nor assumes its proposed denominator improvement.

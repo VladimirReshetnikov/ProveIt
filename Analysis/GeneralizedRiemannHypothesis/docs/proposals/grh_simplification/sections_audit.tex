@@ -1,0 +1,207 @@
+\section{Audit against all existing proposal bundles}
+\label{sec:exclusion}
+
+The following matrix records the operative mechanism already proposed in
+each directory. The archive includes the fuller audit and a manifest of
+59 relevant text files with their Git blob identifiers and SHA-256 hashes.
+Future-direction sections were also checked; a merely restated future
+direction was not counted as a new proposal.
+
+\small
+\begin{longtable}{@{}p{.35\textwidth}p{.59\textwidth}@{}}
+\toprule
+Existing bundle & Mechanism excluded from novelty here\\
+\midrule
+\endfirsthead
+\toprule Existing bundle & Mechanism excluded from novelty here\\ \midrule
+\endhead
+\proposal{centered_theta_lift_simplification}{Centered theta lifts} &
+Centered covariance, direct selection in the ramified source, adaptive
+completion, and random contraction products.\\
+\proposal{cm_norm_theta_simplification}{CM norm theta} &
+Two/three-factor local cancellation and four-copy sharpness, with padding
+to the old interface.\\
+\proposal{cyclotomic-interpolation-and-theta-lifts}{Cyclotomic interpolation} &
+Dimension-independent multivariable torsion interpolation and improved
+near-spanning.\\
+\proposal{discrete_hecke_simplification}{Discrete Hecke} &
+Integer Pieri-cone enumeration, Smith saturation, and possible direct
+counting in place of Frobenius packing.\\
+\proposal{edge_hecke_simplification}{Edge Hecke} &
+Orbit-trace invariant averages and principal-submatrix bounds for
+exceptional Smith directions.\\
+\proposal{gram_adjoint_simplification}{Gram adjoint} &
+Integral Fock Gram adjoints and removal of specialized tight-frame
+bookkeeping in one-lift estimates.\\
+\proposal{grh-class-count-finite-quotient}{Finite-quotient class count} &
+Class encoding by short-basis Gram data and residues in a finite quotient.\\
+\proposal{grh_order_tests_2026-11-27}{Order tests (27 November)} &
+Norm-divisibility order tests and subgroup exclusions instead of primitive
+finite-field elements.\\
+\proposal{newton_torsion_simplification}{Newton torsion} &
+One-shell divided differences, prefix denominator budgets, and a singly
+exponential order ceiling.\\
+\proposal{orbital_theta_exchange}{Orbital theta exchange} &
+Canonical orbital sections, algebraic twisted coinvariants, and
+complementary-frame matching.\\
+\proposal{proof_simplifications}{Proof simplifications} &
+Quadratic twist averages, direct Perron estimates, and ramified-source
+spanning.\\
+\proposal{rh-simplifications}{RH simplifications} &
+Sharp rank recurrences, torsion interpolation, and large-sieve twist
+selection.\\
+\proposal{rh_sparse_theta_proof}{Sparse theta proof} &
+Sparse-cutoff interpolation and Gaussian second-moment twist selection.\\
+\proposal{rh_two_order_tests_proposal}{Two-order tests} &
+Weaker finite-field label tests and a weakened common-scalar-order
+interface.\\
+\proposal{robust_theta_labels}{Robust theta labels} &
+Three power tests, two-prime scalar certificates, and stronger label counts.\\
+\proposal{shorter-theta-lift-proof}{Shorter theta-lift proof} &
+Elementary or large-sieve twist means, direct spanning, and far-cutoff
+prime estimates.\\
+\proposal{signed_theta_gain_simplification}{Signed theta gain} &
+Signed local gains, avoiding rounded rational short-form normalization,
+and product-formula assembly with improved colength budgets.\\
+\proposal{theta-lift-simplifications}{Theta-lift simplifications} &
+Flag-adapted integral rows, compressed determinants, denser labels, and
+explicit sparse infinite places.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+The nearest overlaps deserve a precise distinction:
+\begin{itemize}
+\item The normalization in signed theta gains is the rational divisor
+used to turn the short forms into short integral vectors. The present
+proposal removes exact modulus metadata of exchange scalars in the
+lower-volume branch.
+\item Orbital theta exchange changes how the square laws are constructed.
+The present cost calculus consumes whatever exact laws that construction
+provides. Better local costs can be passed through unchanged.
+\item The existing Gram-adjoint proposal and the one-vector branching
+argument concern different operators and different source modules.
+\item A rank--height budget, an exterior-power replacement for completion,
+and stronger torsion interpolation are already explicit future directions;
+they are excluded from the present proposals.
+\end{itemize}
+
+\section{Implementation order and acceptance criteria}
+
+\subsection{A staged migration}
+
+\begin{enumerate}
+\item Add exact power homogeneity next to the existing
+\code{HeightLe.pow}. Compile the specialization in a fully built
+checkout and retain the current height definition.
+\item Add the guarded squared-cost interface. Prove constants, products,
+one-crossing costs, and reciprocal zero-cost lemmas for the specific
+norm-power factors. During this stage, the old exact-modulus lemmas can
+serve as adapters, making the new consumer interface easy to validate.
+\item Change the triangle's scalar grade to additive costs, retaining its
+mixed Gram statement, injectivity proof, and exact weights. Add the
+determinant recurrence rather than a public accumulated Rallis product.
+\item Convert the chain and auxiliary-form consumers. Preserve the
+boundary Euler-factor cancellation, \eqref{eq:oldbound}, and the exact
+statement of \code{integral_forms_long}.
+\item Once no consumers need the exact ratio metadata, delete it and
+measure net source size. Do not count a wrapper around the old development
+as a completed simplification.
+\item Independently replace the branching norm proof by the
+Gram-adjoint/Schur argument, calibrated by the existing Cartan norm
+inequality or by the direct fixed-tensor lemma.
+Initially preserve the old public theorem signature; drop the redundant
+weight hypothesis in a later cleanup if useful.
+\end{enumerate}
+
+If a small, self-contained mathematical replacement is the immediate
+priority, implement Proposal II first. If the priority is reducing
+coupling across the determinant and auxiliary-form developments, implement
+Proposal I first. The two changes do not depend on each other.
+
+\subsection{Concrete verification gates}
+
+The acceptance criterion for Proposal I is the current Theorem C with
+the same \(H-3L\), together with the current final five statements.
+Check the zero-target branch, actual scalar nonvanishing, the inverse
+turn scalar, common twist quantifiers, and the conductor boundary
+cancellation explicitly. Those are the places where a seemingly
+shorter proof can silently change its meaning.
+
+For Proposal II, the acceptance criterion is the current squared norm
+bound in \code{IntegralMap}, with coefficient \(c^2\) and no new
+dimension or factorial factor. Check that the calibration vectors
+(or the alternative fixed tensor) have norm exactly one and that the
+target commutant theorem is applied to the correctly twisted action.
+A loose bound in the calibration would defeat the proposed simplification.
+
+After both integrations, build the affected closure, build the full project,
+print the axioms of all five public theorems, and replay the desired
+independent checker workflow. The archive's verification script checks
+only the new standalone components. It deliberately does not label
+those checks a full GRH verification.
+
+\section{Tempting alternatives that fail this audit}
+
+Several apparently larger shortcuts were investigated and rejected.
+Recording the obstruction is useful because these alternatives can look
+more dramatic than the actual proposals.
+
+\paragraph{Multiply ordinary Rallis formulas along the chain.}
+The stable-rank hypothesis does not hold for every consecutive lift.
+The triangular exchange and adjoint identities supply missing information,
+and their nonzero scalar analysis is not optional.
+
+\paragraph{Use a full determinant lower bound on an almost basis.}
+A full determinant controls a product of all singular values.
+An arbitrary omitted complement can carry compensating large singular
+values. The auxiliary completion in the source supplies exactly the
+missing control. Removing it requires a new exterior-power theorem,
+a direction already mentioned among the existing proposals.
+
+\paragraph{Replace the Fitting calculation by a square-zero quotient.}
+The source already uses the ideal generated by the squares of the
+deformation variables in its
+\src{New/Congruences/FirstOrder/FittingBlock}{\code{FittingBlock}} development.
+The elementary annihilator calculation in that quotient can improve
+presentation, but it does not remove the difficult lifting or Fitting
+inputs. It is not a substantial new simplification of this proof.
+
+\paragraph{Recover integral characteristic data from power traces for free.}
+Newton identities introduce denominators. For instance, over
+\(\Z_p[t]\), the matrix \(tI_p\) has traces \(pt^k\) and determinant \(t^p\).
+Modulo \(p\), every nonconstant generator \(pt^k\) vanishes, whereas
+\(t^p\) does not. Thus \(t^p\) is not in the
+\(\Z_p\)-algebra generated by those traces. A factorial paid to clear
+denominators also scales the distinguished deformation coefficient;
+it is not free precision in the original valuation budget.
+The archive contains a fuller note on this obstruction.
+
+\section{Delivered artifacts and reproducibility}
+
+The archive contains:
+\begin{itemize}
+\item this report as \code{grh_simplification.tex}, its included section
+sources, and \code{grh_simplification.pdf};
+\item the two checked Lean files
+\code{lean/HeightPower.lean} and \code{lean/MatrixChainBudget.lean};
+\item the separately labeled source-integration candidate for
+\code{New.HeightLe};
+\item build instructions, pinned toolchain/dependency configuration,
+and scripts for compiling the report and checking the standalone Lean;
+\item source/proposal manifests, source metrics, verification logs,
+and the mathematical and exclusion-review notes;
+\item a SHA-256 manifest for the delivered files.
+\end{itemize}
+
+The source repository is not included in the archive. Immutable source
+links and hashes identify the material analyzed. The proof files and
+source-integration candidate contain no placeholders standing in for
+the missing full migration; that migration is described as future work.
+
+The smallest immediate addition is \code{HeightLe.of_pow}: it is exact,
+independently useful, and already checked in a faithful generalization.
+Its payoff comes when it enables the determinant branch to retain the
+height information it actually consumes. The branching argument offers
+a separate local mathematical reduction whose proof is shorter because
+equivariance makes an all-vector calculation unnecessary.

@@ -1,0 +1,307 @@
+\section{The triangular induction and its determinant interface}
+\label{sec:triangle}
+
+\subsection{Keep the mixed Gram identity}
+
+Let \(V\) be the ambient space of principal forms and
+\(s:U\hookrightarrow V\) the target subspace, with \(\dim U=d_T\).
+Let \(j_i\) identify \(V\) with the bottom of row \(i\), and let
+\(X_{i,n}\) be a weighted row of \(n\) lifts. Set
+\[
+ q_n(\vartheta)=
+ \frac{w_0(\vartheta)w_1(\vartheta)^n}{w_n(\vartheta)}.
+\]
+The induction should retain a statement of the form
+\begin{equation}
+ \ip{X_{i,n}j_i x}{X_{i,n}j_i(sy)}
+   =q_n\,\ip{x}{s(K_{i,n}y)}
+ \qquad (x\in V,\ y\in U),
+ \label{eq:mixed}
+\end{equation}
+with the exact weights of the existing triangle and an endomorphism witness
+\(K_{i,n}\) of \(U\). Dependence on the twist is suppressed here.
+
+Quantifying \(x\) over all of \(V\) is essential. In the induction, the
+lift--descent composite carries \(x\) to another ambient vector \(x'\).
+A Gram identity only on \(U\times U\) would not suffice without a new
+invariance theorem. The source already supplies the stronger identity:
+see \code{IsTriangle.exists_inner_weightedChain_eq} in
+\src{New/Determinant/Chain/TriangleNorms}{\code{TriangleNorms.lean}}.
+
+The one-step mixed identity has the form
+\begin{equation}
+ w_0\ip{a_i j_i x}{a_i j_i(sy)}
+       =C_i\ip{x}{s(S_i y)}.
+\end{equation}
+Use the existing square-commutation and square-adjoint laws to move a
+descent across the row, apply \eqref{eq:mixed} to the shorter row, and then
+apply (6.2). The weight quotients cancel to \(q_{n+1}\). This gives
+\begin{equation}
+ K_{i,0}=I,\qquad
+ K_{i,n+1}=a_{i,n}S_iK_{i+1,n},
+ \qquad a_{i,n}=\kappa_{i,n}\beta_{i,n}C_i.
+\end{equation}
+The constants \(\beta,\kappa\) are the accumulated commutation and adjoint
+scalars. There is no need for the public theorem to identify \(K_{i,n}\)
+with a named product of all \(S_i\).
+
+\begin{proposition}[Determinants need no operator commutativity]
+\label{prop:det}
+For square matrices of a common dimension \(d_T\) over a commutative ring,
+the recurrence (6.3) gives
+\begin{equation}
+ \det K_{i,n}
+   =A_{i,n}^{d_T}\prod_{j=i}^{i+n-1}\det S_j,
+ \qquad
+ A_{i,0}=1,\quad A_{i,n+1}=a_{i,n}A_{i+1,n}.
+\end{equation}
+The matrices \(S_j\) need not commute.
+\end{proposition}
+\begin{proof}
+Apply \(\det(aT)=a^{d_T}\det T\) and
+\(\det(ST)=\det S\,\det T\) at each induction step.
+Only the scalar coefficient ring is commutative.
+\end{proof}
+
+This is formalized in \code{MatrixChainBudget.determinant_chain}.
+The file does not purport to prove (6.3) from theta-lift geometry.
+Equation \eqref{eq:mixed} specifies the source-level induction needed to
+instantiate the checked algebraic lemma.
+
+\subsection{Arbitrary budgets and the exact crossing count}
+
+Suppose crossing \((r,k)\) has squared cost \(B_{rk}\).
+The row of length \(n+1\) at \(i\) crosses the \(n\) squares
+\((i+1,k)\), \(i+2\le k\le i+n+1\), and then uses the shorter row.
+Its row cost is therefore
+\[
+ e_{i,n}=\sum_{k=i+2}^{i+n+1}B_{i+1,k},\qquad
+ T_{i,0}=0,\quad T_{i,n+1}=e_{i,n}+T_{i+1,n}.
+\]
+The scalar accumulated over the full triangle has cost
+\begin{equation}
+ T_{0,m}=\sum_{1\le r<k\le m}B_{rk}.
+ \label{eq:weightedcost}
+\end{equation}
+For uniform crossing budget \(B\),
+\[
+ T_{n+1}=nB+T_n,\qquad T_0=0,\qquad
+ T_m=\binom m2 B.
+\]
+The archived Lean file proves the arbitrary double-sum identity, the uniform
+recurrence, \(2\binom m2+m=m^2\), and propagation of guarded scalar
+certificates. With \eqref{eq:onecrossing}, the final squared cost is
+\begin{equation}
+ 2\binom m2 tx_1.
+\end{equation}
+Theorem~\ref{thm:root} gives the unsquared bound
+\begin{equation}
+ \HLe\!\left(\binom m2 tx_1,\ r_{\kappa,\theta}\right).
+\end{equation}
+
+The binomial count is already visible in the source's product over \(i<j\);
+sharpening \(m^2\) to \(\binom m2\) is not the main novelty.
+The simplification is that the induction no longer carries a separate
+symbolic ratio product and global norm exponent to obtain this bound.
+Keeping the individual \(B_{rk}\) in \eqref{eq:weightedcost} also
+accommodates stronger local estimates without changing the induction.
+
+\subsection{The exact boundary cancellation remains}
+
+The triangle weights, finite group orders, and level indices are not
+individually pure conductor powers. They contain Euler factors.
+There is an exact calculation here that cannot be replaced by an assertion
+that all normalization factors cost zero.
+
+Write \(I(\vartheta)\) for the level index, \(M(\vartheta)\) for the
+matrix-space cardinality, \(d_W\) for the fixed Weyl-index dimension,
+\(g(\vartheta)\) for \code{gramFactor}, and
+\(u(\vartheta)\) for \code{twistFactor}.
+The original identities give
+\begin{align}
+ I(\vartheta)&=
+  \gamma N(Q_\vartheta)^\ell g(\vartheta)^m
+      \frac{w_m}{w_0w_1^m}, \label{eq:boundaryI}\\
+ \frac{g(\vartheta)}{M(\vartheta)}&=g_0u(\vartheta),
+ \label{eq:boundaryg}
+\end{align}
+with \(\gamma,g_0,\ell\) independent of the twist.
+The first is \code{exists_stdLevelIndex_lastLevel_eq} in
+\src{New/Determinant/Chain/ChainNorms}{\code{ChainNorms}}; the second is
+\code{DescentPair.gramFactor_div_card} in
+\src{New/Determinant/Norms/AdjointThetaLift}{\code{AdjointThetaLift}}.
+The conversion from weighted-chain inner products to the actual chain
+contributes \(I(\vartheta)d_W\).
+
+In the application, the one-step operators in (6.3) include the factor
+\(M(\vartheta)^{-1}\). Taking determinants gives
+\begin{equation}
+ Z(\vartheta)=
+ \left[
+ A_{0,m}(\vartheta)
+ \frac{I(\vartheta)d_Ww_0w_1^m}
+      {w_mM(\vartheta)^m}
+ \right]^{d_T}
+ \prod_{j=1}^m\det R_j(\vartheta).
+ \label{eq:rawZ}
+\end{equation}
+The unchanged single-lift comparison is
+\begin{equation}
+ Z_j(\vartheta)=
+   (A_j u(\vartheta))^{d_T}\det R_j(\vartheta),
+ \qquad A_j\ne0,
+\end{equation}
+where \(A_j\) is twist-independent. Here \(Z_j(\vartheta)\) already denotes
+the source's single lift evaluated at the appropriate \(j\)-th twist power.
+All first \(m\) powers have the same conductor support.
+
+Substitution of \eqref{eq:boundaryI}--\eqref{eq:boundaryg} into
+\eqref{eq:rawZ} yields the boundary coefficient
+\[
+ \gamma d_W g_0^m\,N(Q_\vartheta)^\ell u(\vartheta)^m.
+\]
+The factor \(u(\vartheta)^m\) cancels exactly against (6.11).
+Only the remaining pure norm power can then be discarded in the height
+calculus. The equal-multiplicity comparison that moves each single-row
+determinant to the common target remains necessary as well.
+
+Taking absolute values of the positive Gram determinants now exports
+\begin{equation}
+ Z(\vartheta)=\rho(\vartheta)^{d_T}
+       \prod_{j=1}^m Z_j(\vartheta),
+ \qquad \rho(\vartheta)>0.
+ \label{eq:Zfactor}
+\end{equation}
+After normalizing at the trivial twist, the inverse ratio
+\(\rho(1)/\rho(\theta_\iota)\) is the normalized modulus of the accumulated
+scalar times a pure conductor power. It has exactly the same height
+allowance as (6.7). No global exponent or explicit
+\code{quotientRatio} product needs to be exported.
+The zero-target case is handled separately before asserting
+\(\rho(\vartheta)>0\).
+
+\section{Recovering Theorem C with unchanged constants}
+\label{sec:C}
+
+The same regular family \(\theta\) already satisfies, for every
+\(1\le j\le m\),
+\begin{equation}
+ \HLe\!\left(
+ d_T\left(\frac{L}{m}-k\,\operatorname{directionAmount}\right),
+ \ \iota\mapsto\frac{Z_j(1)}{Z_j(\theta_\iota)}
+ \right).
+ \label{eq:singleheight}
+\end{equation}
+This is
+\src{New/Determinant/Twist/LongForms}{\code{exists_hasSmallRatios_heightLe_liftDeterminant_div}}.
+Adding the \(m\) contributions gives exactly \(d_T(L-H)\).
+
+For the chain scalar, \eqref{eq:Zfactor} and (6.7) imply
+\[
+ \HLe\!\left(
+ d_T\left(\binom m2 tx_1+L-H\right),
+ \ \iota\mapsto \frac{Z(1)}{Z(\theta_\iota)}
+ \right).
+\]
+The existing admissibility estimate \(m^2tx_1\le b\) gives the unchanged
+public result
+\begin{equation}
+ \HLe\!\left(d_T(b+L-H),
+ \ \iota\mapsto Z(1)/Z(\theta_\iota)\right).
+ \label{eq:oldbound}
+\end{equation}
+There is no extra factor two and no rescaling of \(H\).
+
+For auxiliary forms, keep the actual scalar
+\(\gamma(\vartheta)\in\C^\times\), normalized by \(\gamma(1)=1\),
+and their exact integrality identities. Replace only the explicit
+\code{turnRatio} modulus formula by
+\begin{equation}
+ \HLe\!\left(
+ 2m^2tx_1,\ 
+ \iota\mapsto(\norm{\gamma(\theta_\iota)}:\C)^{-2}
+ \right).
+\end{equation}
+Here the consumer genuinely needs the squared reciprocal modulus, so
+power descent is not required. The already used inequality
+\(2m^2tx_1\le b\) recovers its original allowance \(b\).
+
+Complete the independent family by \(n'\) auxiliary forms. The unchanged
+archimedean bound is \(2x_1^2b^2\) per added form. With
+\(n'\le4d_T/b^2\),
+\[
+ n'(2x_1^2b^2+b)
+ \le d_T(8x_1^2+4/b)\le d_Tb.
+\]
+The existing product-formula theorem therefore gives
+\begin{align*}
+ 0
+ &\le V_0+2\delta+n'(2x_1^2b^2+b)+d_T(b+L-H)\\
+ &\le V_0+2\delta+d_T(2b+L-H).
+\end{align*}
+Using \(b\le L\) proves \eqref{eq:theoremC}.
+Every ordinary-direction contribution in \eqref{eq:singleheight} survives.
+This is the concrete compatibility check that distinguishes a usable
+height refactor from a formal rearrangement with a changed main term.
+
+\section{Where the readable proof would become shorter}
+
+\begin{center}
+\begin{tabular}{@{}p{.33\textwidth}r p{.52\textwidth}@{}}
+\toprule
+Module (relative to \code{New/Determinant}) & Lines & Proposed change\\
+\midrule
+\code{Chain/Moduli} & 430 &
+Replace the global modulus API by local squared-cost lemmas;
+retain tame/primitive-character results and the arithmetic inputs.\\
+\code{Chain/ChainNorms} & 892 &
+Attach costs to the existing square and adjoint witnesses;
+retain maps, exact normalizations, and injectivity inputs.\\
+\code{Chain/TriangleNorms} & 364 &
+Use a graded additive cost; expose mixed Gram witnesses and their
+determinants instead of a symbolic global ratio product.\\
+\code{Chain/NormOfChain} & 528 &
+Retain one-lift determinant and boundary cancellation;
+remove global-exponent extraction and ratio-product endpoints.\\
+\code{AuxiliaryForms/Turns} & 1,002 &
+Replace scalar modulus conclusions by squared costs; retain the
+geometric turn and integrality proofs.\\
+\code{AuxiliaryForms/DiagonalTurns} & 672 &
+Propagate the costs with the same actual scalars.\\
+\code{AuxiliaryForms/SpanningForms} & 796 &
+Export a nonzero auxiliary scalar and its cost, keeping spanning
+and size conclusions.\\
+\code{Twist/LongForms} & 250 &
+Consume two height certificates directly and retain Theorem C.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These eight files contain 4,934 physical lines; that is the affected
+\emph{neighborhood}, not a deletion estimate. Much of it proves geometry,
+integrality, character compatibility, or nonvanishing and remains necessary.
+
+The most concrete removal candidates are the global
+\code{HasAbsUpToNormPower} propagation layer, normalization and positivity
+lemmas for products used only through height, the
+\code{quotientRatio}/\code{turnRatio} endpoint descriptions, and the named
+\code{rallisProduct} interface in this branch. Their replacements still
+require local cost proofs and a readable presentation of the triangle.
+The implementation plan is to count deletions only after the old
+declarations have no remaining callers.
+
+A conservative declaration audit isolates 27 purely representational
+declarations: 136 physical declaration/body lines, or 198 lines including
+their attached documentation. The broader 306-line operator-product
+region in \code{NormOfChain} overlaps that count and includes adapters
+that require replacement. The audit therefore does not support adding
+these figures or claiming a numerical net saving. Exact names and
+ranges are in the archived metadata audit.
+
+The gain is architectural: one certificate interface replaces repeated
+exact scalar descriptions across seven concrete consumers and the generic
+triangle. It also removes coupling between local arithmetic identities
+and the final height estimate. A faithful readable implementation will
+be longer than the highly compressed compact implementation; comparing
+its 63-line cost file directly with a 430-line readable file is not a fair
+net-saving calculation.

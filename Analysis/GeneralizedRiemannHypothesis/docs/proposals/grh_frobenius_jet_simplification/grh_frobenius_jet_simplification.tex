@@ -1,0 +1,1031 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+% Explicitly load the standard Euler font map on minimal pdfTeX installations.
+\ifdefined\pdfmapfile\pdfmapfile{+euler.map}\fi
+\usepackage[margin=0.9in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,needspace}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue]{hyperref}
+\hypersetup{pdftitle={Finite Frobenius certificates for the theta exponent},pdfauthor={ChatGPT},pdfsubject={A source-based simplification proposal for the submitted RH and Dirichlet GRH development}}
+\definecolor{ink}{HTML}{193B50}
+\definecolor{pale}{HTML}{F0F5F7}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily Finite Frobenius certificates}
+\fancyhead[R]{\small\sffamily GRH source analysis}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt plus 1pt}
+\setlist{nosep,leftmargin=1.6em,topsep=5pt}
+\setcounter{tocdepth}{1}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\JJ}{\mathcal J}
+\newcommand{\FF}{\mathsf F}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\coef}[2]{[\, #1\,]#2}
+\newcommand{\code}[1]{{\small\nolinkurl{#1}}}
+\newcommand{\src}[1]{\hyperref[src:#1]{[S#1]}}
+\newcommand{\repo}{https://github.com/VladimirReshetnikov/ProveIt}
+\newcommand{\commit}{9050b04000647d588d0c78d945180abcd3b0bcf7}
+\newcommand{\sourceurl}[1]{\repo/blob/\commit/Analysis/GeneralizedRiemannHypothesis/#1}
+\newcommand{\sourcelink}[2]{\href{\sourceurl{#1}}{#2}}
+\newcommand{\sectionlead}[1]{\needspace{6\baselineskip}\textbf{#1}}
+
+\begin{document}
+\thispagestyle{empty}
+{\color{ink}\sffamily\bfseries\LARGE Finite Frobenius certificates\par}
+\vspace{3pt}
+{\color{ink}\sffamily\Large Replacing the theta exponential normal form\par}
+\vspace{8pt}
+{\large A simplification proposal for the submitted RH / Dirichlet-GRH development}
+
+\vspace{7pt}
+\textbf{Source snapshot:} \code{9050b04000647d588d0c78d945180abcd3b0bcf7}\par
+\textbf{Report date:} 27 November 2026 (Pacific time)\par
+\textbf{Deliverables:} mathematical replacement proof, checked standalone Lean core,
+source audit, exact finite-ring regressions, and a staged integration plan.
+
+\vspace{8pt}
+\colorbox{pale}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{
+\textbf{Recommendation.} Keep the raw integral exponent of the theta product.
+Replace its complete expansion as
+\(\sum_{e,j}\lambda_{e,j}\Gamma_e^{p^j}\)
+by two smaller contracts: finite null-moment vanishing for divisibility, and a
+first-derivative signature for inert-prime sharpness. Finite Frobenius orthogonality
+proves the first contract; differentiating the raw parameter equation proves the
+second. Both use inputs that the current source already establishes.
+}}
+
+\begin{abstract}
+The current local argument determines an infinite, two-index coupling expansion,
+turns it into an exact exponential normal form, and then uses only selected
+consequences of that normal form. The replacement developed here avoids this
+intermediate classification. In a finite jet algebra, Frobenius is nilpotent on
+the augmentation ideal. The scaled formal-parameter equation can therefore be
+inverted by a finite geometric sum. A weighted pairing of two Frobenius iterates
+is a Frobenius iterate of a single moment. Even and odd iterates are consequently
+orthogonal when the inert coupling moments vanish; the ramified case uses all
+moments, including degree two. Differentiating the raw exponent separately recovers
+the same pure-power gradient and unit leading coefficients used for sharpness.
+
+The replacement preserves the existing local valuation bounds and their global
+error budgets. It targets 752 physical lines in four source files, with another
+84 helper lines subject to a dependency audit. These are affected regions, not
+measured net deletions. A 314-line independent Lean file checks the finite algebraic
+core against the repository's exact Lean and mathlib versions. The formal-group
+adapters and full-project refactor remain to be implemented. The proposal is
+distinct from the mechanisms and stated future directions in the 18 existing
+proposal directories at the pinned commit.
+\end{abstract}
+
+\clearpage
+\thispagestyle{plain}
+\tableofcontents
+\newpage
+
+\section{What the proof is doing, and where to intervene}
+\label{sec:architecture}
+
+\subsection{The endpoint and the quantitative spine}
+
+The exported theorem concerns all Dirichlet characters, with the usual exception
+at the pole of the principal character. In the source, \code{New.grh} proves
+nonvanishing for \(\Re s>1/2\); the functional equation then gives the line statement,
+and the modulus-one case gives the Mathlib statement of RH. Here ``GRH'' is the
+Dirichlet family specified by those exported declarations. \src{1}
+
+The arithmetic object is the smoothed prime remainder
+\begin{align}
+ \lambda_u(n)&=\mathbf 1_{n\equiv1\pmod u}\Lambda(n)(1-\chi_d(n)),\notag\\
+ R_u(x)&=\sum_{1\le n\le x}\lambda_u(n)\left(\frac1n-\frac1x\right)
+       -\frac{\log x}{\varphi(u)}-c_u. \label{eq:remainder}
+\end{align}
+For admissible fixed \(Q,d\), the target is the one-sided estimate
+\(R_Q(x)\le x^{-1/2+\varepsilon}\) eventually, for every \(\varepsilon>0\).
+The guide and the final reduction explain how suitable quadratic twists and the
+one-sided zero-detection criterion turn this estimate into nonvanishing. \src{2}\src{3}
+
+The algebraic comparison has a particularly clear structure. Let \(d_T\) be the
+target dimension, \(H\) its main height term, \(\mathcal R\) the total prime
+remainder, and \(m\) the chain length. Write
+\[
+ L=fa(\log b)^4,\qquad I=10\log(1+2b^2)\,fa(\log b)^3.
+\]
+The three inputs are:
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}l X@{}}
+\toprule
+Input & Exact role in the comparison\\
+\midrule
+A: short forms & Independent candidate images have squared lengths at most
+\(\exp(H-m\mathcal R+L)\); their denominators have a controlled index.\\
+B: enough forms & Choose \(n\) independent such images with
+\((1-4/b^2)d_T\le n\le d_T\), using few enough translates that the index is at most \(d_TI\).\\
+C: long forms & For that same family, squared covolume plus twice the index is at least \(d_T(H-3L)\).\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Hadamard's inequality therefore gives
+\[
+ d_T(H-3L)\le n(H-m\mathcal R+L)+2d_TI.
+\]
+Since \(H+L\ge0\) and \(n\le d_T\), the main term cancels to give
+\[
+ n\,m\mathcal R\le d_T(4L+2I).
+\]
+Using \(n\ge d_T/2\) and the parameter bounds yields the source theorem
+\begin{equation}
+ m\mathcal R\le fa(\log b)^5. \label{eq:star}
+\end{equation}
+The precise normalization and the matching main term matter much more than a
+small improvement in a numerical constant. The final scales have chain length
+on the square-root scale and a very distant second cutoff; they convert
+\eqref{eq:star} to the one-sided prime estimate. \src{3}\src{4}
+
+\subsection{Why the proposed change is local}
+
+The existing proposals already attack the main global opportunities: spanning,
+rank/completion budgets, twist selection, signed normalization, torsion
+interpolation, local labels, invariant averages, class counting, and orbital
+exchange. Appendix~\ref{app:inventory} records the full exclusion inventory.
+Repeating one of those reductions, or merely asking for a stronger determinant
+estimate mentioned there, would not answer the request.
+
+The remaining concrete opportunity identified here is an interface inside the
+local derivative calculation. Finite-place divisibility makes the upper forms
+short; matching sharpness also enters the lower determinant calculation. Thus a
+replacement has to preserve \emph{both} consequences. An argument that keeps only
+integrality would not justify retaining the global comparison.
+
+This report analyzes the proof architecture and supplies a replacement for this
+specific interface. It does not assert a fresh independent replay of the entire
+GRH development. The source revision is fixed, the exact algebra checked here is
+identified, and the remaining integration work is explicit.
+
+\section{The stronger object currently constructed}
+\label{sec:old}
+
+At a nonsplit prime \(p\), let \(\OO\) be the valuation ring of
+\(\mathbb C_p\), normalize \(v(p)=1\), and let \(\pi=\pi_p\) be the element
+called \code{piPrimeInt d}. Let \(\varpi\) be the chosen scale and set
+\[
+ c=\frac{\varpi^{p+1}}p.
+\]
+The relevant couplings have the form
+\begin{equation}
+ \Gamma_e(z)=\sum_{x}z_x^{p^e}z_{\operatorname{pr}_e(x)}.
+ \label{eq:couplings}
+\end{equation}
+The variables can be indexed by a place and a coordinate; the partner map changes
+the place and keeps the coordinate. The allowed exponents are odd positive
+integers at inert primes and all nonnegative integers at the ramified prime.
+
+The present implementation introduces
+\begin{equation}
+ \operatorname{couplingSum}
+   =\sum_{e\in S}\sum_{j\ge0}\lambda_{e,j}\Gamma_e^{p^j}
+ \label{eq:normal}
+\end{equation}
+and proves an exact factorization
+\begin{equation}
+ F(\varpi z)=\widetilde W(z)
+       \exp\!\left(c\operatorname{couplingSum}(z)\right),
+ \qquad \widetilde W\in\OO[[z]]. \label{eq:exactnormal}
+\end{equation}
+It obtains this by first identifying the residue of the one-curve exponent,
+expanding products of prime-power series, classifying representations of the
+form \(p^a+p^b\), reindexing an infinite sum, summing the resolution factors,
+and absorbing a divisible error into an integral exponential. Substitution,
+scaling and differentiation are then proved for the resulting infinite normal
+form. \src{5}\src{6}\src{7}\src{8}
+
+The two downstream needs are smaller:
+\begin{enumerate}
+\item After a zero-constant integral substitution that kills relevant couplings
+modulo \(\pi\), the raw exponent must vanish modulo \(\pi\) to the finite
+degree being tested.
+\item At inert primes, the first partial derivatives of the raw exponent must
+have the prescribed pure prime-power monomials modulo the maximal ideal, with
+unit coefficients.
+\end{enumerate}
+The proposal is to retain the exact factorization with the \emph{raw} exponent
+and prove these two contracts directly. It does not posit an equality between
+the raw exponent and a short sum of couplings. Such an equality is unnecessary.
+
+\section{Finite Frobenius algebra}
+\label{sec:algebra}
+
+Let \(p\) be an odd prime and \(k\) any commutative ring of characteristic
+\(p\). No field, reducedness or perfection assumption is imposed. Define
+\[
+ \JJ_B(k)=k[z_1,\ldots,z_n]/(z_1,\ldots,z_n)^{B+1},\qquad
+ I=(z_1,\ldots,z_n)\JJ_B(k).
+\]
+The number of variables is finite and \(B\ge0\). Frobenius
+\(\FF(a)=a^p\) is a ring endomorphism. Its iterates kill every element of
+\(I\) once \(p^h>B\), because \(I^{B+1}=0\). This is nilpotence on the
+augmentation ideal, not nilpotence or injectivity on the coefficient ring.
+More generally, the algebraic lemmas and vanishing theorem in this section hold
+in any commutative characteristic-\(p\) ring with an ideal \(I\) satisfying
+\(I^{B+1}=0\); \(\JJ_B(k)\) is the application of interest.
+
+\begin{lemma}[Finite Artin--Schreier resolvent]
+\label{lem:resolvent}
+Let \(q=p^r\), \(r\ge1\), and \(L\in I\). The equation
+\(Y-Y^q=L\) has a unique solution \(Y\in I\). For any \(h\ge0\) such that
+\(q^h>B\), it is
+\begin{equation}
+ Y=\sum_{a=0}^{h-1}L^{q^a}. \label{eq:resolvent}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Subtracting the \(q\)-th power of the displayed sum telescopes to
+\(L-L^{q^h}=L\). If two solutions differ by \(D\in I\), then
+\(D=D^q=D^{q^h}=0\). When \(B=0\), the ideal \(I\) is zero and the empty
+sum with \(h=0\) is permitted.
+\end{proof}
+
+Let \(L=(L_i)_{i\in A}\) be a finite family in \(I\), and let
+\(m_i\in\mathbb N\). Read the multiplicities in \(k\); they are fixed by
+Frobenius. Define a weighted pairing and its moments by
+\[
+ b(U,V)=\sum_{i\in A}m_iU_iV_i,\qquad
+ M_e=b(L,\FF^eL)=\sum_i m_iL_i^{p^e+1}.
+\]
+Only the fact \(m_i^p=m_i\) is used; arbitrary weights in \(k\) would not
+suffice.
+
+\begin{lemma}[Pairing of two Frobenius iterates]
+\label{lem:pairing}
+For all \(a,b\ge0\),
+\begin{equation}
+ b(\FF^a L,\FF^b L)
+     =M_{|a-b|}^{p^{\min(a,b)}}. \label{eq:pairing}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For \(a\le b\), Frobenius multiplicativity, additivity and the fixed weights give
+\[
+ \sum_i m_iL_i^{p^a}L_i^{p^b}
+ =\left(\sum_i m_iL_iL_i^{p^{b-a}}\right)^{p^a}.
+\]
+For \(b<a\), use symmetry. No Frobenius inverse or cancellation is involved.
+\end{proof}
+
+\needspace{14\baselineskip}
+\begin{theorem}[Finite orthogonality certificate]
+\label{thm:orthogonality}
+Use the above notation and let \(\lambda\in k\).
+\begin{enumerate}
+\item \textbf{Inert case.} Suppose \(Y_i-Y_i^{p^2}=L_i\), with \(Y_i\in I\).
+If \(M_e=0\) for every odd \(e\) with \(p^e+1\le B\), then
+\begin{equation}
+ \lambda\sum_i m_iY_i^{p+1}=0\quad\text{in }\JJ_B(k). \label{eq:inert}
+\end{equation}
+\item \textbf{Ramified case.} Suppose \(Y_i-Y_i^p=L_i\), with \(Y_i\in I\).
+If \(M_e=0\) for every \(e\ge0\) with \(p^e+1\le B\), then
+\begin{equation}
+ \lambda\sum_i m_i\left(Y_i^2-\tfrac12L_i^2\right)=0
+ \quad\text{in }\JJ_B(k). \label{eq:ramified}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Every moment with \(p^e+1>B\) is zero automatically by degree. In the inert
+case, Lemma~\ref{lem:resolvent} expresses \(Y\) as a finite sum of even
+Frobenius iterates of \(L\), and \(\FF Y\) as a finite sum of odd iterates.
+Each cross-pairing is zero by Lemma~\ref{lem:pairing}: its gap is odd. Hence
+\(b(Y,\FF Y)=0\), which gives \eqref{eq:inert}.
+
+In the ramified case, \(Y\) is a finite sum of all iterates of \(L\). Every
+pairing of such iterates vanishes, including equal-index pairings through
+\(M_0\). Thus \(b(Y,Y)=0\) and \(b(L,L)=M_0=0\), giving
+\eqref{eq:ramified}. The inverse of two exists because \(p\) is odd. The scalar
+\(\lambda\) stays outside the pairing calculation; it need not be Frobenius-fixed.
+\end{proof}
+
+\begin{corollary}[Ideal form]
+\label{cor:ideal}
+In the inert case the raw expression \(\sum_i m_iY_i^{p+1}\) belongs to the
+ideal generated by \(M_e\) for odd \(e\) with \(p^e+1\le B\). In the ramified
+case \(\sum_i m_i(Y_i^2-L_i^2/2)\) belongs to the ideal generated by all
+\(M_e\) with \(p^e+1\le B\).
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:orthogonality} after quotienting by the indicated ideal.
+Frobenius descends to any quotient ring, and the image of \(I\) is still
+nilpotent. Vanishing in this quotient is exactly ideal membership.
+\end{proof}
+
+The substantive simplification is the ideal certificate, not just replacing an
+infinite sum by a finite one. We never identify all coefficients
+\(\lambda_{e,j}\), classify the support of a product of prime-power series, or
+put an exact canonical exponent into the theta factorization. The finite double
+sum is used only to prove vanishing by orthogonality.
+
+\section{Obtaining the raw certificate from the existing source}
+\label{sec:raw}
+
+\subsection{The coefficient ring and the one-curve inputs}
+
+Use \(k=\OO/(\pi)\), with \(\pi\mid p\). This quotient is generally
+\emph{nonreduced}. For example, a square root of \(\pi\) in \(\mathbb C_p\)
+has a nonzero class whose square is zero. The existing \code{reducePiPrime}
+definition and its characteristic-\(p\) instance use this very quotient, not
+the residue field. The lemmas above were deliberately stated at this generality.
+\src{5}
+
+Before the double-series expansion, the source already provides:
+\begin{align}
+ &Y,\Xi,W_0\in\OO[[t]],\qquad Y(0)=\Xi(0)=0,\notag\\
+ &\theta(\varpi t)=W_0(t)\exp(c\Xi(t)),\label{eq:rawcurve}\\
+ &\overline Y-\overline Y^{q}=t,\label{eq:rawparameter}\\
+ &\overline\Xi=
+ \begin{cases}
+   \lambda\overline Y^{p+1},&q=p^2\quad\text{(inert)},\\
+   \lambda(\overline Y^2-t^2/2),&q=p\quad\text{(ramified)}.
+ \end{cases} \label{eq:rawresidue}
+\end{align}
+Bars mean reduction modulo \(\pi\). The exact inputs to retain are:
+\begin{itemize}
+\item \code{exists_scaled_formalParam}, using its functional-equation field
+\eqref{eq:rawparameter}; \src{9}
+\item \code{exists_rescale_theta_eq_mul_expSubst}; \src{5}
+\item \code{exists_seriesToCp_eq_exponentSeries_of_inert} and
+\code{exists_seriesToCp_eq_exponentSeries_of_ramified}. \src{5}
+\end{itemize}
+The ramified theorem asks for the square coefficient in degree two. From the
+resolvent, \(\overline Y=t+O(t^p)\), so
+\(\coef{t^2}{\overline Y^2}=1\) immediately. No full support computation is
+needed for that premise.
+
+At inert primes, \(\lambda\) is a unit. The existing theorem
+\code{norm_coeff_exponentSeries_eq_one} says that
+\(\coef{t^{p+1}}{\Xi}\) is a unit. Since
+\(\overline Y=t+O(t^{p^2})\) and \(p\) is odd,
+\(\coef{t^{p+1}}{\overline Y^{p+1}}=1\). Equation~\eqref{eq:rawresidue}
+therefore identifies the residue of that unit with \(\lambda\).
+This extracts the needed unit without computing any other coefficient. \src{5}
+
+\subsection{Finite products and resolution moments}
+
+For an integral resolution, let \(L_i(z)=u_i^\dagger z\), and let \(m_i\) be
+its natural-number multiplicities. Retain the literal raw exponent
+\begin{equation}
+ \Psi(z)=\sum_i m_i\Xi(L_i(z)). \label{eq:rawproduct}
+\end{equation}
+The finite-product theorem
+\code{rescale_thetaProd_eq_mul_expSubst} already proves the exact factorization
+\begin{equation}
+ F(\varpi z)=W(z)\exp(c\Psi(z)),\qquad
+ W,\Psi\in\OO[[z]],\quad\Psi(0)=0. \label{eq:rawfactor}
+\end{equation}
+For the theta product alone,
+\(W=\prod_i W_0(L_i)^{m_i}\). An additional permitted multiseries factor
+becomes integral after rescaling and multiplies \(W\). It does not require a
+change in the exponent. \src{6}
+
+The crucial retained resolution identity is
+\begin{equation}
+ M_e(z)=\sum_i m_i L_i(z)^{p^e+1}\equiv\Gamma_e(z)\pmod\pi
+ \label{eq:resolution}
+\end{equation}
+for every relevant partner exponent. This is precisely
+\code{piPrimeInt_dvd_sum_linearSeries_sub_coupling}. All multiplicities in this
+statement and the theta-product statement are explicitly natural numbers, so the
+fixed-weight assumption in Lemma~\ref{lem:pairing} matches the source. \src{6}
+
+The choices \(\varpi,Y,\Xi,\lambda,W_0\) can be made once for the curve and
+the prime. The raw \(\Psi\) is allowed to depend on the resolution. The audited
+consumers each use one resolution at a time; none requires identical raw
+exponents for different resolutions. Thus dropping the canonical normal form
+does not introduce a missing uniformity requirement.
+
+\section{Divisibility: the finite contract is sufficient}
+\label{sec:upper}
+
+\begin{theorem}[Null-substitution integrality]
+\label{thm:integrality}
+Let \(K\supset\mathbb Q_p\) be a valued field with valuation ring \(\OO\),
+\(v(p)=1\), and \(0\ne\pi\in\OO\) with \(\pi\mid p\). Suppose
+\eqref{eq:rawfactor} holds and that the residue of \(\Psi\) has the inert or
+ramified form induced by \eqref{eq:rawresidue} and \eqref{eq:rawproduct}. Assume
+\begin{equation}
+ v(c\pi)\ge\frac1{p-1}. \label{eq:radius}
+\end{equation}
+Let every component of \(Z(t)\) be an integral formal series with zero constant
+term. If the relevant moments \(M_e(Z)\) vanish modulo \(\pi\) through total
+degree \(B\), for all relevant \(e\) with \(p^e+1\le B\), then every
+coefficient of \(F(\varpi Z)\) of total degree at most \(B\) is integral.
+\end{theorem}
+\begin{proof}
+Zero-constant substitution preserves the augmentation filtration. Work in
+\(\JJ_B(k)\) for \(k=\OO/(\pi)\), using \(L_i(Z)\in I\). These series need
+not remain linear. Equations~\eqref{eq:rawparameter}--\eqref{eq:rawresidue} and
+Theorem~\ref{thm:orthogonality} imply that the degree-\(B\) jet of \(\Psi(Z)\)
+is zero modulo \(\pi\). Its jet over \(\OO\) can therefore be written
+\(\pi H\), with \(H\in I\JJ_B(\OO)\).
+
+In \(\JJ_B(K)\), the formal exponential is the finite sum
+\[
+ \exp(c\Psi(Z))=\sum_{a=0}^{B}\frac{(c\pi)^a H^a}{a!}.
+\]
+For each \(a\), Legendre's bound gives
+\[
+ v\left(\frac{(c\pi)^a}{a!}\right)
+ \ge\frac{a}{p-1}-v_p(a!)\ge0.
+\]
+Thus every coefficient in the required range is integral. Multiplication by the
+integral series \(W(Z)\) preserves the conclusion.
+\end{proof}
+
+The source has the exact threshold
+\begin{equation}
+ v(c\pi)=\frac1{p-1}, \label{eq:exactradius}
+\end{equation}
+proved as \code{norm_pow_succ_div_mul_piPrimeInt}. At an inert prime,
+\(v(\varpi)=1/(p^2-1)\) and \(v(\pi)=1\). At the ramified prime,
+\(v(\varpi)=1/(2p-2)\) and \(v(\pi)=1/2\). Both substitutions give
+\eqref{eq:exactradius}. There is no extra valuation loss. \src{6}
+
+In \code{norm_jet_minorProd_le_of_isChargeExponent}, Step~2 currently invokes
+\code{HasNormalForm.norm_coeff_subst_le_one}. The null-frame construction has
+already made \(\Gamma_e(Z)\) divisible by \(\pi\) for
+\(e\le\lfloor\log_p\max(B,1)\rfloor\) in the relevant set. This is the source's
+natural-number logarithm, including its value zero at \(B=0\). It includes every
+\(e\) with \(p^e+1\le B\). Equation~\eqref{eq:resolution} and
+Theorem~\ref{thm:integrality} therefore supply exactly the same coefficient
+bound at this call site. \src{10}
+
+The chain-rule determinant cost, charge count, Legendre factorial estimate,
+\(\gamma_p\), and the error
+\(fN^3(1+\lfloor\log_p\max(B,1)\rfloor)\) can all be retained. The proposal
+changes neither the choice of frames nor the quantitative statement of this
+local bound. This is why it composes with the proposed global improvements
+without requiring a new parameter optimization.
+
+\section{Sharpness: retain a separate gradient certificate}
+\label{sec:sharp}
+
+\subsection{The finite differential calculation}
+
+Differentiation lowers the degree filtration by one. To determine a derivative
+through degree \(D\), use the exponent through degree \(D+1\). In general,
+differentiation is not an endomorphism of \(\JJ_D(k)\). In what follows
+\(\dd\) differentiates the variables while fixing the coefficient ring \(k\).
+
+At an inert prime, differentiate the parameter equation to obtain
+\(\dd Y_i=\dd L_i\), since \(\dd(Y_i^{p^2})=0\). Hence
+\[
+ \dd\overline\Psi
+ =\lambda\sum_i m_iY_i^p\,\dd L_i.
+\]
+The finite resolvent for \(Y_i\) gives, through degree \(D\),
+\begin{equation}
+ \dd\overline\Psi
+ =\lambda\sum_{\substack{e\text{ odd}\\p^e\le D}}\dd M_e.
+ \label{eq:gradient}
+\end{equation}
+Indeed \(Y_i^p\) is the sum of the odd Frobenius iterates of \(L_i\), while
+\(\dd M_e=\sum_i m_iL_i^{p^e}\dd L_i\) for \(e>0\). Every omitted term
+has coefficient degree greater than \(D\). This proof uses neither the
+two-index expansion nor an interchange of an infinite sum and a derivative.
+
+Using \eqref{eq:resolution} for the original linear forms gives
+\begin{equation}
+ \partial_{z_y}\overline\Psi
+ =\lambda\sum_{\substack{e\text{ odd}\\p^e\le D}}
+       \sum_{\operatorname{pr}_e(x)=y}z_x^{p^e}
+ \quad\text{through degree }D. \label{eq:signature}
+\end{equation}
+The first factors of \(\Gamma_e\) differentiate to zero in characteristic
+\(p\). A pure monomial \(z_x^{p^e}\) determines \((x,e)\) uniquely, so its
+coefficient in \eqref{eq:signature} is exactly \(\lambda\). In particular,
+there are no unintended multiplicities from the partner map.
+
+For completeness, at the ramified prime the analogous calculation is
+\begin{equation}
+ \dd\overline\Psi
+ =\lambda\left(\tfrac12\dd M_0+
+       2\sum_{\substack{e\ge1\\p^e\le D}}\dd M_e\right)
+ \quad\text{through degree }D. \label{eq:ramgradient}
+\end{equation}
+It follows from \(\dd(Y_i^2-L_i^2/2)=(2Y_i-L_i)\dd L_i\).
+The inert coupling-sharpness argument is the consumer that requires the unit
+gradient certificate; no new ramified unit assertion is needed.
+
+\subsection{The coefficient witness, without a canonical exponent}
+
+Let \(\mathfrak m\) be the maximal ideal of \(\OO\). Congruence modulo
+\(\pi\) implies congruence modulo \(\mathfrak m\), because
+\((\pi)\subset\mathfrak m\). For sharpness, use
+\eqref{eq:rawfactor} with \(W\) a unit and \(v(c)<0\). At the inert primes
+under consideration, \(v(c)=1/(p-1)-1<0\). Unitness of \(W\) is required
+here, not merely integrality; in the normalized theta product it follows from
+constant term one.
+
+Consider the cancelling product in two sets of variables
+\[
+ G(z',z'')=F(z'+z'')\prod_{a\ne0}F(\delta_a z'),\qquad
+ U(z')=G(z',0),
+\]
+where the existing cancellation construction supplies integral \(U\) with
+\(U(0)=1\). For this discussion \(F=W\exp(c\Psi)\) denotes the already
+rescaled function. The cancellation factors can be those of the current source
+or the fewer factors supplied by the existing CM-norm proposal.
+
+The logarithmic derivative in a \(z''\)-variable is
+\[
+ \partial_yG=(cA_y+B_y)G,
+ \qquad A_y=(\partial_y\Psi)(z'+z''),\quad B_y\text{ integral}.
+\]
+If \(g\) is integral, then
+\begin{equation}
+ \partial_y(gG)=c\,g'G,\qquad
+ g'=gA_y+c^{-1}(\partial_yg+gB_y),\qquad
+ \overline{g'}=\overline g\,\overline{A_y}\pmod{\mathfrak m}.
+ \label{eq:recurrence}
+\end{equation}
+Here \(c^{-1}\in\mathfrak m\). Repetition gives the product of the first
+derivatives modulo \(\mathfrak m\); higher derivatives appear only in terms
+killed by this factor. The existing
+\code{exists_jet_prod_copySubst_couplingSubst} already proves this for an
+\emph{arbitrary integral exponent}. \src{11}
+
+For each selected place \(\tau\), take an odd exponent \(e_\tau\), partner
+\(y_\tau=\operatorname{pr}_{e_\tau}(\tau)\), and multiplicity \(j_\tau\).
+The existing \code{IsCouplingFamily} condition says that, among selected
+variables, \(z_\tau^{p^{e_\tau}}\) is the unique lowest-degree monomial of
+\(\partial_{y_\tau}\overline\Psi\). Equation~\eqref{eq:signature} supplies
+its unit coefficient. Put
+\[
+ J=\sum_\tau j_\tau,\qquad
+ \nu'=\sum_\tau p^{e_\tau}j_\tau\mathbf e_\tau,\qquad
+ \nu''=\sum_\tau j_\tau\mathbf e_{y_\tau}.
+\]
+After \(J\) derivatives in \(z''\), the reduction of \(g(z',0)\), restricted
+to selected variables, is
+\(\prod_\tau(\partial_{y_\tau}\overline\Psi)^{j_\tau}\).
+Its unique lowest term has exponent \(\nu'\) and unit coefficient.
+Multiplication by \(U\), whose constant term is one, preserves that coefficient.
+Consequently
+\[
+ \nu''!\;\coef{(z')^{\nu'}(z'')^{\nu''}}G
+       =c^J\,\coef{(z')^{\nu'}}{g(z',0)U(z')},
+\]
+and the coefficient on the right after \(c^J\) is a unit. Thus
+\begin{equation}
+ v\!\left(\coef{(z')^{\nu'}(z'')^{\nu''}}G\right)
+       =Jv(c)-v(\nu''!). \label{eq:sharpvalue}
+\end{equation}
+This is the same factorial and valuation identity as
+\code{IsCouplingFamily.norm_coeff_pairExponent}. \src{11}
+Here \(\nu''!\) means the multiindex factorial
+\(\prod_y(\nu''_y)!\), not the factorial \(J!\).
+
+The only specialization to \code{couplingSum} that must be replaced is the
+proof of the first-gradient lowest-term assertion and the signatures carrying
+it. The generic recurrence, cancellation product, factorial conversion and
+least-valuation bookkeeping remain valid. One does not need to take successively
+larger jets at every derivative: \eqref{eq:recurrence} uses exact integral
+series, and only their first-gradient reductions enter the leading-term test.
+
+\section{Scaling, uniformity, and the new interface}
+\label{sec:interface}
+
+\subsection{Two contracts, with a shared exact factorization}
+
+A useful interface stores an existential integral \(\Psi\), integral \(W\),
+\(\Psi(0)=0\), and the exact factorization \eqref{eq:rawfactor}. It exposes:
+\begin{description}[style=nextline,leftmargin=0pt,labelwidth=0pt,labelsep=0pt]
+\item[Null-moment contract.]
+For every finite degree bound and zero-constant integral substitution, vanishing
+of the relevant coupling jets modulo \(\pi\) forces vanishing of the exponent
+jet modulo \(\pi\).
+\item[Inert gradient contract.]
+Every nonzero residue coefficient of \(\partial_y\Psi\) has monomial
+\(z_x^{p^e}\), with odd \(e\) and \(\operatorname{pr}_e(x)=y\); at each
+prescribed monomial the coefficient is the residue of a specified unit \(u_e\).
+\end{description}
+Initially \(u_e=\lambda\) for every odd \(e\). Allowing a family of units
+\(u_e\) makes transport under scaling immediate. Upper-bound callers do not
+need the unit-gradient field; sharpness callers additionally require \(W\) to
+be a unit. These distinctions should be reflected in theorem hypotheses.
+
+\subsection{Ordinary integral scaling}
+
+Replace \(F(z)\) by \(F(\alpha z)\), with \(\alpha\in\OO\), keeping
+\(c\) and \(\varpi\) fixed. Then
+\[
+ W'(z)=W(\alpha z),\qquad \Psi'(z)=\Psi(\alpha z),\qquad
+ M'_e=\alpha^{p^e+1}M_e.
+\]
+The null-moment contract survives even when \(\alpha\) is a nonunit or zero.
+The gradient coefficients transform as
+\(u'_e=\alpha^{p^e+1}u_e\). They remain units when \(\alpha\) is a unit.
+This matches the integral rescaling used in the vacuum/divisibility consumer
+and the unit Taylor-scale rescaling used in the sharpness consumer. \src{12}
+
+\subsection{Changing the chosen scale}
+
+If \(\varpi'=\alpha\varpi\) with \(\alpha\in\OO^\times\), then
+\(c'=\alpha^{p+1}c\). Take
+\[
+ W'(z)=W(\alpha z),\qquad
+ \Psi'(z)=\alpha^{-(p+1)}\Psi(\alpha z).
+\]
+This gives the exact factorization with \(\varpi'\), and the gradient units
+become \(u'_e=\alpha^{p^e-p}u_e\). Both contracts persist.
+
+One must not claim that the normalized parameter equation is unchanged under
+this rescaling. If \(Y'(L)=Y(\alpha L)/\alpha\), then
+\[
+ Y'-\alpha^{q-1}(Y')^q=L.
+\]
+Construct the certificate at the canonical scale and transport its consequences,
+or explicitly allow this twisted equation. The current
+\code{HasNormalForm.exists_of_norm_eq} has no external lexical caller in the
+audited snapshot, but its useful covariance is still available in the replacement.
+
+\section{Source changes and realistic savings}
+\label{sec:migration}
+
+\subsection{Affected regions}
+
+The table counts physical lines, including comments and blank lines, at the
+pinned commit. Paths are relative to \code{Lean/grh/src}. Exact ranges,
+declarations, hashes and lexical occurrences are in
+\code{audit/source_audit.json}. The count is a proposed replacement boundary,
+not an applied patch or an elaborated dependency graph.
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}X r X@{}}
+\toprule
+File & Lines & Intended change\\
+\midrule
+\code{Lib/General/Algebra/}\newline\code{SeriesCongruences.lean}
+&199& Remove the specialized prime-power-series support and reindexing section
+once its old exponent callers disappear.\\
+\code{New/Derivatives/FormalGroup/}\newline\code{Exponent.lean}
+&185& Replace the prime-power expansion wrappers and final double-series constructor
+with the raw one-curve certificate; retain the raw congruences and unit proof.\\
+\code{New/Derivatives/Divisibility/}\newline\code{NormalForm.lean}
+&276& Replace \code{couplingSum}, the exact normal-form interface and its transport,
+divisibility and gradient machinery by the two contracts.\\
+\code{New/Derivatives/FormalGroup/}\newline\code{ThetaProducts.lean}
+&92& Replace the sum-to-couplingSum congruence and normal-form constructor.
+Keep finite product factorization and the resolution moment identity.\\
+\midrule
+\textbf{Primary affected regions}&\textbf{752}&Before replacement code and adapters.\\
+Optional helper cleanup&84&Continuity, summability and divisibility helpers whose
+specialized callers disappear; verify their resolved dependencies before deletion.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The 314-line checked core bundled here is deliberately an independent,
+generally reusable development with auxiliary statements and comments. It is
+not the total implementation cost of a port. Additional quotient/jet, derivative,
+formal-group, and caller adapters are still required, while parts of the existing
+generic infrastructure can be reused. It would be misleading to subtract 314
+from 752 and call the result a measured net saving.
+
+The defensible claim is substantial simplification of this normalization stage:
+one entire exact classification layer becomes unnecessary, and its two consumers
+have direct proofs. There is no measured whole-repository percentage reduction
+or kernel-time improvement yet. This proposal does not eliminate the major
+automorphic, Galois, determinant or analytic parts of the proof.
+
+\subsection{A staged implementation}
+
+\begin{enumerate}
+\item \textbf{Introduce the finite algebra.} Port the standalone ring-endomorphism
+lemmas. Instantiate Frobenius on the finite jet quotient or use coefficientwise
+truncation with an equivalent nilpotence lemma. Natural multiplicities require no
+new fixed-weight hypothesis.
+\item \textbf{Construct the raw one-curve data.} Combine
+\eqref{eq:rawcurve}--\eqref{eq:rawresidue}. Recover the ramified degree-two
+premise and the inert unit from the finite low-degree argument. Keep
+\code{norm_coeff_exponentSeries_eq_one}.
+\item \textbf{Construct resolution certificates.} Use
+\eqref{eq:rawproduct}, the exact product theorem and the existing moment congruence.
+Prove the null-moment and gradient fields directly, then their scaling lemmas.
+\item \textbf{Switch the divisibility caller.} Change Step~2 of the main count
+theorem to Theorem~\ref{thm:integrality}. Leave its frame, determinant and numerical
+estimates intact. Update the wrappers in \code{Vacuum/Divisibility.lean}.
+\item \textbf{Switch the sharpness caller.} Generalize the lowest-term lemmas and
+\code{norm_coeff_pairExponent} to an arbitrary exponent with the gradient
+certificate. Keep the already generic logarithmic-derivative recurrence. Update
+the constructor in \code{Sharpness/Cases.lean}.
+\item \textbf{Remove the old dependency path.} Once both branches compile,
+delete the old normal-form route and audit now-unused helpers. A temporary
+compatibility theorem from the old normal form is useful during migration, but
+it cannot remain the proof of the final new constructor if actual simplification
+is claimed.
+\item \textbf{Replay the final endpoints.} Build the affected modules and the
+exported RH/Dirichlet-GRH declarations; inspect their axioms. Only after this
+step report net lines, dependency reduction and build-time measurements.
+\end{enumerate}
+
+An important retention: the all-coefficients description of
+\code{exists_scaled_formalParam} also has a consumer in
+\code{Sharpness/OneCurve.lean}. The new argument does not need that stronger
+description, but this does \emph{not} authorize deleting it from the repository.
+Similarly, generic results on integral power series should be retained unless
+their actual elaborated callers are gone.
+
+\section{Validation and limits of the deliverable}
+\label{sec:validation}
+
+\subsection{What has been formally checked}
+
+\code{formal/FrobeniusJets.lean} compiles with
+Lean \code{4.35.0} and mathlib commit
+\code{56a005855ea17e0b0958f73ec801ae140b0a1679}, exactly the versions requested
+by the inspected project. It proves:
+\begin{itemize}
+\item the finite geometric-resolvent identity, including its tail;
+\item existence and uniqueness on a nilpotent endomorphism orbit;
+\item the weighted pairing identity and finite double-pairing identity;
+\item the inert raw-exponent vanishing theorem from odd moments;
+\item the ramified corrected raw-exponent vanishing theorem from all moments;
+\item the specialization to Frobenius with natural multiplicities.
+\end{itemize}
+Its printed theorem axioms are precisely
+\code{propext}, \code{Classical.choice}, and \code{Quot.sound}.
+There are no added axioms or unproved placeholders. The file is abstract over a
+commutative ring and an endomorphism, so it neither imports the GRH development
+nor silently assumes its conclusions.
+
+The checked file does not yet construct the multivariate jet quotient, prove the
+valuation-ring exponential adapter, formalize the gradient calculation, or
+replace the source consumers. Those parts are proved mathematically here and
+matched to their source interfaces. A standalone checked algebraic component is
+not a completed formal refactor. The exact compile command, tool versions,
+source hash, successful exit status, and axiom output are included in
+\code{formal/validation.txt}.
+
+\subsection{Exact finite-ring regressions}
+
+\code{checks/check_finite_jets.py} runs without third-party packages. It uses
+\[
+ (\mathbb F_p[\epsilon]/\epsilon^2)[z_1,z_2]/(z_1,z_2)^{B+1},
+ \qquad p\in\{3,5,7\},
+\]
+including cutoff values immediately before and after prime powers. The
+coefficient nilpotent \(\epsilon\) tests that no hidden reducedness or
+Frobenius-injectivity assumption is present. The common scalar \(\lambda\)
+is deliberately allowed not to be Frobenius-fixed.
+
+There are 29 parameter cases, three deterministic randomized trials per case,
+and 2,614 assertion groups: 1,392 pair identities, 522 resolvent checks,
+174 uniqueness checks, 87 inert and 87 ramified exponent identities,
+348 gradient comparisons using the correct input precision, and four negative
+controls. All pass. The seed and machine-readable results are in
+\code{checks/finite_jet_results.json}. These tests are useful regressions for
+indices and coefficients; the universal proofs are the mathematical arguments
+and the applicable checked Lean lemmas.
+
+\subsection{Source and proposal audit}
+
+The source audit searched all 803 Lean source files for the relevant declarations
+and callers. The exclusion inventory covers 18 proposal directories and 64
+textual proposal files, including 28 TeX sources, at the same pinned commit.
+The manifest records byte lengths, Git blob hashes and SHA-256 hashes; the
+bundled verifier checks them against a supplied checkout. The audit does not
+claim independent verification of the existing proposals' proofs or executables.
+
+The global proof was not rebuilt during this work. The mathematical result of
+this report is a replacement argument with matched local contracts; the
+engineering result is the compiled finite algebraic core and a source-specific
+migration plan. A full port is the next step required to turn the proposed
+simplification into a smaller checked GRH dependency graph.
+
+\appendix
+\section{Why this does not duplicate the existing proposals}
+\label{app:inventory}
+
+The inventory below is relative to the pinned snapshot, not older inventories
+embedded in previous reports. In particular it includes
+\code{discrete_hecke_simplification}, added at that snapshot. It lists what was
+treated as already proposed and therefore excluded as an answer to the request.
+All entries refer to the source proposal directory \src{13}; the archive's
+\code{audit/proposal_inventory.tsv} gives the complete mechanism comparison.
+
+\small
+\begin{longtable}{@{}p{0.36\linewidth}p{0.60\linewidth}@{}}
+\toprule
+Directory & Mechanisms already proposed\\
+\midrule
+\endfirsthead
+\toprule Directory & Mechanisms already proposed\\\midrule
+\endhead
+\bottomrule\endfoot
+\code{centered_theta_lift_}\newline\code{simplification} & Centered covariance, direct ramified-source
+spanning, adaptive completion, product-of-contractions variant and a smaller
+logarithmic translate budget.\\[5pt]
+\code{cm_norm_theta_simplification} & CM-norm cancellation, two or three cancelling
+factors, and four-copy local sharpness in place of the previous twelve-copy bound.\\[5pt]
+\code{cyclotomic-interpolation-and-theta-lifts} & Mixed-radius torsion grids,
+dimension/degree-independent order control, one character for all powers, and
+stronger near-spanning from two moments.\\[5pt]
+\code{discrete_hecke_simplification} & Signed integer-lattice enumeration instead
+of Pieri-cone integration, plus direct saturation/Smith control of exceptional
+local elementary divisors.\\[5pt]
+\code{edge_hecke_simplification} & Integral orbit traces and coefficient operators
+instead of restricted-representation machinery; low-rank/principal-submatrix
+control of exceptional Smith factors.\\[5pt]
+\code{gram_adjoint_simplification} & Inverse Gram duality for an integral adjoint,
+removing the tight-frame construction and improving hook normalization.\\[5pt]
+\code{grh-class-count-finite-quotient} & Finite-cokernel/residue invariants replacing
+the bounded strong-approximation class-count construction.\\[5pt]
+\code{grh_order_tests_2026-11-27} & Norm power tests and one subgroup exclusion
+replacing primitive labels, with elementary counting and all full-order consumers
+retained.\\[5pt]
+\code{newton_torsion_simplification} & One-shell Newton divided differences,
+weighted Gauss valuations and harmonic averaging for a common primitive order.\\[5pt]
+\code{orbital_theta_exchange} & Normalized orbital sections, algebraic twisted
+coinvariants and canonical matching instead of representative choices and
+extended finite sums.\\[5pt]
+\code{proof_simplifications} & Large-sieve or Fourier auxiliary-prime selection,
+far-cutoff Perron, and direct spanning with stronger missing-dimension control.\\[5pt]
+\code{rh-simplifications} & Direct spectral rank recurrence, simultaneous torsion
+interpolation, quadratic-large-sieve selection and endpoint assembly.\\[5pt]
+\code{rh_sparse_theta_proof} & Sparse/dyadic cutoffs, reciprocal-cutoff convexity,
+local-average arithmetic criteria and Gaussian-tail twist selection.\\[5pt]
+\code{rh_two_order_tests_proposal} & Two surviving order components, weaker tame
+order certificates, exact cyclic counting and improved projector complement loss.\\[5pt]
+\code{robust_theta_labels} & Three power tests, robust labels and their
+prime-power/Galois transfer, replacing analytic totient estimates.\\[5pt]
+\code{shorter-theta-lift-proof} & Elementary smooth character blocks or the
+quadratic large sieve, direct spanning, fixed-modulus far-cutoff PNT and interpolation.\\[5pt]
+\code{signed_theta_gain_simplification} & Signed product-formula normalization,
+separation of divisibility loss and colength, and smaller explicit global loss.\\[5pt]
+\code{theta-lift-simplifications} & Integral flag-row determinants and compressed
+lifts, denser robust labels, and an explicit paraboloid/digit place construction.\\
+\end{longtable}
+\normalsize
+
+Their stated future directions were also treated as exclusions. These include
+joint rank--height optimization, weaker orbital estimates, charging index by new
+rank, exterior-power determinant arguments avoiding completion, direct perfect
+pairings on small-defect integral spaces, finite-scale/Ehrhart packing, full
+Smith profiles, root-by-root multi-block shifts, and sharper local weighted
+losses. This report does not offer one of those open directions as its result.
+
+The nearest overlap is the CM-norm proposal. Its report explicitly retains the
+formal-group normal form while changing the cancelling product
+(\code{report.tex}, lines 194--195 in that directory). Our replacement removes
+the normal-form dependency while leaving that improved cancellation available.
+The other occurrence of Frobenius in the discrete/edge Hecke proposals concerns
+residue-representation packing, not the formal-group exponent. The two uses must
+not be conflated merely because both involve characteristic \(p\).
+
+The novelty claim is relative to this repository's proposal corpus. Nilpotent
+Artin--Schreier inversion and the Frobenius pairing identity are elementary
+algebra; no historical priority claim is made for them.
+
+\section{Failure modes that the replacement must avoid}
+\label{app:failures}
+
+\sectionlead{A gradient alone does not prove integrality.}
+In characteristic \(p\), \(\dd(z^p)=0\), although \(z^p\ne0\) in a large
+enough jet algebra. More concretely, take \(p=3\), \(\pi=3\), and
+\(c=1/\sqrt3\) in \(\mathbb C_3\). Then
+\(v(c\pi)=1/2=1/(p-1)\), but the coefficient of \(z^3\) in
+\(\exp(cz^3)\) is \(c\), which is nonintegral. Thus the null-moment
+certificate cannot be replaced by the derivative certificate.
+
+\sectionlead{The ramified zero-gap moment is indispensable.}
+For \(p=3\) and \(B=2\), take \(L=z\). Then \(Y=z\) in the jet algebra,
+and \(Y^2-L^2/2=z^2/2\ne0\), while every positive-gap moment vanishes by
+degree. Omitting \(M_0\) would make the ramified statement false.
+
+\sectionlead{Differentiation needs one more degree of input.}
+In characteristic three, \(z^4=0\) in \(\JJ_3\), while its derivative
+computed before truncation is \(z^3\ne0\) in \(\JJ_3\). The legitimate map
+is from input precision \(D+1\) to derivative precision \(D\).
+
+\sectionlead{Weights must be fixed by Frobenius.}
+In \(k=\mathbb F_3[\epsilon]/\epsilon^2\), take weight \(w=1+\epsilon\)
+and \(L=z\). The pairing with indices \(1,2\) is
+\((1+\epsilon)z^{12}\), but the cube of the gap-one moment is \(z^{12}\).
+The natural weights in the source satisfy the required condition; an arbitrary
+weighted generalization would not.
+
+\sectionlead{Zero constant terms are a real hypothesis.}
+Frobenius is not nilpotent on constants. The finite resolvent formula and the
+moment degree cutoff rely on \(L_i\) and every substituted variable lying in
+the augmentation ideal. This requirement cannot be dropped during transport.
+
+\sectionlead{An unrelated determinant shortcut also needs more input.}
+One tempting global shortcut is to choose a different twist for each eigenline
+and multiply the best local diagonal gains. Separate integral lattices do not
+justify this. For example, over \(\mathbb Q_p\), set
+\[
+ U_0=\begin{pmatrix}p&1\\1&p\end{pmatrix},\quad
+ H_1=\operatorname{diag}(p,1),\quad H_2=\operatorname{diag}(1,p),\quad
+ G_1=\operatorname{diag}(1,0),\quad G_2=\operatorname{diag}(0,1).
+\]
+The maps \(G_1H_1^{-1}U_0\) and \(G_2H_2^{-1}U_0\) preserve respectively
+\(\langle e_1,pe_2\rangle\) and \(\langle pe_1,e_2\rangle\), with selected
+row multipliers equal to one. Nevertheless
+\[
+ \frac{\det U_0}{(H_1)_{11}(H_2)_{22}}=\frac{p^2-1}{p^2}
+\]
+is not integral. A common integral model would be additional mathematical input.
+This route is therefore not offered as a proved simplification of the source's
+twisted-lattice comparison.
+
+\section{Source references and reproducibility}
+\label{app:sources}
+
+All repository links below are pinned to
+\code{9050b04000647d588d0c78d945180abcd3b0bcf7}. References identify the
+source facts being reused; the new algebraic arguments are proved in this report.
+Exact file hashes are in \code{audit/source_manifest.json}.
+
+\begin{description}[leftmargin=2.6em,style=nextline]
+\item[S1]\label{src:1}
+\sourcelink{Lean/grh/src/Main.lean}{Exported theorems, \code{Main.lean}},
+\sourcelink{Lean/grh/src/Statements.lean}{\code{Statements.lean}}, and
+\sourcelink{Lean/grh/src/New/Main.lean}{the functional-equation bridge}.
+\item[S2]\label{src:2}
+\sourcelink{docs/guide/theta_lifts_and_dirichlet_zeros.tex}{Human-readable guide,
+\code{theta_lifts_and_dirichlet_zeros.tex}}. In particular, the prime-remainder
+definition, three volume estimates, local prime-power calculation, sharpness,
+and final comparison sections.
+\item[S3]\label{src:3}
+\sourcelink{Lean/grh/src/New/Reduction/OneSidedBound.lean}{\code{New/Reduction/OneSidedBound.lean}}:
+\code{eventually_primeRemainder_le_rpow} and \code{grh}.
+\item[S4]\label{src:4}
+\sourcelink{Lean/grh/src/New/Reduction/MainInequality.lean}{\code{New/Reduction/MainInequality.lean}}:
+\code{star_inequality}, including the definitions of the size and index allowances.
+\item[S5]\label{src:5}
+\sourcelink{Lean/grh/src/New/Derivatives/FormalGroup/Exponent.lean}{\code{New/Derivatives/FormalGroup/Exponent.lean}}:
+raw factorization at line 240; inert/ramified raw congruences at 420/446;
+reduction map at 495; characteristic instance at 510; unit coefficient at 566;
+double-series construction at 624, 663 and 702.
+\item[S6]\label{src:6}
+\sourcelink{Lean/grh/src/New/Derivatives/FormalGroup/ThetaProducts.lean}{\code{New/Derivatives/FormalGroup/ThetaProducts.lean}}:
+integrality radius at 114; resolution moment congruence at 244; old sum-to-normal-form
+bridge at 301; exact raw finite-product factorization at 405; old constructor at 443.
+\item[S7]\label{src:7}
+\sourcelink{Lean/grh/src/New/Derivatives/Divisibility/NormalForm.lean}{\code{New/Derivatives/Divisibility/NormalForm.lean}}:
+\code{couplingSum} at 43; \code{HasNormalForm} at 50; generic finite exponential
+coefficient bound at 131; null-substitution consumer at 262; derivative-support
+lemmas at 355--417.
+\item[S8]\label{src:8}
+\sourcelink{Lean/grh/src/Lib/General/Algebra/SeriesCongruences.lean}{\code{Lib/General/Algebra/SeriesCongruences.lean}}:
+specialized prime-power-series section, lines 36--234, and generic congruence helpers.
+\item[S9]\label{src:9}
+\sourcelink{Lean/grh/src/Lib/CM/FormalGroup/FormalParameter.lean}{\code{Lib/CM/FormalGroup/FormalParameter.lean}}:
+\code{exists_scaled_formalParam}, line 224. The coefficient-description consumer
+that must be retained is in
+\sourcelink{Lean/grh/src/New/Derivatives/Sharpness/OneCurve.lean}{\code{Sharpness/OneCurve.lean}},
+line 298.
+\item[S10]\label{src:10}
+\sourcelink{Lean/grh/src/New/Derivatives/Divisibility/Count.lean}{\code{New/Derivatives/Divisibility/Count.lean}}:
+\code{norm_jet_minorProd_le_of_isChargeExponent}, line 585, especially its Step~2
+call at line 620 and the wrappers at 662 and 707.
+\item[S11]\label{src:11}
+\sourcelink{Lean/grh/src/New/Derivatives/Sharpness/Couplings.lean}{\code{New/Derivatives/Sharpness/Couplings.lean}}:
+generic logarithmic derivative and recurrence at 108--165; coupling lowest-term
+lemma at 201; generic exponent theorem at 328; coefficient norm identity at 358.
+\item[S12]\label{src:12}
+\sourcelink{Lean/grh/src/New/Derivatives/Vacuum/Divisibility.lean}{\code{New/Derivatives/Vacuum/Divisibility.lean}},
+especially its constructor at 170, and
+\sourcelink{Lean/grh/src/New/Derivatives/Sharpness/Cases.lean}{\code{New/Derivatives/Sharpness/Cases.lean}},
+especially \code{exists_hasNormalForm_resolutionForms} at 245.
+\item[S13]\label{src:13}
+\href{\repo/tree/\commit/Analysis/GeneralizedRiemannHypothesis/docs/proposals}{All 18 existing proposal directories}.
+The manifest includes all 64 textual files used in the exclusion review.
+\end{description}
+
+\sectionlead{Reproduce the artifacts.}
+From the archive root, run
+\begin{quote}\small\ttfamily
+python3 checks/check\_finite\_jets.py\par
+python3 checks/verify\_source\_snapshot.py /path/to/ProveIt\par
+latexmk -pdf -interaction=nonstopmode grh\_frobenius\_jet\_simplification.tex
+\end{quote}
+The formal subdirectory contains a portable lake project and its own setup
+instructions. A clean formal run may need to obtain the pinned Lean toolchain,
+mathlib and its cache. The supplied validation log records the actual successful
+run against an existing cache at those exact versions. The report PDF is already
+compiled, so reading it requires no build environment.
+
+\end{document}

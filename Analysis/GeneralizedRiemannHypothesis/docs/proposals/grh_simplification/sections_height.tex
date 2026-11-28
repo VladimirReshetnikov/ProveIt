@@ -1,0 +1,283 @@
+\section{Proposal I: carry the height that the consumer uses}
+
+\subsection{The current interface is stronger than the final consumer needs}
+
+The readable proof defines
+\begin{equation}
+ \operatorname{HasAbsUpToNormPower}(c,f)
+ \iff
+ \exists C\in\R,\ e\in\Z,\quad
+ |c(\vartheta)|^2=C\,N(Q_\vartheta)^e f(\vartheta)^2
+ \quad\text{for every }\vartheta.
+\end{equation}
+Here \(c\) is an actual complex scalar used in exchange or integrality
+identities. The function \(f\) records explicit products of Hecke-value ratios.
+The definition permits \(C=0\), including a scalar family that vanishes
+identically. See
+\src{New/Determinant/Chain/Moduli}{\code{Moduli.lean}}.
+
+The proof propagates this description through products, inverses, turns,
+triangular chains, and auxiliary forms. It then extracts a global integer
+exponent, proves positivity and trivial-twist normalization of the ratio
+products, and only at the end applies a height bound.
+The final lower-volume argument consumes neither the exponent nor the
+explicit list of ratios. It consumes a bound on a family of positive-real
+moduli embedded into \(\C\).
+
+This suggests changing the interface at the point where each local
+arithmetic identity is first established. The local identity still proves
+the cost of one crossing; the global induction carries only additive costs.
+The complex scalar itself remains available in all exact map identities.
+
+\subsection{The prior compact implementation and the additional contribution}
+
+The compact edition already implements the essential bookkeeping idea in
+\compact{New/Exchange/CostOfSquares}{\code{CostOfSquares.lean}}:
+its \code{CostsSquares n c} bounds the height of
+\(\norm{c(\theta_\iota)/c(1)}^{-2}\) by \(2ntx^{999}\).
+The compact
+\compact{New/Exchange/TriangleNorms}{\code{TriangleNorms.lean}} and
+\compact{New/Rows/RowVolume}{\code{RowVolume.lean}} propagate these costs.
+The compact triangle already uses an existential endomorphism, a mixed
+ambient Gram identity, and its determinant formula, rather than exposing
+a named global operator product. That part of the architecture also
+receives explicit credit here.
+The independently pinned compact revision used here is
+\code{72fead102f663d5c7a407964a13dc0cf9d977207}.
+
+The proposed migration adapts both of these compact-source ideas.
+The additions and source-specific work in this report are:
+\begin{enumerate}
+\item an exact, proved reverse-power rule for its actual \code{HeightLe},
+so squared estimates recover the current unsquared endpoint with no loss;
+\item arbitrary additive real budgets, with the exact double sum over
+crossings, so later improvements to individual
+local costs are not forced through a single uniform integer square count;
+\item a guarded certificate calculus and an explicit migration of both
+readable consumers, preserving their nonvanishing, boundary normalization,
+and main-term contracts.
+\end{enumerate}
+These are not among the 18 existing proposal bundles audited in
+Section~\ref{sec:exclusion}. This is a nonduplication claim about the specified
+corpus, not a claim of priority for height homogeneity in general or
+for the compact determinant architecture.
+
+\section{Exact power descent for the actual height}
+\label{sec:root}
+
+\subsection{Definition and the missing reverse direction}
+
+The index \(\iota\) consists of a rational prime \(p_\iota\) and a field
+isomorphism from \(\C\) to the chosen \(p_\iota\)-adic algebraic closure.
+The source's definition
+\src{New/Reduction/Lattices/Heights}{\code{HeightLe}} says that
+\(\HLe(C,y)\) holds if there are
+\[
+ H_0\in\C^\times,\qquad \alpha\in\R,\qquad
+ h:\N\longrightarrow\R_{\ge0}
+\]
+such that
+\begin{align}
+ |\sigma(H_0)|&\le e^\alpha
+       &&\text{for every }\sigma\in\operatorname{Aut}(\C), \label{eq:arch}\\
+ |\iota(H_0y_\iota)|_{p_\iota}&\le
+       p_\iota^{h(p_\iota)}
+       &&\text{for every }\iota, \label{eq:local}\\
+ \alpha+\sum_{p\in T}h(p)\log p&\le C
+       &&\text{for every finite set \(T\) of primes}. \label{eq:budget}
+\end{align}
+There is no integrality condition on \(H_0\), no fixed field containing it,
+and no finite-support condition on \(h\). Both \(\alpha\) and \(C\) may be
+negative. These details make the following rule available without any
+rounding or extension-degree penalty.
+
+\begin{theorem}[Exact positive-power homogeneity]
+\label{thm:root}
+For every integer \(n>0\), every \(C\in\R\), and every family
+\(y_\iota\in\C\),
+\[
+ \HLe(C,y^n)\quad\Longleftrightarrow\quad
+ \HLe(C/n,y).
+\]
+Equivalently, \(\HLe(nC,y^n)\Longleftrightarrow\HLe(C,y)\).
+No nonvanishing assumption on \(y_\iota\) is necessary.
+\end{theorem}
+
+\begin{proof}
+The forward-power implication is the existing \code{HeightLe.pow}.
+For the other direction, let \(H_0,\alpha,h\) witness \(\HLe(C,y^n)\).
+Choose \emph{one} \(G\in\C\) with \(G^n=H_0\); then \(G\ne0\).
+Use the witness
+\[
+ G,\qquad \alpha/n,\qquad p\longmapsto h(p)/n.
+\]
+For every complex automorphism,
+\[
+ |\sigma(G)|^n=|\sigma(H_0)|
+       \le e^\alpha=(e^{\alpha/n})^n.
+\]
+For every local isomorphism,
+\[
+ |\iota(Gy_\iota)|_{p_\iota}^{\,n}
+ =|\iota(H_0y_\iota^n)|_{p_\iota}
+ \le p_\iota^{h(p_\iota)}
+ =\bigl(p_\iota^{h(p_\iota)/n}\bigr)^n.
+\]
+The map \(u\mapsto u^n\) is increasing on nonnegative real numbers and
+injective there, so both desired norm inequalities follow. The exponents
+remain nonnegative. Finally,
+\[
+ \alpha/n+\sum_{p\in T}(h(p)/n)\log p
+ =\frac{\alpha+\sum_{p\in T}h(p)\log p}{n}\le C/n.
+\]
+This uses neither logarithms of \(y_\iota\) nor a different root at each prime.
+\end{proof}
+
+In particular,
+\begin{equation}
+ \boxed{\ \HLe(2B,y^2)\ \Longleftrightarrow\ \HLe(B,y).\ }
+ \label{eq:square}
+\end{equation}
+It is this exact equivalence that makes square-cost propagation compatible
+with the readable proof's existing unsquared determinant bound.
+
+\subsection{What has been formalized}
+
+\code{lean/HeightPower.lean} reproduces the common-multiplier definition,
+abstracting only the dependent local normed fields and their homomorphisms
+from \(\C\). Setting the index to \code{New.PrimePadicIso}, the local field
+to its \code{PadicAlgCl}, and the map to \code{iso.toRingHom} gives the
+source's definition. The proof constructs \(G\) by complex exponentiation
+and proves the algebraic identity \(G^n=H_0\) before applying any
+automorphism. It does not assume that arbitrary complex automorphisms
+commute with a chosen branch of analytic exponentiation.
+
+The checked file includes \code{pow}, \code{of_pow}, \code{pow_iff},
+\code{scaled_pow_iff}, and \code{sq_iff}. The archive also supplies
+\code{integration/HeightPowerIntegration.lean}, which uses the original
+source names. Its full-project import has not been compiled here;
+this distinction is recorded in the file itself.
+
+\section{A scalar-cost calculus with the necessary guards}
+\label{sec:cost}
+
+\subsection{Definition}
+
+Let \(\theta:\iota\mapsto\theta_\iota\) be one family satisfying the readable
+proof's \code{HasSmallRatios}. For a scalar family \(c(\vartheta)\), define
+the nonnegative real modulus family, embedded into \(\C\), by
+\[
+ r_{c,\theta}(\iota)
+   =\bigl(\norm{c(1)/c(\theta_\iota)}:\C\bigr).
+\]
+Equivalently, its square is
+\((\norm{c(\theta_\iota)/c(1)}^2:\C)^{-1}\).
+The algebraic equality also respects Lean's totalized division convention.
+Its interpretation as a ratio of nonzero volumes will require explicit
+nonvanishing later.
+
+\begin{definition}
+For \(B\in\R\), define the guarded squared-cost assertion
+\begin{equation}
+ \SC_B(c):\quad
+ c(1)\ne0\ \Longrightarrow\
+ \forall\theta,\ 
+ \operatorname{HasSmallRatios}(\theta)\Longrightarrow
+ \HLe(B,r_{c,\theta}^{\,2}).
+\end{equation}
+\end{definition}
+
+The guard is useful because local scalar identities may initially permit
+the zero family. It does not assert that \(c\) is nonzero. Actual
+nonvanishing is retained as a separate fact where a map or determinant
+argument needs it. An unguarded variant, as in the compact source, is also
+possible, but then its zero cases must be handled explicitly.
+
+\begin{proposition}[Additive propagation]
+If \(\SC_B(c)\) and \(\SC_{B'}(c')\), then
+\(\SC_{B+B'}(cc')\). A nonzero constant scalar has cost zero.
+Finite products therefore have the sum of the individual costs.
+\end{proposition}
+
+\begin{proof}
+If \(c(1)c'(1)\ne0\), both base values are nonzero. For the same family
+\(\theta\),
+\[
+ r_{cc',\theta}^{\,2}
+   =r_{c,\theta}^{\,2}r_{c',\theta}^{\,2}.
+\]
+Apply the existing product rule for \code{HeightLe}. Constants cancel
+from normalized ratios. Induction proves the finite-product statement.
+\end{proof}
+
+The definition allows signed real budgets. The local crossing costs below
+are positive, but the single-lift height contributions contain a negative
+main term. The implementation should not insert unnecessary
+nonnegativity assumptions into the abstract product calculus.
+
+\subsection{Local costs and conductor powers}
+
+A norm-power-only identity
+\[
+ |c(\vartheta)|^2=C\,N(Q_\vartheta)^e
+\]
+with \(c(1)\ne0\) makes its normalized squared modulus a power of
+\(N(Q_\vartheta)\). At the local index \(\iota\), the twist conductor is
+prime to \(p_\iota\). Consequently that power is a local unit and costs
+zero. The same holds for its reciprocal, proved separately.
+The source's \code{HeightLe.rpow_mul} already implements a more general
+rational-power invariance.
+
+For a ramified critical pair, the local exchange scalar has squared modulus
+equal to a fixed constant times an \(L\)-value product. The existing identity
+in \src{New/Determinant/Chain/Moduli}{\code{CriticalPair.lValueProd_mul_inv_eq}}
+expresses its normalized square as a conductor power times the square of a
+product of critical ratios. Each inverse critical ratio costs at most
+\(x_1\), and there are at most \(t\) of them. Thus one crossing contributes
+\begin{equation}
+ \SC_{\,2tx_1}(c_{\mathrm{crossing}}).
+ \label{eq:onecrossing}
+\end{equation}
+One can prove this directly from
+\code{lValueProd_eq_mul_prod_ratio_sq}, avoiding a permanent global
+\code{lRatioProd} interface. The underlying \(L\)-value identity and
+ramification hypotheses remain necessary.
+
+\subsection{Four rules that must not be silently strengthened}
+
+\paragraph{No generic inverse rule.}
+An upper bound for \(\HLe(B,y)\) does not give the same bound for
+\(\HLe(B,y^{-1})\). The use of \code{HasAbsUpToNormPower.inv} in the
+chain's turn argument concerns a norm-power-only scalar. Replace that
+particular use by its independently proved reciprocal zero-cost statement.
+Do not add an unrestricted \(\SC_B(c)\Rightarrow\SC_B(c^{-1})\).
+
+\paragraph{Modulus is not the complex scalar.}
+Equation \eqref{eq:square} produces a bound for
+\((\norm{c(1)/c(\theta_\iota)}:\C)\), not for the complex quotient
+\(c(1)/c(\theta_\iota)\).
+For example,
+\[
+ z=\frac{2+i}{2-i}
+\]
+has complex absolute value one, but nonzero opposite valuations at the
+two primes of \(\mathbb Q(i)\) above five. Replacing the actual scalar
+by its complex modulus inside an arbitrary \(p\)-adic isomorphism is
+invalid. Only the modulus families already used by the determinant and
+auxiliary-form height consumers are changed.
+
+\paragraph{Costs do not prove nonvanishing.}
+The source proves chain injectivity independently of modulus bookkeeping.
+Retain that induction. If the final Gram scalar at the trivial twist is
+zero, injectivity forces the target space to be zero. In that branch,
+choose scalar \(1\) and use the empty determinant convention. In the
+nonzero target branch, the exact Gram identity and injectivity provide
+the required nonzero scalar values.
+Auxiliary-form scalars already constructed in \(\C^\times\) should retain
+that type or the equivalent explicit hypotheses.
+
+\paragraph{One globally selected family.}
+All factors must use the same \(\theta\). The eventual regular family
+satisfies all the single-lift and small-ratio bounds simultaneously.
+Selecting a favorable twist independently for each factor would not
+justify a product height bound or the common lattice comparison.
