@@ -298,6 +298,8 @@ import GRHArticle.SingularModuli.DepthOne
 import GRHArticle.SingularModuli.DiskRootTransfer
 import GRHArticle.SingularModuli.DivisorPowerBlockCertificate
 import GRHArticle.SingularModuli.DivisorPowerPrefixCertificate
+import GRHArticle.SingularModuli.DyadicFullSupport
+import GRHArticle.SingularModuli.FactorialWindowLength
 import GRHArticle.SingularModuli.FullSupportIntervals
 import GRHArticle.SingularModuli.HasseCoefficients
 import GRHArticle.SingularModuli.HeckeChunkedPrefixCertificate
@@ -385,6 +387,7 @@ import GRHArticle.SingularModuli.ReducedForms
 import GRHArticle.SingularModuli.RootCertificates
 import GRHArticle.SingularModuli.Separated
 import GRHArticle.SingularModuli.SevenAdicCutoff
+import GRHArticle.SingularModuli.SevenAdicReciprocalWindows
 import GRHArticle.SingularModuli.SmallOrderLists
 import GRHArticle.SingularModuli.Strassmann
 import GRHArticle.SingularModuli.ThresholdDiskRoots
