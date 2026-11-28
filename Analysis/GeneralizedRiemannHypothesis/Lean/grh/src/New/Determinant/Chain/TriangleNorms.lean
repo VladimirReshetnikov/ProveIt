@@ -379,7 +379,7 @@ lemma IsTriangle.inner_weightedChain_succ [∀ (t : I) (n : ℕ), NeZero (w t n)
   have chain_x' : X' = (w t (n + 1) / (w t 1 * w t 0 * conj (β t)) : ℂ) • d t i n X := by
     rw [hX, ← h_commutes, ← hx']
   have inner_chain_x' : ⟪X', Y⟫ = w t (n + 1) / (w t 1 * w t 0 * β t) * ⟪d t i n X, Y⟫ := by
-    simp [chain_x', mul_comm]
+    simp [chain_x', inner_smul_left, mul_comm]
   have hw (k : ℕ) : (w t k : ℂ) ≠ 0 := NeZero.ne _
   calc
     ⟪X, weightedChain w a t i (n + 1) (j i z)⟫ = w t n * (κ t * ⟪d t i n X, Y⟫) := by
