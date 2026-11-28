@@ -1,0 +1,125 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.95in,headheight=14pt]{geometry}
+\usepackage{booktabs,longtable,tabularx,array,enumitem,xcolor,fancyhdr}
+\usepackage{listings,needspace}
+\usepackage[colorlinks=true,linkcolor=teal!65!black,urlcolor=teal!65!black,citecolor=teal!65!black]{hyperref}
+\usepackage{xurl}
+\definecolor{ink}{HTML}{193348}
+\definecolor{accent}{HTML}{007879}
+\definecolor{pale}{HTML}{EDF5F5}
+\definecolor{muted}{HTML}{516575}
+\hypersetup{pdftitle={Two further simplifications of the GRH development},pdfauthor={OpenAI},pdfsubject={Finite trace recovery and an unnormalized real-place determinant integral}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textsf{\color{muted}GRH proof simplification}}
+\fancyhead[R]{\small\textsf{\color{muted}Finite traces and a direct integral}}
+\fancyfoot[C]{\small\thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=1.7em}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Id}{I}
+\newcommand{\dd}{\,d}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\src}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/f2d6ab6c4b70ea73b2deac9e33ad966bc92ea36f/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/#1.lean}{\texttt{#2}}}
+\newcommand{\proposal}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/tree/f2d6ab6c4b70ea73b2deac9e33ad966bc92ea36f/Analysis/GeneralizedRiemannHypothesis/docs/proposals/#1}{#2}}
+\newcommand{\lateproposal}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/tree/51aa1e3b5807c635a6fb6244a9ce4678b9106bc6/Analysis/GeneralizedRiemannHypothesis/docs/proposals/#1}{#2}}
+\newcommand{\code}[1]{\ifmmode\text{\ttfamily\detokenize{#1}}\else\nolinkurl{#1}\fi}
+\newcommand{\keyresult}[1]{\par\smallskip\noindent\colorbox{pale}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{#1}}\par\smallskip}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{muted!30},backgroundcolor=\color{pale!40},showstringspaces=false}
+\AddToHook{cmd/section/before}{\Needspace{6\baselineskip}}
+\AddToHook{cmd/subsection/before}{\Needspace{4\baselineskip}}
+\clubpenalty=7000\widowpenalty=7000
+\raggedbottom
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+{\small\sffamily\bfseries\color{accent}RESEARCH PROPOSAL\hfill 27 NOVEMBER 2026\par}
+\vspace{0.65in}
+{\Huge\bfseries\color{ink}Two further simplifications\\[7pt]of the GRH development\par}
+\vspace{0.25in}
+{\Large\color{muted}Finite trace recovery and a direct real-place determinant integral\par}
+\vspace{0.3in}
+\textcolor{accent}{\rule{\linewidth}{1pt}}\par
+\vspace{0.15in}
+\textbf{Recommendation.}
+First replace the normalized negative-basis calculation in the real-place majorant by an
+unnormalized Gram matrix and a bordered determinant integral. A second, independent
+replacement recovers the auxiliary-place trace from finitely many one-index moments.
+Both preserve the mathematical output needed by the surrounding proof.
+
+\textbf{Distinctness.}
+The mechanisms were compared with all 28 proposal bundles at the source pin and three
+later additions: 31 distinct bundles across the two snapshots. The closest existing
+proposals act on different source contracts. No historical priority claim is made.
+
+\textbf{Evidence.}
+The report supplies full mathematical proofs, exact source interfaces, an exclusion audit,
+reproducible exact-arithmetic checks, and separately identified Lean support files.
+The proposed replacements have not been integrated into a rebuilt GRH package.
+\vfill
+{\small
+\textbf{Pinned source}\\
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/f2d6ab6c4b70ea73b2deac9e33ad966bc92ea36f}{\texttt{f2d6ab6c4b70ea73b2deac9e33ad966bc92ea36f}}\\
+\code{Analysis/GeneralizedRiemannHypothesis/Lean/grh}\\
+Lean 4.35.0; Mathlib \texttt{56a005855ea17e0b0958f73ec801ae140b0a1679}.
+}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_scope}
+\input{sections/02_trace}
+\input{sections/03_hua}
+\input{sections/04_implementation}
+\input{sections/05_audit}
+\input{sections/06_validation}
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{source}
+Vladimir Reshetnikov, \emph{ProveIt}, pinned revision
+\texttt{f2d6ab6c4b70ea73b2deac9e33ad966bc92ea36f},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/f2d6ab6c4b70ea73b2deac9e33ad966bc92ea36f/Analysis/GeneralizedRiemannHypothesis}{GeneralizedRiemannHypothesis}.
+Source attribution identifies the proof as Levent Alp\"oge's, with Claude.
+\bibitem{guide}
+\emph{How theta lifts locate the zeros of Dirichlet \(L\)-functions},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/f2d6ab6c4b70ea73b2deac9e33ad966bc92ea36f/Analysis/GeneralizedRiemannHypothesis/docs/guide}{the supplied human-readable guide},
+and \href{https://github.com/VladimirReshetnikov/ProveIt/blob/f2d6ab6c4b70ea73b2deac9e33ad966bc92ea36f/Analysis/GeneralizedRiemannHypothesis/Lean/grh/GUIDE.md}{the source reading guide}.
+\bibitem{proposals}
+\emph{Existing simplification proposals},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/f2d6ab6c4b70ea73b2deac9e33ad966bc92ea36f/Analysis/GeneralizedRiemannHypothesis/docs/proposals}{28-bundle corpus at the pinned revision}.
+The archive contains a file-level manifest and a bundle-level comparison matrix.
+\bibitem{mathlib}
+The Mathlib community,
+\href{https://github.com/leanprover-community/mathlib4/tree/56a005855ea17e0b0958f73ec801ae140b0a1679}{Mathlib at the pinned revision}.
+Relevant modules include \code{Analysis.InnerProductSpace.Spectrum},
+\code{LinearAlgebra.Eigenspace.Charpoly}, \code{LinearAlgebra.Lagrange},
+and \code{LinearAlgebra.Trace}.
+\bibitem{neretin}
+Yurii A.~Neretin, \emph{Matrix beta-integrals: an overview},
+\href{https://arxiv.org/abs/1411.2110}{arXiv:1411.2110}.
+Background on the classical matrix beta-integral family; the bordered identity used
+here is proved directly in Section~\ref{sec:hua}, including its normalization.
+\end{thebibliography}
+\end{document}

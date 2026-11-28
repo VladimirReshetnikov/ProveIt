@@ -1,0 +1,139 @@
+{
+  "status": "PASS",
+  "scope": "exact regression checks, not a Lean build or a proof by sampling",
+  "sympy_version": "1.14.0",
+  "seed": 20261128,
+  "bordered_determinant_cases": 36,
+  "dimensions": "1 <= k <= 3; 0 <= i <= 3; three trials per pair",
+  "identities_per_case": [
+    "block congruence",
+    "translation centre",
+    "unit congruence determinant",
+    "bordered Schur identity",
+    "detH=h*detS",
+    "detG=h/a",
+    "G inverse",
+    "direct adapter to existing Hua bound"
+  ],
+  "real_jacobian_cases": [
+    {
+      "k": 1,
+      "i": 1,
+      "real_dimension": 2
+    },
+    {
+      "k": 1,
+      "i": 2,
+      "real_dimension": 4
+    },
+    {
+      "k": 1,
+      "i": 3,
+      "real_dimension": 6
+    },
+    {
+      "k": 2,
+      "i": 1,
+      "real_dimension": 4
+    },
+    {
+      "k": 2,
+      "i": 2,
+      "real_dimension": 8
+    },
+    {
+      "k": 2,
+      "i": 3,
+      "real_dimension": 12
+    },
+    {
+      "k": 3,
+      "i": 1,
+      "real_dimension": 6
+    },
+    {
+      "k": 3,
+      "i": 2,
+      "real_dimension": 12
+    },
+    {
+      "k": 3,
+      "i": 3,
+      "real_dimension": 18
+    }
+  ],
+  "symbolic_cancellations": {
+    "complex_change_of_variables": "detG^(-i) detS^k",
+    "bordered_integral_coefficient": "detH^(-i) a^(-k)",
+    "existing_Hua_adapter_coefficient": "detH^(-i) a^(-k)",
+    "source_majorant_constants": "identical"
+  },
+  "Hua_constants": [
+    {
+      "k": 1,
+      "i": 0,
+      "C": "1"
+    },
+    {
+      "k": 1,
+      "i": 1,
+      "C": "pi"
+    },
+    {
+      "k": 1,
+      "i": 2,
+      "C": "pi**2/2"
+    },
+    {
+      "k": 1,
+      "i": 3,
+      "C": "pi**3/6"
+    },
+    {
+      "k": 2,
+      "i": 0,
+      "C": "1"
+    },
+    {
+      "k": 2,
+      "i": 1,
+      "C": "pi**2/2"
+    },
+    {
+      "k": 2,
+      "i": 2,
+      "C": "pi**4/12"
+    },
+    {
+      "k": 2,
+      "i": 3,
+      "C": "pi**6/144"
+    },
+    {
+      "k": 3,
+      "i": 0,
+      "C": "1"
+    },
+    {
+      "k": 3,
+      "i": 1,
+      "C": "pi**3/6"
+    },
+    {
+      "k": 3,
+      "i": 2,
+      "C": "pi**6/144"
+    },
+    {
+      "k": 3,
+      "i": 3,
+      "C": "pi**9/8640"
+    }
+  ],
+  "scalar_example": {
+    "H": "[[3,1+I],[1-I,2]]",
+    "v": "1+2I",
+    "determinant": "14 + 2*abs(u-(3+I)/2)^2",
+    "integral": "pi/28"
+  }
+}
