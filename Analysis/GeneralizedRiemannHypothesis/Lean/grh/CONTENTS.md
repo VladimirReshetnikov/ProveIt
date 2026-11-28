@@ -775,7 +775,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 
 ### GLn: Polynomial representations of GL(n)
 
-- `Lib/GLn/Branching/NormBound` (488): Branching from GL(n+1) to GL(n) × GL(1): the branching vector and the norm bound
+- `Lib/GLn/Branching/NormBound` (322): Branching from GL(n+1) to GL(n) × GL(1): the branching vector and the norm bound
 - `Lib/GLn/Branching/IntegralMap` (328): Branching from GL(n+1) to GL(n) × GL(1): integral equivariant branching maps
 - `Lib/GLn/Dual` (726): Duality of integral GL(n) representations, mixed weights and the Cartan product
 

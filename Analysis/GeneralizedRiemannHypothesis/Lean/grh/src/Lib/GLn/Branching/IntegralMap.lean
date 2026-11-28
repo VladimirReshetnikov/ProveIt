@@ -513,7 +513,7 @@ lemma _root_.New.exists_branching_matrix (κ₀ : Φ → ℕ → ℕ) (q : ℕ) 
   · have hc_le : (c : ℝ) ≤ ((L : ℝ) ^ L) ^ 3 := by exact_mod_cast c_le L hL
     have hc_nonneg : (0 : ℝ) ≤ c := by exact_mod_cast c_pos.le
     calc weylNormSq (B.map (Int.cast : ℤ → ℂ) *ᵥ ξ)
-      _ ≤ (c : ℝ) ^ 2 * weylNormSq ξ := weylNormSq_mulVec_le_of_equivariant ι hκ₀ B_top B_block ξ
+      _ ≤ (c : ℝ) ^ 2 * weylNormSq ξ := weylNormSq_mulVec_le_of_equivariant ι B_top B_block ξ
       _ ≤ (((L : ℝ) ^ L) ^ 3) ^ 2 * weylNormSq ξ := by
         gcongr
         exact weylNormSq_nonneg ξ
