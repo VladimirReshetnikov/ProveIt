@@ -22,7 +22,8 @@ private theorem box_eq_of_endpoints {A B : RationalComplexBox}
   subst r₀' r₁' i₀' i₁'
   rfl
 
-private def rootBoxes55 : Fin 4 → RationalComplexBox :=
+/-- Exact rational boxes for the four CM representatives of discriminant `-55`. -/
+def quartic55RootBoxes : Fin 4 → RationalComplexBox :=
   ![gridBox (-1313668622064863834122912324571545414790411209184327259214070602330)
       (-1313668622064863834122912324571545407989317133286915698915598584453)
       (-172572534357603748248) 172572534357603748248,
@@ -38,16 +39,17 @@ private def rootBoxes55 : Fin 4 → RationalComplexBox :=
 
 set_option maxRecDepth 150000 in
 set_option maxHeartbeats 0 in
-private theorem rootBoxes55_eq (i : Fin 4) :
-    modularInvariantBox (quartic55QBox i) = rootBoxes55 i := by
+theorem quartic55_rootBoxes_eq (i : Fin 4) :
+    modularInvariantBox (quartic55QBox i) = quartic55RootBoxes i := by
   fin_cases i <;> apply box_eq_of_endpoints <;> decide +kernel
 
 theorem quartic55_analyticCoefficient_isolates (n : Fin 5) :
     (quartic55AnalyticCoefficientBox n).re.IsolatesInteger (quartic55PrintedCoefficient n) := by
-  simp only [quartic55AnalyticCoefficientBox, rootBoxes55_eq]
+  simp only [quartic55AnalyticCoefficientBox, quartic55_rootBoxes_eq]
   fin_cases n <;> decide +kernel
 
-private def rootBoxes68 : Fin 4 → RationalComplexBox :=
+/-- Exact rational boxes for the four CM representatives of discriminant `-68`. -/
+def quartic68RootBoxes : Fin 4 → RationalComplexBox :=
   ![gridBox 17821146558257236317285989152242239035103208060414156709903706998797
       17821146558257236317285989152242256014731416757165863841572173164089
       (-31759326337667175866788) 31759326337667175866788,
@@ -63,13 +65,13 @@ private def rootBoxes68 : Fin 4 → RationalComplexBox :=
 
 set_option maxRecDepth 150000 in
 set_option maxHeartbeats 0 in
-private theorem rootBoxes68_eq (i : Fin 4) :
-    modularInvariantBox (quartic68QBox i) = rootBoxes68 i := by
+theorem quartic68_rootBoxes_eq (i : Fin 4) :
+    modularInvariantBox (quartic68QBox i) = quartic68RootBoxes i := by
   fin_cases i <;> apply box_eq_of_endpoints <;> decide +kernel
 
 theorem quartic68_analyticCoefficient_isolates (n : Fin 5) :
     (quartic68AnalyticCoefficientBox n).re.IsolatesInteger (quartic68PrintedCoefficient n) := by
-  simp only [quartic68AnalyticCoefficientBox, rootBoxes68_eq]
+  simp only [quartic68AnalyticCoefficientBox, quartic68_rootBoxes_eq]
   fin_cases n <;> decide +kernel
 
 end GRHArticle.SingularModuli
