@@ -428,6 +428,24 @@ lemma IsSpread.exists_codim_le (h_spread : IsSpread B (3 / 2 * ε)) (F : Submodu
   rw [h_factor]
   linarith
 
+/-- If inserting an index multiplies a value above the threshold by at most `q ≥ 0`, after
+at most `n` insertions the value is at most the threshold or `q ^ n * initial`. -/
+lemma exists_finset_card_le_of_contraction {ι R : Type*} [DecidableEq ι]
+    [Semiring R] [LinearOrder R] [IsOrderedRing R] (f : Finset ι → R)
+    (threshold : R) {initial q : R} (h₀ : f ∅ ≤ initial) (hq : 0 ≤ q)
+    (step : ∀ t, threshold < f t → ∃ i, f (insert i t) ≤ q * f t) (n : ℕ) :
+    ∃ t : Finset ι, #t ≤ n ∧ (f t ≤ threshold ∨ f t ≤ q ^ n * initial) := by
+  induction n with
+  | zero => exact ⟨∅, le_rfl, Or.inr (by simpa using h₀)⟩
+  | succ n ih =>
+    obtain ⟨t, ht, h⟩ := ih
+    by_cases hstop : f t ≤ threshold
+    · exact ⟨t, ht.trans n.le_succ, Or.inl hstop⟩
+    obtain ⟨i, hi⟩ := step t (lt_of_not_ge hstop)
+    refine ⟨insert i t, (card_insert_le i t).trans (Nat.succ_le_succ ht), Or.inr ?_⟩
+    simpa only [pow_succ', mul_assoc] using
+      hi.trans (mul_le_mul_of_nonneg_left (h.resolve_left hstop) hq)
+
 /-- The greedy choice after `l` steps. Let `W` be nonzero and let the maps `B s : V → W` spread with
 the error `3 ε / 2`. Then the span of the images of at most `l` of them misses at most a share
 `max (16 ε) (exp (-l rate))` of the dimensions of `W`, where `rate = 2 dim V / (5 dim W)`: each step
@@ -437,40 +455,23 @@ lemma IsSpread.exists_codim_le_max (h_spread : IsSpread B (3 / 2 * ε)) (hW : 0 
     ∃ t : Finset Θ, #t ≤ l ∧ (finrank ℂ W - finrank ℂ ↥(⨆ s ∈ t, range (B s)) : ℝ) ≤
       max (16 * ε) (exp (-(l * (2 * finrank ℂ V / (5 * finrank ℂ W))))) * finrank ℂ W := by
   classical
-  have hW' : (0 : ℝ) < finrank ℂ W := by exact_mod_cast hW
-  set rate : ℝ := 2 * finrank ℂ V / (5 * finrank ℂ W)
+  let rate : ℝ := 2 * finrank ℂ V / (5 * finrank ℂ W)
   let codim (t : Finset Θ) : ℝ := finrank ℂ W - finrank ℂ ↥(⨆ s ∈ t, range (B s))
-  change ∃ t : Finset Θ, #t ≤ l ∧ codim t ≤ max (16 * ε) (exp (-(l * rate))) * finrank ℂ W
-  induction l with
-  | zero =>
-    refine ⟨∅, le_rfl, ?_⟩
-    calc codim ∅ ≤ finrank ℂ W := sub_le_self _ (Nat.cast_nonneg _)
-      _ ≤ max (16 * ε) (exp (-((0 : ℕ) * rate))) * finrank ℂ W :=
-          le_mul_of_one_le_left hW'.le (le_max_of_le_right (by simp))
-  | succ l ih =>
-    obtain ⟨t, h_card, h_codim⟩ := ih
-    obtain h_done | h_more := le_or_gt (codim t) (16 * ε * finrank ℂ W)
-    · exact ⟨t, h_card.trans l.le_succ,
-        h_done.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hW'.le)⟩
-    obtain ⟨s, h_step⟩ := h_spread.exists_codim_le _ hW h_more
-    have h_exp : codim t ≤ exp (-(l * rate)) * finrank ℂ W := by
-      rw [max_mul_of_nonneg _ _ hW'.le, le_max_iff] at h_codim
-      exact h_codim.resolve_left h_more.not_ge
-    refine ⟨insert s t, (card_insert_le s t).trans (by omega), ?_⟩
-    have h_insert : ⨆ i ∈ insert s t, range (B i) = (⨆ i ∈ t, range (B i)) ⊔ range (B s) := by
-      rw [Finset.iSup_insert, sup_comm]
-    calc codim (insert s t)
-        ≤ (1 - rate) * codim t := by rwa [← h_insert] at h_step
-      _ ≤ exp (-rate) * (exp (-(l * rate)) * finrank ℂ W) := by
-          gcongr
-          · exact sub_nonneg.2 (by exact_mod_cast Submodule.finrank_le _)
-          · exact one_sub_le_exp_neg rate
-      _ = exp (-((l + 1 : ℕ) * rate)) * finrank ℂ W := by
-          rw [← mul_assoc, ← exp_add]
-          push_cast
-          ring_nf
-      _ ≤ max (16 * ε) (exp (-((l + 1 : ℕ) * rate))) * finrank ℂ W :=
-          mul_le_mul_of_nonneg_right (le_max_right _ _) hW'.le
+  have step (t : Finset Θ) (h : 16 * ε * finrank ℂ W < codim t) :
+      ∃ s, codim (insert s t) ≤ exp (-rate) * codim t := by
+    obtain ⟨s, hs⟩ := h_spread.exists_codim_le _ hW h
+    refine ⟨s, ?_⟩
+    calc codim (insert s t) ≤ (1 - rate) * codim t := by
+           dsimp only [codim]
+           rw [Finset.iSup_insert, sup_comm]
+           exact hs
+      _ ≤ exp (-rate) * codim t := mul_le_mul_of_nonneg_right (one_sub_le_exp_neg rate)
+        (sub_nonneg.2 (by exact_mod_cast Submodule.finrank_le _))
+  have h₀ : codim ∅ ≤ finrank ℂ W := sub_le_self _ (Nat.cast_nonneg _)
+  obtain ⟨t, ht, h⟩ := exists_finset_card_le_of_contraction codim _ h₀ (exp_pos _).le step l
+  refine ⟨t, ht, ?_⟩
+  rw [max_mul_of_nonneg _ _ (Nat.cast_nonneg _), le_max_iff]
+  simpa only [← exp_nat_mul, mul_neg] using h
 
 /-- **Few maps span almost everything.** Let `V` and `W` be nonzero finite-dimensional spaces, let
 `0 < ε < 1 / 16`, and let the maps `B s : V → W` spread with the error `3 ε / 2`. Then the images of
@@ -489,27 +490,23 @@ theorem IsSpread.exists_few_le_finrank_iSup_range [Nontrivial V] (h_spread : IsS
   have h_rate_pos : 0 < rate := by positivity
   -- The first step shows `rate ≤ 1`.
   have h_rate_le : rate ≤ 1 := by
-    have h_start : 16 * ε * finrank ℂ W < finrank ℂ W - finrank ℂ (⊥ : Submodule ℂ W) := by
-      simpa using mul_lt_of_lt_one_left hW' (by linarith : 16 * ε < 1)
-    obtain ⟨s, h_step⟩ := h_spread.exists_codim_le ⊥ hW h_start
-    have h_codim_nonneg : (0 : ℝ) ≤ finrank ℂ W - finrank ℂ ↥(⊥ ⊔ range (B s)) :=
+    obtain ⟨s, hs⟩ := h_spread.exists_codim_le ⊥ hW (by
+      simpa using mul_lt_of_lt_one_left hW' (by linarith : 16 * ε < 1))
+    have h_nonneg : (0 : ℝ) ≤ finrank ℂ W - finrank ℂ ↥(⊥ ⊔ range (B s)) :=
       sub_nonneg.2 (by exact_mod_cast Submodule.finrank_le _)
-    have h_nonneg : 0 ≤ (1 - rate) * finrank ℂ W := by simpa using h_codim_nonneg.trans h_step
-    exact sub_nonneg.1 (nonneg_of_mul_nonneg_left h_nonneg hW')
+    exact sub_nonneg.1 (nonneg_of_mul_nonneg_left (by simpa using h_nonneg.trans hs :
+      0 ≤ (1 - rate) * finrank ℂ W) hW')
   -- Stop at the least `l` with `l rate ≥ log (1 / (16 ε))`; then `l rate ≤ 1 + log (1 / (16 ε))`.
   have h_log : 0 ≤ log (16 * ε)⁻¹ :=
     log_nonneg ((one_le_inv₀ (by positivity)).2 (by linarith))
   set l : ℕ := ⌈log (16 * ε)⁻¹ / rate⌉₊
   have hl_ge : log (16 * ε)⁻¹ ≤ l * rate := (div_le_iff₀ h_rate_pos).1 (Nat.le_ceil _)
-  have hl_le : l * rate ≤ 1 + log (16 * ε)⁻¹ :=
-    calc l * rate ≤ (log (16 * ε)⁻¹ / rate + 1) * rate := by
-          gcongr
-          exact (Nat.ceil_lt_add_one (by positivity)).le
-      _ = rate + log (16 * ε)⁻¹ := by field
-      _ ≤ 1 + log (16 * ε)⁻¹ := by gcongr
-  obtain ⟨t, h_card, h_codim⟩ : ∃ t : Finset Θ, #t ≤ l ∧
-      (finrank ℂ W - finrank ℂ ↥(⨆ s ∈ t, range (B s)) : ℝ) ≤
-        max (16 * ε) (exp (-(l * rate))) * finrank ℂ W := h_spread.exists_codim_le_max hW l
+  have hl_le : l * rate ≤ 1 + log (16 * ε)⁻¹ := by
+    have h := mul_le_mul_of_nonneg_right
+      (Nat.ceil_lt_add_one (div_nonneg h_log h_rate_pos.le)).le h_rate_pos.le
+    rw [add_mul, div_mul_cancel₀ _ h_rate_pos.ne', one_mul] at h
+    linarith
+  obtain ⟨t, h_card, h_codim⟩ := h_spread.exists_codim_le_max hW l
   have h_exp : exp (-(l * rate)) ≤ 16 * ε := by
     rwa [← le_log_iff_exp_le (by positivity), _root_.neg_le, ← log_inv]
   rw [max_eq_left h_exp] at h_codim
