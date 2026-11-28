@@ -1,0 +1,128 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,tabularx,array}
+\usepackage[left=.89in,right=.89in,top=.89in,bottom=.87in]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr}
+\usepackage[breaklinks,colorlinks,urlcolor=MidnightBlue,linkcolor=MidnightBlue,citecolor=MidnightBlue]{hyperref}
+\usepackage{url}
+\urlstyle{tt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\cO}{\mathcal O}
+\newcommand{\src}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/Lean/grh/src/#1.lean\#L#2}{#3}}
+\newcommand{\docref}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/tree/89d12dd40424f1217fd818d84877b3da52396a3b/Analysis/GeneralizedRiemannHypothesis/docs/#1}{#2}}
+\newcommand{\db}[2]{\src{New/Congruences/FirstOrder/DenominatorBound}{#1}{#2}}
+\newcommand{\lv}[2]{\src{New/OneLift/LiftVolumeHeight}{#1}{#2}}
+\newcommand{\exis}[2]{\src{New/Reduction/Data/Existence}{#1}{#2}}
+\DeclareMathOperator{\ord}{ord}
+\setlist{topsep=3pt,itemsep=2pt}
+\setlength\headheight{14pt}
+\pagestyle{fancy}\fancyhf{}\lhead{\small Three simplifications of the theta-lift proof}\rhead{\small Research note}\cfoot{\thepage}
+\setlength{\emergencystretch}{2em}
+\hypersetup{pdftitle={Three local simplifications of the theta-lift proof of Dirichlet GRH},pdfauthor={OpenAI}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries Three local simplifications of the\\[4pt] theta-lift proof of Dirichlet GRH}\par
+\vspace{7pt}
+{\large Denominator clearing, finite-field types, and sparse places}\par
+\vspace{6pt}
+{\small November 27, 2026}
+\end{center}
+\begin{abstract}
+The determinant lower bound in the Alpöge--Claude proof passes through an operator preserving Hecke eigenspaces. Its application only requires an operator that clears prescribed projections and has a large local determinant. In an integral basis adapted to the flag of lift generators, taking one row from each available operator gives such a determinant exactly. The same integral basis argument shortens the estimate for the determinant of a compressed lift. A second substitution enlarges the family of finite-field labels with a surviving Frobenius orbit and a common norm of sufficient order. At least $q^r/(2r)$ degree-$r$ labels qualify, giving a witness-loss bound $e^{-f/(2r)}$. A third substitution constructs the sparse infinite places from the graph of a quadratic polynomial and removes the choice of a large sphere. Each substitution has its own insertion point in the readable Lean development.
+\end{abstract}
+
+\section{What the comparison proves}
+At the center of the argument is a family of forms whose covolume is estimated twice. The theta derivatives make the family short after the known prime-power divisibilities have been divided out (Theorem A). A second-moment calculation provides sufficiently many independent forms among a controlled number of translates (Theorem B). The lower bound for the covolume of integral forms comes from a chain of theta lifts, special values, and the product formula (Theorem C). In that lower bound local denominators must be cleared without spending too much of the determinant. The first proposal changes this particular operation.
+
+In the source notation, $D$ is admissible data, $m$ is the number of lifts, $f$ the number of infinite places, and $a=xb$ the large derivative order. If $d_0$ is the target dimension, $n$ is the number of independent test forms, $V$ bounds their logarithmic squared covolume, and $\delta$ bounds their index, the two sides of the comparison have the form
+\[
+ M_0-\text{error}\ \le\ \frac{V+2\delta}{d_0}
+ \ \le\ M_0-\frac{n}{d_0}m\,\mathrm{rem}+\text{error}.
+\]
+Here $M_0$ is the same main amount on both sides. At the published parameters $n\ge d_0/2$, and the comparison gives
+\[
+                  m\,\mathrm{rem}\le f a(\log b)^5.
+\]
+The prime remainder contains a near cutoff at $x$ and a distant cutoff at $x_1$. The far term has a classical prime-number-theorem estimate. At the near cutoff $m\ge\sqrt x$ turns the arithmetic bound into a one-sided estimate at scale $x^{-1/2+\varepsilon}$. The Mellin transform detects off-line zeros. The choice of a quadratic twist prevents its zeros from cancelling a proposed pole, and Landau's argument for a positive transform excludes the pole. This gives the half-plane theorem for Dirichlet characters. Specialization to zeta and the functional equation give RH. The changes below reuse the inputs that establish these analytic steps. See the \src{New/Reduction/MainInequality}{87}{covolume inequality}, the \src{New/Reduction/OneSidedBound}{200}{one-sided remainder bound}, the \src{New/Reduction/OneSidedBound}{239}{half-plane theorem}, and its \src{Main}{5}{specialization to RH}.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{.23\linewidth}XX@{}}\toprule
+Input to the proof & Present argument & Proposed replacement\\\midrule
+Denominators in Theorem C & Choose a simultaneous scalar combination over an infinite residue field. & Select rows in a basis adapted to the integral lattice and the flag.\\[3pt]
+Finite-field types used in B and C & Demand that a witness root generate the whole multiplicative group. & Test its Frobenius orbit and the prime factors needed in its norm.\\[3pt]
+Admissible data for the derivative bound & Find a well-populated sphere among digit vectors. & Write the squared norm into the top two digits of an explicit exponent.\\\bottomrule
+\end{tabularx}\end{center}
+The first change has the smallest effect on the rest of the development. It preserves the existing denominator interface and the original projector. The label change requires transporting a larger projector through the proof. The digit construction can be used with either choice of projector.
+
+\section{Clearing the projection one row at a time}\label{sec:flag}
+Fix a prime $\ell$ and the isomorphism $\iota:\C\simeq\overline{\Q}_\ell$ used for this local estimate. Write $K$ for the coefficient field with this absolute value and $\cO=\{x:|x|\le1\}$. Write $P_Z$ for the orthogonal projection onto the lift space $Z$. It is defined before applying $\iota$ to coordinates. Let $T$ be the set of $P_Zv$ for integral forms $v$ orthogonal to the false lifts. This restriction is essential in the one-generator theorem. In the following argument $T$ can be any subset.
+
+The published one-generator theorem supplies an operator for each member $z_i$ of a basis of lift generators. On $Z$ the operators $G_i$ are diagonal in that common basis, every $G_i$ sends $T$ into the integral forms in $Z$, and the eigenvalue of $G_i$ on $z_i$ has a lower bound in absolute value. In the Lean theorem $G_i$ initially takes values in smooth forms. The identification on the generator basis that restricts its values to $Z$ is already made in the \db{1191}{proof of the operator bound}. We keep this identification. The existing proof next finds a linear combination serving all basis vectors, proves that it preserves Hecke eigenspaces, and translates its eigenvalue bounds into a determinant bound. The caller discards the Hecke-preservation field. Its actual output also includes integral pairings after multiplication by a stabilizer factor. See the \db{1030}{one-generator result}, the \db{1279}{caller}, and the \src{New/OneLift/TestedForms}{413}{definition of the denominator bound}.
+
+\subsection{An integral basis compatible with a flag}
+Suppose $E:Z\hookrightarrow K^I$ is an injective linear map for a finite set $I$. Give $Z$ the lattice $L=E^{-1}(\cO^I)$. Let $z_1,\dots,z_d$ be any ordered $K$-basis and put $F_j=\langle z_1,\ldots,z_j\rangle_K$, with $F_0=0$.
+\begin{lemma}\label{lem:pivot}
+There are $b_j\in F_j$ and distinct $t_j\in I$ such that $b_1,\ldots,b_j$ span $F_j$, $b_j\in L$, $E(b_j)_{t_j}=1$, and $E(b_j)_{t_h}=0$ for $h<j$. They give
+\[
+             L\cap F_j=\bigoplus_{i=1}^j\cO b_i\qquad(0\le j\le d).
+\]
+\end{lemma}
+\begin{proof}
+For the $j$th step start with $u=z_j$. In order $h=1,\ldots,j-1$, replace $u$ by $u-E(u)_{t_h}b_h$. The previous pivot coordinates stay zero. The resulting $u$ has the class of $z_j$ modulo $F_{j-1}$, so $E(u)\ne0$. Choose a coordinate $t_j$ of maximum absolute value. It is a new pivot. Then $b_j=u/E(u)_{t_j}$ has all its coordinates in $\cO$ and has the claimed pivot values. The change of basis preserves each $F_j$.
+
+If $v\in L\cap F_j$, apply the same ordered subtractions at $t_1,\ldots,t_j$. Each coefficient lies in $\cO$, since each intermediate remainder is still integral. The final remainder is zero: the evaluation matrix on the pivots of $b_1,\ldots,b_j$ is triangular with diagonal entries $1$. The opposite inclusion follows from $b_i\in L$. The proof uses only finite pivot searches and the ultrametric inequality, so it applies to nondiscrete valuation rings.
+\end{proof}
+\noindent
+In the source, the finite coordinate map evaluates the form at representatives of the adelic double classes that are integral above $\ell$, then takes its Weyl coordinates. Vanishing on these representatives implies vanishing of the form. At such a representative the gauge bound is precisely the coordinate bound. Transformation by the rational and level subgroups transports that gauge over the full class, since the level character is a unit. These facts identify the source's integral forms on $Z$ with $L$ above. Choosing the integral representatives matters here. The ingredients appear together in \lv{124}{the normalization lemma}, with the \src{Lib/Adelic/AutomorphicForms/PAdicGauge}{150}{coordinate formula for the gauge} and \src{Lib/Adelic/AutomorphicForms/PAdicGauge}{232}{existence of representatives}.
+
+\subsection{The row construction and its determinant}
+\begin{theorem}\label{thm:rows}
+For each $j=1,\ldots,d$, suppose $G_j:Z\to Z$ preserves the complete flag $F_\bullet$ and $G_j(T)\subseteq L$. Write $\gamma_j$ for its scalar on $F_j/F_{j-1}$. There exists an endomorphism $H$ of $Z$ satisfying
+\[
+                        H(T)\subseteq L,\qquad \det H=\prod_{j=1}^d\gamma_j .
+\]
+\end{theorem}
+\begin{proof}
+Take the basis from Lemma~\ref{lem:pivot} and its coordinate functionals $b_j^*$. Define
+\[
+                         Hx=\sum_{j=1}^d b_j^*(G_jx)b_j .
+\]
+For $x\in T$ each coefficient is integral by the lemma. For $x\in F_k$, all terms with $j>k$ vanish. In particular the $k$th coordinate of $Hb_k$ is $b_k^*(G_kb_k)=\gamma_k$. The matrix of $H$ is upper triangular with this diagonal, proving the identity. For $d=0$ the empty product is $1$.
+\end{proof}
+
+Equivalently, in the integral basis $H$ takes row $j$ from the matrix of $G_j$. Different operators can supply different rows even when some $G_j$ are singular. The theorem allows arbitrary residue fields and does not require simultaneous diagonalizability. In the application the lift eigenbasis supplies the flag. Its $j$th quotient sees exactly the eigenvalue on the original $z_j$. If candidates have been obtained for every direction, one may also choose for each quotient the candidate of largest absolute value there.
+
+\paragraph{Sharpness with the stated data.}
+Let $K$ have a uniformizer $\pi$, $Z=K^d$, $L=\cO^d$, and $T=\bigoplus_j\pi^{-s_j}\cO b_j$ with $s_j\ge0$ integers. Take $G_j$ to be $\pi^{s_j}$ times the $j$th coordinate projection. Any map that sends $T$ into $L$ has its $j$th column divisible by $\pi^{s_j}$. Thus every clearing determinant is divisible by $\pi^{\sum s_j}$. The construction attains that valuation. This example also explains the relevance of a product of individual bounds when they differ between generators.
+
+\subsection{Restoring the stabilizer factor and integral pairings}
+Use $v_\ell(\ell)=1$. Suppose the published inputs give $|\gamma_j|_\ell\ge \ell^{-B_j}$, and put $c=D.\mathrm{chosenGroupOrder}$. Taking $\Lambda=cH$ gives
+\[
+    |\det\Lambda|_\ell\ge
+           \ell^{-d v_\ell(c)-\sum_j B_j}.
+\]
+For the uniform source bound $B_j=B$, the existing numerical inequality is $B+v_\ell(c)\le r'\beta_\ell$, with $r'$ the rank in the descent pair and $\beta_\ell=\mathrm{clearingBound}(D,\ell)$. Hence $|\det\Lambda|_\ell\ge\exp[-d r'\beta_\ell\log\ell]$. The $c^2$ already absorbed into the single-generator maps stays there. The factor $c$ here is the additional factor appearing in the final pairing estimate.
+
+For an admissible $v$, the form $w=H P_Zv$ is integral at $\iota$. The source's stabilizer lemma gives $|\iota(c\langle u,w\rangle)|\le1$ when $u$ is integral at all places over $\ell$. Since $c$ is a rational integer, $c w$ is integral and $\langle u,cw\rangle=c\langle u,w\rangle$. These are both clauses required of $\Lambda$. When $Z=0$ the original identity solution on the zero space applies. When $\dim Z=1$ a single generator operator suffices. Thus the same proof serves both consumers, for the full lift and for the rank-one auxiliary lift. See the \src{Lib/Adelic/AutomorphicForms/PAdicGauge}{750}{pairing estimate}, the \db{1276}{local budget}, and the \src{New/Congruences/FitTwistsExist}{415}{full-rank} and \src{New/Congruences/FitTwistsExist}{444}{rank-one} applications.
+
+\paragraph{A second use of the same basis lemma.}
+At a prime $\ell$ prime to the twist modulus norm, take the comparison operator $U$ and set $S=P_ZU|_Z$. The source shows that $U$ sends every integral lift into an integral form orthogonal to false lifts. Consequently $(\Lambda S)L\subseteq L$. In an integral basis its matrix has entries in $\cO$, so $|\det(\Lambda S)|\le1$ by the determinant formula. The lower bound on $|\det\Lambda|$ immediately gives the required upper bound on $|\det S|$. This replaces the separate normalization of eigenvectors at the \lv{652}{compressed-determinant estimate}. It works for any clearing operator satisfying the same contract.
+
+\subsection{Why the choice of basis matters}
+Over $\Q_2$, with ordinary dot product on $\Q_2^3$, take $b_1=e_1$, $b_2=e_2+e_3$, and $Z=\langle b_1,b_2\rangle$. Its integral lattice has basis $b_1,b_2$. Orthogonal projection sends $e_2$ to $b_2/2$. Use a generator basis $z_1=b_1$, $z_2=b_1+2b_2$ and the two candidate operators $4I$ and $2I$. Each clears the projection of every integral vector. Prescribing eigenvalues $(4,2)$ in the $z$-basis sends $b_2/2$ to $-b_1/2+b_2$, which fails integrality. Taking the rows in the integral $b$-basis gives $H=\operatorname{diag}_b(4,2)$, $H(b_2/2)=b_2$ and $\det H=8$. This $H$ moves the line $Kz_2$ and so illustrates precisely the extra freedom used by the theorem.
+
+The guide also exhibits $G=\operatorname{diag}(1,0,1)$ and $G'=\operatorname{diag}(0,1,1)$. An integral scalar combination over $\Z_2$ has diagonal $(u,v,u+v)$, which always contains an even entry. Taking rows from $G,G',G$ in the standard integral basis gives $I_3$ over $\Z_2$. The output lies outside the integral linear span of the candidates. For an application that genuinely needs a scalar combination or Hecke commutation, the published stronger theorem remains valuable.
+
+\paragraph{Implementation boundary.}
+A Lean implementation can first extract the finite evaluation equivalence for arbitrary vectors from the normalization lemma, then prove Lemma~\ref{lem:pivot} by induction on an ordered basis. It can reuse the construction of the generator basis and the restriction from $G_j$ to $Z$, and apply Theorem~\ref{thm:rows} directly in \db{1246}{the final clearing theorem}. This bypasses the \src{New/Congruences/FirstOrder/HeckeStrings}{59}{simultaneous specialization} on this branch and the \db{1219}{eigenvalue-to-determinant estimate}. Other declarations in these modules are still used elsewhere. Any reduction of source lines or build time depends on the eventual implementation.
+
+\input{labels}
+\input{paraboloid}
+\input{verification}
+\end{document}

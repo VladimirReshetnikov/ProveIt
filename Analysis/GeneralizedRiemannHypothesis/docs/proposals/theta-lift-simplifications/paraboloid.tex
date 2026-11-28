@@ -1,0 +1,72 @@
+\section{An explicit set of sparse infinite places}
+\label{sec:paraboloid}
+
+The derivative construction uses many places of large weight and requires that no three
+of them occur at prescribed steps of a short Frobenius orbit. The current construction
+in \path{New/Reduction/Data/Existence.lean} selects a largest sphere in a box of
+integer digit vectors. One can instead list the exponents directly. The last two
+digit positions record the squared length of the preceding digits. This gives an
+exact cardinality and a membership test by integer division.
+
+\paragraph{Finite construction.}
+Take integers $n\ge3$, $H\ge1$, $L\ge2$, write $k=n-2$ and assume
+$k\le L$. Put $B=LH$ and take any integer $o\ge B^n$. For
+$u=(u_0,\ldots,u_{k-1})$ with $0\le u_i<H$, set
+\[
+  D(u)=\sum_{i=0}^{k-1}u_i B^i,\qquad
+  Q(u)=\sum_{i=0}^{k-1}u_i^2,\qquad
+  E(u)=D(u)+B^kQ(u).
+\]
+The set $S=\{E(u)\}$ lies in $[0,o)$ and has exactly $H^{n-2}$ elements.
+For all positive integers $a,b$ with $a+b\le L$ it satisfies
+\[
+ (a+b)E(v)\equiv aE(u)+bE(w)\pmod o
+        \quad\Longrightarrow\quad u=v=w .
+\]
+Indeed, each low digit on either side is at most $L(H-1)<B$.
+The high block on either side is an integer between zero and
+$Lk(H-1)^2<B^2$. Thus both sides are below $B^{k+2}\le o$ and are equal
+as integers. Division by $B^k$ gives equality of the high blocks.
+The remainders have unique base-$B$ digits, so
+$(a+b)v=au+bw$ and $(a+b)Q(v)=aQ(u)+bQ(w)$. Substitution in the identity
+\[
+  (a+b)\bigl(aQ(u)+bQ(w)\bigr)-Q(au+bw)
+        =ab\sum_{i=0}^{k-1}(u_i-w_i)^2
+\]
+makes its left side zero. Hence $u=w$ and then $v=u$.
+Reduction of $E(u)$ modulo $B^k$ recovers $u$, which proves the cardinality.
+Given an exponent, extracting those digits and comparing their squared length
+with its quotient by $B^k$ decides membership. The cardinality is $n$ times
+the lower bound $H^n/(nH^2)$ used in the existing proof. The comparison is with
+that proved lower bound; a particular sphere can have more points.
+
+\paragraph{Insertion at the existing parameters.}
+Write $q_0$ for the auxiliary modulus, $s$ for the tower exponent,
+$\ell_0=3^{\lfloor\log_3s\rfloor+4}$ for $s\ge1$, and
+$q_1=q_0\cdot3\ell_0\,2^s$. Set $L=2\ell_0$ and $o=2^s$.
+The digit side $H$ from the \exis{244}{sparse-set construction} already satisfies
+$(2\ell_0 H)^n\le2^s$. For each fixed modulus, auxiliary prime and
+$0<\varepsilon<1/100$, the proof of
+the \exis{647}{large-scale existence lemma} chooses $n$ once;
+its strict lower bound on $n$ permits $n\ge3$. The chosen ranks satisfy
+$2^s=m^{22}\ge x^{11}$, so $s\to\infty$ and eventually
+$n-2\le2\ell_0$. This verifies the one extra restriction for every
+sufficiently large cutoff, with the existing order of quantifiers.
+
+The places represented by $-g^{E(u)}\bmod q_1$, where $g=1+3\ell_0q_0$,
+are in the fibre over $-1\bmod q_0$. The source exhibits a power-of-two
+divisor of $q_1$ on which $g$ has exact order $o$. Thus distinct exponents give
+distinct places. For an odd prime $p$, two forbidden ratios
+$\pm p^i,\pm p^j$ with $0<i<j<\ell_0$ yield
+\[
+  2j E(v)\equiv 2(j-i)E(u)+2iE(w)\pmod{2^s}.
+\]
+The coefficient sum is $2j<L$. All three exponents coincide. The source's
+order bound then forces $2^s\le(p+1)2i$, contrary to the admissible upper
+bound $2\ell_0(P+1)<2^s$ for all tested primes $p\le P$.
+For $p=2$, all selected places have the same reduction modulo $3\ell_0$,
+and the order of $4$ modulo $3\ell_0$ is $\ell_0$. This rules out the first
+ratio already. The exact cardinality of the explicit set therefore supplies
+the same downstream bound for the number of places.
+
+The formal change belongs at the \exis{181}{choice of progression-free exponents}. Carry $n\ge3$ and $n-2\le2\ell_0$ through the specialized \exis{244}{sparse-set} and \exis{488}{rank-dependent} lemmas to the \exis{898}{eventual construction}. The general sphere lemma still covers other parameter regimes. On the branch used for RH, the explicit formula supplies the set at every sufficiently large cutoff. The Frobenius order estimates, the prime windows, and the derivative divisibility estimates are still inputs.
