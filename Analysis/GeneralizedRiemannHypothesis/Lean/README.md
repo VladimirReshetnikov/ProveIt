@@ -121,6 +121,8 @@ For the exchange used in McNew’s Question 7.4, [IntegerBoundaryExchangeReplace
 
 [BoundedPrimeBlockAttainment.lean](GRHArticle/ProgressionFree/BoundedPrimeBlockAttainment.lean) proves that for every progression length $k\ge3$ and width $d\ge1$, a single admissible set has natural density equal to the width-$d$ upper-density supremum. The set uses the greedy singleton rule at each prime outside finitely many exceptional prime blocks. The proof takes the maximum of a continuous density function on a compact space, removes zero-weight coordinates, and realizes the remaining blocks with actual primes.
 
+[RectangularPrefixWeights.lean](GRHArticle/ProgressionFree/RectangularPrefixWeights.lean) proves that nonpositive sums on all rectangular prefixes remain nonpositive after increasing the prime denominators independently. It permits fixed axes and coordinatewise prefix limits. This transfers finite prime-tuple bounds once their base inequalities are established.
+
 ## Geometric progressions of ideals in number fields
 
 [Density.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/Density.lean) counts nonzero integral ideals in norm order. Multiplying an arbitrary set with natural density by a fixed ideal divides that density by the ideal norm. [LocalFactors.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/LocalFactors.lean) computes the density of ideals coprime to finitely many primes. [ValuationCylinders.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/ValuationCylinders.lean) proves that the exponents at any finite set of prime ideals have the independent geometric densities in `gpi:lem:product`, for every number field.

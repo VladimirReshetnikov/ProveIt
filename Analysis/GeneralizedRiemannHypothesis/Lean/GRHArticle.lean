@@ -197,6 +197,7 @@ import GRHArticle.ProgressionFree.PrimePowerTailBounds
 import GRHArticle.ProgressionFree.Rankin
 import GRHArticle.ProgressionFree.RankinApproximation
 import GRHArticle.ProgressionFree.RankinTruncation
+import GRHArticle.ProgressionFree.RectangularPrefixWeights
 import GRHArticle.ProgressionFree.SatelliteProfiles
 import GRHArticle.ProgressionFree.SharedDeletionMass
 import GRHArticle.ProgressionFree.SharedDeletionProgressions
