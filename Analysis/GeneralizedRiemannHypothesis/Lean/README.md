@@ -119,6 +119,8 @@ For the exchange used in McNew’s Question 7.4, [IntegerBoundaryExchangeReplace
 
 [GreedyLengthThree.lean](GRHArticle/ProgressionFree/GreedyLengthThree.lean) identifies the recursive three-term greedy rule with the integers having only binary ternary digits. [ThreeTermBoundedBlockEndpoints.lean](GRHArticle/ProgressionFree/ThreeTermBoundedBlockEndpoints.lean) proves the width-one optimum is exactly Rankin's density. The least improving width exists and lies between 2 and 225. Raising the lower endpoint to the article's 5 requires the separate four-prime calculation.
 
+[BoundedPrimeBlockAttainment.lean](GRHArticle/ProgressionFree/BoundedPrimeBlockAttainment.lean) proves that for every progression length $k\ge3$ and width $d\ge1$, a single admissible set has natural density equal to the width-$d$ upper-density supremum. The set uses the greedy singleton rule at each prime outside finitely many exceptional prime blocks. The proof takes the maximum of a continuous density function on a compact space, removes zero-weight coordinates, and realizes the remaining blocks with actual primes.
+
 ## Geometric progressions of ideals in number fields
 
 [Density.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/Density.lean) counts nonzero integral ideals in norm order. Multiplying an arbitrary set with natural density by a fixed ideal divides that density by the ideal norm. [LocalFactors.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/LocalFactors.lean) computes the density of ideals coprime to finitely many primes. [ValuationCylinders.lean](GRHArticle/ProgressionFree/NumberFieldIdeals/ValuationCylinders.lean) proves that the exponents at any finite set of prime ideals have the independent geometric densities in `gpi:lem:product`, for every number field.

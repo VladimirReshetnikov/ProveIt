@@ -1,8 +1,11 @@
+import GRHArticle.ProgressionFree.BoundedPrimeBlockAttainment
 import GRHArticle.ProgressionFree.BoundedPrimeBlockComputability
 import GRHArticle.ProgressionFree.BoundedPrimeBlockConvergence
 import GRHArticle.ProgressionFree.BoundedPrimeBlockFiniteSearch
 import GRHArticle.ProgressionFree.BoundedPrimeBlockStrictGap
 import GRHArticle.ProgressionFree.BoundedPrimeBlockWidth225
+import GRHArticle.ProgressionFree.CompactPrimeBlockConfigurations
+import GRHArticle.ProgressionFree.CompactPrimeBlockRules
 import GRHArticle.ProgressionFree.EulerLowerBound
 import GRHArticle.ProgressionFree.ExactPatternDensity
 import GRHArticle.ProgressionFree.ExactRuleApproximation
@@ -135,6 +138,7 @@ import GRHArticle.ProgressionFree.NumberFieldIdeals.SquareNormTail
 import GRHArticle.ProgressionFree.NumberFieldIdeals.SquarefreeExterior
 import GRHArticle.ProgressionFree.NumberFieldIdeals.UniformCounts
 import GRHArticle.ProgressionFree.NumberFieldIdeals.ValuationCylinders
+import GRHArticle.ProgressionFree.PaddedPrimeBlockMass
 import GRHArticle.ProgressionFree.PolynomialBlockAttainment
 import GRHArticle.ProgressionFree.PolynomialBlocks
 import GRHArticle.ProgressionFree.PolynomialBoundedReplacement
@@ -186,6 +190,8 @@ import GRHArticle.ProgressionFree.PrimeBlockDensityUpgrade
 import GRHArticle.ProgressionFree.PrimeBlockPrefixTemplates
 import GRHArticle.ProgressionFree.PrimeBlockReduction
 import GRHArticle.ProgressionFree.PrimeBlockRuleDensity
+import GRHArticle.ProgressionFree.PrimeBlockSlotPacking
+import GRHArticle.ProgressionFree.PrimeBlockSlotRealization
 import GRHArticle.ProgressionFree.PrimePowerTailBounds
 import GRHArticle.ProgressionFree.Rankin
 import GRHArticle.ProgressionFree.RankinApproximation
