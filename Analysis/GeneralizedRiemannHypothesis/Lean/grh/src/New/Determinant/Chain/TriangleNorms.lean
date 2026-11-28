@@ -128,18 +128,11 @@ lemma ChainCommutes.succ {i n : ℕ} {β β' : I → ℂ} (h_chain : ChainCommut
     (h_square : SquareCommutes w a d i n β') :
     ChainCommutes w a d i (n + 1) (β * β') := by
   intro t y
-  set Y : F i (n + 1) := weightedChain w a t i (n + 1) y with hY
-  set c : ℂ := w t (n + 1) / (w t 1 * w t 0 * conj (β t))
-  calc
-    weightedChain w a t (i + 1) (n + 1) (d t i 0 (a t i 0 y)) =
-        c • (w t n : ℂ) • a t (i + 1) n (d t i n Y) := by
-      rw [weightedChain_succ_apply, h_chain, map_smul, smul_comm]
-    _ = c • (w t (n + 2) / conj (β' t) : ℂ) • d t i (n + 1) (a t i (n + 1) Y) := by rw [h_square]
-    _ = (w t (n + 2) / (w t 1 * w t 0 * conj ((β * β') t)) : ℂ) •
-        d t i (n + 1) (weightedChain w a t i (n + 1 + 1) y) := by
-      rw [weightedChain_succ_apply, ← hY, map_smul, smul_smul, smul_smul, Pi.mul_apply, map_mul]
-      congr 1
-      ring
+  rw [weightedChain_succ_apply, h_chain, map_smul, smul_comm (w t n : ℂ), h_square]
+  rw [weightedChain_succ_apply w a t i (n + 1), map_smul, smul_smul, smul_smul, Pi.mul_apply,
+    map_mul]
+  congr 1
+  ring
 
 /-- Let `X i n` be the weighted composite of the first `n` arrows `a` of row `i`, applied to
 `j i y`. Suppose `⟪z, a (X i n)⟫ = κ * ⟪d z, X (i + 1) n⟫` for all `y` and `z` (`ChainAdjoint`) and
@@ -151,20 +144,11 @@ lemma ChainAdjoint.succ {i n : ℕ} {κ κ' : I → ℂ} (h_chain : ChainAdjoint
     ChainAdjoint w a d j i (n + 1) (κ * κ') := by
   -- Move the last arrow to the other side of the inner product: `x` is its adjoint vector at `z`.
   intro t y z
-  obtain ⟨x, adjoint_a, adjoint_d⟩ : ∃ x : F i (n + 1),
-      (∀ v : F i (n + 1), ⟪a t i (n + 1) v, z⟫ = ⟪v, x⟫) ∧
-      ∀ v : F (i + 1) n, ⟪d t i n x, v⟫ = κ' t * ⟪d t i (n + 1) z, a t (i + 1) n v⟫ :=
-    h_square t z
+  obtain ⟨x, adjoint_a, adjoint_d⟩ := h_square t z
   rw [weightedChain_succ_apply, weightedChain_succ_apply]
-  set X : F i n := weightedChain w a t i n (j i y)
-  set Y : F (i + 1) n := weightedChain w a t (i + 1) n (j (i + 1) y)
-  calc
-    ⟪z, a t i (n + 1) ((w t n : ℂ) • a t i n X)⟫ = w t n * ⟪x, a t i n X⟫ := by
-      rw [← inner_conj_symm, adjoint_a, inner_conj_symm, inner_smul_right]
-    _ = w t n * (κ t * ⟪d t i n x, Y⟫) := by rw [h_chain]
-    _ = (κ * κ') t * ⟪d t i (n + 1) z, (w t n : ℂ) • a t (i + 1) n Y⟫ := by
-      rw [adjoint_d, inner_smul_right, Pi.mul_apply]
-      ring
+  rw [← inner_conj_symm, adjoint_a, inner_conj_symm, inner_smul_right, h_chain, adjoint_d,
+    inner_smul_right, Pi.mul_apply]
+  ring
 
 /-- For nonzero weights, `d` moves past the empty chain with constant `1`. -/
 lemma chainCommutes_zero [∀ (t : I) (n : ℕ), NeZero (w t n)] (i : ℕ) :
@@ -281,22 +265,13 @@ lemma IsTriangle.inner_weightedChain_succ [∀ (t : I) (n : ℕ), NeZero (w t n)
           weightedChain w a t (i + 1) n (j (i + 1) z)⟫ := by
   rcases subsingleton_or_nontrivial V with h_trivial | h_nontrivial
   · simp [Subsingleton.elim z 0]
-  have hβ : β t ≠ 0 := h_tri.ne_zero_of_chainCommutes hi h_commutes t
-  set X : F i (n + 1) := weightedChain w a t i (n + 1) (j i x) with hX
-  set X' : F (i + 1) n := weightedChain w a t (i + 1) n (j (i + 1) x')
-  set Y : F (i + 1) n := weightedChain w a t (i + 1) n (j (i + 1) z)
-  have chain_x' : X' = (w t (n + 1) / (w t 1 * w t 0 * conj (β t)) : ℂ) • d t i n X := by
-    rw [hX, ← h_commutes, ← hx']
-  have inner_chain_x' : ⟪X', Y⟫ = w t (n + 1) / (w t 1 * w t 0 * β t) * ⟪d t i n X, Y⟫ := by
-    rw [chain_x', inner_smul_left]
-    simp [mul_comm]
+  have hβ := h_tri.ne_zero_of_chainCommutes hi h_commutes t
   have hw (k : ℕ) : (w t k : ℂ) ≠ 0 := NeZero.ne _
-  calc
-    ⟪X, weightedChain w a t i (n + 1) (j i z)⟫ = w t n * (κ t * ⟪d t i n X, Y⟫) := by
-      rw [weightedChain_succ_apply, inner_smul_right, h_adjoint]
-    _ = κ t * β t * (w t 0 * w t 1 * w t n / w t (n + 1)) * ⟪X', Y⟫ := by
-      rw [inner_chain_x']
-      field [hβ, hw 0, hw 1, hw (n + 1)]
+  -- Commute the chain at `x'` and apply the adjoint law to the last arrow at `z`.
+  rw [hx', h_commutes t (j i x), inner_smul_left]
+  rw [weightedChain_succ_apply w a t i n (j i z), inner_smul_right, h_adjoint]
+  simp only [map_div₀, map_mul, map_natCast, starRingEnd_self_apply]
+  field [hβ, hw 0, hw 1, hw (n + 1)]
 
 /-- Take a triangle of size `m` with nonzero weights (`IsTriangle`): arrows `a` along the rows and
 maps `d` down a row, with `a` adjoint to `d` on the isometric copies `j i` of `V`. Suppose that the
@@ -344,20 +319,13 @@ lemma IsTriangle.exists_inner_weightedChain_eq [∀ (t : I) (n : ℕ), NeZero (w
     obtain ⟨x', hx'⟩ : ∃ x' : V, j (i + 1) x' = d t i 0 (a t i 0 (j i x)) :=
       h_tri.comp_mem_range i hi_lt t x
     set T : End ℂ U := ((List.range' (i + 1) n).map (S t)).prod
-    have gram_first : w t 0 * ⟪x', s (T y)⟫ = C i t * ⟪x, s (S t i (T y))⟫ := by
-      rw [← (j (i + 1)).inner_map_map, hx', ← h_tri.first_adjoint i hi_lt, hS i hi_lt]
+    have gram_first : ⟪x', s (T y)⟫ * w t 0 = C i t * ⟪x, s (S t i (T y))⟫ := by
+      rw [mul_comm, ← (j (i + 1)).inner_map_map, hx', ← h_tri.first_adjoint i hi_lt, hS i hi_lt]
     have hw (k : ℕ) : (w t k : ℂ) ≠ 0 := NeZero.ne _
-    calc
-      ⟪weightedChain w a t i (n + 1) (j i x), weightedChain w a t i (n + 1) (j i (s y))⟫ =
-          κ' t * β t * (w t 0 * w t 1 * w t n / w t (n + 1)) *
-            (κ t * (w t 0 * w t 1 ^ n / w t n) * ⟪x', s (T y)⟫) := by
-        rw [h_tri.inner_weightedChain_succ hin_lt h_commutes h_adjoint hx', gram_next]
-      _ = κ' t * β t * κ t * (w t 0 * w t 1 ^ (n + 1) / w t (n + 1)) * (w t 0 * ⟪x', s (T y)⟫) := by
-        field [hw n, hw (n + 1)]
-      _ = (κ' * β * κ * C i) t * (w t 0 * w t 1 ^ (n + 1) / w t (n + 1)) *
-          ⟪x, s (S t i (T y))⟫ := by
-        rw [gram_first, Pi.mul_apply, Pi.mul_apply, Pi.mul_apply]
-        ring
+    rw [h_tri.inner_weightedChain_succ hin_lt h_commutes h_adjoint hx', gram_next,
+      (eq_div_iff (hw 0)).2 gram_first]
+    simp only [Pi.mul_apply]
+    field [hw 0, hw n, hw (n + 1)]
 
 end New.Exchange
 
