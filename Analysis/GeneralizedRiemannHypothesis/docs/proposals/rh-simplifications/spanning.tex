@@ -1,0 +1,124 @@
+\section{A direct rank estimate on the ramified source}
+\label{sec:spectral-spanning}
+
+The short integral forms lie in a specified subspace of the source.
+Each new translate of that subspace increases the allowance for denominators.
+The question is how much of the target can be filled on the translate budget
+of Theorem~B. Keeping the original fourth-power error estimates until the
+end gives an upper bound of $(19+o(1))b^{-4}$ for the missed fraction on that budget.
+The statement in \texttt{ShortAndEnough.lean} uses $4b^{-2}$.
+The coefficient $19$ is optimal for the two moment inequalities and source
+codimension estimate used here.
+
+\paragraph{Inputs.}
+Let $S,H$ be finite-dimensional complex Hilbert spaces, $h=\dim S>0$,
+and let $G$ act unitarily on $H$ by $U_s$. An orthogonal projection $E$
+commutes with every $U_s$. Put $V=EH$, $d=\dim V>0$, and let $P:S\to H$
+denote the scaled Poincar\'e map. In the source coordinates let $S_r\subset S$
+be the space of ramified forms and put $h_r=\dim S_r$. Write
+$\mathbb E_s$ for the uniform average over $G$ and $\Pi_L$ for orthogonal
+projection onto $L$. The three inputs are
+\begin{align}
+ \|EP\Pi_L\|_{\rm HS}^2&\ge\dim L-\alpha h
+      &&\text{for every subspace }L\subset S,\label{sp:near}\\
+ d\,\mathbb E_s\|P^*U_sP\|_{\rm HS}^2&\le(1+\beta)h^2,\label{sp:mom}\\
+ h_r&\ge(1-\gamma)h.\label{sp:ram}
+\end{align}
+The bounds on the first two lines are the source's \source{New/Spanning/SecondMoment/SpanningTheorem}{257}{near-isometry} and \source{New/Spanning/SecondMoment/SpanningTheorem}{288}{second-moment estimate}. The \source{New/Reduction/ShortAndEnough}{410}{ramified-source argument} gives the third. The values are $\alpha=5b^{-4}$, $\beta=9b^{-4}$ and $\gamma=b^{-8}$.
+Applying \eqref{sp:near} to $\ker(EP)$ gives
+$d\ge(1-\alpha)h$, hence $h\le2d$ for $b\ge3$.
+
+\paragraph{A single recurrence.}
+Suppose the selected images span $F\subset V$, with missing fraction
+$q=1-\dim F/d$. For $A_s=EU_sP|_{S_r}$ put $L_s=A_s^{-1}F$.
+Adding $\operatorname{im}A_s$ gains exactly $g_s=h_r-\dim L_s$
+dimensions, by rank--nullity modulo $F$. On $L_s$, the map $EU_sP$
+agrees with $\Pi_F U_sP$ because its values lie in $F$ and the component
+discarded by $E$ is perpendicular to $F$. Unitarity and commutation
+therefore give
+\[
+ h_r-g_s-\alpha h
+ \le \|EU_sP|_{L_s}\|_{\rm HS}^2
+ \le \|\Pi_F U_sP\|_{\rm HS}^2 .
+\]
+This use of the actual source $S_r$ charges its missing dimensions once
+in the growth law.
+
+Let $D=\mathbb E_s U_sPP^*U_s^*$. Expanding the square and grouping
+pairs of elements by $s^{-1}t$ gives
+$\operatorname{tr}(D^2)=\mathbb E_s\|P^*U_sP\|_{\rm HS}^2$.
+The average of the last squared norm in the preceding display is
+$\operatorname{tr}(\Pi_FD)$. Trace Cauchy--Schwarz and \eqref{sp:mom}
+bound this quantity by $h\sqrt{(1-q)(1+\beta)}$. Consequently
+\begin{align}
+ \mathbb E_s g_s
+  &\ge h\{1-\alpha-\gamma-\sqrt{(1-q)(1+\beta)}\}\label{sp:exactgrowth}\\
+  &\ge \tfrac h2(q-\nu),\qquad
+    \nu=\beta+2\alpha+2\gamma=19b^{-4}+2b^{-8}.\nonumber
+\end{align}
+The last line uses $2\sqrt u\le1+u$ and $q\beta\ge0$.
+Choose a translate with at least the average gain. The new fraction obeys
+$q_{j+1}\le(1-h/(2d))q_j+(h/(2d))\nu$. Starting from $q_0=1$
+and using $0<h/(2d)\le1$ gives, after $n$ choices,
+\begin{equation}
+ q_n\le\nu+(1-h/(2d))^n\le\nu+\exp(-nh/(2d)).
+ \label{sp:decay}
+\end{equation}
+Repeated translates can be discarded without changing the span.
+
+\paragraph{A stronger rank bound on the same budget.}
+Take $n=\lceil(10d/h)\log b\rceil$ with $b\ge3$. For the resulting
+set $J$ the cost and missing fraction satisfy
+\begin{align}
+ |J|h_r &\le nh\le 10d\log b+2d\le5d\log(1+2b^2),
+   \label{sp:card}\\
+ q_n&\le 19b^{-4}+b^{-5}+2b^{-8}<20b^{-4}.
+   \label{sp:rank}
+\end{align}
+For the last inequality in \eqref{sp:card} use $5\log 2>2$.
+Equations \eqref{sp:card}--\eqref{sp:rank} imply the original two
+allowances, since $20b^{-4}\le4b^{-2}$ for $b\ge3$.
+The coordinate isomorphism and the nonzero scalar normalizations identify
+these images of $S_r$ with the images used by Theorem~B. Independent
+vectors can still be selected from the actual translates of the short
+integral forms supplied by Theorem~A.
+
+\paragraph{The sharp obstruction from the two moments.}
+Take $F$ to be the sum of \emph{all} allowed images. Then $g_s=0$ for
+every $s$, so \eqref{sp:exactgrowth} gives a permanent missed fraction of
+at most
+\[
+ q_* = 1-\frac{(1-\alpha-\gamma)^2}{1+\beta}
+ \qquad(\alpha+\gamma<1).
+\]
+For full source this threshold can hold with equality. Let $b\ge3$ be
+an integer, $x=b^4$, $m=(x-5)^2$, and $d=x(x+9)$. On $V=H=\mathbb C^d$,
+a cyclic group of order $m$ permutes the first $m$ coordinate axes
+regularly and fixes the other $d-m$. Take $E=I$, $S_r=S=\mathbb C$
+and $P(1)=\sqrt{1-5/x}\,e_1$. The near-isometry condition is sharp.
+Only the identity group element has $P^*U_sP\ne0$, so the normalized
+second moment is
+\[
+ d\,\mathbb E_s\|P^*U_sP\|_{\rm HS}^2
+       =\frac{d(1-5/x)^2}{m}=1+9/x.
+\]
+The whole orbit spans exactly the first $m$ axes. Its missed fraction is
+\[
+ \frac{19x-25}{x(x+9)}
+       =1-\frac{(1-5/x)^2}{1+9/x}
+       =(19+o(1))b^{-4}.
+\]
+Thus any universal leading coefficient smaller than $19$ fails for these
+three input inequalities, even with access to every translate. Further
+arithmetic information about the Poincar\'e map could produce a stronger
+conclusion in the actual automorphic spaces. The example determines the
+limit of the moment argument. For a concrete comparison of the abstract estimates, at $b=10$ the published allowance is $4\%$, the new upper bound is $0.191002\%$, and this cyclic example actually misses about $0.189804\%$.
+
+\paragraph{Relation to the existing proof.}
+The group average, Cauchy--Schwarz bound, and preimage rank identity are
+already present in \texttt{FewTranslates.lean}. The change is to apply
+them on $S_r$ in the first step, retain the original numerical errors,
+and solve one affine recurrence. The existing proof first weakens both
+moment errors to $(8b^2)^{-1}$, obtains enough translates of the entire
+source, and then bounds the cumulative loss on restricting their images.
+The local orbital estimates enter at precisely \eqref{sp:near} and \eqref{sp:mom}. Thus a formal refactor can reuse the source's \source{New/Spanning/SecondMoment/FewTranslates}{288}{Hilbert--Schmidt estimate} and its \source{New/Spanning/SecondMoment/FewTranslates}{393}{rank identity}, then change the dimension recurrence and the final restriction step.

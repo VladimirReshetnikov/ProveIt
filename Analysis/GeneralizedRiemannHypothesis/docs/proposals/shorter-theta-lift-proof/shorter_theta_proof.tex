@@ -1,0 +1,315 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,tabularx,microtype}
+\usepackage[letterpaper,margin=0.93in,top=0.85in,bottom=0.86in]{geometry}
+\usepackage{xcolor,fancyhdr,hyperref}
+\definecolor{ink}{HTML}{153852}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=ink,pdftitle={Shortening the theta-lift proof of Dirichlet GRH}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small\textsc{Theta lifts and Dirichlet zeros}}\rhead{\small Proof simplifications}\cfoot{\thepage}
+\setlength{\headheight}{15pt}
+\newtheorem{thm}{Theorem}\newtheorem{lem}[thm]{Lemma}
+\newcommand{\Z}{\mathbb Z}\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}\newcommand{\tr}{\operatorname{tr}}\newcommand{\HS}{\mathrm{HS}}
+\newcommand{\src}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d8415e76ad850651f8c0083afe689dd9f4a45a10/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean/grh/src/#1.lean\#L#2}{#3}}
+\newcommand{\gap}{\beta-\tfrac12}
+\newcommand{\supp}{\operatorname{supp}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4pt plus 1pt minus 1pt}
+\allowdisplaybreaks
+\begin{document}
+\thispagestyle{empty}
+{\small\color{ink}\textsc{Research note}\hfill 27 November 2026}
+
+\vspace{0.16in}
+{\LARGE\bfseries Shortening the theta-lift proof of Dirichlet GRH\par}
+\vspace{0.05in}
+{\large A Fourier estimate for quadratic twists and a direct argument for spanning\par}
+\vspace{0.09in}
+The most substantial replacement concerns the choice of an imaginary quadratic field. A hypothetical zero of a Dirichlet $L$-function could disappear from the proof's prime statistic if a quadratic twist had a zero at the same point. The source selects a prime discriminant that prevents this cancellation in an entire box. We give another proof of that selection theorem, with a stronger fixed-height exponent than the estimate used in the source. It works also for the zeta function, with the same auxiliary modulus required by the construction.
+
+\begin{thm}[Few exceptional primes]\label{thm:tw}
+Fix a positive integer $Q$, $H\ge0$, and $1/2<\beta<1$. Write $h=\beta-1/2$ and $\eta_d(n)=(n/d)$ for an odd prime $d$. For each $\epsilon>0$, the number of primes $X<d\le2X$, $d\nmid Q$, for which
+\[
+ L(z,\psi\eta_d)=0\quad\text{for some }\psi\bmod Q,
+ \qquad \Re z\ge\beta,\quad |\Im z|\le H
+\]
+is $O_{Q,H,\beta,\epsilon}(X^{1-h/4+\epsilon})$. Every fixed reduced class modulo $Q$ contains a prime outside this exceptional set in every sufficiently large dyadic interval.
+\end{thm}
+
+The proof uses two elementary observations. For a sum of length $Z$ the correlations of distinct indices can be bounded by P\'olya--Vinogradov as long as $Z\le\sqrt X$. Poisson summation changes a smooth sum longer than $\sqrt X$ into one of effective length $O_Q(X/Z)$. Consequently a short approximation to $L$ is accurate \emph{on average}. Multiplication by a short M\"obius sum removes the low coefficients, and a zero costs a fixed amount of area in a complex disk. At $\beta=3/4$, for example, we obtain $O(X^{15/16+\epsilon})$ against the source's $O(X^{71/72})$. With Heath-Brown's quadratic large sieve as input, Section~\ref{sec:sieve} gives a one-page version and improves the exponent to $7/8+\epsilon$ at the same boundary. These are upper bounds for a fixed box. We make no claim of an optimal density theorem.
+
+A second replacement (Section~\ref{sec:span}) obtains the required large family of independent forms directly inside the ramified source. Its proof is finite-dimensional and retains both constants in the published interface. Section~\ref{sec:classical} records two places where the same classical prime number theorem shortens the exposition and a one-line interpolation at real arguments.
+
+\textbf{Verification status.} The base proof is Levent Alp\"oge's proof with Claude. We compared the supplied guide's 253 declaration anchors and 83 Git blobs with the readable upstream tree. Sutherland's separate checks of the base proof are described on the last page. The replacements below are mathematical proofs. The accompanying finite computations check identities in their derivation. A Lean elaboration and an end-to-end kernel replay of a modified proof are open implementation work.
+
+\newpage
+\section{Which parts of the proof carry the square-root bound?}\label{sec:map}
+For a character modulo $q$ the proof takes $Q=18480q$ and any prime $d\equiv Q/2-1\pmod Q$. Set $\lambda_{d,Q}(n)=\mathbf1_{n\equiv1\bmod Q}\Lambda(n)(1-\eta_d(n))$. The quantity whose sign the geometry can control is
+\[
+ R_{d,Q}(x)=\sum_{n\le x}\lambda_{d,Q}(n)(1/n-1/x)
+                   -\frac{\log x}{\varphi(Q)}-c_{d,Q}.
+\]
+Here $c_{d,Q}$ is the constant making $R_{d,Q}(x)\to0$. Inert primes in the CM field produce the factor $1-\eta_d$, and the different weights of the archimedean embeddings select the progression. Keeping the $d$-dependence is essential.
+
+\textbf{Short forms.} Local divisibility of a theta derivative makes it possible to divide an algebraic vector by a large integer. At the archimedean places the derivative and the periods give an upper bound for its size. Two cutoffs $x$ and $x_1$ expose the prime sum at $x$. In the guide's notation, with $a$ the derivative order and $A,B$ sets of embeddings, the total excess is exactly
+\[
+ \mathcal R/a=|B|\{R_{d,Q}(x)-R_{d,Q}(x_1)\}+|A|R_{d,1}(x_1).
+\]
+The proof must also bound the denominators of the vectors after translation.
+
+\textbf{Enough independent forms.} A normalized Poincar\'e map, a projection to selected local types, and estimates of their second moments ensure that few translates span almost all of the target. Both the rank and the number of translates matter. A large number would consume too much of the denominator allowance. Section~\ref{sec:span} changes how the measured second moments are used.
+
+\textbf{A matching lower bound.} Theta inner-product formulas for a chain of lifts, control of congruences, and a product formula give a lower bound for the same squared covolume with its index correction. For target dimension $D$, basis size $n$, common main term $H_0\ge0$, and error allowances $L,I$, the comparison has the form
+\[
+ D(H_0-3L)\le n(H_0-m\mathcal R+L)+2DI.
+\]
+Since $D/2\le n\le D$, the surplus $(n-D)H_0$ has the favorable sign. The prescribed scales yield $m\mathcal R\le fa(\log b)^5$. The chain length $m\ge\sqrt{x}$ gives the gain at $x$. The far cutoff has $\log x_1\ge x^{c}$ for a selectable fixed $c>0$, so inverse powers of $\log x_1$ suffice there. The result for each fixed $d,Q$ is
+\begin{equation}
+ R_{d,Q}(x)\le x^{-1/2+\epsilon}\quad\text{eventually, for every }\epsilon>0.
+ \label{eq:one}
+\end{equation}
+
+\textbf{Detection of a zero.} The geometry supplies \eqref{eq:one} for every admissible $d$. The analytic argument then chooses $d$ for a proposed zero. Theorem~\ref{thm:tw} implements that choice. It does not enter the inner-product formula or replace the matching of $H_0$. In particular, the quadratic twists $\psi\eta_d$ in Theorem~\ref{thm:tw} and the auxiliary torus characters used to control the chain's denominators have different roles. The source interfaces are \src{New/Reduction/MainInequality}{87}{the main inequality}, \src{New/Reduction/OneSidedBound}{200}{the real one-sided estimate}, and \src{New/Reduction/Zeros/Criterion}{37}{the analytic criterion}.
+
+\newpage
+\section{The estimate for short character sums}\label{sec:short}
+All implied constants in the proof of Theorem~\ref{thm:tw} may depend on $Q$ and on the compact set of complex arguments under discussion. All $\ell^p$ norms below are \emph{unnormalized} sums over odd primes $d\in(X,2X]$ prime to $Q$. We take $X\ge 2$. A freely chosen small exponent is denoted by $e>0$.
+
+\begin{lem}[Interval estimate]\label{lem:short}
+Let $K\ge1$, $J$ be any subinterval of $[K,4K]$, and $|a_n|\le A$. Uniformly in $J$,
+\[
+ \left\|\sum_{n\in J}a_n\eta_d(n)\right\|_2
+ \ll_e A\, K^e\big(\sqrt{XK}+K^{3/2}\big).
+ \tag{S}
+\]
+\end{lem}
+\begin{proof}
+Enlarge the sum of squared absolute values to all odd denominators $v\in(X,2X]$ using the Jacobi symbol $(n/v)$. Each added summand is nonnegative. Expand \emph{after} enlarging. For a pair $n,m$ the correlation is $\sum_{v\ \mathrm{odd}}(nm/v)$ on that interval. If $nm$ is square its absolute value is at most $2X$. The number of such pairs with $m,n\le4K$ is at most
+\[
+ \sum_{\substack{s\le4K\\s\ \mathrm{squarefree}}}\lfloor\sqrt{4K/s}\rfloor^2
+ \ll K\log(2K),
+\]
+since the two indices must have the same squarefree part. For a nonsquare $w=nm$, quadratic reciprocity identifies $(w/v)$ on odd $v$ with a nonprincipal, possibly imprimitive, real Dirichlet character after extending by zero at even $v$, with modulus $\le 8w$. Indeed, the squarefree part determines a nontrivial primitive quadratic character, and primes in the square part merely impose coprimality conditions. This also covers $w$ twice a square via the character modulo $8$.
+
+The interval sum of an imprimitive nonprincipal character modulo $M$ is $\ll_e M^{1/2+e}$. To see the possible loss, start with the primitive P\'olya--Vinogradov bound $O(\sqrt f\log(2f))$ in conductor $f$, and use inclusion--exclusion at primes of $M$ outside $f$, at a cost $\le\tau(M)$. The primitive bound itself follows by finite Fourier expansion: each nonzero Fourier coefficient has size at most $1/\sqrt f$ in the normalized transform, and an interval has exponential sums bounded by $\min(f,1/\|k/f\|)$ after full periods are removed. Thus each nonsquare pair costs $O_e(K^{1+e})$. There are $O(K^2)$ pairs. Summing absolute upper bounds, taking square roots and shrinking $e$ gives (S).
+\end{proof}
+For $K\le\sqrt X$ the first term dominates. If the coefficients have size $K^{-\sigma}$ and $\sigma>1/2$, a block of increasing length therefore contributes a decreasing $K^{1/2-\sigma}$ to the root-mean-square. For $K>\sqrt X$ the nonsquare pairs exceed this allowance. The next lemma uses Fourier duality before applying (S) in this range.
+
+\newpage
+\section{A smooth block at every length}\label{sec:block}
+Pass first to a primitive fixed character $\psi$ of conductor $f\mid Q$. Then $\chi_d=\psi\eta_d$ is primitive of conductor $C_d=fd$, including when $f=1$. Its nontrivial $d$-component ensures that its zero-frequency Gauss sum vanishes. Let $W\in C_c^\infty((0,\infty))$ be supported in $[1,4]$. Put
+\[
+ S_d(Z,s)=\sum_{n\ge1}\chi_d(n)n^{-s} W(n/Z).
+\]
+\begin{lem}[Smooth block bound]\label{lem:block}
+For $Z\ge1$ and $s=\sigma+it$ in any fixed compact set,
+\[
+        \|S_d(Z,s)\|_2\ll_{e,W}X^{1/2+e} Z^{1/2-\sigma}.       \tag{F}
+\]
+\end{lem}
+\begin{proof}
+For $Z\le\sqrt X$, apply (S) directly. Otherwise put $L=X/Z\le\sqrt X$ and $w_s(y)=y^{-s}W(y)$ extended by zero outside its support. Write $\widehat w(t)=\int w(y)e^{-2\pi iyt}dy$. Poisson summation on each residue class modulo $C_d$, followed by the finite Gauss transform, gives the exact identity
+\[
+ S_d(Z,s)=\frac{\tau(\chi_d)}{C_d} Z^{1-s}
+       \sum_{k\ne0}\overline{\chi_d}(k)\widehat w_s(kZ/C_d),
+ \qquad |\tau(\chi_d)|=\sqrt{C_d}.
+\]
+The zero-frequency term vanishes. The smooth weights on the right depend on $d$. To handle them, work on $K\le |k|<2K$ for $K=1,2,4,\ldots$, treating the two signs separately. The factor $\overline\chi_d(-1)$ in the negative block has modulus one. By integration by parts in the Fourier integral, for each $A>0$ the weight $w_d(v)=\widehat w_s(\pm v Z/C_d)$ satisfies
+\[
+ \sup_{K\le v\le2K}\big(|w_d(v)|+K|w'_d(v)|\big)
+                  \ll_A (1+K/L)^{-A}
+\]
+uniformly in $s,d$. Here $f$ is fixed. Partial summation expresses a block as an endpoint term and an integral of the partial sums through $v$ against $w'_d(v)$. Apply the triangle inequality in $\ell^2$ under the integral and use (S) at each \emph{fixed} $v$ with coefficients $\overline\psi(k)$. Its norm is bounded by
+\[
+ \ll_{A,e} (1+K/L)^{-A}K^e(\sqrt{XK}+K^{3/2}).
+\]
+If $L\ge1$, summing over dyadic $K$ gives $O_e(L^e(\sqrt{XL}+L^{3/2}))\ll_e X^e\sqrt{XL}$ by $L\le\sqrt X$. If $L<1$, take $A>3+e$ to obtain $O((\sqrt X+1)L^A)\ll\sqrt{XL}$. Finally multiply by $O_Q(Z^{1-\sigma}/\sqrt X)$, the modulus of the outside factor. Since $L=X/Z$, this is exactly (F).
+\end{proof}
+The change of length is the only functional transformation needed in this selection argument. The freedom to work at bounded height enters through uniform decay of $\widehat w_s$ and its derivative. No estimate uniform in an increasing height is asserted.
+
+\newpage
+\section{How a zero costs area}\label{sec:disk}
+Fix $\sigma_0=1/2+u$ with $0<u<h$. Work on the rectangle $\mathcal U=[\sigma_0,2]+i[-H-1,H+1]$. Choose a smooth cutoff $w$ on $[0,\infty)$ equal to one on $[0,1]$ and zero on $[2,\infty)$, with $0\le w\le1$. For all large $X$ put $Y=\lfloor X^{1/4}/2\rfloor$. Define
+\[
+ A_d(s)=\sum_n w(n/Y)\chi_d(n)n^{-s},\qquad
+ M_d(s)=\sum_{m\le Y}\mu(m)\chi_d(m)m^{-s}.
+\]
+With $W(y)=w(y/2)-w(y)$ the remaining portion $L(s,\chi_d)-A_d(s)$ is the sum of the blocks (F) at $Z=2^jY$, $j\ge0$. Indeed, the cutoff differences telescope and the ordinary Dirichlet series converges for $\sigma>0$ by periodicity and zero mean. Partial summation gives the same limit with the smooth cutoff. Since $\sigma\ge\sigma_0$, the block norms form a convergent geometric series. By (F), and by (S) applied dyadically to $M_d$,
+\[
+ \|L(s,\chi_d)-A_d(s)\|_2\ll X^{1/2+e}Y^{-u},\qquad
+ \|M_d(s)\|_2\ll X^{1/2+e}.
+\]
+Constants may depend on $u$. The second bound uses $\sum_{j\ge0}2^{-ju}<\infty$, absorbing $K^e$ into $X^e$. A pointwise bound for $M_d$ would lose a power of $Y$ here.
+
+In the product $A_d M_d-1$, the coefficient of $\chi_d(k)k^{-s}$ for $k>1$ is $b_k=\sum_{m\mid k,\,m\le Y}\mu(m)w(k/(mY))$. It is zero for $1<k\le Y$, bounded in absolute value by $\tau(k)$, and zero for $k>2Y^2$. The constant coefficient of the product cancels with $1$. Thus all terms lie in $Y<k\le 2Y^2\le\sqrt X$. Applying (S) to dyadic blocks, including $\psi(k)$ in each fixed coefficient, gives $\|A_dM_d-1\|_2\ll_e X^{1/2+e}Y^{-u}$. For this estimate absorb the divisor bound $\tau(k)\ll_{e'} k^{e'}$ using a sufficiently small $e'$. By Cauchy--Schwarz over $d$, using $\#\{d\}\le2X$,
+\begin{align*}
+ \sum_d |L(s,\chi_d)M_d(s)-1|
+ &\le \|L-A_d\|_2\,\|M_d\|_2+(2X)^{1/2}\|A_dM_d-1\|_2\\
+ &\ll_e X^{1+e}Y^{-u}\ll_e X^{1-u/4+e}.
+\end{align*}
+This holds at every $s\in\mathcal U$, with an implied constant independent of $s$.
+
+At a zero the holomorphic function $LM_d-1$ has absolute value one. Each zero in the box of the theorem has real part $\le1$ by the Euler product. A disk of radius $r=\min(\beta-\sigma_0,1)/2$ about it lies in $\mathcal U$. The sub-mean inequality for the modulus shows that the integral of $|LM_d-1|$ over $\mathcal U$ is at least $\pi r^2$ for that $d$. Integrate the preceding bound over $\mathcal U$ and count each bad prime once. Taking $u<h$ sufficiently close to $h$ and $e>0$ sufficiently small gives $O(X^{1-h/4+\epsilon})$.
+
+An imprimitive fixed character contributes only finitely many extra Euler factors to its primitive twist, all nonzero for $\Re s>0$. Summing over the finite family modulo $Q$ finishes the count. A fixed reduced class has $\sim X/(\varphi(Q)\log X)$ primes in the interval, more than the exceptional count for $\epsilon<h/4$. This proves Theorem~\ref{thm:tw}.
+
+\newpage
+\section{A one-page route using the quadratic large sieve}\label{sec:sieve}
+For a paper that takes Heath-Brown's quadratic large sieve as a classical input, the entire prime-selection estimate can be obtained with sharp cutoffs. In the setting of Theorem~\ref{thm:tw} this gives the stronger bound
+\[
+ \#\{\text{exceptional }d\}\ll_{Q,H,\beta,\epsilon}
+              X^{1-(\beta-1/2)/2+\epsilon}.
+\]
+Here is the argument independently of the smooth block lemma. Corollary 3 of \href{https://doi.org/10.4064/aa-72-3-235-275}{Heath-Brown, \emph{A mean value estimate for real character sums} (1995)} bounds the sum of $|\sum_{n\le N}a_n\eta(n)|^2$ over primitive real characters of conductor $\le D$ by
+\[
+ \ll_e (DN)^e (D+N)N\max_{n\le N}|a_n|^2 .
+\]
+This form includes nonsquarefree indices and complex coefficients. Take $D=2X$, keep only the characters $\eta_d$, and include $\psi(n)$ in $a_n$. On any block $K\le n\le 2K$, $1\le K\le X$, it gives
+\[
+ \left\|\sum_{n\text{ in block}} a_n\eta_d(n)\right\|_2
+     \ll_e X^{1/2+e}K^{1/2}\max|a_n|,
+\]
+by extending the coefficients by zero.
+
+Fix $1/2+u=\sigma_0<\beta$ with $u>0$ and the same rectangle $\mathcal U$ as above. Use $Y=\lfloor\sqrt X\rfloor$ and take $A_d(s)=\sum_{n\le Y}\chi_d(n)n^{-s}$ and $M_d(s)=\sum_{n\le Y}\mu(n)\chi_d(n)n^{-s}$. We again work with primitive $\psi$, so $\chi_d$ is primitive of conductor $\asymp_Q X$. The interval $Y<n\le X$ contributes $O_e(X^{1/2+e}Y^{-u})$ to $\|L-A_d\|_2$ by summing the displayed block estimate. For $n>X$, partial summation and the individual P\'olya--Vinogradov bound give a tail of absolute value $O_{Q,\mathcal U}(\sqrt X\log(2X) X^{-\sigma_0})$ for each $d$. Its $\ell^2$ norm is $O_e(X^{1/2+e}X^{-u})$. The same block estimate through $Y$ gives $\|M_d\|_2\ll_e X^{1/2+e}$.
+
+The product $A_dM_d-1$ is supported on $Y<k\le Y^2\le X$, with coefficients bounded by $\tau(k)k^{-\sigma_0}$ after taking absolute values. This yields $\|A_dM_d-1\|_2\ll_e X^{1/2+e}Y^{-u}$, as the low coefficients cancel exactly. Hence Cauchy--Schwarz gives
+\[
+ \sum_d|L(s,\chi_d)M_d(s)-1|\ll_e X^{1+e}Y^{-u}
+       \ll_e X^{1-u/2+e}.
+\]
+At a zero the modulus equals one. The sub-mean inequality bounds its integral over $\mathcal U$ below by the area of a fixed-radius disk centered at this zero. Integrating the bound, taking $u$ sufficiently close to $\beta-1/2$, and summing over the fixed family proves the claim, with imprimitive Euler factors handled as before.
+
+For $\beta=3/4$ the bound becomes $O(X^{7/8+\epsilon})$. This is the shortest paper proof of the selection step given in this note. The elementary proof gives a second option for a formal development that already has Poisson summation and character estimates. Deciding which is shorter in Lean would require accounting for the proof of the sieve inequality in the available library.
+
+
+\newpage
+\section{Putting the chosen prime back into the proof}\label{sec:insert}
+Suppose $L(\rho,\chi)=0$ with $1/2<\Re\rho\le1$ and $\rho\ne1$. Pick $1/2<\beta<\Re\rho$, $H=|\Im\rho|$ and $Q=18480q$. The residue class $Q/2-1$ is coprime to $Q$ and is $7\bmod8$. Theorem~\ref{thm:tw} gives a prime $d$ in this class for which \emph{all} the twists of characters modulo $Q$ are zero-free in the rectangle. If only existence is desired, the exceptional primes have finite total weight $\sum(\log d)/d$ by the dyadic bound. The classical divergence of that sum in the specified progression suffices. These statements allow a different prime at each height.
+
+Here is why the precise shape of the conclusion matters. Put $E_\psi=L(s,\psi)$ for a nonprincipal character and $E_\psi=(s-1)L(s,\psi)$ regularized at $1$ for a principal character. Let $n(z)=\sum_{\psi\bmod Q}\operatorname{ord}_z E_\psi$ and let $n_d(z)$ be the analogous sum over $\psi\eta_d$. The continued transform of the remainder has residue
+\begin{equation}
+ \Phi(s)=\int_0^\infty R_{d,Q}(e^v)e^{(1-s)v}\,dv,
+ \qquad \operatorname*{res}_{s=z}\Phi(s)
+        =\frac{n(z)-n_d(z)}{\varphi(Q)z(1-z)}\quad(z\ne0,1).       \tag{R}
+\end{equation}
+Indeed, the Mellin weight of one prime-power summand is $n^{-s}/[s(s-1)]$; orthogonality at class $1$ sums all original logarithmic derivatives with the same sign. Each $L'/L$ has residue equal to the order of the zero. The centering $c_{d,Q}$ removes the possible pole at $1$.
+
+For $\beta<u<1$ real, $n_d(u)=0$ and (R) is nonnegative. For $u>1$ there are no zeros. By \eqref{eq:one} and continuity, some $K\ge2$ gives a positive measure with density $K e^{\beta v}-e^vR_{d,Q}(e^v)$ for $v\ge0$. Its transform $F(s)=K/(s-\beta)-\Phi(s)$ has no possible positive residue on the real axis to the right of $\beta$. If its abscissa of convergence $a_0$ lay there, positivity would give $\lim_{u\downarrow a_0}(u-a_0)F(u)\ge0$. The continuation has at most a simple pole, with residue $\le0$, so this singularity would be removable. Landau's lemma forbids analytic continuation through the real convergence abscissa of a nonnegative Laplace integral. Equivalently, the nonnegative Taylor moments at a point just to its right would sum at a point to its left by monotone convergence. Thus $F$ and $\Phi$ are holomorphic for $\Re s>\beta$.
+
+At $z=\rho$ the residue in (R) vanishes; $n_d(\rho)=0$ by our choice of prime. Hence $n(\rho)=0$. Inducing the supposed character to $Q$ preserves its zero, a contradiction. Reflection by the functional equation gives the critical-line result in the open strip. The principal character of conductor one gives the zeta case, with the standard trivial zeros treated separately in the source. Notice that the RH specialization $q=1$ still asks this construction for the twists of characters modulo $18480$.
+
+The source's \src{Lib/Analytic/QuadraticTwist}{732}{density estimate} is $O(X^{1-h/18})$ for $h=\beta-1/2$. Our dyadic estimate also sums to an estimate up to $X$ (take a fixed sufficiently small $\epsilon$). The improvement here is relative to this particular input, at fixed $Q,H$. Its application is the \src{Lib/Analytic/QuadraticTwist}{796}{existence theorem}; no density exponent is used a second time in the determinant inequality.
+
+\newpage
+\section{A direct spanning argument on the ramified forms}\label{sec:span}
+Let a finite group $G$ act unitarily on a complex Hilbert space $V$ of finite dimension. Let $e$ be the orthogonal projection onto an invariant target $T$ of dimension $D>0$. Let $P$ map a full source of dimension $h_0>0$ into $V$. A designated subspace $S$ of this source has dimension at least $(1-r)h_0$. Write $\pi_U$ for orthogonal projection onto $U$ and $\E_g$ for uniform averaging. The two source estimates are
+\begin{align}
+ \|eP\pi_U\|_{\HS}^2 &\ge \dim U- a h_0 \qquad\text{for every source subspace }U,\label{eq:near}\\
+ D\,\E_g\|P^*gP\|_{\HS}^2 &\le(1+v)h_0^2.\label{eq:moment}
+\end{align}
+Here $a,v,r$ are nonnegative and $a<1$. In this section $a$ denotes an error fraction. The source gives $a=5b^{-4}$, $v=9b^{-4}$ and $r\le b^{-8}$. Passing to the ramified source only after choosing translates incurs a dimension loss for each translate in the existing proof. We can measure its effect at the time each translate is chosen.
+
+\begin{thm}[Spanning within the prescribed source]\label{th:span}
+For these source bounds and $b\ge8$ there exists a subset $J\subset G$ with
+\begin{align*}
+ \operatorname{codim}_T\sum_{g\in J}egP(S)&\le 2D/b^2,\\
+ |J|\dim S &\le D\left(\frac{\log(b^2)}{1-1/b}+\frac{1}{1-5b^{-4}}\right).
+\end{align*}
+\end{thm}
+\textit{Proof.} Put $A=\E_g gPP^*g^*$ and $C=(D/h_0)eAe$ on $T$. Expanding the square under the trace and grouping the two group elements by their quotient gives
+$\tr A^2=\E_g\|P^*gP\|_{\HS}^2$. Orthogonal compression contracts the Hilbert--Schmidt norm. The trace of $eAe$ is $\|eP\|_{\HS}^2$ since $e$ commutes with the action. By \eqref{eq:near} on the full source and \eqref{eq:moment},
+\[
+ \tr C\ge (1-a)D,\qquad \tr C^2\le (1+v)D,
+ \quad\text{so}\quad\|C-I_T\|_{\HS}^2\le (2a+v)D .
+\]
+Also $\tr C\le D\sqrt{1+v}\le D(1+v/2)$ by Cauchy--Schwarz. If $F$ is the span already obtained, let $H_F=T\ominus F$ have dimension $uD$. Pairing $\pi_{H_F}$ with $C-I_T$ in the Hilbert--Schmidt inner product gives
+\[
+  \tr(\pi_{H_F} C)\ge D\big(u-\sqrt{(2a+v)u}\big).
+\]
+The error decreases when the unfilled subspace gets smaller. This feature of centering the group average at $I_T$ gives the improved translate count.
+
+For each $g$, take $U_g=\{w\in S:egPw\in F\}$. On $U_g$ the vectors $egPw$ and $\pi_FgPw$ coincide. Summation over an orthonormal basis of $U_g$, unitarity, and \eqref{eq:near} give $\dim U_g\le ah_0+\|\pi_FgP\|_{\HS}^2$. Rank--nullity in $T/F$ gives the dimension gained as $\dim S-\dim U_g$. The mean squared norm on the right is $(h_0/D)\tr(\pi_F C)$. Subtract the missing trace from $\tr C$ to obtain a mean rank gain of at least
+\[
+ h_0\big(u-\sqrt{(2a+v)u}-a-r-v/2\big).
+\]
+
+\newpage
+\subsection*{Closing the recurrence}
+Choose a translate gaining at least this mean. For $0<t<1$, the inequality $\sqrt{(2a+v)u}\le tu+(2a+v)/(4t)$ gives, for the new missing fraction $u'$,
+\[
+ u'-E_0\le(1-p)(u-E_0),\quad
+ p=\frac{h_0}{D}(1-t),\quad
+ E_0=\frac{a+r+v/2+(2a+v)/(4t)}{1-t}.
+\]
+Applying \eqref{eq:near} to $\ker(eP)$ shows $(1-a)h_0\le D$. Hence $0<p\le1$ if $t\ge a$, so the recurrence may be iterated without changing its direction. Start at $u=1$. For $0\le E_0\le1$, the missing fraction after $j$ choices is at most $E_0+(1-E_0)(1-p)^j\le E_0+e^{-jp}$.
+
+Take $t=1/b$. It is at least $5b^{-4}$ for $b\ge8$. Direct substitution gives
+\[
+ b^2 E_0\le\frac{19/(2b^2)+b^{-6}+19/(4b)}{1-1/b}
+ \le\frac{194561}{229376}<1 .
+\]
+The right side before the numerical bound decreases with $b$. At $j=\lceil\log(b^2)/p\rceil$ we have $u_j\le 2/b^2$. Remove repeated translates. Then $|J|\dim S\le jh_0\le D\log(b^2)/(1-1/b)+D/(1-a)$. This proves Theorem~\ref{th:span}. \hfill$\square$
+
+\textbf{Insertion into the volume bound.} The stated target in \src{New/Reduction/ShortAndEnough}{448}{Theorem B} is missing fraction $4/b^2$ and budget $5D\log(1+2b^2)$. For $b\ge8$, $(1-1/b)^{-1}\le8/7$ and $(1-5b^{-4})^{-1}<2$. Since $\log(b^2)>1$, the new budget is at most $(8/7+2)D\log(b^2)<5D\log(1+2b^2)$. Both requirements therefore hold for the same $J$. A scalar normalization of a map does not affect its range when the scalar is nonzero, as in \src{New/Reduction/ShortAndEnough}{386}{the source's range identity}. All arithmetic estimates used to prove \eqref{eq:near} and \eqref{eq:moment} still enter here.
+
+\textbf{What this changes in a formal implementation.} The existing \src{New/Spanning/SecondMoment/SpanningTheorem}{257}{near-isometry} and \src{New/Spanning/SecondMoment/SpanningTheorem}{288}{second moment} are suitable inputs. The mean-energy identity in \src{New/Spanning/SecondMoment/FewTranslates}{288}{the trace estimate} can be reused. The proposed lemma takes the subspace $S$ as an argument, computes a trace on $T\ominus F$, and iterates one affine inequality. It replaces the threshold-dependent contraction and the later estimate of the sum of the codimension losses. The new bound controls the constant multiplying $D\log(b^2)$. The chain length and the final critical exponent in \eqref{eq:one} come from other steps.
+
+\textbf{Why a count on translates is indispensable.} In the exact model of a cyclic group on $D$ coordinate axes, a source of dimension one mapped to a coordinate vector has perfect averaged second moment. Each translate adds at most one axis. Thus even perfect averaged data allow a target for which almost $D$ translates are required. Taking every translate without counting them would lose control of the index term in the covolume inequality. The recurrence quantifies the cost for the particular arithmetic tolerances that Theorem C accepts.
+
+\newpage
+\section{Two uses of a classical prime number theorem}\label{sec:classical}
+For a paper proof one may use the unconditional Siegel--Walfisz theorem. In a convenient form, for fixed $A,B>0$, reduced $a\bmod m$ and $m\le(\log T)^A$,
+\[
+ \psi(T;m,a)=T/\varphi(m)+O_{A,B}(T(\log T)^{-B}).
+\]
+The same holds for $\vartheta$ after removing prime powers of exponent at least two, whose total contribution is $O(\sqrt T\log^2(2T))$. This one theorem gives the following two inputs at quite different scales. A proof from the axioms must still account for the theorem's own dependencies.
+
+\textbf{The distant cutoff.} For fixed coprime $d,q$, with $d$ odd prime, put $V(t)=\sum_{n\le t}\lambda_{d,q}(n)$. The reduced classes modulo $qd$ above $1\bmod q$ have weights $1-\eta_d(a)$ with sum $d-1$. Their main term is therefore $t/\varphi(q)$. Powers of the ramified prime $d$ contribute $O(\log(2t))$, and primes dividing $q$ do not occur. This works also for $q=1$. Thus $D(t)=V(t)-t/\varphi(q)\ll_{d,q,B}t(\log t)^{-B}$ for $t\ge2$.
+
+The uncentered sum is $\int_1^x V(t)t^{-2}\,dt$, by integrating each individual coefficient. Its centering constant is $c=\int_1^\infty D(t)t^{-2}\,dt$. To check the normalization against the geometric proof, for real $s>1$ subtract $s/[\varphi(q)(s-1)]$ from $\sum_n\lambda_{d,q}(n)n^{-s}$. Partial summation gives $s\int_1^\infty D(t)t^{-s-1}\,dt$, which tends to $c$ by dominated convergence. This is the regularized value defining the source's $c_{d,q}$. Consequently
+\[
+ R_{d,q}(x)=-\int_x^\infty D(t)t^{-2}\,dt\ll_{d,q,B}(\log x)^{1-B}\quad(B>1).
+\]
+Choose $B$ one larger than the desired power, or larger still to absorb the implicit constant. This gives the \src{New/Reduction/Zeros/PrimeNumberTheorem}{217}{needed far-cutoff estimate} on paper directly. Its use is legitimate when $d$ was selected after fixing a hypothetical zero because $x$ tends to infinity \emph{after} selecting $d$.
+
+\textbf{An auxiliary prime in a logarithmic window.} The source also needs a prime $p\equiv1\bmod m$ with $e^U\le p\le e^{U+W}$, where $m=M^k\le W^A$ and $W\le U\le W^A$, for all sufficiently large $W$. Set $T=e^{U+W}$. Then $m\le(\log(T/2))^A$ and $T/2\ge e^U$ eventually. The difference of the two $\vartheta$ estimates at $T,T/2$ has main term $T/(2\varphi(m))$; using $B>A+1$ makes its error relatively $o(1)$ uniformly. The difference is positive. The \src{Lib/Analytic/Primes}{389}{source} already identifies this consequence of Siegel--Walfisz and proves the consequence directly.
+
+\textbf{Interpolation from integers.} Write $m=\lceil y\rceil$ for $y\ge1$. The uncentered sum is increasing because each $\lambda_{d,q}(n)\ge0$ and each kernel $(1/n-1/y)_+$ is increasing in $y$. Thus $R_{d,q}(y)\le R_{d,q}(m)+\log(m/y)/\varphi(q)\le R_{d,q}(m)+1/y$. If the integer bound is $Cm^t$ with $-1\le t\le0$ and $C\ge0$, the real bound is $(C+1)y^t$. This upper interpolation uses no estimate for the density of primes between integers.
+
+\newpage
+\section{Source correspondence and reproducibility}
+The attachment is the 79-page \emph{How theta lifts locate the zeros of Dirichlet $L$-functions}. Its discussion of the second moment (Section 9), determinant and two cutoffs (Section 16), and good twists and Landau's argument (Sections 17--18) provides the notation and the comparison used here. The new arguments operate at the following boundaries in the readable Lean package. Each entry links to the pinned source.
+
+\smallskip
+{\small\renewcommand{\arraystretch}{1.24}
+\begin{tabularx}{\linewidth}{@{}p{0.27\linewidth}XX@{}}
+\toprule
+Step & Existing input or target & Treatment in this note\\\midrule
+Geometric comparison &
+\src{New/Reduction/MainInequality}{87}{Main inequality} &
+Used with the declared rank and index thresholds.\\
+Selecting independent forms &
+\src{New/Spanning/SecondMoment/SpanningTheorem}{257}{First moment on subspaces}, \src{New/Spanning/SecondMoment/SpanningTheorem}{288}{group second moment}, \src{New/Reduction/ShortAndEnough}{410}{restricted source} &
+Theorem~\ref{th:span} yields both requirements directly.\\
+Choosing $d$ &
+\src{Lib/Analytic/QuadraticTwist}{732}{Exceptional count} and \src{Lib/Analytic/QuadraticTwist}{796}{prime selection} &
+Lemmas~\ref{lem:short}--\ref{lem:block} and the disk argument replace the Gaussian mollifier estimates.\\
+From an upper bound to a zero-free region &
+\src{New/Reduction/Zeros/Criterion}{37}{One-sided criterion} and \src{Lib/Analytic/Landau}{217}{Landau lemma} &
+Theorem~\ref{thm:tw} supplies the simultaneous nonvanishing premise.\\
+Final statements &
+\src{Statements}{6}{Half-plane formulation} and \src{Main}{5}{Mathlib RH theorem} &
+Modulus induction and reflection as in the source.\\\bottomrule
+\end{tabularx}}
+
+\textbf{What was checked.} The guide's source anchors match the files in the upstream readable tree \texttt{2e133df63d7f4da6b3059c4195324f8e9187ba73}, at upstream commit \texttt{72fead10} and the guide's ProveIt pin \texttt{d8415e76}. Sutherland reports successful builds, axiom checks, and statement comparisons with independent kernel checks for the base readable and compact editions. The modified arguments in this note have been derived and checked on paper. No build-time or code-size saving has been measured. The finite scripts exercise the sign, normalization, and counting identities on examples; the general estimates are proved in the text.
+
+\textbf{Primary and background references.}
+\begin{itemize}\setlength\itemsep{0pt}
+\item L. Alp\"oge, \href{https://alpo.ge/remark.pdf}{announcement and discovery notes}; \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{readable formalization}; \href{https://math.mit.edu/~drew/shortgrh/}{A. V. Sutherland's verification record}.
+\item D. Koukoulopoulos, \href{https://dms.umontreal.ca/~koukoulo/documents/publications/primes.pdf}{\emph{The Distribution of Prime Numbers}}, Chapters 9--12 and Appendix B, for Dirichlet characters, Fourier transforms and primes in arithmetic progressions.
+\end{itemize}
+\textbf{Reproduction.} Run \texttt{python3 check\_twist\_identities.py} and \texttt{python3 check\_spanning.py}. Run \texttt{python3 check\_sources.py /path/to/grh} to verify the selected source anchors against the pinned tree. Rebuild with \texttt{latexmk -pdf shorter\_theta\_proof.tex}.
+
+\end{document}

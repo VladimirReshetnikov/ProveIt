@@ -1,0 +1,76 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,tabularx,array}
+\usepackage[letterpaper,margin=0.91in,top=0.78in,bottom=0.83in]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref,fancyhdr,enumitem}
+\definecolor{ink}{HTML}{183747}
+\definecolor{teal}{HTML}{126867}
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal,citecolor=teal,pdftitle={Three simplifications of the theta-lift proof of RH},pdfauthor={Research note prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small\color{ink}Three simplifications of the theta-lift proof}
+\fancyhead[R]{\small\color{ink}RH and Dirichlet GRH}\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.25pt}
+\setlength{\parindent}{1em}\setlength{\parskip}{2.5pt plus 0.5pt}
+\setlist{nosep,leftmargin=*}
+\setcounter{tocdepth}{1}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\vv}{\operatorname{v}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\HH}{\mathop{\rm Re}}
+\newcommand{\pin}{d8415e76ad850651f8c0083afe689dd9f4a45a10}
+\newcommand{\source}[3]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d8415e76ad850651f8c0083afe689dd9f4a45a10/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean/grh/src/#1.lean\#L#2}{#3}}
+\begin{document}
+\thispagestyle{plain}
+{\sffamily\footnotesize\bfseries\color{teal} RESEARCH NOTE\hfill 27 NOVEMBER 2026}\par
+\vspace{6pt}
+{\fontsize{24}{29}\selectfont\bfseries\color{ink} Three simplifications of the\\theta-lift proof of RH\par}
+\vspace{5pt}
+{\large A sharp dimension estimate, torsion interpolation, and a quadratic sieve}\par
+\vspace{10pt}
+\noindent\textbf{Abstract.}
+The Alp\"oge theta-lift proof compares the volumes of two descriptions of a family of automorphic forms. We give three replacements within this argument. First, at the same allowance for translates as the source's Theorem~B, the unspanned fraction of the target is at most
+\[
+             19b^{-4}+b^{-5}+2b^{-8}
+\]
+in place of $4b^{-2}$. A cyclic representation attains the leading constant $19$ asymptotically under the stated moment hypotheses. Second, finite Lagrange interpolation on a sparse set of cyclotomic points gives the simultaneous torsion-specialization theorem needed to control denominators. Its order bound is independent of both the degrees and the number of tests. Third, Heath--Brown's quadratic large sieve and a short M\"obius sum select the auxiliary prime that exposes a proposed zero. We carry the replacements to the Riemann hypothesis and indicate their scope for Dirichlet GRH. The new arguments are proved on paper, with a standalone Lean check of the scalar dimension recurrence and the extremal example's arithmetic. We use the original automorphic estimates as inputs.
+\vspace{2pt}
+\tableofcontents
+\vspace{3pt}
+\noindent\textit{Source edition.} We use the readable package in ProveIt, at the snapshot used by the attached 79-page guide \cite{guide,archive}. It corresponds to \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{upstream revision \texttt{72fead10}}. The verification record identifies this exact edition \cite{check}. The enclosed source index gives declaration-level anchors.
+\newpage
+\section{Where the three arguments enter}
+Fix a multiple $Q$ of $18480$ and a prime $d\equiv Q/2-1\pmod Q$. Write $\eta_d(n)=(n/d)$ and $h_Q=\varphi(Q)$. With $\Lambda$ the von Mangoldt function, define
+\begin{equation}
+ R_{u,d}(x)=\sum_{\substack{n\le x\\n\equiv1\bmod u}}
+ \Lambda(n)(1-\eta_d(n))\left(\frac1n-\frac1x\right)
+      -\frac{\log x}{\varphi(u)}-c_{u,d},\qquad u\in\{1,Q\}.
+ \label{eq:remainder}
+\end{equation}
+The fixed-modulus prime number theorem determines $c_{u,d}$ by $R_{u,d}(x)\to0$. The weight $1-\eta_d$ retains the odd powers of inert primes with coefficient two, cancels the split primes, and assigns coefficient one at the ramified prime. In the theta construction these prime powers enter through divisibility of integral derivatives. Two distinct derivative orders on the set of embeddings produce the two cutoffs in the identity
+\[
+  \mathcal R/a=|B|\bigl(R_{Q,d}(x)-R_{Q,d}(x_1)\bigr)+|A|R_{1,d}(x_1).
+\]
+Here $a$ is the long derivative order, $A,B$ are two specified sets of embeddings, $x$ is the observation scale, and $x_1$ is a much more distant cutoff. The $m$ successive lifts detect $m\mathcal R$, with $m$ of order $\sqrt{x}$.
+\par\noindent
+\begin{tabularx}{\linewidth}{@{}p{.20\linewidth}X@{}}
+\toprule
+\textbf{Part of the proof}&\textbf{Contribution to the prime estimate}\\\midrule
+Short forms (A)&An upper bound for the lengths of normalized lifts contains $-m\mathcal R$. The normalization records divisibility and denominators.\\
+Enough forms (B)&Few group translates of these vectors span almost all target dimensions. Section~\ref{sec:spectral-spanning} sharpens this assertion, including its translate budget.\\
+Long forms (C)&The Rallis inner-product formula, the control of congruences, and a product formula bound the volume from below. Section~\ref{sec:torsion} gives a new proof of one specialization lemma used to select local characters for this comparison.\\
+Detection of zeros&The determinant bounds $R_{Q,d}$ from above. Section~\ref{sec:analyticsieve} chooses $d$ so that the resulting transform has an uncancelled pole at the proposed zero.\\\bottomrule
+\end{tabularx}
+\par
+The characters in the last two rows are different. The local characters in the determinant must work through every step of a fixed chain at one coefficient prime. The quadratic character in the prime sum varies with the complex zero under consideration. Confusing the quantifiers would make either replacement insufficient.
+\par
+For the usual RH the arithmetic construction permits the single modulus $Q=18480$. The principal character at this modulus detects every zeta zero in the open critical strip. This specialization still involves all $\varphi(18480)=3840$ characters through the orthogonality relation for $1\bmod Q$. For Dirichlet GRH the same arguments take $Q=18480q$ when testing a character modulo $q$.
+\input{spanning}
+\input{torsion}
+\input{sieve}
+\input{endpoint}
+\end{document}

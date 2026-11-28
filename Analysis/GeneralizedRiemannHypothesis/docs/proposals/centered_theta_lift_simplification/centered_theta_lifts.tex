@@ -1,0 +1,337 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,tabularx,xcolor,microtype,hyperref}
+\usepackage{enumitem,xurl}
+\definecolor{ink}{RGB}{22,43,63}
+\definecolor{accent}{RGB}{0,91,111}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent,citecolor=accent,pdftitle={Centered moments and adaptive completion in the theta-lift proof of RH}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\HS}{\mathrm{HS}}
+\newcommand{\R}{\mathcal R}
+\newcommand{\id}{\mathrm{Id}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\src}[2]{\href{https://github.com/lsernau/grh-lean/blob/72fead102f663d5c7a407964a13dc0cf9d977207/grh/src/#1.lean\#L#2}{\nolinkurl{#1}:#2}}
+\title{\vspace{-1.2cm}\textcolor{ink}{\bfseries Centered moments and adaptive completion\\in the theta-lift proof of RH and GRH}\\[5pt]\large A rigorous replacement for the rank--covolume interface}
+\author{Research note prepared for ProveIt}
+\date{27 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The Alp\"oge--Claude proof of RH and Dirichlet GRH uses three estimates: short integral forms, enough translates, and a lower bound for their corrected covolume. We give a replacement for the middle estimate and weaken the rank hypothesis of the third. The key observation is that the near-isometry and second-moment estimates in the readable Lean development imply a small \emph{centered} Hilbert--Schmidt covariance defect. This yields a dimension-increment bound depending on the missing dimension, directly for the ramified source. Instead of demanding a rank fraction $1-4/b^2$, we choose the fraction according to the actual cost of completing a basis. The resulting proof uses the existing automorphic and arithmetic inputs, and gives a sufficient translate cost of $3d_T\log b$, rather than $5d_T\log(1+2b^2)$. A refined estimate approaches $(1+2/10^6)d_T\log b$ in the prescribed scale regime. The corrected determinant comparison gives $m\R\le17fa(\log b)^4$, sufficient for the original analytic criterion. These are paper-and-pencil derivations from the existing verified inputs; no new Lean kernel check is claimed. An independent random-product proof of the rank step and a formalization plan are supplied.
+\end{abstract}
+\setcounter{tocdepth}{1}\tableofcontents
+\newpage
+\section{Scope and proposed change}
+The supplied 79-page guide \cite{guide} explains the arithmetic mechanism especially in Sections 9, 11 and 16: differentiated theta kernels furnish simultaneous divisibility and small complex lengths; a Poincar\'e map and its translates fill almost all of a selected target; and a product formula gives a lower bound on a corrected Gram determinant. The final comparison converts an $m$-fold gain into a bound for a centered sum of prime powers. A one-sided analytic criterion with quadratic twists then detects all off-line Dirichlet zeros.
+
+The current ProveIt path in the question is an import record, not the directory containing the Lean package. The record points to \href{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/GeneralizedRiemannHypothesis/Lean/grh}{\texttt{Analysis/GeneralizedRiemannHypothesis/Lean/grh}} and identifies upstream revision \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}. We read selected declarations at that immutable upstream revision \cite{lean}. The guide reports the same revision, with readable tree \texttt{2e133df63d7f4da6b3059c4195324f8e9187ba73}. Sutherland's external verification record \cite{verify} confirms the statements, axiom audit, and successful independent checks. This note is not a re-audit of all 803 modules or a claim to supersede that verification.
+
+\subsection{Why target this particular interface?}
+The common leading term in the size and volume estimates is enormous compared with the allowable error. Sections 12--16 of the guide show why one cannot replace the lower bound with the trivial integrality bound, nor ignore finite-place costs. But the required independence is a finite-dimensional statement. Its source uses near-optimal second moments to prove a generic spread inequality, relaxes the errors from $O(b^{-4})$ to $O(b^{-2})$, iterates a rank-growth lemma, then transfers the result to a smaller ramified source. We can use the original precision, center the operator, and work with the smaller source from the start. Moreover, the only place the specific $4/b^2$ rank deficit is required in Theorem C is in a basis-completion estimate. This yields a second, independent simplification.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}p{.29\linewidth}XX@{}}
+\toprule
+Component & Existing route & Replacement in this note\\\midrule
+Arithmetic construction & A: shortness and index & Retain exactly\\
+Spanning & B: overlap, spread, iteration, restrict source & Centered covariance, direct ramified rank increment\\
+Lower bound & C: almost full basis, completion & Keep product formula; expose actual completion budget\\
+Main inequality & absorb errors into $fa(\log b)^5$ & explicit $17fa(\log b)^4$\\
+Analytic endpoint & two cutoffs, Landau and twist choice & Retain exactly (minor constant changes)\\\bottomrule
+\end{tabularx}
+\end{center}
+This is a local mathematical simplification, not an elementary new proof of RH independent of the theta-lift machinery. We do not claim a reduction in the complete Lean line count, kernel time or number of prerequisites until a replacement is integrated and benchmarked. In particular the hard automorphic moment estimates, local derivative sharpness, Selmer bounds, period matching and seesaw factorization remain necessary in this route.
+
+\section{The exact interface supplied by the existing proof}
+\subsection{Notation and analytic target}
+Fix $Q$ divisible by $18480$ and prime $d\equiv Q/2-1\pmod Q$, and write $\eta_d(n)=(n/d)$. For $u\in\{1,Q\}$ set
+\begin{align*}
+\lambda_u(n)&=\mathbf 1_{n\equiv1\bmod u}\Lambda(n)(1-\eta_d(n)),\\
+R_u(y)&=\sum_{n\le y}\lambda_u(n)(1/n-1/y)-\frac{\log y}{\varphi(u)}-c_u,
+\end{align*}
+where $c_u$ is the fixed-modulus centering constant such that $R_u(y)\to0$. Use $D=d_T$ for target dimension, $h$ for full source dimension, $h_r$ for ramified source dimension, and reserve $d$ for the prime defining the quadratic character. Let $b$ be the large scale in the Lean data, $a=xb$, $f$ the number of infinite places, $m$ the chain length, $x_1$ the far cutoff. Define
+\[
+L=fa(\log b)^4,\qquad E=fa(\log b)^3,\qquad H=\texttt{mainAmount},\qquad \R=\texttt{totalRemainder}.
+\]
+Here $E$ denotes a real error unit, not the CM field. The guide uses the exact prime-sum identity
+\begin{equation}\label{eq:primeidentity}
+\frac{\R}{a}=|B|(R_Q(x)-R_Q(x_1))+|A|R_1(x_1),\qquad
+f=\varphi(Q)|A|,\quad |A|/|B|\le\log b,
+\end{equation}
+with nonempty sets $A,B$ of places. See \src{New/Reduction/PrimeSums}{177}, and \src{New/Reduction/OneSidedBound}{33}. The main amount satisfies $H\ge0$.
+
+\subsection{Theorem A and the moment inputs}
+Theorem A(a) gives a complex-spanning set of integral ramified source forms whose images under \emph{every} normalized Poincar\'e translate have logarithmic squared lifted norm at most $H-m\R+L$, uniformly over the complex conjugations required by the source. Theorem A(b) gives index allowance
+\begin{equation}\label{eq:index}
+\delta\le 2 E\,|J|h_r
+\end{equation}
+for a family chosen from images of integral forms under the translates indexed by $J$. These are \src{New/Reduction/ShortAndEnough}{254} and \src{New/Reduction/ShortAndEnough}{373}. We use the bounds in the source's sense of \texttt{CovolumeLe} and \texttt{IndexLe}; they are not assumed to be ordinary Euclidean covolumes of a single rational lattice.
+
+Let a finite group $G$ act unitarily by $g$ on a finite-dimensional Hilbert space $T$. Let $T_0\subseteq T$ be its stable target of dimension $D$, with orthogonal projector $e_0$. Let $P:S\to T$ be the \emph{scaled} Poincar\'e map, $h=\dim S>0$, and $S_r\subseteq S$ the ramified source transported via the source coordinates. The exact estimates from \src{New/Spanning/SecondMoment/SpanningTheorem}{257} and \src{New/Spanning/SecondMoment/SpanningTheorem}{288} are
+\begin{align}
+\|e_0P\pi_U\|_{\HS}^2&\ge \dim U-\epsilon h \quad(U\subseteq S),&\epsilon&=5b^{-4},\label{eq:neariso}\\
+\frac D{|G|}\sum_{g\in G}\|P^*gP\|_{\HS}^2&\le(1+\nu)h^2,&\nu&=9b^{-4}.\label{eq:moment}
+\end{align}
+The ramification estimate, used in \src{New/Reduction/ShortAndEnough}{410}, is
+\begin{equation}\label{eq:ram} h-h_r\le b^{-8}h.\end{equation}
+Nonzero scalar factors relating $P$ and the normalized maps, and the source coordinate equivalence, do not change any rank. This is the content of the preimage comparison at \src{New/Spanning/SecondMoment/SpanningTheorem}{314} and range formula at \src{New/Reduction/ShortAndEnough}{386}.
+
+\subsection{Theorem C before its last estimate}
+The existing proof of \src{New/Determinant/Twist/LongForms}{214} starts with an independent family $y$ of $n\le D$ forms. Write $c$ for its log-squared-covolume upper allowance and $\delta$ for its index allowance. It extends $y$ by $D-n$ auxiliary forms, each with archimedean squared-norm log allowance $2x_1^2b^2$ and a scalar-ratio height allowance $b$. Its chain-determinant height estimate is $D(b+L-H)$. Combining these via the existing product-formula lemma gives the \emph{pre-completion inequality}
+\begin{equation}\label{eq:rawC}
+0\le c+2\delta+(D-n)(2x_1^2b^2+b)+D(b+L-H).
+\end{equation}
+In the source this is the intermediate fact \texttt{h\_nonneg}. Only after obtaining it does the proof invoke \texttt{mul\_completion\_cost\_le} (line 120) with $n\ge(1-4/b^2)D$. The proof then uses $b\le L$ to absorb the completion and scalar terms. All of the construction of local twists, height and auxiliary forms is upstream of \eqref{eq:rawC}.
+
+\section{A centered second-moment rank lemma}
+\subsection{Orbit covariance and its defect}
+We first isolate the linear algebra in a form not specific to theta lifts. In this section, $\epsilon,\nu,\gamma\ge0$, $\epsilon<1$, and $\gamma$ bounds the fraction removed from the source. Put $A_g=e_0gP:S\to T_0$ and let
+\[
+K=\frac1{|G|}\sum_{g\in G}A_gA_g^*,\qquad K_0=\frac1{|G|}\sum_{g\in G}gPP^*g^{-1}.
+\]
+Thus $K$ is the compression of $K_0$ to $T_0$. We use the Frobenius/Hilbert--Schmidt inner product on matrices, $\langle X,Y\rangle=\tr(X^*Y)$. All relevant traces of self-adjoint products are real.
+
+\begin{lemma}[Centered covariance]\label{lem:cov}
+Under \eqref{eq:neariso}--\eqref{eq:moment}, with $h>0$, the target is nonzero and
+\begin{align*}
+(1-\epsilon)h&\le\tr K\le\sqrt{1+\nu}\,h,\\
+\left\|K-\frac{\tr K}{D}\id\right\|_{\HS}^2&\le(\nu+2\epsilon)\frac{h^2}{D},\\
+h&\le D/(1-\epsilon).
+\end{align*}
+\end{lemma}
+\begin{proof}
+Applying \eqref{eq:neariso} with $U=S$ shows $e_0P\ne0$ and $D>0$. Since $e_0g=ge_0$, $\tr K=\|e_0P\|_{\HS}^2$. Expanding $\tr(K_0^2)$, cyclically moving matrix factors in the trace, and grouping ordered pairs $(g,t)$ according to $g^{-1}t$, yields
+\[
+\tr(K_0^2)=\frac1{|G|}\sum_{g\in G}\|P^*gP\|_{\HS}^2.
+\]
+Orthogonal compression cannot increase the Hilbert--Schmidt norm (extend an orthonormal basis of $T_0$ to one of $T$). Thus $\tr K^2\le (1+\nu)h^2/D$. Cauchy--Schwarz with the identity gives $(\tr K)^2\le D\tr K^2$. Centering subtracts the scalar direction exactly:
+\[
+\left\|K-\frac{\tr K}{D}\id\right\|_{\HS}^2=\tr K^2-\frac{(\tr K)^2}{D}
+\le(\nu+2\epsilon-\epsilon^2)\frac{h^2}{D}.
+\]
+Finally apply \eqref{eq:neariso} to $\ker(e_0P)$, where the squared norm is zero; its dimension is at most $\epsilon h$. The rank of $e_0P$ is therefore at least $(1-\epsilon)h$ and at most $D$.
+\end{proof}
+
+\begin{theorem}[Direct rank increment on the ramified source]\label{thm:increment}
+Assume the hypotheses of Lemma~\ref{lem:cov} and $\dim S_r\ge(1-\gamma)h$. For every $F\subseteq T_0$ with missing fraction $u=1-\dim F/D$, some $g\in G$ satisfies
+\begin{equation}\label{eq:increment}
+\dim(F+A_g S_r)-\dim F
+\ \ge\ h\left[u-\epsilon-\gamma-\frac{\nu}{2}-\sqrt{(\nu+2\epsilon)u(1-u)}\right].
+\end{equation}
+The same inequality holds for the average rank increment over $G$.
+\end{theorem}
+\begin{proof}
+Write $\pi_F$ for the orthogonal projector and $U_g=S_r\cap A_g^{-1}F$. On $U_g$ the image lies in $F$, so
+\begin{align*}
+\dim U_g-\epsilon h&\le\|A_g\pi_{U_g}\|_{\HS}^2\\
+ &=\|\pi_F A_g\pi_{U_g}\|_{\HS}^2\le\|\pi_F A_g\|_{\HS}^2=\tr(\pi_F A_gA_g^*).
+\end{align*}
+The first inequality holds by commutation of $e_0$ with the group action and unitarity. The rank-nullity theorem for the map $S_r\to T_0/F$ says that the dimension increment is $h_r-\dim U_g$. On averaging,
+\begin{equation}\label{eq:avg}
+\E_g[\dim(F+A_gS_r)-\dim F]\ge h_r-\epsilon h-\tr(\pi_F K).
+\end{equation}
+Let $\alpha=1-u$. The two centered operators $\pi_F-\alpha\id$ and $K-(\tr K/D)\id$ are traceless, and the squared norm of the first is $D\alpha(1-\alpha)$. Consequently
+\begin{align*}
+\tr(\pi_F K)&=\alpha\tr K+\left\langle\pi_F-\alpha\id,K-\frac{\tr K}{D}\id\right\rangle\\
+&\le h\left[\alpha\sqrt{1+\nu}+\sqrt{\alpha(1-\alpha)(\nu+2\epsilon)}\right].
+\end{align*}
+Using $\sqrt{1+\nu}\le1+\nu/2$ and $0\le\alpha\le1$ in \eqref{eq:avg} proves the claim. A finite average cannot exceed all of its summands.
+\end{proof}
+
+\subsection{Why this improves on the uncentered argument}
+The uncentered Cauchy--Schwarz estimate has leading term $h\sqrt{\alpha}$ rather than $h\alpha$. Even in the error-free case, $1-\sqrt{1-u}\sim u/2$ as $u\to0$. Our estimate has leading term $hu$ and error $O(h\sqrt{u(\epsilon+\nu)})+O(h(\epsilon+\nu+\gamma))$. The term $\sqrt u$ in the error is important: the trace pairing loses less when almost all the target has already been filled. In the exactly isotropic case, $\epsilon=\nu=\gamma=0$, the lower bound on the average gain is exactly $hu$; no factor $1/2$ is needed. The new proof also accounts for $S_r$ directly instead of subtracting a separate $|J|(h-h_r)$ error after selection.
+
+\begin{corollary}[Quantitative spanning]\label{cor:span}
+For any tolerance $\theta\in(0,1)$ with
+\[
+c_\theta=1-\frac{\epsilon+\gamma+\nu/2}{\theta}-\sqrt{\frac{\nu+2\epsilon}{\theta}}>0,
+\]
+put $c=\min(c_\theta,1-\epsilon)$, so $0<c\le1-\epsilon$. There is a set $J\subseteq G$ with
+\begin{align*}
+\dim\sum_{g\in J} A_g S_r&\ge(1-\theta)D,\\
+|J|h_r&\le D\left(\frac{\log(1/\theta)}{c}+\frac1{1-\epsilon}\right).
+\end{align*}
+\end{corollary}
+\begin{proof}
+Until the missing fraction is at most $\theta$, \eqref{eq:increment} gives an increment at least $chu$. Thus $u_{j+1}\le(1-ch/D)u_j$, with $0<ch/D\le1$ by Lemma~\ref{lem:cov}. Start with $F=0$, stop on reaching the target, and otherwise add a translate with the stated positive gain. It cannot already be in $J$. The missing fraction after $N=\lceil(D/(ch))\log(1/\theta)\rceil$ steps is at most $\exp(-Nch/D)\le\theta$, or we have stopped earlier. Finally $h_r\le h\le D/(1-\epsilon)$. This also covers the case that $G$ is exhausted early: positive growth would contradict exhaustion unless the target rank has already been achieved.
+\end{proof}
+
+\section{Adaptive completion: weaken Theorem C exactly}
+\begin{theorem}[Budget version of Theorem C]\label{thm:C}
+In the notation of \eqref{eq:rawC}, retain the original hypotheses of independence, \texttt{IndexLe} and \texttt{CovolumeLe}, but replace the old rank hypothesis by
+\begin{equation}\label{eq:compbudget}
+(D-n)(2x_1^2b^2+b)\le Db.
+\end{equation}
+Then $c+2\delta\ge D(H-3L)$, exactly the conclusion of the original Theorem C.
+\end{theorem}
+\begin{proof}
+The extension by auxiliary forms and the height comparison establish \eqref{eq:rawC} without using the rank threshold. Substitute \eqref{eq:compbudget} and $b\le L$. Rearranging gives
+\[
+c+2\delta\ge D(H-L-2b)\ge D(H-3L).
+\]
+This is the source proof of \texttt{integral\_forms\_long} up to its last two inequalities, with the explicit completion hypothesis substituted for the invocation of \texttt{mul\_completion\_cost\_le}.
+\end{proof}
+
+The exact missing fraction that suffices is
+\begin{equation}\label{eq:theta}
+\boxed{\theta=\frac{b}{2x_1^2b^2+b}=\frac1{1+2x_1^2b}.}
+\end{equation}
+There is no reason to make the rank deficit smaller than this for the existing lower bound. The source's elementary scale inequality $4(2x_1^2+b^{-1})\le b$ (used in \texttt{mul\_completion\_cost\_le}) implies $\theta\ge4/b^2$. So the original rank demand implies the new one, but not conversely. Since $x_1^{10^6}\le b$, the logarithm of the reciprocal satisfies
+\begin{equation}\label{eq:thetaLog}
+\log(1/\theta)\le\log 3+\log b+2\log x_1\le\log 3+(1+2/10^6)\log b.
+\end{equation}
+Thus the required coverage has a missing fraction of order $b^{-1-2\log x_1/\log b}$ rather than $b^{-2}$. The savings are in the \emph{logarithm} of this fraction. This does not weaken any local integrality or moment hypothesis. It only uses the actual cost of the final added vectors.
+
+\section{New rank and main inequalities for the admissible data}
+\subsection{A smaller translate budget}
+We use the existing scale regime, in particular $b\ge16$, $x_1\ge1$, $x_1^{10^6}\le b$, $4(2x_1^2+b^{-1})\le b$, $b\le L$. These are consequences of the source's large-scale conditions (or may be imposed by increasing the eventual threshold); no new existence theorem is needed. Substitute
+\[
+\epsilon=5b^{-4},\qquad\nu=9b^{-4},\qquad\gamma=b^{-8}.
+\]
+For $u\ge b^{-2}$, the total error in brackets in \eqref{eq:increment} is bounded above by
+\begin{align*}
+\frac{19}{2}b^{-4}+b^{-8}+\sqrt{19}\,b^{-2}\sqrt u
+&\le u\left(\frac{19}{2b^2}+\frac1{b^6}+\frac{\sqrt{19}}b\right)\\
+&\le \frac5b u.
+\end{align*}
+For the last inequality one may use $\sqrt{19}<35/8$, $19/(2b)\le19/32$, and $b^{-5}\le1/32$, whose sum is at most $5$. Since $\theta\ge4/b^2$, this applies throughout the selection until the adaptive target is met. The contraction coefficient $c=1-5/b$ is positive and at most $1-5/b^4$; the proof of Corollary~\ref{cor:span} with this $c$ yields the sharper bound
+\begin{equation}\label{eq:Jsharp}
+|J|h_r\le D\left(\frac{\log(1+2x_1^2b)}{1-5/b}+\frac1{1-5/b^4}\right).
+\end{equation}
+Because $b\ge16$, $\log3\le\tfrac12\log b$, $\log b>5/2$ and $1/(1-5/b^4)<2$, the ratio of the parenthesis to $\log b$ is at most
+\[
+\frac{16}{11}\left(\frac32+\frac2{10^6}\right)+\frac45<3.
+\]
+We have proved the replacement for Theorem B:
+\begin{equation}\label{eq:Bnew}
+\boxed{|J|h_r\le3D\log b,\qquad\dim\sum_{g\in J} A_gS_r\ge(1-\theta)D.}
+\end{equation}
+The coefficient in \eqref{eq:Jsharp} divided by $\log b$ is at most $1+2/10^6+o(1)$ as $b\to\infty$, uniformly subject to the stated scale separation. This is an upper bound, not a claim about the minimum number of translates in a particular group. If one wishes to leave Theorem C untouched, simply select to $u\le b^{-2}$; the same argument yields $|J|h_r\le2D\log(b^2)$ and the stronger-than-original rank fraction $1-b^{-2}$.
+
+\subsection{Compare the same determinant}
+Select independent $y_i$ from the union of the images under $J$ of the short integral spanning set supplied by A(a). Because that set spans $S_r$, the family can have size $n=\dim\sum_{g\in J} A_g S_r$. No orthogonalization or nonintegral linear combination of the $y_i$ is required. By A(a) and Hadamard's bound,
+\[
+c\le n(H-m\R+L).
+\]
+Here we may take $c=n(H-m\R+L)$ as the covolume allowance, regardless of the sign of $H-m\R+L$. By A(b) take $\delta=2E|J|h_r$. Our rank ensures the budget \eqref{eq:compbudget}. Theorem~\ref{thm:C} now gives
+\[
+D(H-3L)\le n(H-m\R+L)+4E|J|h_r.
+\]
+With $H\ge0$, $n\le D$, and \eqref{eq:Bnew},
+\begin{align*}
+nm\R&\le(n-D)H+(n+3D)L+4E|J|h_r\\
+&\le4DL+12DE\log b=16DL.
+\end{align*}
+Since $x_1\ge1$ and $b\ge16$, $\theta\le1/33$; therefore $n\ge32D/33>0$. Dividing gives the explicit improvement
+\begin{equation}\label{eq:starnew}
+\boxed{m\R\le17fa(\log b)^4.}
+\end{equation}
+More precisely one has
+\begin{equation}\label{eq:starsharp}
+m\R\le L\,\frac{4+4\bigl(\log(1/\theta)/(1-5/b)+(1-5/b^4)^{-1}\bigr)/\log b}{1-\theta}.
+\end{equation}
+Its coefficient is bounded above by $8+8/10^6+o(1)$ in the admissible regime. No estimate for a logarithmic error is hidden in a proportional error in $H$.
+
+\begin{remark}[Separate the two improvements]
+Even without modifying B or C, one can keep the explicit logarithm and numerical constants in \texttt{star\_inequality} instead of absorbing them in $\log^5 b$; this already gives $O(fa\log^4 b)$. The new contribution is the centered, direct rank argument, the adaptive completion hypothesis, and the smaller explicit translate and index bounds. The exponent of $\log b$ alone is not evidence of novelty.
+\end{remark}
+
+\section{Return to the analytic criterion}
+Equation \eqref{eq:primeidentity} and \eqref{eq:starnew} give, without changing the normalization,
+\begin{equation}\label{eq:remnew}
+R_Q(x)\le17\varphi(Q)\frac{(\log b)^5}{m}
+ + |R_Q(x_1)|+\log b\,|R_1(x_1)|.
+\end{equation}
+For fixed admissible $(Q,d)$ and $0<\zeta<1/100$, the source's \texttt{eventually\_exists\_data\_scales} supplies data for each sufficiently large integer $x$ with
+\[
+m\ge\sqrt{x},\qquad \log b\le2x^\zeta,\qquad \log x_1\ge x^{\zeta/12}.
+\]
+The source's classical fixed-modulus prime number theorem gives both far-cutoff remainders at most $x^{-2}$ in absolute value, by taking a log-power exponent $B_0\ge24/\zeta$. Inserting these in \eqref{eq:remnew} gives
+\begin{equation}\label{eq:integer}
+R_Q(x)\le (544\varphi(Q)+3)x^{-1/2+5\zeta}
+\end{equation}
+for all sufficiently large integers $x$. Indeed $17\cdot2^5=544$ and $x^{-2}+2x^{-2+\zeta}\le3x^{-1/2+5\zeta}$ for $x\ge1$. This changes the explicit constant (which is irrelevant eventually); the power loss drops from $6\zeta$ to $5\zeta$ in the chosen bookkeeping.
+
+The source's floor estimate $R_Q(y)-R_Q(\lfloor y\rfloor)\le26/y$ extends \eqref{eq:integer} to reals with a fixed multiplicative constant for large $y$. Given $\varepsilon>0$, choose $0<\zeta<\min(1/100,\varepsilon/5)$, then absorb all fixed constants and the floor error to obtain
+\[
+R_Q(y)\le y^{-1/2+\varepsilon}\quad (y\ \text{sufficiently large}).
+\]
+The quantifiers are unchanged: first fix $(Q,d)$ and $\varepsilon$, then choose admissible data for every large integer $x$; no uniform bound in the twist prime $d$ is claimed. See \src{New/Reduction/OneSidedBound}{74}, \src{New/Reduction/OneSidedBound}{95}, and \src{New/Reduction/OneSidedBound}{159}.
+
+\subsection{Why this is enough for RH and Dirichlet GRH}
+For any proposed zero $\rho\ne1$ of a Dirichlet $L$-function modulo $q$ with $\Re\rho>1/2$, take $Q=18480q$ and $1/2<\beta<\Re\rho$. The existing quadratic-twist theorem chooses an admissible prime $d$ for which no quadratic-twisted character in the finite family modulo $Q$ vanishes in $\Re s\ge\beta$, $|\Im s|\le|\Im\rho|$. The meromorphic transform of $R_Q$ has residue
+\[
+\frac{n(s)-n_d(s)}{\varphi(Q)s(1-s)}
+\]
+at $s\ne0,1$, where $n,n_d$ are the sums of the original and twisted orders. The centering removes the singularity at $1$. Real residues to the right of $\beta$ are nonnegative because $n_d=0$ there and the original regularized functions do not vanish for real $s\ge1$. The one-sided bound with $\varepsilon=\beta-1/2$ makes the transform of $K e^{\beta v}-e^v R_Q(e^v)$ a positive-measure Laplace transform for sufficiently large constant $K$. Landau's lemma pushes its convergence to $\Re s>\beta$, forcing the residue at $\rho$ to vanish. Thus $n(\rho)=0$, a contradiction. The change of modulus and the functional equation recover all five existing statements. We invoke the already established criterion at \src{New/Reduction/Zeros/Criterion}{37}; this paragraph recalls the argument from guide Section 17, not a new proof of twist selection. The point $s=1$, trivial zeros and induced characters are handled exactly as in the source.
+
+The modification consequently supplies a complete alternative \emph{upper-level derivation from the existing verified inputs}. It does not assume RH or GRH in establishing any of the new inequalities. It also does not replace the Dirichlet-family argument with a proof for just the zeta function.
+
+\section{A nonadaptive alternative: products of contractions}
+This section is optional. It offers a second mathematical proof of the spanning step, useful when a probabilistic construction is preferable. It is not required for the main route and may be less convenient to formalize than the centered trace proof because of spectral decomposition.
+
+\begin{theorem}[Sampling translates without adapting to the current span]\label{thm:random}
+Under \eqref{eq:neariso}--\eqref{eq:ram}, $b\ge16$, and $4/b^2\le\theta<1$, there exists a set $J$ with rank at least $(1-\theta)D$ and
+\[
+|J|h_r\le D\left(\frac{\log(2/\theta)}{1-4/b}+\frac1{1-5/b^4}\right).
+\]
+It can be obtained by sampling a fixed number of independent uniform group elements and retaining a successful sample (discarding repetitions).
+\end{theorem}
+\begin{proof}
+Put $A=e_0P|_{S_r}$ and diagonalize the positive operator $A^*A$ on $S_r$. Let $C$ be $AA^*$ with each eigenvalue $\lambda$ replaced by $\min(\lambda,1)$. Then $0\le C\le\id$, $C\le AA^*$ and its range lies in $A S_r$. If $U$ is the subspace spanned by eigenvectors of $A^*A$ with eigenvalue less than one, applying \eqref{eq:neariso} on $U\subseteq S$ shows $\sum_{\lambda<1}(1-\lambda)\le\epsilon h$. Therefore $\tr C\ge h_r-\epsilon h\ge(1-\gamma-\epsilon)h$.
+
+For $g\in G$, let $C_g=gCg^{-1}$ on $T_0$ and $M=\E_g C_g$. Then $0\le M\le K$ because $AA^*\le(e_0P)(e_0P)^*$. If $0\le M\le K$, $\tr K^2-\tr M^2=\tr((K-M)K)+\tr(M(K-M))\ge0$; trace of a product of two positive operators is nonnegative. It follows that
+\begin{align*}
+\|M-(h/D)\id\|_{\HS}^2
+&=\tr M^2-2(h/D)\tr M+h^2/D\\
+&\le(\nu+2\gamma+2\epsilon)h^2/D\le20b^{-4}h^2/D.
+\end{align*}
+Take $W$ to be the span of eigenvectors of $M$ of eigenvalue at least $\lambda_0=(1-4/b)h/D$. Every excluded dimension costs at least $16b^{-2}h^2/D^2$ in this squared defect, hence $\dim W\ge(1-5/(4b^2))D$. In particular $W\ne0$, and $0<\lambda_0\le1$. Compress $C_g$ to $W$ to obtain $C_g^W$; this is a positive contraction and $\E_g C_g^W\ge\lambda_0\id_W$. Let $Q_g=\id_W-C_g^W$. Since $0\le Q_g\le\id_W$, $Q_g^2\le Q_g$.
+
+For independent uniform $g_1,\ldots,g_N$, write $X_i=Q_{g_i}\cdots Q_{g_1}$ and $X_0=\id_W$. Conditioning on the previous factors,
+\[
+\E[\|X_i\|_{\HS}^2\mid X_{i-1}]
+=\tr(X_{i-1}^*\E[Q_{g_i}^2]X_{i-1})\le(1-\lambda_0)\|X_{i-1}\|_{\HS}^2.
+\]
+Thus $\E\|X_N\|_{\HS}^2\le(1-\lambda_0)^N\dim W$. Each $Q_{g_i}$ fixes the orthogonal complement in $W$ of the projection of $A_{g_i}S_r$, so $X_N$ fixes their common orthogonal complement. Its squared Hilbert--Schmidt norm is at least the dimension of that complement. With $N=\lceil\lambda_0^{-1}\log(2/\theta)\rceil$, some sample has missing projected rank at most $\theta D/2$. Adding the discarded dimension $5D/(4b^2)\le5\theta D/16$ gives total missing rank at most $13\theta D/16<\theta D$. The rank of the original span is at least the rank of its projection. Removing repeated group elements cannot change the span, and multiplying $N$ by $h_r\le h$ proves the cost bound using Lemma~\ref{lem:cov}.
+\end{proof}
+
+This construction works even when no one translate covers a fixed coordinate block. The probabilistic argument is merely a proof of existence over a finite set; it introduces no probabilistic assumption about primes or automorphic forms. Its expected deficit can also be driven below $\theta D/4$ to obtain a positive success probability by Markov's inequality with a modest additive logarithm. No efficient enumeration of the enormous finite group is asserted.
+
+\section{Limits, checks, and further research}
+\subsection{Two tests that keep the proposal honest}
+\textbf{The rank estimate is not automatic from the trace.} Without the near-isometry condition one can take a rank-one $P$ whose only squared singular value is $h$ and let cyclic shifts in $D$ coordinates produce $K=(h/D)\id$. Its second moment is exactly minimal, yet at least $(1-\theta)D$ rank-one translates are needed. A theorem predicting $O(D\log(1/\theta)/h)$ translates for arbitrarily large $h$ would fail. This is why both original moment inputs are retained.
+
+\textbf{The determinant lower bound cannot simply be applied to half a basis.} The pre-completion term $(D-n)(2x_1^2b^2+b)$ in \eqref{eq:rawC} can dwarf $DL$ if the missing fraction is a constant. We reduce the required rank by exploiting a verified size estimate for auxiliary forms; we do not discard the term or presume all subspaces inherit the full-dimensional determinant ratio. A truly different proof of C on exterior powers could change the completion cost, but this would require a new arithmetic argument controlling partial-volume heights.
+
+\subsection{Recommended formalization sequence}
+The accompanying \texttt{FORMALIZATION.md} records a source-level patch plan. The deterministic proof is the preferred first implementation: it uses trace, orthogonal projections, Hilbert--Schmidt Cauchy--Schwarz, rank-nullity and an elementary finite iteration, all close to the current APIs. It avoids adding a spectral theorem dependency to this proof path. The three most important changes are (i) a centered overlap lemma, (ii) a version of Theorem C taking an explicit completion allowance, and (iii) a replacement top-level comparison retaining the $\log^4 b$ budget. The only uses of the original $4/b^2$ bound that need to change at this interface are the spanning call and the completion estimate. Keep the existing theorems as compatibility wrappers until the new route has passed the same external checker workflow.
+
+We did not have a Lean installation or compiled project cache in the local artifact-generation environment. The mathematics has been written out and the source interface inspected, but no new Lean file is claimed to elaborate. The exact rational checks in \texttt{check\_bounds.py} test constants, a family of finite-dimensional cyclic models and sample rank growth. They are sanity checks, not a proof of the automorphic inputs or the real-variable estimates. The original proof was independently checked as described in \cite{verify}.
+
+\subsection{Further research questions (ordered by feasibility)}
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Formal integration.} Can the centered trace argument replace the current spread lemma with fewer elaborated declarations? Measure proof term size, reachable declaration count, and kernel checking time; do not use source line count as the only metric.
+\item \textbf{A single rank--height budget.} Use the raw lower bound \eqref{eq:rawC} directly, allowing a continuously varying completion cost rather than the cutoff $Db$. Balance it against $4E|J|h_r$. A heuristic optimum occurs when the marginal translate cost matches the cost of one missing dimension; rigorously this requires the exact dependence of selection on $u$ and the sign of $H$. This could make the proof less sensitive to auxiliary weight separation.
+\item \textbf{Weaker orbital estimates.} The general formula \eqref{eq:increment} shows precisely how much moment error can be tolerated: for a specified $\theta$, need $(\epsilon+\gamma+\nu/2)/\theta+\sqrt{(\nu+2\epsilon)/\theta}<1$. Can some of the elaborate orbit-counting bounds be replaced by a cruder estimate at that tolerance? No such replacement is established here.
+\item \textbf{Index by actual rank rather than full translate size.} The source charges up to $2Eh_r$ per translate. One might seek a basis-selection procedure whose local colength is proportional to the number of newly chosen independent vectors. The available uniform colength bound does not imply this; a small subspace can carry the whole defect. A refined local lattice or averaged Smith-normal-form result would be needed.
+\item \textbf{A much more ambitious simplification.} Can the chain determinant lower bound be proved directly for an appropriate exterior power of the target, eliminating completion? The twisted height is a full determinant statement, and individual eigenline ratios may have nonuniform valuations. Any such result must reproduce the coefficient of $H$, not just give an unsigned height inequality. This is where a real reduction in the deep arithmetic content might occur.
+\end{enumerate}
+
+\renewcommand{\refname}{References and provenance}
+\addcontentsline{toc}{section}{References and provenance}
+\begin{thebibliography}{9}
+\bibitem{guide} Supplied archive, \emph{How theta lifts locate the zeros of Dirichlet L-functions}, 79-page guide, dated 27 November 2026. Read its LaTeX source and source-map index, especially Sections 9, 11, 16, 17, and 20. Input file: \nolinkurl{theta_lifts_and_dirichlet_zeros_guide(1).zip}.
+\bibitem{lean} L. Alp\"oge with Claude; readable rewriting by L. Sernau and Claude, \emph{grh-lean}, revision \texttt{72fead102f663d5c7a407964a13dc0cf9d977207}, 25 November 2026. \href{https://github.com/lsernau/grh-lean/tree/72fead102f663d5c7a407964a13dc0cf9d977207/grh}{Pinned source}. Selected files and their Git blob identifiers are listed in \texttt{source\_anchors.tsv}. The current ProveIt \href{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/GeneralizedRiemannHypothesis/vendor/grh-lean/README.md}{import record} identifies the same revision and relocation of the package.
+\bibitem{verify} A. Sutherland, \emph{Verification files for the shorter Lean proof of RH and of GRH for Dirichlet L-functions}, \url{https://math.mit.edu/~drew/shortgrh/}, accessed 27 November 2026. Reported successful paranoid Comparator runs for both readable and compact editions and statement comparison with the challenge.
+\bibitem{Rub} M. Rubinstein, \emph{Alp\"oge/Claude proof of the Generalized Riemann Hypothesis}, \url{https://www.math.uwaterloo.ca/~mrubinst/alpoge_claude_grh/}, accessed 27 November 2026. Parallel work on human-readable presentation and independent verification; not used as an input to the rank lemma.
+\end{thebibliography}
+\end{document}

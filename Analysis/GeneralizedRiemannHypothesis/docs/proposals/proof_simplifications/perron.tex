@@ -1,0 +1,69 @@
+\section{A contour shift at the distant cutoff}
+\label{sec:perron}
+
+A separate shortening is available where the arithmetic argument estimates
+the remainder at its distant cutoff. Because the actual smoothing vanishes
+at the endpoint, its Mellin kernel decays quadratically on the initial
+vertical line. This permits direct contour inversion. It also gives a
+quantitative improvement over the inverse logarithmic powers stated in
+\texttt{eventually\_abs\_primeRemainder\_le}.
+
+In this section write $q$ for either modulus $1$ or $Q$ in \eqref{eq:R}, and $d$ for its fixed admissible odd prime. In particular $(d,q)=1$. Write $a_q=1/\varphi(q)$,
+$\lambda(n)=\mathbf1_{n\equiv1\bmod q}\Lambda(n)(1-(n/d))$, and
+$\mathcal A(s)=\sum_n\lambda(n)n^{-s}$ for $\Re s>1$.
+The repository's logarithmic derivative identity gives
+$\mathcal A(s)=a_qs/(s-1)+G(s)$. Put $F(s)=G(s)/s$.
+The zero-free-region lemma
+\texttt{eventually\_norm\_logDerivMean\_div\_le}
+in \texttt{New/Reduction/Zeros/PrimeNumberTheorem.lean}
+gives, for all sufficiently large $\ell$ depending on $q,d$,
+\[
+ F \text{ holomorphic},\qquad |F(s)|\le\ell^{26}
+ \qquad (\Re s\ge1-\ell^{-26},\ |s|\le e^\ell).
+\]
+We claim that the centered remainder satisfies
+\begin{equation}
+ |R_q(x)|\ll_{q,d}\exp\bigl(-\tfrac13(\log x)^{1/27}\bigr).
+ \label{eq:perron-improvement}
+\end{equation}
+
+Set $U=\log x$ and $\sigma_0=1+1/U$. On this line absolute convergence
+and elementary Mellin inversion give
+\[
+ \sum_{n\le x}\lambda(n)(1/n-1/x)
+ =\frac1{2\pi i}\int_{\sigma_0-i\infty}^{\sigma_0+i\infty}
+           \frac{\mathcal A(s)x^{s-1}}{s(s-1)}\,ds .
+\]
+In fact the inverse transform of $y^s/[s(s-1)]$ on a line right of $1$
+is $y-1$ for $y\ge1$ and zero for $0<y<1$, by closing the contour
+left or right. The $y=1$ value follows by continuity and absolute
+convergence. Apply this identity with $y=x/n$ and divide by $x$.
+The coefficients obey $0\le\lambda(n)\le2\Lambda(n)$, so
+$|\mathcal A(\sigma_0+it)|\ll U$ uniformly in $t$.
+This follows either by partial summation from Chebyshev's bound or from
+the simple pole of $-\zeta'/\zeta$ at $1$. Truncation at height $T\ge2$
+therefore costs $O(U/T)$.
+
+Choose $\ell=U^{1/27}$, $T=e^\ell/2$, and $w=\tfrac12\ell^{-26}$.
+Shift the truncated integral to $\Re s=1-w$. The entire closed
+rectangle lies strictly inside the stated region for sufficiently large
+$x$. Its only pole has residue $a_q U+F(1)$, since the continued
+integrand is
+\[
+        x^{s-1}\left(\frac{a_q}{(s-1)^2}
+                       +\frac{F(s)}{s-1}\right).
+\]
+This is exactly the centering in $R_q(x)$. On the horizontal sides the
+length is at most $1$, $|x^{s-1}|\le e$ and $|s-1|\ge T$, giving
+$O(\ell^{26}/T)$ for their total. On the left side the absolute integral is
+\[
+ \ll e^{-wU}\left(w^{-1}+\ell^{26}\log(2+2T/w)\right),
+\]
+by integrating $(w^2+t^2)^{-1}$ and $(w^2+t^2)^{-1/2}$ for
+$|t|\le T$. Here $wU=\ell/2$ and $U=\ell^{27}$, so all three errors
+are $O(e^{-\ell/3})$. This proves \eqref{eq:perron-improvement}.
+It supplies every fixed inverse logarithmic power needed in the
+two-cutoff comparison and dispenses with the gamma-kernel localization
+in this application. The narrow classical zero-free region still
+provides the shift. The square-root gain at the near cutoff still comes
+from the theta chain.
