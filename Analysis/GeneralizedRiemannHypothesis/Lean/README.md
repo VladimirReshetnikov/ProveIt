@@ -227,9 +227,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 ## RH and Dirichlet GRH input
 
-The article uses the five theorems in
-[the vendored Main.lean](../vendor/grh-lean/grh/src/Main.lean).
-The vendor pins Lean 4.35.0 and Mathlib revision `56a005855e`.
+The article uses the five theorems in [grh/src/Main.lean](grh/src/Main.lean).
+The [standalone package](grh/README.md) pins Lean 4.35.0 and Mathlib revision `56a005855e`.
 Andrew Sutherland reports kernel replay, axiom checks, and statement comparisons for that
 exact vendored revision. [Independent verification](https://math.mit.edu/~drew/shortgrh/)
 

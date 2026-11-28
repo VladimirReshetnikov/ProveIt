@@ -10,8 +10,8 @@ section. The input theorem, RH and GRH for Dirichlet L-functions as stated in th
 Lean development [`lsernau/grh-lean`](https://github.com/lsernau/grh-lean) at commit
 `72fead102f663d5c7a407964a13dc0cf9d977207`, is taken as given. The article reproduces the
 reports' mathematics without recomputing it. The [Lean formalization](Lean/README.md)
-tracks checked results against the article. The `grh` directory of the upstream
-development is vendored, unmodified and unbuilt, in [`vendor/grh-lean`](vendor/grh-lean/README.md). Every result is marked as unconditional, as using Dirichlet GRH, or as a
+tracks checked results against the article. The upstream proof has its own Lean package
+in [`Lean/grh`](Lean/grh/README.md). Every result is marked as unconditional, as using Dirichlet GRH, or as a
 reduction whose target estimate is open. The [article README](Article/README.md) lists its
 sections.
 
@@ -62,5 +62,5 @@ for each omitted result, the result that supersedes it.
 By their own account, the reports start from `lsernau/grh-lean` and ask what its theorem
 settles elsewhere and which methods inside its proof carry over to other problems. Several
 packets contained excerpts of that development, under the Apache-2.0 licence. The excerpts
-left with the packets; the whole `grh` directory, at the commit the reports pin, is in
-[`vendor/grh-lean`](vendor/grh-lean/README.md).
+left with the packets. The [import record](vendor/grh-lean/README.md) identifies the
+upstream revision used for [the local proof](Lean/grh/README.md).
