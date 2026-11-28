@@ -12,13 +12,12 @@ vanish for all data that are the vacuum at the finite places other than the chos
 places of `Q` and their conjugates (`DescentPair.descentsVanish_of_hyperplaneSumsAnnihilate`). By
 the descents of `y` we mean those of the matrix coefficient of `y` for a fixed linear form `u`.
 
-It suffices to treat the indicator of a small class around each point `x`. If `x` has an integral
-block ratio (`HasIntegralBlockRatio`) at every place of `O`, the mean of the translates of this
-indicator under the level group is a multiple of a translate of `Ψ_bl` under `U(W)`. Otherwise an
-annihilating row at a place where `x` has no integral block ratio gives integral elements `h_v`
-(`rowShear`) that fix the components of `x` at the places of `O` and whose sum annihilates `y`.
-Classes are taken modulo `i!` (`factorialIdele`) for large `i`, and the mean is taken over the
-finitely many translates under the whole level group.
+Schwartz–Bruhat functions are spanned by coset indicators. If a coset contains a point without an
+integral block ratio (`HasIntegralBlockRatio`), the row shears at that point show that the indicator
+has zero descent pairing. Otherwise, use the same coset decomposition on its indicator, now only
+at points with integral block ratio. Near each such point a right translate of `Ψ_bl` is constant
+equal to `1`. The mean of the level translates of an indicator supported in that neighborhood is
+a multiple of this translated block datum.
 
 The pair `O` carries two families of split finite places, the chosen places and the places of `Q`,
 indexed by `O.ChosenIndex` and `O.TwistIndex`. The family `O.placeAt` lists all these places, and
@@ -380,38 +379,6 @@ lemma exists_isAnnihilatingRow_of_not_hasIntegralBlockRatio
 
 end Covered
 
-open scoped Classical in
-/-- Let `U 0 ≥ U 1 ≥ …` be subgroups, so that two cosets `x + U i` are nested or disjoint. A
-function that is constant on finitely many such cosets `x + U (i x)`, `x ∈ F`, and vanishes off
-their union lies in every subspace `P` that contains their indicators. -/
-lemma mem_of_nested_cosets {X : Type*} [AddCommGroup X] {U : ℕ → AddSubgroup X} (hU : Antitone U)
-    (i : X → ℕ) (P : Submodule ℂ (X → ℂ)) (F : Finset X)
-    (h_mem : ∀ x ∈ F, (fun y : X ↦ if y - x ∈ U (i x) then (1 : ℂ) else 0) ∈ P) {Ψ : X → ℂ}
-    (h_const : ∀ x ∈ F, ∀ y : X, y - x ∈ U (i x) → Ψ y = Ψ x)
-    (h_supp : ∀ y : X, Ψ y ≠ 0 → ∃ x ∈ F, y - x ∈ U (i x)) : Ψ ∈ P := by
-  -- Remove a largest coset `a + U (i a)`; each of the others lies in it or is disjoint from it.
-  induction F using Finset.induction_on_min_value i generalizing Ψ with
-  | empty =>
-    obtain rfl : Ψ = 0 := funext fun y ↦ by simpa using h_supp y
-    exact P.zero_mem
-  | insert a F _ h_min ih =>
-    let C (y : X) : ℂ := if y - a ∈ U (i a) then 1 else 0
-    have h_rest : Ψ - Ψ a • C ∈ P := by
-      refine ih (fun x hx ↦ h_mem x (mem_insert_of_mem hx)) (fun x hx y hy ↦ ?_) fun y hy ↦ ?_
-      · have h_diff : y - x ∈ U (i a) := hU (h_min x hx) hy
-        have h_iff : y - a ∈ U (i a) ↔ x - a ∈ U (i a) := by
-          rw [← sub_add_sub_cancel y x a, add_mem_cancel_left h_diff]
-        have hC_eq : C y = C x := if_congr h_iff rfl rfl
-        simp [hC_eq, h_const x (mem_insert_of_mem hx) y hy]
-      · have h_out : y - a ∉ U (i a) := fun h_in ↦ by
-          simp [C, h_in, h_const a (mem_insert_self a F) y h_in] at hy
-        have h_ne : Ψ y ≠ 0 := by simpa [C, h_out] using hy
-        obtain ⟨x, hx, hxy⟩ : ∃ x ∈ insert a F, y - x ∈ U (i x) := h_supp y h_ne
-        have hxa : x ≠ a := fun h_eq ↦ h_out (by rwa [h_eq] at hxy)
-        exact ⟨x, mem_of_mem_insert_of_ne hx hxa, hxy⟩
-    rw [← sub_add_cancel Ψ (Ψ a • C)]
-    exact P.add_mem h_rest (P.smul_mem (Ψ a) (h_mem a (mem_insert_self a F)))
-
 /-- Let a vector `f` have finitely many translates under a group `J`. There is a vector `f₁`, the
 mean of these translates, that is invariant under `J` and such that `L f₁ = c` for every linear form
 `L` with the constant value `c` on the translates. -/
@@ -431,132 +398,6 @@ lemma exists_fixed_forall_linearMap_eq_of_finite {J V : Type*} [Group J] [AddCom
     rw [map_smul, map_sum, h_perm]
   · have h_term : ∀ u ∈ T, L u = c := by simpa [mem_T] using hL
     simp [map_sum, sum_eq_card_nsmul h_term, h_card]
-
-section SmallCosets
-
-variable {E m : Type} [Field E] [CMType E] {S : Set (FinPlace E)}
-
-variable (E) in
-/-- The finite idele `i!`. The quotient of each of these ideles by the one before is integral, and
-they tend to `0` at every finite place, like the powers of a uniformiser at one place. -/
-def factorialIdele (i : ℕ) : (𝔸f E)ˣ := (isUnit_natCast_finAdele (E := E) i.factorial_ne_zero).unit
-
-variable (E) in
-lemma val_factorialIdele (i : ℕ) : (factorialIdele E i : 𝔸f E) = i.factorial := rfl
-
-variable (m S) in
-/-- The finite adelic vectors `x` that are `≡ 0` modulo `i!` at the places of `S`, that is, such
-that `(i!)⁻¹ x` lies in `integralBox m S`, the vectors integral at these places. -/
-def factorialBox (i : ℕ) : AddSubgroup (m → 𝔸f E) :=
-  (integralBox m S).comap (smulAddHom (𝔸f E) (m → 𝔸f E) (factorialIdele E i)⁻¹.val)
-
-/-- A vector `x` is `≡ 0` modulo `i!` at `S` if and only if `(i!)⁻¹ x` lies in `integralBox m S`,
-the group of the vectors that are integral at every place of `S`. -/
-lemma mem_factorialBox {i : ℕ} {x : m → 𝔸f E} :
-    x ∈ factorialBox m S i ↔ (factorialIdele E i)⁻¹.val • x ∈ integralBox m S := .rfl
-
-/-- A vector is `≡ 0` modulo `i!` at `S` if and only if its part at `S` is `i!` times an element of
-`stdLattice E m`, the vectors that are integral at every finite place; `idem S` is the adele that is
-`1` at the places of `S` and `0` elsewhere. -/
-lemma mem_factorialBox_iff_exists {i : ℕ} {x : m → 𝔸f E} :
-    x ∈ factorialBox m S i ↔ ∃ y ∈ stdLattice E m, idem S • x = (i.factorial : 𝔸f E) • y := by
-  let t : (𝔸f E)ˣ := factorialIdele E i
-  have h_def : x ∈ factorialBox m S i ↔ idem S • t⁻¹.val • x ∈ stdLattice E m := mem_factorialBox
-  rw [h_def, ← val_factorialIdele, smul_comm]
-  refine ⟨fun h_mem ↦ ⟨t⁻¹.val • idem S • x, h_mem, by simp [smul_smul, t]⟩, ?_⟩
-  rintro ⟨y, hy, h_eq⟩
-  rwa [h_eq, smul_smul, t.inv_mul, one_smul]
-
-lemma isOpen_factorialBox [Fintype m] (i : ℕ) : IsOpen (factorialBox m S i : Set (m → 𝔸f E)) :=
-  (isOpen_integralBox (S := S)).preimage (continuous_const_smul (factorialIdele E i)⁻¹.val)
-
-open scoped Classical in
-/-- The function `cosetIndicator S (i!) x` is the indicator of the class of `x` modulo `i!` at the
-places of `S`. -/
-lemma cosetIndicator_factorialIdele (i : ℕ) (x : m → 𝔸f E) :
-    cosetIndicator S (factorialIdele E i) x =
-      fun y : m → 𝔸f E ↦ if y - x ∈ factorialBox m S i then 1 else 0 :=
-  funext fun _ ↦ if_congr mem_factorialBox.symm rfl rfl
-
-/-- The indicator of the class of `q` modulo `i!` at the places of `S` depends on `q` in a locally
-constant way. -/
-lemma isLocallyConstant_cosetIndicator_factorialIdele [Fintype m] (i : ℕ) :
-    IsLocallyConstant fun q : m → 𝔸f E ↦ cosetIndicator S (factorialIdele E i) q := by
-  classical
-  refine (IsLocallyConstant.iff_eventually_eq _).2 fun q ↦ ?_
-  have h_near : ∀ᶠ q' : m → 𝔸f E in nhds q, q' - q ∈ factorialBox m S i :=
-    ((isOpen_factorialBox i).preimage (continuous_sub_right q)).mem_nhds (by simp)
-  filter_upwards [h_near] with q' hq'
-  have h_iff (y : m → 𝔸f E) : y - q' ∈ factorialBox m S i ↔ y - q ∈ factorialBox m S i := by
-    rw [← sub_add_sub_cancel y q' q, add_mem_cancel_right hq']
-  simp only [cosetIndicator_factorialIdele, h_iff]
-
-/-- For `i ≤ j`, a vector that is `≡ 0` modulo `j!` at the places of `S` is `≡ 0` modulo `i!`. -/
-lemma antitone_factorialBox : Antitone (factorialBox m S) := by
-  intro i j hij x hx
-  obtain ⟨y, hy, h_eq⟩ := mem_factorialBox_iff_exists.1 hx
-  obtain ⟨c, hc⟩ : i.factorial ∣ j.factorial := Nat.factorial_dvd_factorial hij
-  refine mem_factorialBox_iff_exists.2 ⟨c • y, nsmul_mem hy c, ?_⟩
-  rw [h_eq, hc, Nat.cast_mul, mul_smul, Nat.cast_smul_eq_nsmul _ c]
-
-end SmallCosets
-
-namespace IsSchwartzBruhat
-
-variable {E m : Type} [Field E] [CMType E] [Fintype m] [DecidableEq m]
-  {S : Set (FinPlace E)} (Ψ : (m → 𝔸f E) → ℂ) [hΨ : IsSchwartzBruhat S Ψ]
-
-/-- Let `Ψ` be a Schwartz–Bruhat function of the components at `S`. For large `i` it is constant on
-the class `x + factorialBox m S i` of `x` modulo `i!` at the places of `S`. -/
-lemma eventually_const (x : m → 𝔸f E) :
-    ∀ᶠ i : ℕ in atTop, ∀ y : m → 𝔸f E, y - x ∈ factorialBox m S i → Ψ y = Ψ x := by
-  -- A multiple `N Ô^m` of the standard lattice lies in the neighbourhood of `0` on which
-  -- `Ψ(· + idem S • x)` is constant, and `N ∣ i!` for `i ≥ N`.
-  have h_nhds : {u : m → 𝔸f E | Ψ (u + idem S • x) = Ψ (0 + idem S • x)} ∈ nhds 0 :=
-    (hΨ.comp_add (idem S • x)).locally_constant.eventually_eq 0
-  obtain ⟨N, hN, h_small⟩ : ∃ N : ℕ, N ≠ 0 ∧ ∀ u ∈ (stdLattice E m : Set (m → 𝔸f E)),
-      Ψ ((N : 𝔸f E) • u + idem S • x) = Ψ (0 + idem S • x) :=
-    exists_natCast_smul_mem_of_isCompact E stdLattice.isCompact_stdLattice h_nhds
-  filter_upwards [eventually_ge_atTop N] with i hi y hy
-  obtain ⟨u, hu, h_eq⟩ : ∃ u ∈ stdLattice E m, idem S • (y - x) = (i.factorial : 𝔸f E) • u :=
-    mem_factorialBox_iff_exists.1 hy
-  obtain ⟨c, hc⟩ : N ∣ i.factorial := Nat.dvd_factorial (Nat.pos_of_ne_zero hN) hi
-  have h_sum : (N : 𝔸f E) • c • u + idem S • x = idem S • y := by
-    rw [← Nat.cast_smul_eq_nsmul (𝔸f E), ← mul_smul, ← Nat.cast_mul, ← hc, ← h_eq, ← smul_add,
-      sub_add_cancel]
-  calc Ψ y = Ψ ((N : 𝔸f E) • c • u + idem S • x) := by rw [h_sum, hΨ.idem_smul]
-    _ = Ψ (0 + idem S • x) := h_small (c • u) (nsmul_mem hu c)
-    _ = Ψ x := by rw [zero_add, hΨ.idem_smul]
-
-/-- Let `P` be a subspace of functions. If for each point `x` the indicator of the class of `x`
-modulo the idele `i!` at the places of `S` lies in `P` for large `i`, then `P` contains every
-Schwartz–Bruhat function `Ψ` of the components at `S`. -/
-lemma mem_of_eventually_coset (P : Submodule ℂ ((m → 𝔸f E) → ℂ))
-    (h_small : ∀ x : m → 𝔸f E, ∀ᶠ i : ℕ in atTop, cosetIndicator S (factorialIdele E i) x ∈ P) :
-    Ψ ∈ P := by
-  have h_level (x : m → 𝔸f E) : ∃ i : ℕ, cosetIndicator S (factorialIdele E i) x ∈ P ∧
-      ∀ y : m → 𝔸f E, y - x ∈ factorialBox m S i → Ψ y = Ψ x :=
-    ((h_small x).and (eventually_const Ψ x)).exists
-  choose i h_mem h_const using h_level
-  -- Finitely many of the classes of `x` modulo `(i x)!` cover the support of `Ψ`.
-  obtain ⟨C, hC, h_supp⟩ :
-      ∃ C : Set (m → 𝔸f E), IsCompact C ∧ ∀ y : m → 𝔸f E, Ψ y ≠ 0 → idem S • y ∈ C :=
-    hΨ.compact_support
-  let U (x : m → 𝔸f E) : Set (m → 𝔸f E) := {y | y - x ∈ factorialBox m S (i x)}
-  obtain ⟨F, hF⟩ : ∃ F : Finset (m → 𝔸f E), C ⊆ ⋃ x ∈ F, U x :=
-    hC.elim_finite_subcover U (fun x ↦ (isOpen_factorialBox (i x)).preimage
-      (continuous_sub_right x))
-      fun y _ ↦ Set.mem_iUnion.2 ⟨y, by simp [U]⟩
-  simp only [cosetIndicator_factorialIdele] at h_mem
-  refine mem_of_nested_cosets antitone_factorialBox i P F (fun x _ ↦ h_mem x) (fun x _ ↦ h_const x)
-    fun y hy ↦ ?_
-  obtain ⟨x, hx, hxy⟩ : ∃ x ∈ F, idem S • y ∈ U x := by simpa using hF (h_supp y hy)
-  -- `y` and `idem S • y` have the same components at `S`.
-  have h_idem : y - idem S • y ∈ factorialBox m S (i x) :=
-    mem_factorialBox_iff_exists.2 ⟨0, zero_mem _, by simp [smul_sub, smul_smul, idem_mul_self]⟩
-  exact ⟨x, hx, by simpa using add_mem h_idem hxy⟩
-
-end IsSchwartzBruhat
 
 namespace DescentPair
 
@@ -892,21 +733,21 @@ def levelTranslate (O : DescentPair E r n) :
 lemma levelTranslate_apply (h : O.levelGroup) (Ψ : (n × r → 𝔸f E) → ℂ) (x : n × r → 𝔸f E) :
     O.levelTranslate h Ψ x = star (O.levelChar h) * Ψ (leftMul E r n h.val⁻¹ x) := rfl
 
-/-- The indicator of the class of `z` modulo `i!` at the places of `O` has finitely many translates
-under the level group. -/
-lemma finite_range_levelTranslate (i : ℕ) (z : n × r → 𝔸f E) :
+/-- At the places of `O` the coset indicator centered at `z` modulo `t` has finitely many
+translates under the level group. -/
+lemma finite_range_levelTranslate (t : (𝔸f E)ˣ) (z : n × r → 𝔸f E) :
     (Set.range fun h : O.levelGroup ↦
-      O.levelTranslate h (cosetIndicator O.places (factorialIdele E i) z)).Finite := by
+      O.levelTranslate h (cosetIndicator O.places t z)).Finite := by
   -- The character takes finitely many values, and the class of `k z` is a locally constant
   -- function on the compact group `stdLevel E n`.
-  let C (q : n × r → 𝔸f E) : (n × r → 𝔸f E) → ℂ := cosetIndicator O.places (factorialIdele E i) q
+  let C (q : n × r → 𝔸f E) : (n × r → 𝔸f E) → ℂ := cosetIndicator O.places t q
   have h_cont : Continuous fun k : stdLevel E n ↦ leftMul E r n k z := by
     refine continuous_pi fun p ↦ ?_
     simp only [leftMul_apply, matrixToVec, mul_apply]
     fun_prop
   have : CompactSpace (stdLevel E n) := isCompact_iff_compactSpace.1 isCompact_stdLevel
   have h_class : (Set.range fun k : stdLevel E n ↦ C (leftMul E r n k z)).Finite :=
-    ((isLocallyConstant_cosetIndicator_factorialIdele i).comp_continuous h_cont).range_finite
+    ((isLocallyConstant_cosetIndicator_center t).comp_continuous h_cont).range_finite
   refine ((Set.finite_range O.residueLevelChar).image2 (fun c Ψ ↦ star c • Ψ) h_class).subset
     (Set.range_subset_iff.2 fun h ↦ ?_)
   let k : stdLevel E n := ⟨h, levelOf_le_stdLevel h.prop⟩
@@ -1213,54 +1054,36 @@ lemma levelTranslate_idem_smul (h : O.levelGroup) (Ψ : (n × r → 𝔸f E) →
     O.levelTranslate h Ψ (idem O.places • x) = O.levelTranslate h Ψ x := by
   rw [levelTranslate_apply, levelTranslate_apply, map_smul, IsSchwartzBruhat.idem_smul (Ψ := Ψ)]
 
-/-- **Points with an integral block ratio at every place.** Let `u` be a linear functional on the
-values of the forms on `V`, `P` a polynomial with Fock vector `v_P`, and `g` an adelic point of
-`U(W)`, for a descent pair `O` with spaces `W` and `V`. For a form `y`, let
-`B(Ψ, y) = descentPairing u P g Ψ y` be the value at `g` of the descent of the conjugate of the
-matrix coefficient `u` of `y` by the datum `v_P ⊗ Ψ ⊗ vac`. Suppose that this descent vanishes for
-the block datum `Ψ_bl ⊗ vac`. Let `z` have an integral block ratio at every place of `O`: the block
-`z'` of the rows `O.incl` is invertible, and for the other rows `z''` the matrix `z'' z'⁻¹` is
-integral, and `≡ 0` at the chosen places. Then `B(1_C, y) = 0` for large `i`, where `1_C` is the
-indicator of the class `C` of `z` modulo `i!` at the places of `O` and `factorialIdele E i` is the
-number `i!` as a finite idele. -/
-lemma eventually_descentPairing_eq_zero_of_hasIntegralBlockRatio
+/-- If a translated block datum equals `1` throughout a coset, pairing its indicator with `y`
+vanishes by averaging over the level group. -/
+private lemma descentPairing_eq_zero_of_coset_subset_blockDatum
     (u : (WeylIndex n O.columnCount → ℂ) →ₗ[ℂ] ℂ)
     (P : MvPolynomial (InfinitePlace E × n × r) ℂ) (g : G E O.signs) {y : O.FormV}
-    (h_datum : BlockDescentVanishes u P y) {z : n × r → 𝔸f E}
-    (hz : ∀ j : O.ChosenIndex ⊕ O.TwistIndex,
-      HasIntegralBlockRatio O.incl j.isLeft (matrixAt (O.placeAt j) z)) :
-    ∀ᶠ i : ℕ in atTop,
-      descentPairing u P g (cosetIndicator O.places (factorialIdele E i) z) y = 0 := by
-  -- Let `A` be `z'⁻¹` as a point of `U(W)`, and `Ψ₀ = Ψ_bl(· A)`. The mean `Ψ₁` of the translates
-  -- of `1_C` has `B(Ψ₁, y) = B(1_C, y)` and is a multiple of `Ψ₀`, and `B(Ψ₀, y) = 0`.
-  obtain ⟨A, hA_on, hA⟩ : ∃ A ∈ supportedOn r O.places, ∀ j,
-      A.atPlace (O.placeAt j) = (GeneralLinearGroup.mk'' _ (hz j).isUnit_det)⁻¹ :=
-    exists_atPlace_eq _
-  have h_one : O.translatedBlockFn A z = 1 :=
-    translatedBlockFn_eq_one_of_hasIntegralBlockRatio hz fun j ↦ by simp [hA j]
-  filter_upwards [IsSchwartzBruhat.eventually_const (S := O.places) (O.translatedBlockFn A) z]
-    with i h_const
-  let C : (n × r → 𝔸f E) → ℂ := cosetIndicator O.places (factorialIdele E i) z
-  obtain ⟨Ψ₁, h_inv, h_mean⟩ : ∃ Ψ₁, (∀ h, O.levelTranslate h Ψ₁ = Ψ₁) ∧
-      ∀ (L : _ →ₗ[ℂ] ℂ) (c : ℂ), (∀ h, L (O.levelTranslate h C) = c) → L Ψ₁ = c :=
-    exists_fixed_forall_linearMap_eq_of_finite O.levelTranslate (finite_range_levelTranslate i z)
+    (h_datum : BlockDescentVanishes u P y) {A : Gf E r} (hA : A ∈ supportedOn r O.places)
+    {z : n × r → 𝔸f E} (t : (𝔸f E)ˣ)
+    (h_const : ∀ w : n × r → 𝔸f E, t⁻¹.val • (w - z) ∈ integralBox (n × r) O.places →
+      O.translatedBlockFn A w = 1) :
+    descentPairing u P g (cosetIndicator O.places t z) y = 0 := by
+  let C : (n × r → 𝔸f E) → ℂ := cosetIndicator O.places t z
+  obtain ⟨Ψ₁, h_inv, h_mean⟩ :=
+    exists_fixed_forall_linearMap_eq_of_finite O.levelTranslate (finite_range_levelTranslate t z)
   have h_pairing : descentPairing u P g Ψ₁ y = descentPairing u P g C y :=
     h_mean ((descentPairing u P g).flip y) _ fun h ↦ descentPairing_levelTranslate u P g h C y
   have h_idem (x : n × r → 𝔸f E) : Ψ₁ (idem O.places • x) = Ψ₁ x :=
     sub_eq_zero.1 <| h_mean (.proj (idem O.places • x) - .proj x) 0 fun h ↦
       sub_eq_zero.2 (levelTranslate_idem_smul h C x)
-  -- The support of `Ψ₀` contains `C` and is stable under the level group, so it contains the
-  -- support of `Ψ₁`.
+  -- The support of the translated block datum contains the coset and is stable under the level
+  -- group, so it also contains the support of the mean.
   have h_supp (x : n × r → 𝔸f E) (hx : O.translatedBlockFn A x = 0) : Ψ₁ x = 0 := by
     refine h_mean (.proj x) 0 fun h ↦ ?_
     have h_zero : O.translatedBlockFn A (leftMul E r n h.val⁻¹ x) = 0 := by
       simpa [hx] using translatedBlockFn_leftMul A h⁻¹ x
-    have h_out : leftMul E r n h.val⁻¹ x - z ∉ factorialBox (n × r) O.places i := fun h_mem ↦ by
-      simpa [h_zero, h_one] using h_const _ h_mem
-    simp only [LinearMap.proj_apply, levelTranslate_apply, C, cosetIndicator_factorialIdele,
+    have h_out : t⁻¹.val • (leftMul E r n h.val⁻¹ x - z) ∉ integralBox (n × r) O.places :=
+      fun h_mem ↦ zero_ne_one (h_zero.symm.trans (h_const _ h_mem))
+    simp only [LinearMap.proj_apply, levelTranslate_apply, C, cosetIndicator, boxIndicator_apply,
       ite_eq_right h_out, mul_zero]
-  rw [← h_pairing, eq_smul_translatedBlockFn h_one h_idem h_inv h_supp, map_smul,
-    LinearMap.smul_apply, descentPairing_translatedBlockFn_eq_zero u P g h_datum hA_on, smul_zero]
+  rw [← h_pairing, eq_smul_translatedBlockFn (h_const z (by simp)) h_idem h_inv h_supp, map_smul,
+    LinearMap.smul_apply, descentPairing_translatedBlockFn_eq_zero u P g h_datum hA, smul_zero]
 
 /-- The form `χ(s)⁻¹ s̄ y` for blocks `s` at the chosen places and the places of `Q`, where
 `χ(s) = ∏ χ_w(det s_w)` over all these places and `s̄` is the part of `s` at the chosen places. -/
@@ -1469,20 +1292,25 @@ theorem descentsVanish_of_hyperplaneSumsAnnihilate {y : O.FormV}
     (h_datum : ∀ P : MvPolynomial (InfinitePlace E × n × r) ℂ, BlockDescentVanishes u P y) :
     DescentsVanish O.W (stdSpace E n) O.charW O.places.conjClosureᶜ
       (star (algFormCoeff 1 u y.val)) := by
-  -- It suffices to treat the data `v_P ⊗ Ψ ⊗ vac`, and then the small classes around each `z`.
+  classical
   refine .of_schrodingerOp isConjDisjoint_places (isAutomorphic_star_algFormCoeff u y)
     fun P Ψ hΨ ↦ funext fun g ↦ ?_
-  suffices h_small : ∀ z : n × r → 𝔸f E, ∀ᶠ i : ℕ in atTop,
-      descentPairing u P g (cosetIndicator O.places (factorialIdele E i) z) y = 0 by
-    change descentPairing u P g Ψ y = 0
-    exact IsSchwartzBruhat.mem_of_eventually_coset (S := O.places) Ψ
-      ((descentPairing u P g).flip y).ker h_small
-  intro z
-  by_cases! hz : ∀ j, HasIntegralBlockRatio O.incl j.isLeft (matrixAt (O.placeAt j) z)
-  · exact eventually_descentPairing_eq_zero_of_hasIntegralBlockRatio u P g (h_datum P) hz
-  · obtain ⟨j, hj⟩ := hz
-    exact .of_forall fun i ↦ descentPairing_eq_zero_of_not_hasIntegralBlockRatio u P g hQ h_sums hj
-      _
+  refine hΨ.mem_of_centered_or_local_cosets ((descentPairing u P g).flip y).ker fun x _ ↦ ?_
+  by_cases! hx : ∃ j : O.ChosenIndex ⊕ O.TwistIndex,
+    ¬HasIntegralBlockRatio O.incl j.isLeft (matrixAt (O.placeAt j) x)
+  · obtain ⟨j, hj⟩ := hx
+    exact .inl fun t _ ↦ descentPairing_eq_zero_of_not_hasIntegralBlockRatio u P g hQ h_sums hj t
+  obtain ⟨A, hA_on, hA⟩ : ∃ A ∈ supportedOn r O.places, ∀ j,
+      A.atPlace (O.placeAt j) = (GeneralLinearGroup.mk'' _ (hx j).isUnit_det)⁻¹ :=
+    exists_atPlace_eq _
+  have h_one : O.translatedBlockFn A x = 1 :=
+    translatedBlockFn_eq_one_of_hasIntegralBlockRatio hx fun j ↦ by simp [hA j]
+  have h_loc := IsSchwartzBruhat.locally_constant (S := O.places) (Ψ := O.translatedBlockFn A)
+  refine .inr ⟨{w | O.translatedBlockFn A w = 1}, (h_loc.isOpen_fiber 1).mem_nhds h_one,
+    fun t z _ h_subset ↦ ?_⟩
+  exact descentPairing_eq_zero_of_coset_subset_blockDatum u P g (h_datum P) hA_on t
+    fun w hw ↦ (IsSchwartzBruhat.idem_smul (S := O.places) (Ψ := O.translatedBlockFn A) w).symm.trans
+      (h_subset w hw)
 
 end DescentPair
 

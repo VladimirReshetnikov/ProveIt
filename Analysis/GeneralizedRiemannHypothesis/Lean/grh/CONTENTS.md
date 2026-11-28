@@ -339,7 +339,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 
 **Periods of false lifts**
 
-- `New/OneLift/FalseLifts/BottomOfTower` (1002): The bottom of the tower: from the block datum to all data
+- `New/OneLift/FalseLifts/BottomOfTower` (887): The bottom of the tower: from the block datum to all data
 - `New/OneLift/FalseLifts/HyperbolicPlaneStep` (323): Vanishing of theta descents from W to W plus hyperbolic planes
 - `New/OneLift/FalseLifts/PeriodsOfFalseLifts` (508): The tower of descents and the periods of false lifts
 
@@ -1201,7 +1201,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 **MixedModel**: Mixed Schrödinger models, zero terms and named data
 
 - `Lib/Weil/MixedModel/FockSections` (269): Mixed Schrödinger–Fock models and rapid sections with prescribed values
-- `Lib/Weil/MixedModel/SchwartzBruhat` (404): Schwartz–Bruhat functions on a set of places and the Schrödinger model there
+- `Lib/Weil/MixedModel/SchwartzBruhat` (438): Schwartz–Bruhat functions on a set of places and the Schrödinger model there
 - `Lib/Weil/MixedModel/IsotropicSplitting` (719): Hyperbolic space and splittings of a hermitian space along isotropic subspaces
 - `Lib/Weil/MixedModel/NamedData` (353): Data named by Schwartz–Bruhat functions: Heisenberg laws, transport, Weil action
 - `Lib/Weil/MixedModel/RealTheta` (355): Real data, the entire theta function, and the real vacuum in the mixed model

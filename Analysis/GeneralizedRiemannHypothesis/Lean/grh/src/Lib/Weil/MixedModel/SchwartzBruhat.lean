@@ -93,6 +93,26 @@ lemma mem_integralBox {x : n → 𝔸f E} : x ∈ integralBox n S ↔ ∀ i : n,
 omit [IsCMField E] [DecidableEq n] in
 lemma isOpen_integralBox : (integralBox n S).IsOpen := isOpen_stdLattice.preimage (by continuity)
 
+omit [IsCMField E] [Fintype n] [DecidableEq n] in
+/-- Recenter an indicator at a point of its coset, using the same places and idele. -/
+lemma cosetIndicator_eq_of_mem (t : (𝔸f E)ˣ) {x z : n → 𝔸f E}
+    (hx : t⁻¹.val • (x - z) ∈ integralBox n S) :
+    cosetIndicator S t x = cosetIndicator S t z := by
+  classical
+  funext y
+  simp only [cosetIndicator, boxIndicator_apply]
+  exact if_congr (by rw [← sub_add_sub_cancel y x z, smul_add, add_mem_cancel_right hx]) rfl rfl
+
+omit [IsCMField E] [DecidableEq n] in
+/-- The indicator of a coset depends locally constantly on its center. -/
+lemma isLocallyConstant_cosetIndicator_center (t : (𝔸f E)ˣ) :
+    IsLocallyConstant fun z : n → 𝔸f E ↦ cosetIndicator S t z := by
+  refine (IsLocallyConstant.iff_eventually_eq _).2 fun z ↦ ?_
+  have h_near : ∀ᶠ x : n → 𝔸f E in nhds z, t⁻¹.val • (x - z) ∈ integralBox n S :=
+    (isOpen_integralBox.preimage ((continuous_const_smul t⁻¹.val).comp
+      (continuous_sub_right z))).mem_nhds (by simp)
+  exact h_near.mono fun _ hx ↦ cosetIndicator_eq_of_mem t hx
+
 open scoped Classical in
 /-- The component of the idele `detOn S g` (`g` a finite adelic unitary point) at a finite place
 `w`: `det g_w` if `w ∈ S`, and `1` otherwise. -/
@@ -342,6 +362,30 @@ instance (t : (𝔸f E)ˣ) (z : n → 𝔸f E) :
     IsSchwartzBruhat S fun x : n → 𝔸f E ↦ cosetIndicator S t z x := by
   -- `using!`: simp unfolds `boxIndicator` only in the goal, and unfolding it in the term times out.
   simpa [sub_eq_add_neg] using! (isSchwartzBruhat_boxIndicator.comp_add _).comp_mulVec (.scalar _ _)
+
+omit [DecidableEq n] in
+/-- A Schwartz–Bruhat function lies in `P` if, at each point of its support, either all integral
+coset indicators centered there lie in `P`, or all integral coset indicators whose `S`-parts lie
+in some neighborhood of the point lie in `P`. -/
+lemma IsSchwartzBruhat.mem_of_centered_or_local_cosets (P : Submodule ℂ ((n → 𝔸f E) → ℂ))
+    (h : ∀ x : n → 𝔸f E, Ψ x ≠ 0 →
+      (∀ t : (𝔸f E)ˣ, t.val ∈ Ô E → cosetIndicator S t x ∈ P) ∨
+      ∃ V ∈ nhds x, ∀ (t : (𝔸f E)ˣ) (z : n → 𝔸f E), t.val ∈ Ô E →
+        (∀ w : n → 𝔸f E, t⁻¹.val • (w - z) ∈ integralBox n S → idem S • w ∈ V) →
+        cosetIndicator S t z ∈ P) : Ψ ∈ P := by
+  classical
+  refine hΨ.mem_of_cosets P fun y hy ↦
+    ⟨{w | Ψ w = Ψ y}, (hΨ.locally_constant.isOpen_fiber _).mem_nhds rfl, fun t z ht h_sub ↦ ?_⟩
+  -- A coset not in `P` cannot contain a point satisfying the centered condition.
+  -- Apply the local condition to its indicator on its entire support.
+  by_contra h_out
+  apply h_out
+  refine IsSchwartzBruhat.mem_of_cosets (S := S) P fun x hx ↦ ?_
+  have h_mem : t⁻¹.val • (x - z) ∈ integralBox n S := by simpa [cosetIndicator] using hx
+  have h_val : Ψ (idem S • x) = Ψ y := h_sub x h_mem
+  refine (h x (by rwa [← hΨ.idem_smul x, h_val])).resolve_left fun h_center ↦ h_out ?_
+  rw [← cosetIndicator_eq_of_mem t h_mem]
+  exact h_center t ht
 
 include hS in
 /-- For `S` disjoint from its conjugate (hypothesis `hS`), the idempotents of `S` and of `S̄` have
