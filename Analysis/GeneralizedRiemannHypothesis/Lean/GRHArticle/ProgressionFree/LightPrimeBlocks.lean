@@ -50,7 +50,8 @@ theorem summable_reciprocalExponentWeight {ι : Type*} [Fintype ι] {u : ι → 
     (hu : ∀ p, 0 ≤ u p) (hu' : ∀ p, u p < 1) : Summable (reciprocalExponentWeight u) :=
   summable_of_sum_le (reciprocalExponentWeight_nonneg hu) (sum_reciprocalExponentWeight_le hu hu')
 
-private theorem mass_inter_add_sdiff {ι : Type*} [Fintype ι] {u : ι → ℝ}
+/-- Split reciprocal mass into the points in a second set and its complement. -/
+theorem mass_inter_add_sdiff {ι : Type*} [Fintype ι] {u : ι → ℝ}
     (h : Summable (reciprocalExponentWeight u)) (F G : Set (ι → ℕ)) :
     reciprocalExponentMass u (F ∩ G) + reciprocalExponentMass u (F \ G) =
       reciprocalExponentMass u F := by

@@ -2,6 +2,7 @@ import Mathlib.Algebra.Polynomial.Degree.Lemmas
 import Mathlib.Algebra.Polynomial.Eval.Degree
 import Mathlib.Algebra.Polynomial.Inductions
 import Mathlib.Data.Nat.Bitwise
+import Mathlib.Tactic.Ring
 
 /-!
 # Exact packed polynomial multiplication
@@ -63,16 +64,17 @@ private theorem eval_eq_coeff_zero_add_mul_divX (b : ℕ) (P : Polynomial ℕ) :
     add_comm] using h.symm
 
 private theorem div_pow_mod_eval_eq_coeff (b : ℕ) (hb : b > 0) (P : Polynomial ℕ)
-    (hP : ∀ i, P.coeff i < b) (n : ℕ) :
+    (n : ℕ) (hP : ∀ i ≤ n, P.coeff i < b) :
     P.eval b / b^n % b = P.coeff n := by
   induction n generalizing P with
   | zero =>
     rw [pow_zero, Nat.div_one, eval_eq_coeff_zero_add_mul_divX, Nat.add_mul_mod_self_left,
-      Nat.mod_eq_of_lt (hP 0)]
+      Nat.mod_eq_of_lt (hP 0 (Nat.zero_le _))]
   | succ n ih =>
-    have hd : ∀ i, P.divX.coeff i < b := fun i ↦ by simpa only [coeff_divX] using hP (i+1)
+    have hd : ∀ i ≤ n, P.divX.coeff i < b := fun i hi ↦ by
+      simpa only [coeff_divX] using hP (i+1) (Nat.succ_le_succ hi)
     rw [pow_succ', ← Nat.div_div_eq_div_mul, eval_eq_coeff_zero_add_mul_divX,
-      Nat.add_mul_div_left _ _ hb, Nat.div_eq_of_lt (hP 0), zero_add, ih P.divX hd, coeff_divX]
+      Nat.add_mul_div_left _ _ hb, Nat.div_eq_of_lt (hP 0 (Nat.zero_le _)), zero_add, ih P.divX hd, coeff_divX]
 
 /-- The first `n` coefficients of the product of nonnegative polynomials,
 computed by one packed multiplication. -/
@@ -94,7 +96,7 @@ theorem getD_multiplyPackedNaturalPolynomial (n : ℕ) (l r : List ℕ) (i : Fin
     i.isLt, dif_pos, Option.getD_some, Nat.shiftRight_eq_div_pow, Nat.one_shiftLeft,
     packPolynomialDigits_eq_eval, ← Polynomial.eval_mul]
   rw [pow_mul]
-  exact div_pow_mod_eval_eq_coeff _ (Nat.two_pow_pos _) _ hwidth i
+  exact div_pow_mod_eval_eq_coeff _ (Nat.two_pow_pos _) _ i (fun j _ ↦ hwidth j)
 
 private def positiveDigits (l : List ℤ) : List ℕ := l.map Int.toNat
 
@@ -162,10 +164,13 @@ private theorem packedPowMod_eq (a m k : ℕ) : packedPowMod a m k = a^k % m := 
   | zero => simp [packedPowMod]
   | succ k ih => rw [packedPowMod, ih, Nat.mul_mod_mod, pow_succ']
 
+/-- Store the first `N` packed digits of a power at a specified digit width. -/
+def packedNaturalPolynomialPowerAtWidth (N : ℕ) (l : List ℕ) (k w : ℕ) : ℕ × ℕ :=
+  (w, packedPowMod (packPolynomialDigits w l) (1 <<< (w*N)) k)
+
 /-- Store the truncated packed power and its uniform digit width. -/
 def packedNaturalPolynomialPower (N : ℕ) (l : List ℕ) (k : ℕ) : ℕ × ℕ :=
-  let w := (l.sum ^ k).log2 + 1
-  (w, packedPowMod (packPolynomialDigits w l) (1 <<< (w*N)) k)
+  packedNaturalPolynomialPowerAtWidth N l k ((l.sum ^ k).log2 + 1)
 
 /-- Extract one coefficient from a packed power. -/
 def packedNaturalPolynomialPowerCoeff (a : ℕ × ℕ) (i : ℕ) : ℕ :=
@@ -176,17 +181,56 @@ private theorem div_pow_mod_truncated {b n i : ℕ} (z : ℕ) (hi : i < n) :
   rw [← Nat.mod_mul_right_div_self, ← pow_succ, Nat.mod_mod_of_dvd _ (pow_dvd_pow b (Nat.succ_le_of_lt hi)),
     pow_succ, Nat.mod_mul_right_div_self]
 
+/-- Only the low coefficients need to fit the chosen width. -/
+theorem packedNaturalPolynomialPowerCoeff_eq_of_prefixBound (N : ℕ) (l : List ℕ)
+    (k w i : ℕ) (hi : i < N) (hwidth : ∀ j < N, (coefficientListPolynomial l ^ k).coeff j < 2^w) :
+    packedNaturalPolynomialPowerCoeff (packedNaturalPolynomialPowerAtWidth N l k w) i =
+      (coefficientListPolynomial l ^ k).coeff i := by
+  simp only [packedNaturalPolynomialPowerCoeff, packedNaturalPolynomialPowerAtWidth, packedPowMod_eq,
+    Nat.shiftRight_eq_div_pow, Nat.one_shiftLeft, packPolynomialDigits_eq_eval, ← Polynomial.eval_pow]
+  rw [pow_mul, pow_mul, div_pow_mod_truncated _ hi]
+  exact div_pow_mod_eval_eq_coeff _ (Nat.two_pow_pos _) _ i (fun j hj ↦ hwidth j (hj.trans_lt hi))
+
 theorem packedNaturalPolynomialPowerCoeff_eq (N : ℕ) (l : List ℕ) (k i : ℕ) (hi : i < N) :
     packedNaturalPolynomialPowerCoeff (packedNaturalPolynomialPower N l k) i =
       (coefficientListPolynomial l ^ k).coeff i := by
-  let w := (l.sum ^ k).log2 + 1
-  have hwidth (j : ℕ) : (coefficientListPolynomial l ^ k).coeff j < 2^w := by
-    apply (coeff_le_eval_one _ j).trans_lt
-    rw [Polynomial.eval_pow, eval_one_coefficientListPolynomial]
-    exact Nat.lt_log2_self
-  simp only [packedNaturalPolynomialPowerCoeff, packedNaturalPolynomialPower, packedPowMod_eq,
-    Nat.shiftRight_eq_div_pow, Nat.one_shiftLeft, packPolynomialDigits_eq_eval, ← Polynomial.eval_pow]
-  rw [pow_mul, pow_mul, div_pow_mod_truncated _ hi]
-  exact div_pow_mod_eval_eq_coeff _ (Nat.two_pow_pos _) _ hwidth i
+  apply packedNaturalPolynomialPowerCoeff_eq_of_prefixBound N l k _ i hi
+  intro j _
+  apply (coeff_le_eval_one _ j).trans_lt
+  rw [Polynomial.eval_pow, eval_one_coefficientListPolynomial]
+  exact Nat.lt_log2_self
+
+private theorem packPolynomialDigits_append (w : ℕ) (l r : List ℕ) :
+    packPolynomialDigits w (l ++ r) = packPolynomialDigits w l +
+      (packPolynomialDigits w r <<< (w*l.length)) := by
+  induction l with
+  | nil => simp [packPolynomialDigits]
+  | cons c l ih =>
+    rw [List.cons_append, packPolynomialDigits, ih, packPolynomialDigits, List.length_cons]
+    simp only [Nat.shiftLeft_eq, Nat.mul_succ, pow_add]
+    ring
+
+/-- Pack consecutive blocks separately to bound the sizes of intermediate integers. -/
+def packPolynomialDigitChunks (w : ℕ) : List (List ℕ) → ℕ
+  | [] => 0
+  | l :: ls => packPolynomialDigits w l + (packPolynomialDigitChunks w ls <<< (w*l.length))
+
+theorem packPolynomialDigitChunks_eq (w : ℕ) (ls : List (List ℕ)) :
+    packPolynomialDigitChunks w ls = packPolynomialDigits w ls.flatten := by
+  induction ls with
+  | nil => rfl
+  | cons l ls ih => rw [packPolynomialDigitChunks, List.flatten_cons, packPolynomialDigits_append, ih]
+
+/-- Store a truncated power using consecutive input blocks and an explicit width. -/
+def packedNaturalPolynomialPowerAtChunkWidth (N : ℕ) (ls : List (List ℕ)) (k w : ℕ) :
+    ℕ × ℕ :=
+  (w, packedPowMod (packPolynomialDigitChunks w ls) (1 <<< (w*N)) k)
+
+theorem packedNaturalPolynomialPowerAtChunkWidth_eq (N : ℕ) (ls : List (List ℕ))
+    (k w : ℕ) :
+    packedNaturalPolynomialPowerAtChunkWidth N ls k w =
+      packedNaturalPolynomialPowerAtWidth N ls.flatten k w := by
+  rw [packedNaturalPolynomialPowerAtChunkWidth, packPolynomialDigitChunks_eq,
+    packedNaturalPolynomialPowerAtWidth]
 
 end GRHArticle.SingularModuli

@@ -33,11 +33,12 @@ theorem card_monicLayer (n : ℕ) :
       ((monicEquivDegreeLT n).trans (degreeLTEquiv F n).toEquiv)
   simpa [Fintype.card_fun] using Fintype.card_congr e
 
-private noncomputable def squarefreeLayer (F : Type*) [Field F] [Fintype F]
+/-- Monic squarefree polynomials of degree `n` avoiding the given finite set. -/
+noncomputable def squarefreeLayer (F : Type*) [Field F] [Fintype F]
     (S : Finset (Polynomial F)) (n : ℕ) : Finset (Polynomial F) :=
   (monicLayer F n).filter fun f ↦ Squarefree f ∧ ∀ p ∈ S, ¬ p ∣ f
 
-private theorem mem_squarefreeLayer {S : Finset (Polynomial F)} {n : ℕ} {f : Polynomial F} :
+theorem mem_squarefreeLayer {S : Finset (Polynomial F)} {n : ℕ} {f : Polynomial F} :
     f ∈ squarefreeLayer F S n ↔
       f.Monic ∧ f.natDegree = n ∧ Squarefree f ∧ ∀ p ∈ S, ¬ p ∣ f := by
   simp only [squarefreeLayer, Finset.mem_filter, mem_monicLayer, and_assoc]
@@ -232,7 +233,8 @@ private theorem tendsto_normalized_squarefreeLayer_empty :
     pow_succ _ (k+1)]
   field_simp
 
-private theorem tendsto_normalized_squarefreeLayer (S : Finset (Polynomial F))
+/-- Normalized squarefree counts for any finite set of excluded monic irreducibles. -/
+theorem tendsto_normalized_squarefreeLayer (S : Finset (Polynomial F))
     (hS : ∀ p ∈ S, p.Monic ∧ Irreducible p) :
     Tendsto (fun n ↦ ((squarefreeLayer F S n).card : ℝ) / (Fintype.card F : ℝ)^n)
       atTop (𝓝 ((1 - (Fintype.card F : ℝ)⁻¹) *

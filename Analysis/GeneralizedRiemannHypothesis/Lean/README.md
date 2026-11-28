@@ -70,6 +70,8 @@ to place them in the disks, and finite certificates from the
 
 [CMQuartic55Identification.lean](GRHArticle/SingularModuli/CMQuartic55Identification.lean) checks the exact factorization of the proposed degree-59 diagonal, with the printed discriminant −55 quartic appearing twice. It excludes the complementary factor on each of the four CM boxes. The analytic identification now follows from the remaining degree-59 diagonal identity.
 
+[HeckeWeightedCoefficientBound.lean](GRHArticle/SingularModuli/HeckeWeightedCoefficientBound.lean) bounds truncated series products at a dyadic weight. [HeckeChunkedPrefixCertificate.lean](GRHArticle/SingularModuli/HeckeChunkedPrefixCertificate.lean) checks packed coefficient prefixes in chunks. [PrimeHeckeWeightedTrace.lean](GRHArticle/SingularModuli/PrimeHeckeWeightedTrace.lean) applies the bounds to prime Hecke trace rows.
+
 ## Integer geometric progressions
 
 [Rankin.lean](GRHArticle/ProgressionFree/Rankin.lean) proves that Rankin's
@@ -198,6 +200,10 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 [PolynomialTwoPrimeTransfer.lean](GRHArticle/ProgressionFree/PolynomialTwoPrimeTransfer.lean) transfers the article's three finite triangle losses, as hypotheses, to the actual polynomial density supremum. [PolynomialTwoPrimeFibers.lean](GRHArticle/ProgressionFree/PolynomialTwoPrimeFibers.lean) counts the two-prime classes with the leading scalar retained. The resulting upper bound uses the same one-prime Roth series as Asada et al.
 
 [TriangleRothSmallCases.lean](GRHArticle/ProgressionFree/TriangleRothSmallCases.lean) proves the first two triangle losses in `gpp:thm:twoprime`. All interval maxima at lengths 5, 9, 13 and 20, and their forced or omitted points, are kernel-checked. [TriangleRothDeficiency.lean](GRHArticle/ProgressionFree/TriangleRothDeficiency.lean) proves that any previous loss persists in a translated tip and that a row-column conflict forces another unit.
+
+[PolynomialTwoPrimeTheorem.lean](GRHArticle/ProgressionFree/PolynomialTwoPrimeTheorem.lean) proves the one-prime upper bound is strict for every finite field, answering Asada et al.'s Question 6.2. The actual supremum loses at least $(1-1/q)^2(q^{-8}+q^{-19}+q^{-29})$. For the binary field it is at most $907739729/1073741824$, and its positive gap from the greedy benchmark is less than $5.46\times10^{-7}$. [TriangleRothThirty.lean](GRHArticle/ProgressionFree/TriangleRothThirty.lean) checks the third triangle obstruction. [IntervalRothNumbers32.lean](GRHArticle/ProgressionFree/IntervalRothNumbers32.lean) certifies the exact Roth numbers through 32, with a verified search using eight-position upper bounds.
+
+[PolynomialGreedyCofactorDensity.lean](GRHArticle/ProgressionFree/PolynomialGreedyCofactorDensity.lean) proves the exact degree-layer limit for greedy monic polynomials avoiding any finite set of monic primes. The constant has an explicit convergent series and a positive squarefree lower bound. [PolynomialOneFreePrimeFibers.lean](GRHArticle/ProgressionFree/PolynomialOneFreePrimeFibers.lean) gives the cofactor decomposition and proves rational-ratio progression avoidance for independent progression-free exponent choices at one prime.
 
 ## RH and Dirichlet GRH input
 
