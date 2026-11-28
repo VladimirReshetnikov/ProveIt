@@ -57,11 +57,11 @@ variable {P : Parameters} (D : Data P)
 
 variable {D} in
 /-- The bound for the number of roots of unity in a value of the data on the last path: that for
-the first path, times one factor for each of the `m ^ 2` turns. Here `vectorCountBound ϑ` bounds the
-number of column vectors modulo `𝔪` at a node of the grids and `edgeMatrixCountBound ϑ` the number
+the first path times one factor for each of the `m` diagonal turns. Here `vectorCountBound ϑ` bounds
+the number of column vectors modulo `𝔪` at a node, and `edgeMatrixCountBound ϑ` bounds the number
 of matrices modulo `𝔪` at an edge. -/
 abbrev lastPathBound (ϑ : D.MFoldTwist) : ℕ :=
-  vectorCountBound ϑ ^ D.m ^ 2 * edgeMatrixCountBound ϑ ^ (2 * D.m)
+  vectorCountBound ϑ ^ D.m * edgeMatrixCountBound ϑ ^ (2 * D.m)
 
 /-! ### Denominators on the last path -/
 

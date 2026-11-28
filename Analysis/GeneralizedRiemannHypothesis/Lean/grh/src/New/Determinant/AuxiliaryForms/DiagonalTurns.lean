@@ -15,8 +15,8 @@ transfers the periods from the first path to the last.
 * `New.Data.isProportional_of_columnPeriod`, `New.Data.IsProportional.exists_rowPeriod_eq_mul`: the
   seesaws.
 * `New.Data.exists_columnLineKernel_eq`: reversing the line.
-* `New.Data.exists_transfersPeriods_of_turn`: one turn, with the absolute value of its constant.
-* `New.Data.exists_transfersPeriods_first_last`: the `m ^ 2` turns composed.
+* `New.Data.exists_transfersPeriods_diagonal`: one diagonal turn, with the absolute value of its constant.
+* `New.Data.exists_transfersPeriods_first_last`: the full sweep, with one bound factor per diagonal turn.
 
 Notions from other files:
 * `D.gridSpace 0 false a b` is the space `Y^a_b` and `D.gridSpace 0 true a b` is `Ỹ^b_a`; their
@@ -619,53 +619,41 @@ lemma exists_transfersPeriods_diagonal (hj : j < D.m) :
       columnPeriod_eq_mul_rowPeriod hj q (fun v ↦ h_line x.1 v p) (h_law x.1) (h_match x.1) z
     _ = κ * β * (Ξ x / (c / c_line) x.1) := by simp [hβ, Units.val_div_eq_div_val, field]
 
-/-- One turn. For `i, j < m` there are numbers `c ϑ ≠ 0`, of absolute value `turnRatio i j` up to a
-constant and a power of `Nm Q`, with `Q` the modulus of `ϑ`, such that for every turn at `(i, j)`
-path data `Ψ'` on the old path give path data `Ψ` on the new one, with the bound for the number of
-roots of unity in a value multiplied by `vectorCountBound = (Nm 𝔪) ^ (2 * n_m)`, where
-`𝔪 = gridModulus ϑ` and `n_m = D.n D.m`, and `Ψ ∝ Ξ` implies `Ψ' ∝ Ξ / c`. -/
-theorem exists_transfersPeriods_of_turn {j i : ℕ} (hi : i < D.m) (hj : j < D.m) :
-    ∃ c : D.MFoldTwist → ℂˣ, D.HasAbsUpToNormPower (fun ϑ : D.MFoldTwist ↦ c ϑ) (D.turnRatio i j) ∧
-      ∀ Γ' Γ : TwoGridPath D.m, Γ'.Turn (i, j) Γ → TransfersPeriods Γ' Γ vectorCountBound c := by
-  have h_one_le : (1 : D.MFoldTwist → ℕ) ≤ vectorCountBound := fun _ ↦ pow_pos Fintype.card_pos _
-  obtain hij | rfl | hij := lt_trichotomy i j
-  · obtain ⟨c, hc, h_transfer⟩ := exists_transfersPeriods_off_diagonal false hij hj
-    refine ⟨c, hc, fun Γ' Γ h_turn ↦ ?_⟩
-    obtain ⟨q, r, hΓ', rfl⟩ := h_turn.exists_corner_of_lt hij
-    exact (h_transfer Γ' q r hΓ').mono h_one_le
-  · obtain ⟨c, hc, h_transfer⟩ := exists_transfersPeriods_diagonal hj
-    refine ⟨c, hc, fun Γ' Γ h_turn ↦ ?_⟩
-    obtain ⟨q, rfl, rfl⟩ := h_turn.exists_eq_down_and_eq_right
-    exact h_transfer q
-  · obtain ⟨c, hc, h_transfer⟩ := exists_transfersPeriods_off_diagonal true hij hi
-    refine ⟨c, hc, fun Γ' Γ h_turn ↦ ?_⟩
-    obtain ⟨q, r, hΓ', rfl⟩ := h_turn.exists_half_true_eq_of_gt hij
-    exact (h_transfer Γ' q r hΓ').mono h_one_le
-
 /-- There are numbers `c ϑ ≠ 0` whose absolute value is the product over `i, j < m` of
-`turnRatio i j ϑ`, up to a constant and a power of `Nm Q`, with `Q` the modulus of the twist `ϑ`,
-such that path data `Ψ'` on the first path give path data `Ψ` on the last, with the bound for the
-number of roots of unity in a value multiplied by `vectorCountBound ^ m ^ 2`, and `Ψ ∝ Ξ` implies
-`Ψ' ∝ Ξ / c`. -/
+`turnRatio i j ϑ`, up to a constant and a power of `Nm Q`, with `Q` the modulus of the twist `ϑ`.
+They transfer periods from the first path to the last. Each diagonal turn costs one factor of
+`vectorCountBound`, and each pair of reflected off-diagonal turns has cost one. -/
 theorem exists_transfersPeriods_first_last (D : Data P) : ∃ c : D.MFoldTwist → ℂˣ,
     D.HasAbsUpToNormPower (fun ϑ : D.MFoldTwist ↦ c ϑ)
       (∏ s ∈ range D.m ×ˢ range D.m, D.turnRatio s.1 s.2) ∧
-    TransfersPeriods (.first D.m) (.last D.m) (vectorCountBound ^ D.m ^ 2) c := by
-  have h_turn (s : ℕ × ℕ) (hs : s ∈ range D.m ×ˢ range D.m) : ∃ c : D.MFoldTwist → ℂˣ,
-      D.HasAbsUpToNormPower (fun ϑ ↦ c ϑ) (D.turnRatio s.1 s.2) ∧
-      ∀ Γ' Γ : TwoGridPath D.m, Γ'.Turn s Γ → TransfersPeriods Γ' Γ vectorCountBound c :=
-    exists_transfersPeriods_of_turn (mem_range.1 (mem_product.1 hs).1)
-      (mem_range.1 (mem_product.1 hs).2)
-  choose! c hc h_transfer using h_turn
-  refine ⟨∏ s ∈ range D.m ×ˢ range D.m, c s, ?_, ?_⟩
-  · simpa only [Finset.prod_fn, Finset.prod_apply, Units.coe_prod] using HasAbsUpToNormPower.prod hc
-  rw [show D.m ^ 2 = #(range D.m ×ˢ range D.m) by simp [sq]]
-  apply TwoGridPath.turn_induction
-    (motive := fun Γ T ↦ TransfersPeriods Γ (.last D.m) (vectorCountBound ^ #T) (∏ s ∈ T, c s))
-  · simpa using TransfersPeriods.refl (.last D.m)
-  · intro Γ' s Γ T hΓ hs ih
-    rw [card_insert_of_notMem hs, prod_insert hs, pow_succ']
-    exact (h_transfer s hΓ.mem_product Γ' Γ hΓ).trans ih
+    TransfersPeriods (.first D.m) (.last D.m) (vectorCountBound ^ D.m) c := by
+  apply TwoGridPath.sweep_induction
+    (motive := fun Γ T ↦ ∃ c : D.MFoldTwist → ℂˣ,
+      D.HasAbsUpToNormPower (fun ϑ ↦ c ϑ) (∏ s ∈ T, D.turnRatio s.1 s.2) ∧
+      TransfersPeriods Γ (.last D.m) (vectorCountBound ^ (D.m - Γ.diagonalIndex)) c)
+  · exact ⟨1, by simpa [Pi.one_def] using (HasAbsUpToNormPower.one (D := D)), by
+      simpa [TwoGridPath.last] using (TransfersPeriods.refl (D := D) (.last D.m))⟩
+  · intro j hj q T hjj ⟨c, hc, ht⟩
+    obtain ⟨a, ha, h⟩ := exists_transfersPeriods_diagonal hj
+    refine ⟨a * c, ?_, ?_⟩
+    · simpa [prod_insert hjj, Pi.mul_def] using ha.mul hc
+    · simpa only [TwoGridPath.double, show D.m - j = (D.m - (j + 1)) + 1 by omega, pow_succ']
+        using (h (fun _ ↦ q)).trans ht
+  · intro j b hjb hb q r T h₁₂ h₂₁ ⟨c, hc, ht⟩
+    obtain ⟨a, ha, h₀⟩ := exists_transfersPeriods_off_diagonal false hjb hb
+    obtain ⟨a', ha', h₁⟩ := exists_transfersPeriods_off_diagonal true hjb hb
+    refine ⟨a * (a' * c), ?_, ?_⟩
+    · have hne : (j, b) ∉ insert (b, j) T := by simp [hjb.ne, h₁₂]
+      simpa [prod_insert hne, prod_insert h₂₁, Pi.mul_def] using ha.mul (ha'.mul hc)
+    · let Γ : TwoGridPath D.m :=
+        ⟨j + 1, update (fun _ ↦ q.down.right.append r) false (q.right.down.append r)⟩
+      have hleft := h₀ (.double (q.down.right.append r)) q r rfl
+      have hright := h₁ Γ q r (by simp [Γ])
+      have heq : update Γ.half true (q.right.down.append r) = fun _ ↦ q.right.down.append r := by
+        funext z
+        cases z <;> simp [Γ]
+      rw [heq] at hright
+      simpa only [one_mul, TwoGridPath.double] using hleft.trans (hright.trans ht)
 
 end New.Data
 

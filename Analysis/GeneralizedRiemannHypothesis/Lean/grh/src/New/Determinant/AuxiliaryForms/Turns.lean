@@ -812,14 +812,6 @@ def TransfersPeriods (Γ' Γ : TwoGridPath D.m) (k : D.MFoldTwist → ℕ) (c : 
 lemma TransfersPeriods.refl (Γ : TwoGridPath D.m) : TransfersPeriods Γ Γ 1 1 :=
   fun N Ψ hΨ ↦ ⟨Ψ, by simpa using hΨ, by simp⟩
 
-/-- A pair of paths that transfers periods with bound `k` also transfers them with every larger
-bound `k'`. -/
-lemma TransfersPeriods.mono {Γ' Γ : TwoGridPath D.m} {k k' : D.MFoldTwist → ℕ}
-    {c : D.MFoldTwist → ℂˣ} (h_transfer : TransfersPeriods Γ' Γ k c) (hk : k ≤ k') :
-    TransfersPeriods Γ' Γ k' c := by
-  refine fun N Ψ' hΨ' ↦ (h_transfer N Ψ' hΨ').imp fun Ψ ⟨hΨ, h_prop⟩ ↦ ⟨fun ϑ ↦ ?_, h_prop⟩
-  exact (hΨ ϑ).mono (Nat.mul_le_mul_right (N ϑ) (hk ϑ))
-
 /-- Period transfers compose: the bounds and the constants multiply. -/
 lemma TransfersPeriods.trans {Γ₁ Γ₂ Γ₃ : TwoGridPath D.m} {k k' : D.MFoldTwist → ℕ}
     {c c' : D.MFoldTwist → ℂˣ} (h₁₂ : TransfersPeriods Γ₁ Γ₂ k c)

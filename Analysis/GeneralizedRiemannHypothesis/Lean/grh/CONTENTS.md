@@ -304,14 +304,14 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 
 **Auxiliary forms**
 
-- `New/Determinant/AuxiliaryForms/GridPaths` (218): Monotone paths through two square grids, and their turns
+- `New/Determinant/AuxiliaryForms/GridPaths` (90): A diagonal sweep of two monotone grid paths
 - `New/Determinant/AuxiliaryForms/RegularParameters` (98): Weights of regular parameters and bounds on boxes
 - `New/Determinant/AuxiliaryForms/DeepLevelPoincarePeriod` (537): Steep parameters of Y₀ and Ỹ^0_0; periods of Poincaré series of deep level
 - `New/Determinant/AuxiliaryForms/PathData` (454): Moduli, spaces, moves, path data and periods on the two grids
 - `New/Determinant/AuxiliaryForms/DeepLevelVanishing` (529): Vanishing of forms on Y₀ orthogonal to the deep level on Ỹ^0_0
 - `New/Determinant/AuxiliaryForms/GridFirstColumns` (520): Periods on the diagonal and path data on the first path
-- `New/Determinant/AuxiliaryForms/Turns` (643): Turning path data, and turns off the diagonal
-- `New/Determinant/AuxiliaryForms/DiagonalTurns` (459): Turns on the diagonal, and the transfer of periods from the first path to the last
+- `New/Determinant/AuxiliaryForms/Turns` (638): Turning path data, and turns off the diagonal
+- `New/Determinant/AuxiliaryForms/DiagonalTurns` (454): Turns on the diagonal, and the transfer of periods from the first path to the last
 - `New/Determinant/AuxiliaryForms/FirstPath` (262): The maps `Θ^♭` and `res^♭`, and the first path
 - `New/Determinant/AuxiliaryForms/LastPath` (743): The branching pairing and the periods on the last path
 - `New/Determinant/AuxiliaryForms/SpanningForms` (531): Denominators and sizes on the last path, and the auxiliary forms
