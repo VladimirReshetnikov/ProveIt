@@ -109,6 +109,18 @@ def valuedIn (C : Submodule O (I → O)) : Submodule O (X × I → O) :=
 lemma mem_valuedIn {C : Submodule O (I → O)} {φ : X × I → O} :
     φ ∈ valuedIn X C ↔ ∀ x : X, (fun i : I ↦ φ (x, i)) ∈ C := mem_iInf _
 
+/-- Let `N` be finitely generated over a local ring. If `a • N ≤ G ⊔ u • N` and `u` is divisible
+by `a * w` for `w` in the maximal ideal, Nakayama gives `a • N ≤ G`. -/
+lemma smul_le_of_le_sup_smul {M : Type*} [IsLocalRing O]
+    [AddCommGroup M] [Module O M] {N G : Submodule O M} (hN : N.FG) {a u w : O}
+    (hw : w ∈ maximalIdeal O) (hu : a * w ∣ u) (h_le : a • N ≤ G ⊔ u • N) : a • N ≤ G := by
+  obtain ⟨v, rfl⟩ := hu
+  apply le_of_le_smul_of_le_jacobson_bot (hN.map _) (maximalIdeal_le_jacobson ⊥)
+  refine h_le.trans (sup_le_sup_left ?_ G)
+  rw [mul_assoc, mul_comm a, mul_smul, ← ideal_span_singleton_smul]
+  exact Submodule.smul_mono_left ((Ideal.span_singleton_le_iff_mem _).2
+    (Ideal.mul_mem_right _ _ hw))
+
 variable [IsDomain O] [ValuationRing O] [Fintype E] [DecidableEq E]
 
 /-- Let `Q` have the left inverse `R`, and let `R` kill the columns `j ∈ J` of an invertible matrix
@@ -137,21 +149,6 @@ lemma card_add_card_le_mul_finrank [Fintype X] [Fintype I] [DecidableEq X] [Deci
     · simp [one_apply, mul_apply (N := R * U.val), hRU _ (inr_mem_disjSum.1 hj)]
   · rintro (j | j) hj
     exacts [hQ j, hU j (inr_mem_disjSum.1 hj)]
-
-omit [DecidableEq E] in
-/-- If `u` is a multiple of `a * w` with `w` in the maximal ideal and `a • O ^ E` lies in
-`G + u • O ^ E`, then `a • O ^ E` lies in `G`, by Nakayama's lemma. -/
-lemma smul_top_le_of_le_sup_smul_top {a u w : O} {G : Submodule O (E → O)}
-    (hw : w ∈ maximalIdeal O) (hu : a * w ∣ u)
-    (h_le : a • (⊤ : Submodule O (E → O)) ≤ G ⊔ u • ⊤) :
-    a • (⊤ : Submodule O (E → O)) ≤ G := by
-  have h_small : u • ⊤ ≤ maximalIdeal O • a • (⊤ : Submodule O (E → O)) := by
-    obtain ⟨v, rfl : u = a * w * v⟩ := hu
-    rintro _ ⟨η, -, rfl⟩
-    have h_assoc : (a * w * v) • η = w • a • v • η := by rw [mul_comm a w, mul_smul, mul_smul]
-    exact Set.mem_of_eq_of_mem h_assoc (smul_mem_smul hw (smul_mem_pointwise_smul _ a ⊤ mem_top))
-  exact le_of_le_smul_of_le_jacobson_bot (Module.Finite.fg_top.map _)
-    (maximalIdeal_le_jacobson ⊥) (h_le.trans (sup_le_sup_left h_small G))
 
 /-- Let `O` be a valuation domain. Let the matrix `Q` have the left inverse `R`, so that its columns
 are a basis of a direct summand of `O ^ (X × I)`, and let `B` be a near inverse of `A`: `A * B ≡ a`
@@ -224,7 +221,7 @@ lemma exists_finset_card_le_smul_top_le_sup_span [Fintype X] [Fintype I] [Decida
       have h_image : A *ᵥ B *ᵥ η ∈ G ⊔ u • ⊤ :=
         h_map (mem_map_of_mem (mem_sup_right (LinearMap.mem_range_self _ η)))
       exact sub_mem h_image (mem_sup_right (smul_mem_pointwise_smul _ u ⊤ mem_top))
-    exact smul_top_le_of_le_sup_smul_top hw hu h_mod
+    exact smul_le_of_le_sup_smul Module.Finite.fg_top hw hu h_mod
 
 /-- The colengths add along a product. If `a • O ^ E` lies in the span of the image of `A` and of a
 finite set `s`, then the colength of the image of `d' * A * d` plus `z • O ^ E` in `O ^ E` divides

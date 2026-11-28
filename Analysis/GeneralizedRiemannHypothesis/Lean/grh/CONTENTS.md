@@ -150,7 +150,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `New/UpperBound/ElementaryDivisors/AveragingMap` (365): Averaging: removing the terms of large defect in all Levi translates at once
 - `New/UpperBound/ElementaryDivisors/PieriCone` (379): The Pieri cone, the step map and the slab: interlacing and volume of the cone
 - `New/UpperBound/ElementaryDivisors/DefectCount` (635): The dimension of the forms of bounded defect
-- `New/UpperBound/ElementaryDivisors/ElementaryDivisorTheorem` (818): Elementary divisors of the edge Hecke operator
+- `New/UpperBound/ElementaryDivisors/ElementaryDivisorTheorem` (815): Elementary divisors of the edge Hecke operator
 
 ### Spanning: a second moment
 
