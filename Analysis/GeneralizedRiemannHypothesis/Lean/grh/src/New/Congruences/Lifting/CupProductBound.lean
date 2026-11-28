@@ -988,39 +988,6 @@ lemma mem_liftIdeal_of_mul_E_pow {S : PairingSide O} {r : ℕ} {i : Letter} {a c
       padicValNat.mul n.add_one_ne_zero n.factorial_ne_zero] at h_cost
     exact ih h_step (by omega) (by omega)
 
-/-- Lowering by one the power of the coordinate `z = k.z` of the Kummer chart `k`: for a side `S`
-and a letter `i`, if `p ^ c * z ^ n` lies in `S.liftIdeal r 0 i` and `1 ≤ n`, then so does
-`p ^ (c + v_p(n) + 1) * z ^ (n - 1)`. -/
-lemma p_pow_mul_z_pow_pred_mem_liftIdeal {S : PairingSide O} {r c n : ℕ} {i : Letter}
-    (hn_pos : 1 ≤ n) (h_mem : (p : Ainf) ^ c * k.z.val ^ n ∈ S.liftIdeal r 0 i) :
-    (p : Ainf) ^ (c + padicValNat p n + 1) * k.z.val ^ (n - 1) ∈ S.liftIdeal r 0 i := by
-  -- Take `t` in `Γ'` with `t z = [ε] z` and put `v = v_p(n)`. As `E ≡ p` modulo `z`, there is an
-  -- identity `τ (p ^ (v + 1) + z β') = α ([ε] ^ n - 1)`; multiplied by `p ^ c z ^ n` it reads
-  -- `zτ (p ^ (c + v + 1) z ^ (n - 1) + β' p ^ c z ^ n) = α (t - 1) (p ^ c z ^ n)`.
-  obtain ⟨m, rfl⟩ : ∃ m : ℕ, n = m + 1 := Nat.exists_eq_add_of_le' hn_pos
-  obtain ⟨t, ht : toGp t.1 • k.z.1 = WittVector.teichmuller p epsTilt ^ 1 * k.z.1⟩ :=
-    k.exists_smul_z 1
-  obtain ⟨α, β, h_lift : tau * k.E * (p ^ padicValNat p (m + 1) + β * k.z) =
-      α * (WittVector.teichmuller p epsTilt ^ (m + 1) - 1)⟩ :=
-    k.exists_tau_mul_E_eq_mul_epsTilt_pow_sub_one m.add_one_ne_zero
-  obtain ⟨e, he⟩ : k.z ∣ k.E - p := k.z_dvd_E_sub_p
-  have hE : (k.E : Ainf) - p = k.z * e := by exact_mod_cast congrArg Subtype.val he
-  have h_lower : tau * ((p : Ainf) ^ (padicValNat p (m + 1) + 1) +
-        k.z * (p ^ padicValNat p (m + 1) * e + β * k.E)) =
-      α * (WittVector.teichmuller p epsTilt ^ (m + 1) - 1) := by
-    linear_combination h_lift - tau * (p : Ainf) ^ padicValNat p (m + 1) * hE
-  let f : k.S := p ^ c * k.z ^ (m + 1)
-  have h_smul : toGp t.1 • f.1 =
-      p ^ c * (WittVector.teichmuller p epsTilt ^ (m + 1) * k.z.1 ^ (m + 1)) := by
-    simp [f, ht, mul_pow]
-  have h_der : k.zTau * ((p : Ainf) ^ (c + padicValNat p (m + 1) + 1) * k.z.val ^ m +
-      (p ^ padicValNat p (m + 1) * e + β * k.E) * f) = α * (toGp t.1 • f.1 - f) := by
-    simp only [h_smul, f, zTau]
-    push_cast
-    linear_combination ↑p ^ c * k.z.1 ^ (m + 1) * h_lower
-  rw [Nat.add_sub_cancel]
-  exact mem_liftIdeal_of_eq_zTau_mul_smul_sub α _ ⟨_, t, rfl⟩ (by simpa [f] using h_mem) h_der
-
 /-- Let `S : PairingSide O` be a pairing side and `i` a letter. This lemma repeatedly lowers the
 power of the coordinate `z = k.z` of the Kummer chart `k`. If `p ^ c * z ^ n` lies in
 `S.liftIdeal r 0 i`, `m ≤ n` and `c + n + v_p(n!) ≤ κ + m + v_p(m!)`, then `p ^ κ * z ^ m` lies in
@@ -1029,15 +996,25 @@ lemma p_pow_mul_z_pow_mem_liftIdeal_of_le {S : PairingSide O} {r c κ m n : ℕ}
     (h_exponent : m ≤ n) (h_mem : (p : Ainf) ^ c * k.z.val ^ n ∈ S.liftIdeal r 0 i)
     (h_cost : c + n + padicValNat p n.factorial ≤ κ + m + padicValNat p m.factorial) :
     (p : Ainf) ^ κ * k.z.val ^ m ∈ S.liftIdeal r 0 i := by
-  induction h_exponent generalizing c with
-  | refl => exact mem_of_dvd _ (mul_dvd_mul_right (pow_dvd_pow _ (by omega)) _) h_mem
-  | @step n _ ih =>
-    -- The step costs `v_p(n + 1) + 1`, and `v_p((n + 1)!) = v_p(n + 1) + v_p(n!)`.
-    have h_pred : (p : Ainf) ^ (c + padicValNat p (n + 1) + 1) * k.z.val ^ n ∈
-        S.liftIdeal r 0 i :=
-      p_pow_mul_z_pow_pred_mem_liftIdeal n.succ_pos h_mem
-    rw [Nat.factorial_succ, padicValNat.mul n.add_one_ne_zero n.factorial_ne_zero] at h_cost
-    exact ih h_pred (by omega)
+  -- Raise to level one by Frobenius, then lower the exponent there.
+  -- The extra cost of level zero is exactly `v_p((p * n)!) - v_p(n!) = n`.
+  refine mem_liftIdeal_zero_of_mem_liftIdeal_one_letterFrob c κ
+    (Nat.mul_le_mul_left p h_exponent) ?_ ?_
+  · simpa using p_pow_mul_z_pow_mem_liftIdeal_iff.2 h_mem
+  · simp only [padicValNat_factorial_mul]
+    omega
+
+/-- Lowering by one the power of the coordinate `z = k.z` of the Kummer chart `k`: for a side `S`
+and a letter `i`, if `p ^ c * z ^ n` lies in `S.liftIdeal r 0 i` and `1 ≤ n`, then so does
+`p ^ (c + v_p(n) + 1) * z ^ (n - 1)`. -/
+lemma p_pow_mul_z_pow_pred_mem_liftIdeal {S : PairingSide O} {r c n : ℕ} {i : Letter}
+    (hn_pos : 1 ≤ n) (h_mem : (p : Ainf) ^ c * k.z.val ^ n ∈ S.liftIdeal r 0 i) :
+    (p : Ainf) ^ (c + padicValNat p n + 1) * k.z.val ^ (n - 1) ∈ S.liftIdeal r 0 i := by
+  obtain ⟨m, rfl⟩ : ∃ m : ℕ, n = m + 1 := Nat.exists_eq_add_of_le' hn_pos
+  rw [Nat.add_sub_cancel]
+  refine p_pow_mul_z_pow_mem_liftIdeal_of_le m.le_succ h_mem ?_
+  rw [Nat.factorial_succ, padicValNat.mul m.add_one_ne_zero m.factorial_ne_zero]
+  omega
 
 /-- Passing to the letter before, on a Kummer chart `k` with coordinate `z = k.z` in `Ainf`, the
 ring A_inf: for a pairing side `S`, let every element of `S.jumpSet (k.letterFrob j)` be at most
