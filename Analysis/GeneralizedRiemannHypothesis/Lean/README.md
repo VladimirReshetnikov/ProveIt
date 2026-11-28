@@ -68,6 +68,8 @@ to place them in the disks, and finite certificates from the
 
 [Prime17SigmaCoefficients.lean](GRHArticle/SingularModuli/Prime17SigmaCoefficients.lean) verifies the divisor-power coefficient prefixes for the degree-17 computation. [Prime17DiagonalCertificate.lean](GRHArticle/SingularModuli/Prime17DiagonalCertificate.lean) proves that the remaining packed arithmetic checks suffice to identify the supplied data with the actual analytic Hecke diagonal. The numerical checks are hypotheses of this theorem.
 
+[CMQuartic55Identification.lean](GRHArticle/SingularModuli/CMQuartic55Identification.lean) checks the exact factorization of the proposed degree-59 diagonal, with the printed discriminant −55 quartic appearing twice. It excludes the complementary factor on each of the four CM boxes. The analytic identification now follows from the remaining degree-59 diagonal identity.
+
 ## Integer geometric progressions
 
 [Rankin.lean](GRHArticle/ProgressionFree/Rankin.lean) proves that Rankin's
