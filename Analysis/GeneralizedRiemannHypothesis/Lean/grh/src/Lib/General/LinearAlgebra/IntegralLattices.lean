@@ -324,7 +324,7 @@ lemma IsValuationPair.exists_symmetric_cosetRep (hO : IsValuationPair O) (q : GL
     ∃ g : GL n R, (g : GL n R ⧸ intGL n O) = q ∧ (invTransposeGL g)⁻¹ = g := by
   obtain ⟨k, hk, h_symm⟩ := exists_invTransposeGL_inv_eq hO q.out
   refine ⟨q.out * k, by simp [hk], ?_⟩
-  rw [map_mul, _root_.mul_inv_rev, ← map_inv _ q.out, h_symm, mul_assoc, inv_mul_cancel_left]
+  rw [map_mul, _root_.mul_inv_rev, ← map_inv _ q.out, h_symm, mul_assoc, _root_.inv_mul_cancel_left]
 
 variable {A W W' F : Type*} [CommSemiring A] [AddCommMonoid W] [Module A W] [AddCommMonoid W']
   [Module A W'] [Field F]
