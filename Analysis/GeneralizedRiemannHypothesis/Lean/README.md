@@ -185,6 +185,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialLargeFieldBall.lean](GRHArticle/ProgressionFree/PolynomialLargeFieldBall.lean) bounds the number of selected polynomials in every finite degree ball by the preferred count, the exceptional counts for individual prime degrees, and the exact size of the deeper ball. [PolynomialWeightedCharging.lean](GRHArticle/ProgressionFree/PolynomialWeightedCharging.lean) proves this comparison for arbitrary preferred indices with admissible predecessors and arbitrary nonnegative prime-degree budgets of sum at most one. One exceptional polynomial contributes at most once per prime degree across all source layers.
 
+[PolynomialExceptionalBall.lean](GRHArticle/ProgressionFree/PolynomialExceptionalBall.lean) bounds the exceptional count for each prime degree over the entire degree ball. Summing over all degrees and nonzero leading coefficients gives the degree-specific probability bound times $q^{N+1}-1$, the exact number of nonzero polynomials in the ball.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
