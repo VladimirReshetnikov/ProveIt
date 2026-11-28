@@ -209,6 +209,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialOneFreePrimeCount.lean](GRHArticle/ProgressionFree/PolynomialOneFreePrimeCount.lean) counts the one-free-prime family in every degree ball by its leading scalar, monic cofactor and allowed exponent. The exact normalized count and the interval Roth upper bound allow the exponent set to depend on the cofactor.
 
+[PolynomialOneFreePrimeOptimum.lean](GRHArticle/ProgressionFree/PolynomialOneFreePrimeOptimum.lean) constructs a cofactor-dependent exponent assignment attaining the exact one-free-prime upper-density optimum. [PolynomialOneFreePrimeGain.lean](GRHArticle/ProgressionFree/PolynomialOneFreePrimeGain.lean) proves the natural density of the actual greedy valuation set and a one-free-prime gain of at least $(1-q^{-1})^3q^{-8}$.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
