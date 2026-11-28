@@ -42,6 +42,28 @@ def IsSpread {W : Type*} [AddCommMonoid W] [Module ℂ W] (B : Θ → V →ₗ[�
   ∀ F : Submodule ℂ W, let α : ℝ := finrank ℂ F / finrank ℂ W
   ∃ s : Θ, finrank ℂ (comap (B s) F) ≤ ((1 + α) / 2 + η) * finrank ℂ V
 
+/-- Restrict the domain of a spreading family, allowing for the dimension lost. -/
+lemma IsSpread.domRestrict [Module.Finite ℂ V] {W : Type*} [AddCommMonoid W] [Module ℂ W]
+    [Module.Finite ℂ W] {B : Θ → V →ₗ[ℂ] W} {η η' : ℝ} (hB : IsSpread B η)
+    (U : Submodule ℂ V)
+    (h_dim : (1 + η) * finrank ℂ V ≤ (1 + η') * finrank ℂ U) :
+    IsSpread (fun s ↦ (B s).domRestrict U) η' := by
+  intro F α
+  obtain ⟨s, hs⟩ := hB F
+  refine ⟨s, ?_⟩
+  have h_preimage : finrank ℂ (F.comap ((B s).domRestrict U)) ≤ finrank ℂ (F.comap (B s)) := by
+    rw [LinearMap.comap_domRestrict, ← U.finrank_map_subtype_eq]
+    exact finrank_mono (map_comap_le U.subtype (F.comap (B s)))
+  have h_share : α ≤ 1 :=
+    div_le_one_of_le₀ (by exact_mod_cast F.finrank_le) (Nat.cast_nonneg _)
+  have h_missing : 0 ≤ (finrank ℂ V : ℝ) - finrank ℂ U :=
+    sub_nonneg.mpr (by exact_mod_cast U.finrank_le)
+  calc (finrank ℂ (F.comap ((B s).domRestrict U)) : ℝ)
+      ≤ finrank ℂ (F.comap (B s)) := by exact_mod_cast h_preimage
+    _ ≤ ((1 + α) / 2 + η) * finrank ℂ V := hs
+    _ ≤ ((1 + α) / 2 + η') * finrank ℂ U := by
+      nlinarith [mul_nonneg (sub_nonneg.mpr h_share) h_missing]
+
 end Spread
 
 section HilbertSchmidt
@@ -514,34 +536,6 @@ theorem IsSpread.exists_few_le_finrank_iSup_range [Nontrivial V] (h_spread : IsS
   calc (#t * finrank ℂ V : ℝ) ≤ l * finrank ℂ V := by gcongr
     _ = 5 / 2 * (l * rate) * finrank ℂ W := by rw [h_rate]; field
     _ ≤ 5 / 2 * (1 + log (16 * ε)⁻¹) * finrank ℂ W := by gcongr
-
-/-- The images of a subspace `C` under `#t` maps span at most `#t dim C` dimensions. -/
-lemma finrank_biSup_map_le (B : Θ → V →ₗ[ℂ] W) (t : Finset Θ) (C : Submodule ℂ V) :
-    finrank ℂ ↥(⨆ s ∈ t, C.map (B s)) ≤ #t * finrank ℂ C := by
-  classical
-  induction t using Finset.induction with
-  | empty => simp
-  | insert s t hs ih =>
-    rw [t.iSup_insert, card_insert_of_notMem hs]
-    calc finrank ℂ ↥(C.map (B s) ⊔ ⨆ s ∈ t, C.map (B s))
-        ≤ finrank ℂ (C.map (B s)) + finrank ℂ ↥(⨆ s ∈ t, C.map (B s)) :=
-          finrank_add_le_finrank_add_finrank _ _
-      _ ≤ finrank ℂ C + #t * finrank ℂ C := add_le_add (finrank_map_le (B s) C) ih
-      _ = (#t + 1) * finrank ℂ C := by ring
-
-/-- Restricting finitely many maps to a subspace `U` lowers the dimension of the span of their
-images by at most the codimension of `U` for each map. -/
-lemma finrank_biSup_range_le (B : Θ → V →ₗ[ℂ] W) (t : Finset Θ) (U : Submodule ℂ V) :
-    finrank ℂ ↥(⨆ s ∈ t, (B s).range) ≤
-      finrank ℂ ↥(⨆ s ∈ t, U.map (B s)) + #t * (finrank ℂ V - finrank ℂ U : ℝ) := by
-  obtain ⟨C, hC⟩ : ∃ C : Submodule ℂ V, IsCompl U C := U.exists_isCompl
-  have h_dim : (finrank ℂ V - finrank ℂ U : ℝ) = finrank ℂ C := by
-    rw [← finrank_add_eq_of_isCompl hC, Nat.cast_add, add_sub_cancel_left]
-  have h_split : ⨆ s ∈ t, (B s).range = (⨆ s ∈ t, U.map (B s)) ⊔ ⨆ s ∈ t, C.map (B s) := by
-    simp only [← iSup_sup_eq, ← Submodule.map_sup, hC.sup_eq_top, Submodule.map_top]
-  rw [h_dim, h_split]
-  exact_mod_cast (finrank_add_le_finrank_add_finrank _ _).trans
-    (add_le_add_right (finrank_biSup_map_le B t C) _)
 
 end FewTranslates
 

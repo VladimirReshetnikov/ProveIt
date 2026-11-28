@@ -412,33 +412,34 @@ theorem exists_le_finrank_iSup_range_normalizedPoincare :
       #t * finrank ℂ D.ramifiedSourceForms ≤ 5 * D.targetDim * log (1 + 2 * D.b ^ 2) ∧
       (1 - 4 / D.b ^ 2) * D.targetDim ≤ finrank ℂ ↥(⨆ s ∈ t, (D.normalizedPoincare s).range) := by
   have : Nontrivial D.SourceForm := D.sourceFormCoords.nontrivial
-  -- For `ε = (8 b²)⁻¹ < 1 / 16`, few translates of the image of all source forms span all but the
-  -- share `16 ε = 2 / b²` of the target.
-  obtain ⟨t, h_count, h_span⟩ : ∃ t : Finset D.chosenGL,
-      #t * finrank ℂ D.SourceForm ≤ 5 / 2 * (1 + log (16 * (8 * D.b ^ 2)⁻¹)⁻¹) * D.targetDim ∧
-      (1 - 16 * (8 * D.b ^ 2)⁻¹ : ℝ) * D.targetDim ≤
-        finrank ℂ ↥(⨆ s ∈ t, (D.goodPoincare s).range) :=
-    D.isSpread_goodPoincare.exists_few_le_finrank_iSup_range D.targetDim_pos (HasLogBound.pos D)
-      D.lt_of_hasLogBound
-  have h_few : #t * finrank ℂ D.SourceForm ≤ 5 * D.targetDim * log (1 + 2 * D.b ^ 2) := by
-    grw [h_count, D.five_halves_mul_one_add_log_le, mul_right_comm]
-  refine ⟨t, by grw [D.ramifiedSourceForms.finrank_le, h_few], ?_⟩
-  -- Passing to the ramified forms loses at most their codimension for each translate.
-  have h_codim : (finrank ℂ D.SourceForm - finrank ℂ D.ramifiedSourceForms : ℝ) ≤
-      D.f / (D.N - 1) * finrank ℂ D.SourceForm := by linarith [D.le_finrank_ramifiedSourceForms]
-  have h_small : (D.b ^ 8)⁻¹ * (5 * log (1 + 2 * D.b ^ 2)) ≤ 2 / D.b ^ 2 := D.le_of_hasLogBound
-  have h_loss : #t * (finrank ℂ D.SourceForm - finrank ℂ D.ramifiedSourceForms : ℝ) ≤
-      2 / D.b ^ 2 * D.targetDim :=
-    calc #t * (finrank ℂ D.SourceForm - finrank ℂ D.ramifiedSourceForms : ℝ)
-        ≤ #t * ((D.b ^ 8)⁻¹ * finrank ℂ D.SourceForm) := by grw [h_codim, D.f_div_N_sub_one_le]
-      _ ≤ (D.b ^ 8)⁻¹ * (5 * D.targetDim * log (1 + 2 * D.b ^ 2)) := by grw [mul_left_comm, h_few]
-      _ = (D.b ^ 8)⁻¹ * (5 * log (1 + 2 * D.b ^ 2)) * D.targetDim := by ring
-      _ ≤ 2 / D.b ^ 2 * D.targetDim := by grw [h_small]
-  rw [iSup_congr fun s ↦ iSup_congr fun _ ↦ D.range_normalizedPoincare s]
-  calc (1 - 4 / D.b ^ 2) * D.targetDim
-      = (1 - 16 * (8 * D.b ^ 2)⁻¹) * D.targetDim - 2 / D.b ^ 2 * D.targetDim := by ring
-    _ ≤ (finrank ℂ ↥(⨆ s ∈ t, D.ramifiedSourceForms.map (D.goodPoincare s)) : ℝ) := by
-        linarith [finrank_biSup_range_le D.goodPoincare t D.ramifiedSourceForms, h_span, h_loss]
+  have : Nontrivial D.ramifiedSourceForms := Module.nontrivial_of_finrank_pos (R := ℂ) <| by
+    have hV : 0 < finrank ℂ D.SourceForm := finrank_pos
+    have hU : finrank ℂ D.SourceForm ≤ 2 * finrank ℂ D.ramifiedSourceForms :=
+      D.finrank_sourceForm_le_two_mul
+    omega
+  let ε : ℝ := (8 * D.b ^ 2)⁻¹
+  have hε : 0 < ε := HasLogBound.pos D
+  have hε_lt : 2 * ε < 1 / 16 := D.lt_of_hasLogBound
+  have h_loss : D.f / (D.N - 1 : ℝ) ≤ ε := D.f_div_N_sub_one_le.trans D.le_of_hasLogBound
+  have h_rank : (1 - ε) * finrank ℂ D.SourceForm ≤ finrank ℂ D.ramifiedSourceForms := by
+    grw [← h_loss, D.le_finrank_ramifiedSourceForms]
+  -- Pay for the lost dimension once by increasing the spreading error before choosing translates.
+  have h_scale : (1 + 3 / 2 * ε) * finrank ℂ D.SourceForm ≤
+      (1 + 3 / 2 * (2 * ε)) * finrank ℂ D.ramifiedSourceForms := by
+    have h_coeff : 1 + 3 / 2 * ε ≤ (1 + 3 / 2 * (2 * ε)) * (1 - ε) := by
+      nlinarith [mul_nonneg hε.le (by linarith : 0 ≤ 1 / 16 - 2 * ε)]
+    grw [h_coeff, mul_assoc, h_rank]
+  obtain ⟨t, h_count, h_span⟩ := (D.isSpread_goodPoincare.domRestrict D.ramifiedSourceForms
+    h_scale).exists_few_le_finrank_iSup_range D.targetDim_pos (by positivity) hε_lt
+  refine ⟨t, ?_, ?_⟩
+  · have h_log : log ((16 * (2 * ε))⁻¹) ≤ log ((16 * ε)⁻¹) :=
+      log_le_log (by positivity) (inv_anti₀ (by positivity) (by linarith))
+    grw [h_count, h_log, D.five_halves_mul_one_add_log_le, mul_right_comm]
+  · have h_err : 16 * (2 * ε) = 4 / D.b ^ 2 := by dsimp [ε]; ring
+    have h_ranges (s : D.chosenGL) : ((D.goodPoincare s).domRestrict D.ramifiedSourceForms).range =
+        (D.normalizedPoincare s).range :=
+      (LinearMap.range_domRestrict _ _).trans (D.range_normalizedPoincare s).symm
+    rwa [h_err, iSup_congr fun s ↦ iSup_congr fun _ ↦ h_ranges s] at h_span
 
 /-- **Theorem B**, the bound on the dimension spanned by few translates. The target has dimension
 `d_T = D.targetDim ≥ 1`, and there is a set `t` of elements of the finite group `D.chosenGL` with
