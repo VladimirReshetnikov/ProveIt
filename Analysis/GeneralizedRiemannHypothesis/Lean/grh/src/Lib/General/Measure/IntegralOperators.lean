@@ -22,7 +22,8 @@ for `γ ∈ Γ`, and the following.
   has an explicit bound for `A > e d`. The measure is arbitrary, so the result also bounds sums
   (counting measure). For finite `V`, `New.integrable_rpow_neg_of_measure_sublevel_le` and
   `New.integral_rpow_neg_le_of_measure_sublevel_le` are the forms for the Bochner integral;
-  `New.DiscreteSeries.integral_rpow_neg_le_of_measure_le` joins them.
+  `New.DiscreteSeries.integral_rpow_neg_le_of_measure_le` joins them. For a finite set,
+  `New.sum_rpow_neg_le_of_card_sublevel_le` bounds the sum using only its sublevel counts.
 * `New.integrable_of_isCocompact`: continuous left Γ-invariant functions are integrable for finite
   measures on G.
 * `New.IsL2Contraction`: a finite family of kernels defines an operator of norm at most one between
@@ -179,6 +180,29 @@ lemma New.DiscreteSeries.integral_rpow_neg_le_of_measure_le {ν : Measure S} {u 
     Integrable (fun s : S ↦ u s ^ (-A)) ν ∧ ∫ s : S, u s ^ (-A) ∂ν ≤ K ^ d * c * V.toReal :=
   ⟨integrable_rpow_neg_of_measure_sublevel_le hu_meas hu hK hV h_vol hA,
     integral_rpow_neg_le_of_measure_sublevel_le hu_meas hu hK hV h_vol hA hc⟩
+
+open Finset in
+/-- A polynomial bound on the number of points of height at most `r` bounds a finite sum of
+inverse powers. This is the counting-measure form of the sublevel-set integral estimate. -/
+lemma New.sum_rpow_neg_le_of_card_sublevel_le {α : Type*} (u : α → ℝ) (hu : ∀ x, 1 ≤ u x)
+    {K A c : ℝ} {e : ℕ} (hK : 0 ≤ K)
+    (count : ∀ {r : ℝ}, 1 ≤ r → ∀ S : Finset α, (∀ x ∈ S, u x ≤ r) → (S.card : ℝ) ≤ K * r ^ e)
+    (hA : e < A) (hc : A ≤ c * (A - e)) (X : Finset α) :
+    ∑ x ∈ X, u x ^ (-A) ≤ K * c := by
+  classical
+  let : MeasurableSpace X := ⊤
+  have hvol (r : ℝ) (hr : 1 ≤ r) : Measure.count {x : X | u x ≤ r} ≤
+      ENNReal.ofReal ((K * r ^ e) ^ 1) * 1 := by
+    let S := univ.filter fun x : X ↦ u x ≤ r
+    have hcount := count hr (S.map (Function.Embedding.subtype _)) (fun x hx ↦ by
+      obtain ⟨y, hy, rfl⟩ := mem_map.1 hx
+      exact (mem_filter.1 hy).2)
+    rw [show {x : X | u x ≤ r} = (S : Set X) by ext; simp [S], Measure.count_apply_finset]
+    simpa using ENNReal.ofReal_le_ofReal hcount
+  rw [← X.sum_attach (fun x ↦ u x ^ (-A))]
+  simpa using integral_rpow_neg_le_of_measure_sublevel_le (u := fun x : X ↦ u x)
+    measurable_from_top (fun x ↦ hu x) hK ENNReal.one_ne_top hvol
+    (by simpa using hA) (by simpa using hc)
 
 end LayerCake
 

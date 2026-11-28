@@ -107,36 +107,33 @@ components `l v * Φ v t` and the image of `t` in the product of the completions
 noncomputable def ratPoint (l : InfinitePlace E → ℂ) (t : E) : (InfinitePlace E → ℂ) × LocProd T :=
   (fun v : InfinitePlace E ↦ l v * Φ v t, ratToPlaces T t)
 
-/-- For `y` integral off `T`, the norm of the denominator ideal `{a ∈ 𝓞 E | a y ∈ 𝓞 E}` is at most
-the index `[O : O ∩ y⁻¹ O]`, where `O` is the ring of integers of the completions at `T`. -/
-lemma absNorm_denominator_le {y : E} (hy : y ∈ ratIntegralOff T) :
-    Ideal.absNorm (denominator y) ≤ denomIndex O (ratToPlaces T y) := by
-  -- The denominator of `y` is the preimage of the local one under `𝓞 E → O`.
-  let f : 𝓞 E →+ LocProd T := ((ratToPlaces T).comp (algebraMap (𝓞 E) E)).toAddMonoidHom
-  let D : AddSubgroup (LocProd T) := O.toAddSubgroup.comap (.mulLeft (ratToPlaces T y))
-  have h_integral (a : 𝓞 E) : algebraMap E (𝔸f E) (algebraMap (𝓞 E) E a) ∈ Ô E :=
-    algebraMap_mem_Ô.2 a.isIntegral_coe
-  have h_comap : (denominator y).toAddSubgroup = D.comap f := by
-    ext a
-    have h_off : algebraMap E (𝔸f E) (algebraMap (𝓞 E) E a * y) ∈ integralOff T := by
-      rw [map_mul]
-      exact mul_mem ((mem_Ô_iff T).1 (h_integral a)).right hy
-    rw [Submodule.mem_toAddSubgroup, mem_denominator, ← algebraMap_mem_Ô, mem_Ô_iff T,
-      and_iff_left h_off]
-    simp [D, f, mul_comm]
-  have h_range : f.range ≤ O.toAddSubgroup := by
-    rintro _ ⟨a, rfl⟩
-    exact ((mem_Ô_iff T).1 (h_integral a)).left
-  calc
-    _ = (denominator y).toAddSubgroup.index := rfl
-    _ = D.relIndex f.range := by rw [h_comap, index_comap]
-    _ ≤ _ := relIndex_le_of_le_right h_range (denomIndex_ne_zero T _)
+open FinitePlace Valued Function in
+/-- Outside `T`, a `T`-integer contributes a factor one at every finite place. -/
+private lemma finiteHeight_eq_denomIndex {y : E} (hy : y ∈ ratIntegralOff T) :
+    (∏ᶠ w : FinitePlace E, max (w y) 1) = denomIndex O (ratToPlaces T y) := by
+  let f (w : FinPlace E) := max ‖algebraMap E (𝔸f E) y w‖ 1
+  have h : mulSupport f ⊆ T := by
+    intro w hw
+    by_contra hnot
+    exact hw (max_eq_right (toNormedField.norm_le_one_iff.2 ((mem_integralOff T).1 hy w hnot)))
+  calc _ = ∏ᶠ w : FinPlace E, f w := (finprod_comp_equiv equivHeightOneSpectrum.symm).symm
+       _ = ∏ w ∈ T, f w := finprod_eq_prod_of_mulSupport_subset f h
+       _ = _ := by rw [denomIndex_eq_prod_max_norm]; exact (T.prod_coe_sort f).symm
+
+/-- In a totally complex field the product of the frequency weights is the inverse cube of the
+multiplicative height. -/
+private lemma weight_eq_mulHeight_inv_cube
+    {y : E} (hy : y ∈ ratIntegralOff T) :
+    (∏ v : InfinitePlace E, (max 1 ‖Φ v y‖)⁻¹ ^ 6) *
+        (denomIndex O (ratToPlaces T y) : ℝ)⁻¹ ^ 3 = (Height.mulHeight₁ y)⁻¹ ^ 3 := by
+  rw [← finiteHeight_eq_denomIndex T hy, NumberField.mulHeight₁_eq]
+  simp [_root_.mul_inv_rev, mul_pow, Finset.prod_pow, Finset.prod_inv_distrib,
+    ← InfinitePlace.apply, mk_Φ, ← pow_mul, max_comm, mul_comm]
 
 /-- Let `y ≠ 0` be integral off `T`, and let `‖c v‖⁻¹ ≤ |x v| ≤ B` with `1 ≤ B`. Take the product of
 the decay factors of `y` at the infinite places (`dampedPower k r = r ^ k * min 1 r ^ 6` at
 `r = ‖c v * Φ v y‖⁻¹`, `Φ v` the embedding at `v`) and at `T`. It is at most
-`∏ v, |x v| ^ k * B ^ 6` times the inverse cube of the height of `y`, whose finite part is the norm
-of the denominator ideal. -/
+`∏ v, |x v| ^ k * B ^ 6` times the inverse cube of the multiplicative height of `y`. -/
 lemma frequency_term_le {B : ℝ} (k : ℕ) {c : InfinitePlace E → ℂ} {x : InfinitePlace E → ℝ}
     (hB : 1 ≤ B) (h_lower : ∀ v : InfinitePlace E, ‖c v‖⁻¹ ≤ |x v|)
     (h_upper : ∀ v : InfinitePlace E, |x v| ≤ B) {y : E} (hy₀ : y ≠ 0)
@@ -144,8 +141,7 @@ lemma frequency_term_le {B : ℝ} (k : ℕ) {c : InfinitePlace E → ℂ} {x : I
     (∏ v : InfinitePlace E, dampedPower k ‖c v * Φ v y‖⁻¹) *
         (√(genIndex (ratToPlaces T y)) ^ k / denomIndex O (ratToPlaces T y) ^ 3) ≤
       (∏ v : InfinitePlace E, |x v| ^ k * B ^ 6) *
-        ((∏ v : InfinitePlace E, (max 1 ‖Φ v y‖)⁻¹ ^ 6) *
-          (Ideal.absNorm (denominator y) : ℝ)⁻¹ ^ 3) := by
+        (Height.mulHeight₁ y)⁻¹ ^ 3 := by
   have h_inf (v : InfinitePlace E) : dampedPower k ‖c v * Φ v y‖⁻¹ * ‖Φ v y‖ ^ k ≤
       |x v| ^ k * B ^ 6 * (max 1 ‖Φ v y‖)⁻¹ ^ 6 := by
     have h_min : min 1 (‖c v‖⁻¹ * ‖Φ v y‖⁻¹) ≤ B * (max 1 ‖Φ v y‖)⁻¹ := by
@@ -157,16 +153,13 @@ lemma frequency_term_le {B : ℝ} (k : ℕ) {c : InfinitePlace E → ℂ} {x : I
     rw [dampedPower, norm_mul, mul_inv, mul_right_comm, h_cancel, mul_assoc, ← mul_pow]
     gcongr
     exact h_lower v
-  set d : ℝ := (Ideal.absNorm (denominator y) : ℝ)
-  have h_one_le : 1 ≤ d := by
-    simpa [d, Nat.one_le_iff_ne_zero, Ideal.absNorm_eq_zero_iff] using denominator_ne_bot y
-  have h_finite : ((denomIndex O (ratToPlaces T y) : ℝ) ^ 3)⁻¹ ≤ d⁻¹ ^ 3 := by
-    grw [← absNorm_denominator_le T hyT, inv_pow]
+  rw [← weight_eq_mulHeight_inv_cube T hyT]
+  let d : ℝ := denomIndex O (ratToPlaces T y)
   unfold dampedPower at h_inf ⊢
   calc
     _ ≤ (∏ v, ‖c v * Φ v y‖⁻¹ ^ k * min 1 ‖c v * Φ v y‖⁻¹ ^ 6) *
         ((∏ v, ‖Φ v y‖) ^ k * d⁻¹ ^ 3) := by
-      grw [div_eq_mul_inv, h_finite, sqrt_genIndex_le_prod_norm T hy₀ hyT]
+      grw [div_eq_mul_inv, ← inv_pow, sqrt_genIndex_le_prod_norm T hy₀ hyT]
     _ = (∏ v, ‖c v * Φ v y‖⁻¹ ^ k * min 1 ‖c v * Φ v y‖⁻¹ ^ 6 * ‖Φ v y‖ ^ k) * d⁻¹ ^ 3 := by
       rw [← mul_assoc, ← prod_pow, ← prod_mul_distrib]
     _ ≤ _ := by grw [h_inf, prod_mul_distrib, mul_assoc]
@@ -181,16 +174,12 @@ theorem sum_frequencies_le (B : ℝ) (k : ℕ) (X : Finset E) (c : InfinitePlace
     ∑ y ∈ X, (∏ v : InfinitePlace E, dampedPower k ‖c v * Φ v y‖⁻¹) *
         (√(genIndex (ratToPlaces T y)) ^ k / denomIndex O (ratToPlaces T y) ^ 3) ≤
       ∏ v : InfinitePlace E, |x v| ^ k * (S.b * B ^ 2) ^ 3 := by
-  -- The inverse cubes of the heights have sum at most `64 * 38 * exp 4` per infinite place.
-  have h_const : 64 * 38 * Real.exp 4 ≤ S.b ^ 3 := by
-    have h_exp : Real.exp 4 = Real.exp 1 ^ 4 := by simp [← Real.exp_nat_mul]
-    grw [h_exp, Real.exp_one_lt_three.le, ← S.thousand_le_b]
-    norm_num
+  have h_const : 96 ≤ S.b ^ 3 := by grw [← S.thousand_le_b]; norm_num
   calc
     _ ≤ ∑ y ∈ X, (∏ v, |x v| ^ k * B ^ 6) *
-        ((∏ v, (max 1 ‖Φ v y‖)⁻¹ ^ 6) * (Ideal.absNorm (denominator y) : ℝ)⁻¹ ^ 3) :=
+        (Height.mulHeight₁ y)⁻¹ ^ 3 :=
       sum_le_sum fun y hy ↦ frequency_term_le T k hB h_lower h_upper (hX₀ y hy) (hXT y hy)
-    _ ≤ (∏ v, |x v| ^ k * B ^ 6) * (64 * 38 * Real.exp 4) ^ numInfPlaces E := by
+    _ ≤ (∏ v, |x v| ^ k * B ^ 6) * (96 : ℝ) ^ numInfPlaces E := by
       grw [← mul_sum, sum_height_inv_cube_le]
     _ ≤ ∏ v, |x v| ^ k * B ^ 6 * S.b ^ 3 := by
       grw [h_const, prod_mul_distrib (g := fun _ ↦ S.b ^ 3), prod_const, card_univ]

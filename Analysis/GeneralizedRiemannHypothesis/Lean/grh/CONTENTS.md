@@ -232,8 +232,8 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 
 - `New/Spanning/MainTerm/SieveSystem` (202): Sieve systems over places: products, positivity and lower semicontinuity
 - `New/Spanning/MainTerm/KloostermanSum` (148): The orbital integral at the finite places is a Kloosterman sum
-- `New/Spanning/MainTerm/Frequencies` (197): Sums over frequencies
-- `New/Spanning/MainTerm/GlobalSieve` (811): One-sided Poisson summation, sums over frequencies, and the sieve over all places
+- `New/Spanning/MainTerm/Frequencies` (117): Sums over frequencies
+- `New/Spanning/MainTerm/GlobalSieve` (801): One-sided Poisson summation, sums over frequencies, and the sieve over all places
 - `New/Spanning/MainTerm/FillingLevel` (380): The place and level of a set of primes, orbit sums and the set of entries
 - `New/Spanning/MainTerm/GlobalToLocal` (599): Class sums as orbit sums, and unfolding at a set of primes
 - `New/Spanning/MainTerm/SiegelTopBound` (670): Siegel's formula as an upper bound, and domination of class sums by the density at the last entry
@@ -461,7 +461,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `Lib/Adelic/Adeles/StrongApproximation` (437): Standard character, self-duality, strong approximation and one-sided Poisson summation
 - `Lib/Adelic/Adeles/IdeleModulus` (311): The module of an idele, Haar measure scaling and the norm map on finite adeles
 - `Lib/Adelic/Adeles/LocalFactors` (254): Idelic generators of ideals, semilocal fields and tame local characters
-- `Lib/Adelic/Adeles/SemilocalProducts` (254): Products of completions at finite sets of places and approximation of adeles by elements of E
+- `Lib/Adelic/Adeles/SemilocalProducts` (282): Products of completions at finite sets of places and approximation of adeles by elements of E
 
 **AutomorphicForms**: Automorphic, cuspidal and algebraic forms
 
@@ -909,7 +909,7 @@ The heads of these files give an overview of a theory: `Lib/ClassField/Global/Ar
 - `Lib/General/Measure/FibreMeasure` (149): Measures below a fibre measure
 - `Lib/General/Measure/IdempotentKernel` (121): Fubini and convolution lemmas; idempotent kernels
 - `Lib/General/Measure/HaarNormalisation` (126): Uniqueness of Haar measure, integrals over subgroups and Gaussian normalisation of volumes
-- `Lib/General/Measure/IntegralOperators` (293): Product measures, layer cake bounds, cocompact subgroups and L² bounds of integral operators
+- `Lib/General/Measure/IntegralOperators` (313): Product measures, layer cake bounds, cocompact subgroups and L² bounds of integral operators
 - `Lib/General/Measure/HaarModulus` (275): Pushforward of Haar measures, the modulus of GL_n and the generalised index
 - `Lib/General/Measure/QuadricDisintegration` (408): Measures on hermitian quadrics: existence and uniqueness of disintegrations
 

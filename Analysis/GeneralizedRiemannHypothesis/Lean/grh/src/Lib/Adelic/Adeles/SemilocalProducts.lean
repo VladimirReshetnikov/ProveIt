@@ -345,6 +345,37 @@ lemma genIndex_eq_inv_prod_norm (x : LocProd S) : genIndex x = (∏ w : S, ‖x 
     rw [genIndex.map_nonunit hx,
       prod_eq_zero (f := fun w : S ↦ ‖x w‖) (mem_univ w) (norm_eq_zero.2 hw), _root_.inv_zero]
 
+open AddSubgroup in
+
+/-- The local denominator index is the product of the factors `max ‖a w‖ 1`. -/
+lemma denomIndex_eq_prod_max_norm (a : LocProd S) :
+    (denomIndex O a : ℝ) = ∏ w : S, max ‖a w‖ 1 := by
+  classical
+  let b (w : S) := if 1 < ‖a w‖ then a w else 1
+  have hb (w : S) : ‖b w‖ = max ‖a w‖ 1 := by
+    unfold b; split <;> rename_i h
+    · simp [max_eq_left h.le]
+    · simp [max_eq_right (le_of_not_gt h)]
+  obtain ⟨u, hu⟩ : IsUnit (b : LocProd S) := Pi.isUnit_iff.2 fun w ↦ isUnit_iff_ne_zero.2 <|
+    norm_ne_zero_iff.1 (by rw [hb]; exact (zero_lt_one.trans_le (le_max_right ..)).ne')
+  let L := (O : Subring (LocProd S)).toAddSubgroup
+  have hL (x : LocProd S) : x ∈ L ↔ ∀ w, ‖x w‖ ≤ 1 := by
+    simp only [L, Subring.mem_toAddSubgroup, mem_O_locProd, toNormedField.norm_le_one_iff]
+  have he : u⁻¹ • L = L.comap (.mulLeft a) ⊓ L := by
+    ext x
+    refine (AddSubgroup.mem_inv_pointwise_smul_iff (a := u) (S := L) (x := x)).trans ?_
+    rw [AddSubgroup.mem_inf, AddSubgroup.mem_comap, hL, hL, hL]
+    change (∀ w, ‖(u : LocProd S) w * x w‖ ≤ 1) ↔ (∀ w, ‖a w * x w‖ ≤ 1) ∧ ∀ w, ‖x w‖ ≤ 1
+    simp only [hu, norm_mul, hb,
+      max_mul_of_nonneg _ _ (norm_nonneg _), one_mul, max_le_iff, forall_and]
+  calc _ = ((u⁻¹ • L).relIndex L : ℝ) := by simp [he, inf_relIndex_right, denomIndex, L]
+       _ = genIndex ((u⁻¹ : (LocProd S)ˣ) : LocProd S) := by
+         rw [genIndex_eq_relIndex_div L isOpen_O isCompact_O, relIndex_eq_one.2 (he.trans_le inf_le_right)]
+         simp
+       _ = _ := by
+         rw [map_units_inv, genIndex_eq_inv_prod_norm, inv_inv, hu]
+         exact prod_congr rfl fun w _ ↦ hb w
+
 /-- Let `y ≠ 0` be an `S`-integer of the totally complex field `E`. By the product formula, the
 square root of its generalized index in `LocProd S` is at most `∏ v, ‖Φ v y‖`, the product over
 the infinite places. -/
