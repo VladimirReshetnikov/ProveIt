@@ -1,0 +1,60 @@
+\section{A denser choice of finite-field types}
+\label{sec:denser-labels}
+
+The projector in the guide's Section~10 has two jobs. At every chosen place its label must avoid certain linear roots. Above each of the two level primes at least one label must also furnish a cuspidal test and a tame-inertia witness for the denominator argument. The original construction uses a primitive root of the entire extension field for the second job. A positive proportion of the elements of the extension field suffice. This removes Euler's totient from the estimate and improves the sufficient number of places for this step from
+\[
+  18r(2r\log q+1)\log b \quad\text{to}\quad 18r\log b.
+\]
+Here $q$ is a level prime, $r$ is the target rank, and $b$ is the parameter in the bad-type bound. Other uses of the number of places in the global construction have their own constraints.
+
+\paragraph{Finite-field theorem.}
+Let $q\ge19$ be an odd prime power with $q\equiv1\pmod9$, let $r=3^a$ with $a\ge1$, and suppose $N^2\mid q-1$. Assume $v_p(N)\ge6$ for every prime $p\ne3$ dividing $N$. In the source $N=q_2(s)=(q_0d)^{s+6}$. Put
+\[
+ R=q^r-1,\qquad A=q^{r/3},\qquad C=A^2+A+1=3H,\qquad e=R/(q-1).
+\]
+Fix a generator $g$ of $\mathbb F_{q^r}^{\times}$. Select the minimal polynomials of the elements $z=g^k$ for which
+\begin{equation}
+  3\nmid k,\qquad H\nmid k,\qquad p^6\nmid k\quad(p\mid N,\ p\ne3).
+  \label{eq:label-selection}
+\end{equation}
+There are exactly
+\begin{equation}
+ \frac{R}{r}\,\frac23\left(1-\frac1H\right)
+              \prod_{\substack{p\mid N\\p\ne3}}(1-p^{-6})
+ \label{eq:label-count}
+\end{equation}
+such polynomials, at least $q^r/(2r)$. Each is an irreducible label of degree $r$. For every $N$th root of unity $h\in\mathbb F_q$ and every selected root $z$, all the conjugates $\xi$ of $hz$ satisfy the following conclusions.
+\begin{enumerate}
+\item $\xi^{q^r}=\xi$. For every prime $\ell$ and integer $u\ge0$, the elements $(\xi^{q^i})^{\ell^u}$, $0\le i<r$, are pairwise distinct.
+\item Their common $e$th power $y$ belongs to $\mathbb F_q^{\times}$ and $N\mid\operatorname{ord}(y)$. In particular $y^x=1$ implies $N\mid jx$ for every lift index $j$.
+\end{enumerate}
+
+\paragraph{Proof.}
+Since $A\equiv1\pmod3$, $C\equiv3\pmod9$. Also $C$ is odd and $C\equiv3\pmod{q-1}$. Thus $3\nmid H$ and $\gcd(H,q-1)=1$. The moduli in \eqref{eq:label-selection} are pairwise coprime divisors of $R$. Multiplication of $k$ by a unit modulo $R$ preserves every condition. This proves independence of $g$, invariance under Frobenius, and invariance under any cyclotomic relabeling of the roots.
+
+Multiplication of $z$ by $h\in\mu_N$ adds a multiple of $R/N$ to $k$. As $N\mid A-1$, the factor $C=3H$ divides $R/N$. For each $p\ne3$ dividing $N$, the integer $R/N$ is divisible by $(q-1)/N$, hence by $N$ and $p^6$. The selected class is therefore stable under every required scaling.
+
+Write $k'$ for the exponent of $hz$. An element of $\mathbb F_{q^r}$ has degree smaller than $r$ exactly when it belongs to $\mathbb F_A$, since $r$ is a power of $3$. Applied to $(hz)^{\ell^u}$ this is exactly the divisibility $C\mid k'\ell^u$. When $\ell\ne3$ the factor $3$ prevents it. When $\ell=3$ the factor $H$ prevents it. The case $u=0$ gives degree $r$, hence an irreducible, squarefree monic polynomial with nonzero constant term. The general case gives the asserted orbit sizes.
+
+The norm of $hz$ is $(g^e)^{k'}$, where $g^e$ generates $\mathbb F_q^{\times}$. All conjugates have this norm. At $p=3$ its order has the full $3$-part of $q-1$. At each $p\ne3$ dividing $N$, put $v=v_p(N)\ge6$. We have $v_p(q-1)\ge2v$ and $v_p(k')\le5$, so the order has $p$-adic valuation at least $2v-5\ge v$. This proves the divisibility for $y$.
+
+The Chinese remainder theorem counts the permitted exponents by multiplying the proportions in \eqref{eq:label-count}. Every selected polynomial has $r$ roots. For the lower bound use $H\ge127$, $q^r\ge19^3$, and
+\[
+ \prod_{\substack{p\mid N\\p\ne3}}(1-p^{-6})
+ \ge 1-\sum_{n=2}^\infty n^{-6}
+ \ge 1-\frac1{64}-\int_2^\infty x^{-6}\,dx=\frac{313}{320}.
+\]
+Multiplying $(1-19^{-3})(2/3)(126/127)(313/320)>1/2$ gives the stated bound. Every primitive root meets \eqref{eq:label-selection}.
+
+\paragraph{Passage to the projector.}
+Keep the source's allowed-polynomial test in every coordinate. At one coordinate above each level prime require a selected polynomial. Its degree $r>1$ ensures it is allowed. Among all $q^r$ monic polynomials, at most a fraction $1-1/(2r)$ fails selection. With the source's uniform lower weight $w_0=(1-r/q)/q^r$, the total uniform weight of all $f$-tuples with no witness is at most $(1-1/(2r))^f\le e^{-f/(2r)}$. The existing allowed-label estimate still costs $f\epsilon$, where $\epsilon=(1+N+2r)/q$. Comparing the uniform weights to the actual regular-representation weights on the selected tuples gives
+\[
+ \operatorname{Re}[(1-e_{p_i})(1)]\le f\epsilon+e^{-f/(2r)}.
+\]
+Here $(1-e_{p_i})(1)$ denotes the identity coefficient in the group algebra. The second term is at most $b^{-9}$ for $f\ge18r\log b$. The two original numerical bounds on $f\epsilon+b^{-9}$ and $r<q$ still apply. On the Galois side the two conclusions of the finite-field theorem give every field of the source's \texttt{IsCommonRootPower}. In particular distinctness after raising to arbitrary $\ell$-powers yields unit differences after the tame-character embedding at $\ell$, exactly as in its existing matrix-span argument. One witness above each level prime ensures an available witness away from any fixed coefficient prime. Rank-one lift settings use their own label $X-1$ and their existing common-power lemma.
+
+\paragraph{A strict enlargement.}
+For $q=19$, $r=3$, $N=3$ the theorem's local hypotheses hold, with $R=6858$ and $H=127$. It selects $1512$ polynomials, compared with $\varphi(6858)/3=756$ primitive ones. In $\mathbb F_{19}[t]/(t^3-2)$ the element $g=1+t$ has order $6858$. The element $g^2$ has order $3429$ and minimal polynomial $X^3+16X^2+10X+10$. Its norm is $9$ of order $9$. This is a finite local example. The large-order parameter of the global proof is covered by the uniform argument above.
+
+\paragraph{Lean integration.}
+Change the witness in the \src{New/UpperBound/Objects/LabelsAndIndexTypes}{149}{good-tuple predicate} and propagate it to the family above both primes. Replace the \src{New/Spanning/MainTerm/BadTypes}{101}{totient count} and the \src{New/Spanning/MainTerm/BadTypes}{162}{nonprimitive mass bound} by \eqref{eq:label-count} and its exponential consequence. The \src{New/Spanning/SecondMoment/SpanningTheorem}{221}{identity-coefficient estimate} then uses the new threshold. In the \src{New/Spanning/Multiplicities/EqualMultiplicities}{249}{trace comparison}, the witness supplies irreducibility. Carry the new predicate into the high-rank branch of the \src{New/Congruences/GaloisRepresentations/SelmerHypotheses}{583}{lift setting} and its \src{New/Congruences/GaloisRepresentations/AttachedRepresentations}{81}{construction from good types}. The new norm and orbit arguments supply the \src{New/Congruences/GaloisRepresentations/RowsAndColumnsFromLabels}{330}{common-power structure} required by the \src{New/Congruences/GaloisRepresentations/RowsAndColumnsFromLabels}{548}{main-summand theorem}. The \src{New/Congruences/GaloisRepresentations/RowsAndColumnsFromLabels}{410}{rank-one construction} has its own witness. Enlarging the projector changes the spaces on both sides of the comparison. Their dimensions and multiplicities are related by applying the revised trace comparison to that same enlarged family.
