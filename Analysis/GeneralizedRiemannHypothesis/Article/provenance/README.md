@@ -14,6 +14,9 @@ report (or one result in it) and says what happened to it:
 | `other-unit` | It belongs to another section; `target` is that section's key. |
 | `non-mathematical` | Audits, inventories of earlier reports, reproduction and formalization plans, and similar material, which the article leaves out. |
 
+The `packet` and `file` columns name files under `Analysis/GeneralizedRiemannHypothesis/Research/`
+in the history (the first 103 at commit `10802a6b36`, the next 17 at commit `f2f9fd7531`, the next 11 at commit `64f3896557`, the next 11 at commit `fd9a9cb2bd`, the next 42 at commit `f6b5955e13`, the next 10 at commit `7f951e1dfd`, the next 15 at commit `3c4d27a69c` and the last 33 at commit `2f9fb0b144`); the packets are no longer in the working tree.
+
 Labels have the form `<key>:<kind>:<name>`. `<key>` names the section file the result was first
 merged into; results moved when the article was regrouped on 27 November 2026 kept their labels,
 so a label's prefix need not match the file that now holds it. Each table lists the rows whose
