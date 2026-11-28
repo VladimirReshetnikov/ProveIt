@@ -219,6 +219,8 @@ For the explicit margins, [PolynomialIrreducibleDegrees.lean](GRHArticle/Progres
 
 [PolynomialGreedyProductDensity.lean](GRHArticle/ProgressionFree/PolynomialGreedyProductDensity.lean) identifies the actual greedy polynomial natural density with its prime Euler product and expresses the one-free-prime optimum with the article's exterior constant. [PolynomialValuationScalarClosure.lean](GRHArticle/ProgressionFree/PolynomialValuationScalarClosure.lean) transports any predicate on all prime valuations from monic layers to full degree balls.
 
+[PolynomialNaturalExchangeGain.lean](GRHArticle/ProgressionFree/PolynomialNaturalExchangeGain.lean) proves convergence of the actual greedy and exchange degree-ball proportions and factors their limiting difference for every finite selection of monic primes. [PolynomialNaturalExchangeComparison.lean](GRHArticle/ProgressionFree/PolynomialNaturalExchangeComparison.lean) gives the strict comparison and the explicit lower estimate whenever the local bracket is positive.
+
 ## RH and Dirichlet GRH input
 
 The article uses the five theorems in
